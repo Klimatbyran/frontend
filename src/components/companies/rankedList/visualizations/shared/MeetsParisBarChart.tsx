@@ -1,14 +1,5 @@
 import { useMemo, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-} from "recharts";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { COLORS } from "@/lib/colors";
@@ -17,7 +8,8 @@ import { formatWithBestUnit } from "@/utils/data/unitScaling";
 import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChartData";
 
 const SEGMENT_RADIUS = 6;
-const SEGMENT_GAP = 1;
+const BAR_MAX_WIDTH = 120;
+const Y_AXIS_WIDTH = 56;
 
 interface MeetsParisBarChartProps {
   entries: CompanyParisEmissionsEntry[];
@@ -26,66 +18,27 @@ interface MeetsParisBarChartProps {
   onCompanyClick?: (entry: CompanyParisEmissionsEntry) => void;
 }
 
-interface ChartRow {
+interface BarGroup {
   category: string;
+  color: string;
   total: number;
-  [companyId: string]: string | number;
-}
-
-interface TooltipPayloadItem {
-  dataKey?: string;
-  value?: number;
-  color?: string;
-  payload?: ChartRow;
+  segments: Array<{
+    id: string;
+    entry: CompanyParisEmissionsEntry;
+    emissions: number;
+  }>;
 }
 
 function getEntryKey(entry: CompanyParisEmissionsEntry): string {
   return getCompanyUrlSegment(entry.company);
 }
 
-function MeetsParisBarTooltip({
-  active,
-  payload,
-  companyById,
-  unitScale,
-  maxEmissions,
-}: {
-  active?: boolean;
-  payload?: TooltipPayloadItem[];
-  companyById: Map<string, CompanyParisEmissionsEntry>;
-  unitScale: { unit: string; divisor: number };
-  maxEmissions: number;
-}) {
-  const { t } = useTranslation();
+function buildYAxisTicks(maxValue: number, tickCount = 4): number[] {
+  if (maxValue <= 0) return [0];
 
-  if (!active || !payload?.length) return null;
-
-  const item = payload[0];
-  const companyId = item.dataKey;
-  if (!companyId || companyId === "category" || companyId === "total") {
-    return null;
-  }
-
-  const entry = companyById.get(companyId);
-  if (!entry || !item.value) return null;
-
-  const emissions = item.value * unitScale.divisor;
-  const meetsParisLabel = entry.meetsParis
-    ? t("companies.list.kpis.meetsParis.booleanLabels.true")
-    : t("companies.list.kpis.meetsParis.booleanLabels.false");
-
-  return (
-    <div className="bg-black/40 backdrop-blur-sm p-4 rounded-2xl text-white pointer-events-none z-50">
-      <p className="font-medium text-xl">{entry.company.name}</p>
-      <div className="space-y-1 mt-2">
-        <p className="text-white/70">
-          <span className="text-orange-2">
-            {formatWithBestUnit(emissions, maxEmissions)}
-          </span>
-        </p>
-        <p className="text-white/50 text-sm">{meetsParisLabel}</p>
-      </div>
-    </div>
+  const step = maxValue / tickCount;
+  return Array.from({ length: tickCount + 1 }, (_, index) =>
+    Number((index * step).toFixed(2)),
   );
 }
 
@@ -96,58 +49,57 @@ export function MeetsParisBarChart({
   onCompanyClick,
 }: MeetsParisBarChartProps) {
   const { t } = useTranslation();
-  const { barDuration, reduceMotion } = useChartMotion();
+  const { reduceMotion } = useChartMotion();
   const { isMobile } = useScreenSize();
   const [activeCompanyId, setActiveCompanyId] = useState<string | null>(null);
   const [hoveredCompanyId, setHoveredCompanyId] = useState<string | null>(null);
+  const [tooltip, setTooltip] = useState<{
+    entry: CompanyParisEmissionsEntry;
+    x: number;
+    y: number;
+  } | null>(null);
 
   const trueLabel = t("companiesOverviewPage.visualizations.meetsParis.yes");
   const falseLabel = t("companiesOverviewPage.visualizations.meetsParis.no");
 
-  const { chartData, companyIds, companyById, maxBarTotal, totalsByCategory } =
-    useMemo(() => {
-      const yesEntries = entries.filter((entry) => entry.meetsParis);
-      const noEntries = entries.filter((entry) => !entry.meetsParis);
+  const { groups, companyById, maxBarTotal } = useMemo(() => {
+    const yesEntries = entries.filter((entry) => entry.meetsParis);
+    const noEntries = entries.filter((entry) => !entry.meetsParis);
+    const byId = new Map(entries.map((entry) => [getEntryKey(entry), entry]));
 
-      const byId = new Map(entries.map((entry) => [getEntryKey(entry), entry]));
+    const buildGroup = (
+      category: string,
+      color: string,
+      groupEntries: CompanyParisEmissionsEntry[],
+    ): BarGroup => ({
+      category,
+      color,
+      total: groupEntries.reduce((sum, entry) => sum + entry.emissions, 0),
+      segments: groupEntries
+        .sort((a, b) => a.emissions - b.emissions)
+        .map((entry) => ({
+          id: getEntryKey(entry),
+          entry,
+          emissions: entry.emissions,
+        })),
+    });
 
-      const buildRow = (
-        category: string,
-        group: CompanyParisEmissionsEntry[],
-      ): ChartRow => {
-        const row: ChartRow = { category, total: 0 };
-        for (const entry of group) {
-          const scaled = entry.emissions / unitScale.divisor;
-          row[getEntryKey(entry)] = scaled;
-          row.total += scaled;
-        }
-        return row;
-      };
+    const chartGroups = [
+      buildGroup(trueLabel, COLORS.blue3, yesEntries),
+      buildGroup(falseLabel, COLORS.pink3, noEntries),
+    ];
 
-      const data = [
-        buildRow(trueLabel, yesEntries),
-        buildRow(falseLabel, noEntries),
-      ];
+    return {
+      groups: chartGroups,
+      companyById: byId,
+      maxBarTotal: Math.max(...chartGroups.map((group) => group.total), 0),
+    };
+  }, [entries, falseLabel, trueLabel]);
 
-      const ids = [
-        ...yesEntries
-          .sort((a, b) => a.emissions - b.emissions)
-          .map((entry) => getEntryKey(entry)),
-        ...noEntries
-          .sort((a, b) => a.emissions - b.emissions)
-          .map((entry) => getEntryKey(entry)),
-      ];
-
-      const totals = data.map((row) => row.total);
-
-      return {
-        chartData: data,
-        companyIds: ids,
-        companyById: byId,
-        maxBarTotal: Math.max(...totals, 0),
-        totalsByCategory: new Map(data.map((row) => [row.category, row.total])),
-      };
-    }, [entries, falseLabel, trueLabel, unitScale.divisor]);
+  const yAxisTicks = useMemo(
+    () => buildYAxisTicks(maxBarTotal / unitScale.divisor),
+    [maxBarTotal, unitScale.divisor],
+  );
 
   const formatAxisTick = useCallback(
     (value: number) => `${value.toFixed(1)}${unitScale.unit}`,
@@ -155,15 +107,13 @@ export function MeetsParisBarChart({
   );
 
   const formatCategoryTotal = useCallback(
-    (category: string) => {
-      const total = totalsByCategory.get(category);
-      if (total == null) return "";
-      return formatWithBestUnit(total * unitScale.divisor, maxEmissions);
-    },
-    [maxEmissions, totalsByCategory, unitScale.divisor],
+    (total: number) => formatWithBestUnit(total, maxEmissions),
+    [maxEmissions],
   );
 
-  const handleBarClick = useCallback(
+  const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
+
+  const handleSegmentClick = useCallback(
     (companyId: string) => {
       const entry = companyById.get(companyId);
       if (!entry) return;
@@ -180,138 +130,184 @@ export function MeetsParisBarChart({
     [companyById, isMobile, onCompanyClick],
   );
 
-  const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
+  const handleSegmentPointerEnter = useCallback(
+    (event: React.MouseEvent, entry: CompanyParisEmissionsEntry) => {
+      setHoveredCompanyId(getEntryKey(entry));
+      setTooltip({
+        entry,
+        x: event.clientX,
+        y: event.clientY,
+      });
+    },
+    [],
+  );
+
+  const handleSegmentPointerMove = useCallback(
+    (event: React.MouseEvent, entry: CompanyParisEmissionsEntry) => {
+      setTooltip({
+        entry,
+        x: event.clientX,
+        y: event.clientY,
+      });
+    },
+    [],
+  );
+
+  const handleSegmentPointerLeave = useCallback(() => {
+    setHoveredCompanyId(null);
+    setTooltip(null);
+  }, []);
 
   return (
     <div className="relative w-full h-full min-h-[400px] flex flex-col">
-      <div className="relative flex-1 border-t border-b border-black-4 pt-4 pb-2">
-        <ResponsiveContainer width="100%" height="100%" minHeight={320}>
-          <BarChart
-            data={chartData}
-            margin={{ top: 20, right: 16, bottom: 4, left: 4 }}
-            barCategoryGap="30%"
+      <div className="relative flex-1 min-h-[320px] border-t border-b border-black-4">
+        <div className="absolute inset-x-0 top-4 bottom-8 flex">
+          <div
+            className="relative shrink-0"
+            style={{ width: Y_AXIS_WIDTH }}
           >
-            <XAxis
-              dataKey="category"
-              tick={{ fontSize: 13, fill: "rgba(255,255,255,0.75)" }}
-              tickLine={false}
-              axisLine={false}
-            />
-            <YAxis
-              tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
-              tickLine={false}
-              axisLine={false}
-              tickFormatter={formatAxisTick}
-              domain={[0, maxBarTotal]}
-              width={56}
-            />
-            <Tooltip
-              content={(props) => (
-                <MeetsParisBarTooltip
-                  active={props.active}
-                  payload={props.payload as TooltipPayloadItem[] | undefined}
-                  companyById={companyById}
-                  unitScale={unitScale}
-                  maxEmissions={maxEmissions}
-                />
-              )}
-              cursor={{ fill: "rgba(255,255,255,0.05)" }}
-              animationDuration={0}
-              isAnimationActive={false}
-            />
-            {companyIds.map((companyId) => {
-              const entry = companyById.get(companyId);
-              if (!entry) return null;
+            {yAxisTicks
+              .slice()
+              .reverse()
+              .map((tick) => (
+                <span
+                  key={tick}
+                  className="absolute right-2 -translate-y-1/2 text-[11px] text-white/45"
+                  style={{
+                    bottom: `${maxBarTotal > 0 ? (tick / (maxBarTotal / unitScale.divisor)) * 100 : 0}%`,
+                  }}
+                >
+                  {formatAxisTick(tick)}
+                </span>
+              ))}
+          </div>
 
-              const baseColor = entry.meetsParis ? COLORS.blue3 : COLORS.pink3;
-              const isHighlighted = highlightedCompanyId === companyId;
-              const isDimmed =
-                highlightedCompanyId != null &&
-                highlightedCompanyId !== companyId;
+          <div className="flex flex-1 items-end justify-center gap-[15%] px-2">
+            {groups.map((group) => {
+              const barHeightPercent =
+                maxBarTotal > 0 ? (group.total / maxBarTotal) * 100 : 0;
 
               return (
-                <Bar
-                  key={companyId}
-                  dataKey={companyId}
-                  stackId="emissions"
-                  maxBarSize={120}
-                  radius={[
-                    SEGMENT_RADIUS,
-                    SEGMENT_RADIUS,
-                    SEGMENT_RADIUS,
-                    SEGMENT_RADIUS,
-                  ]}
-                  isAnimationActive={!reduceMotion}
-                  animationBegin={0}
-                  animationDuration={reduceMotion ? 0 : barDuration * 1000}
-                  animationEasing="ease-out"
-                  onClick={() => handleBarClick(companyId)}
-                  onMouseEnter={() => setHoveredCompanyId(companyId)}
-                  onMouseLeave={() => setHoveredCompanyId(null)}
-                  className="cursor-pointer"
+                <div
+                  key={group.category}
+                  className="flex h-full flex-col items-center justify-end"
+                  style={{ width: BAR_MAX_WIDTH, maxWidth: "40%" }}
                 >
-                  {chartData.map((row) => {
-                    const value = row[companyId];
-                    if (typeof value !== "number" || value <= 0) {
+                  <div
+                    className="flex w-full flex-col gap-px overflow-hidden rounded-md"
+                    style={{
+                      height: `${barHeightPercent}%`,
+                      backgroundColor: COLORS.black2,
+                      transition: reduceMotion ? undefined : "height 0.5s ease-out",
+                    }}
+                  >
+                    {group.segments.map((segment) => {
+                      const isHighlighted =
+                        highlightedCompanyId === segment.id;
+                      const isDimmed =
+                        highlightedCompanyId != null &&
+                        highlightedCompanyId !== segment.id;
+
                       return (
-                        <Cell
-                          key={`${companyId}-${row.category}`}
-                          fill="transparent"
+                        <button
+                          key={segment.id}
+                          type="button"
+                          className="w-full min-h-[1px] border-0 p-0 cursor-pointer"
+                          style={{
+                            flex: `${segment.emissions} 1 0`,
+                            backgroundColor: group.color,
+                            borderRadius: SEGMENT_RADIUS,
+                            opacity: isDimmed ? 0.45 : 1,
+                            boxShadow: isHighlighted
+                              ? "inset 0 0 0 2px rgba(255,255,255,0.9)"
+                              : undefined,
+                          }}
+                          aria-label={segment.entry.company.name}
+                          onClick={() => handleSegmentClick(segment.id)}
+                          onMouseEnter={(event) =>
+                            handleSegmentPointerEnter(event, segment.entry)
+                          }
+                          onMouseMove={(event) =>
+                            handleSegmentPointerMove(event, segment.entry)
+                          }
+                          onMouseLeave={handleSegmentPointerLeave}
                         />
                       );
-                    }
-
-                    return (
-                      <Cell
-                        key={`${companyId}-${row.category}`}
-                        fill={baseColor}
-                        fillOpacity={isDimmed ? 0.45 : 1}
-                        stroke={
-                          isHighlighted
-                            ? "rgba(255,255,255,0.9)"
-                            : COLORS.black2
-                        }
-                        strokeWidth={isHighlighted ? 2 : SEGMENT_GAP}
-                      />
-                    );
-                  })}
-                </Bar>
+                    })}
+                  </div>
+                </div>
               );
             })}
-          </BarChart>
-        </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="absolute inset-x-0 bottom-1 flex justify-center gap-[15%] px-2">
+          {groups.map((group) => (
+            <span
+              key={group.category}
+              className="text-center text-[13px] text-white/75"
+              style={{ width: BAR_MAX_WIDTH, maxWidth: "40%" }}
+            >
+              {group.category}
+            </span>
+          ))}
+        </div>
       </div>
+
+      {tooltip && !isMobile && (
+        <div
+          className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-full rounded-2xl bg-black/40 p-4 text-white backdrop-blur-sm"
+          style={{
+            left: tooltip.x,
+            top: tooltip.y - 12,
+          }}
+        >
+          <p className="text-xl font-medium">{tooltip.entry.company.name}</p>
+          <div className="mt-2 space-y-1">
+            <p className="text-white/70">
+              <span className="text-orange-2">
+                {formatWithBestUnit(tooltip.entry.emissions, maxEmissions)}
+              </span>
+            </p>
+            <p className="text-sm text-white/50">
+              {tooltip.entry.meetsParis
+                ? t("companies.list.kpis.meetsParis.booleanLabels.true")
+                : t("companies.list.kpis.meetsParis.booleanLabels.false")}
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="mt-6 flex flex-col gap-3">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-center gap-6">
             <div className="flex items-center gap-2">
               <span
-                className="inline-block w-3 h-3 rounded-sm shrink-0"
+                className="inline-block h-3 w-3 shrink-0 rounded-sm"
                 style={{ backgroundColor: COLORS.blue3 }}
               />
               <span className="text-xs text-white/40">
                 {trueLabel}{" "}
                 <span className="text-orange-2">
-                  ({formatCategoryTotal(trueLabel)})
+                  ({formatCategoryTotal(groups[0]?.total ?? 0)})
                 </span>
               </span>
             </div>
             <div className="flex items-center gap-2">
               <span
-                className="inline-block w-3 h-3 rounded-sm shrink-0"
+                className="inline-block h-3 w-3 shrink-0 rounded-sm"
                 style={{ backgroundColor: COLORS.pink3 }}
               />
               <span className="text-xs text-white/40">
                 {falseLabel}{" "}
                 <span className="text-orange-2">
-                  ({formatCategoryTotal(falseLabel)})
+                  ({formatCategoryTotal(groups[1]?.total ?? 0)})
                 </span>
               </span>
             </div>
           </div>
 
-          <div className="flex items-center justify-between md:justify-end gap-4 text-xs text-grey px-1">
+          <div className="flex items-center justify-between gap-4 px-1 text-xs text-grey md:justify-end">
             <span>
               {t(
                 "companiesOverviewPage.visualizations.meetsParis.companiesCount",
@@ -328,7 +324,7 @@ export function MeetsParisBarChart({
           </div>
         </div>
 
-        <p className="text-xs text-white/40 text-center md:text-left px-1">
+        <p className="px-1 text-center text-xs text-white/40 md:text-left">
           {t("companiesOverviewPage.visualizations.meetsParis.segmentHint")}
         </p>
       </div>
