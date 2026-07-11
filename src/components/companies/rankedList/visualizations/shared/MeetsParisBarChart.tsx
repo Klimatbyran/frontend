@@ -35,9 +35,93 @@ interface TooltipPayloadItem {
   payload?: ChartRow;
 }
 
-function getSegmentOpacity(emissions: number, maxInGroup: number): number {
-  if (maxInGroup <= 0) return 0.7;
-  return 0.45 + (emissions / maxInGroup) * 0.55;
+interface SegmentPattern {
+  id: string;
+  baseColor: string;
+  variant: number;
+  size: number;
+  angle: number;
+}
+
+function getPatternId(companyId: string): string {
+  return `paris-segment-${companyId.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
+}
+
+function buildSegmentPatterns(
+  companyIds: string[],
+  companyById: Map<string, CompanyParisEmissionsEntry>,
+): SegmentPattern[] {
+  return companyIds.flatMap((companyId, index) => {
+    const entry = companyById.get(companyId);
+    if (!entry) return [];
+
+    return [
+      {
+        id: getPatternId(companyId),
+        baseColor: entry.meetsParis ? COLORS.blue3 : COLORS.pink3,
+        variant: index % 3,
+        size: 5 + (index % 4),
+        angle: index % 3 === 2 ? 30 + (index % 5) * 12 : 0,
+      },
+    ];
+  });
+}
+
+function CompanySegmentPatterns({
+  patterns,
+}: {
+  patterns: SegmentPattern[];
+}) {
+  return (
+    <defs>
+      {patterns.map((pattern) => (
+        <pattern
+          key={pattern.id}
+          id={pattern.id}
+          width={pattern.size}
+          height={pattern.size}
+          patternUnits="userSpaceOnUse"
+          patternTransform={`rotate(${pattern.angle})`}
+        >
+          <rect
+            width={pattern.size}
+            height={pattern.size}
+            fill={pattern.baseColor}
+          />
+          {pattern.variant === 0 && (
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2={pattern.size}
+              stroke="rgba(255,255,255,0.35)"
+              strokeWidth="1"
+            />
+          )}
+          {pattern.variant === 1 && (
+            <line
+              x1="0"
+              y1="0"
+              x2={pattern.size}
+              y2="0"
+              stroke="rgba(255,255,255,0.35)"
+              strokeWidth="1"
+            />
+          )}
+          {pattern.variant === 2 && (
+            <line
+              x1="0"
+              y1="0"
+              x2={pattern.size}
+              y2={pattern.size}
+              stroke="rgba(255,255,255,0.35)"
+              strokeWidth="1"
+            />
+          )}
+        </pattern>
+      ))}
+    </defs>
+  );
 }
 
 function MeetsParisBarTooltip({
@@ -96,73 +180,62 @@ export function MeetsParisBarChart({
   const { barDuration, reduceMotion } = useChartMotion();
   const { isMobile } = useScreenSize();
   const [activeCompanyId, setActiveCompanyId] = useState<string | null>(null);
+  const [hoveredCompanyId, setHoveredCompanyId] = useState<string | null>(null);
 
   const trueLabel = t("companiesOverviewPage.visualizations.meetsParis.yes");
   const falseLabel = t("companiesOverviewPage.visualizations.meetsParis.no");
 
-  const {
-    chartData,
-    companyIds,
-    companyById,
-    maxBarTotal,
-    maxByGroup,
-    totalsByCategory,
-  } = useMemo(() => {
-    const yesEntries = entries.filter((entry) => entry.meetsParis);
-    const noEntries = entries.filter((entry) => !entry.meetsParis);
+  const { chartData, companyIds, companyById, maxBarTotal, totalsByCategory } =
+    useMemo(() => {
+      const yesEntries = entries.filter((entry) => entry.meetsParis);
+      const noEntries = entries.filter((entry) => !entry.meetsParis);
 
-    const byId = new Map(
-      entries.map((entry) => [entry.company.wikidataId, entry]),
-    );
+      const byId = new Map(
+        entries.map((entry) => [entry.company.wikidataId, entry]),
+      );
 
-    const buildRow = (
-      category: string,
-      group: CompanyParisEmissionsEntry[],
-    ): ChartRow => {
-      const row: ChartRow = { category, total: 0 };
-      for (const entry of group) {
-        const scaled = entry.emissions / unitScale.divisor;
-        row[entry.company.wikidataId] = scaled;
-        row.total += scaled;
-      }
-      return row;
-    };
+      const buildRow = (
+        category: string,
+        group: CompanyParisEmissionsEntry[],
+      ): ChartRow => {
+        const row: ChartRow = { category, total: 0 };
+        for (const entry of group) {
+          const scaled = entry.emissions / unitScale.divisor;
+          row[entry.company.wikidataId] = scaled;
+          row.total += scaled;
+        }
+        return row;
+      };
 
-    const data = [
-      buildRow(trueLabel, yesEntries),
-      buildRow(falseLabel, noEntries),
-    ];
+      const data = [
+        buildRow(trueLabel, yesEntries),
+        buildRow(falseLabel, noEntries),
+      ];
 
-    const yesMax = yesEntries.length
-      ? Math.max(...yesEntries.map((entry) => entry.emissions))
-      : 0;
-    const noMax = noEntries.length
-      ? Math.max(...noEntries.map((entry) => entry.emissions))
-      : 0;
+      const ids = [
+        ...yesEntries
+          .sort((a, b) => a.emissions - b.emissions)
+          .map((entry) => entry.company.wikidataId),
+        ...noEntries
+          .sort((a, b) => a.emissions - b.emissions)
+          .map((entry) => entry.company.wikidataId),
+      ];
 
-    const ids = [
-      ...yesEntries
-        .sort((a, b) => a.emissions - b.emissions)
-        .map((entry) => entry.company.wikidataId),
-      ...noEntries
-        .sort((a, b) => a.emissions - b.emissions)
-        .map((entry) => entry.company.wikidataId),
-    ];
+      const totals = data.map((row) => row.total);
 
-    const totals = data.map((row) => row.total);
+      return {
+        chartData: data,
+        companyIds: ids,
+        companyById: byId,
+        maxBarTotal: Math.max(...totals, 0),
+        totalsByCategory: new Map(data.map((row) => [row.category, row.total])),
+      };
+    }, [entries, falseLabel, trueLabel, unitScale.divisor]);
 
-    return {
-      chartData: data,
-      companyIds: ids,
-      companyById: byId,
-      maxBarTotal: Math.max(...totals, 0),
-      maxByGroup: new Map([
-        [trueLabel, yesMax],
-        [falseLabel, noMax],
-      ]),
-      totalsByCategory: new Map(data.map((row) => [row.category, row.total])),
-    };
-  }, [entries, falseLabel, trueLabel, unitScale.divisor]);
+  const segmentPatterns = useMemo(
+    () => buildSegmentPatterns(companyIds, companyById),
+    [companyById, companyIds],
+  );
 
   const formatAxisTick = useCallback(
     (value: number) => `${value.toFixed(1)}${unitScale.unit}`,
@@ -195,6 +268,8 @@ export function MeetsParisBarChart({
     [companyById, isMobile, onCompanyClick],
   );
 
+  const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
+
   return (
     <div className="relative w-full h-full min-h-[400px] flex flex-col">
       <div className="relative flex-1 border-t border-b border-black-4 pt-4 pb-2">
@@ -204,6 +279,7 @@ export function MeetsParisBarChart({
             margin={{ top: 20, right: 16, bottom: 4, left: 4 }}
             barCategoryGap="30%"
           >
+            <CompanySegmentPatterns patterns={segmentPatterns} />
             <XAxis
               dataKey="category"
               tick={{ fontSize: 13, fill: "rgba(255,255,255,0.75)" }}
@@ -236,9 +312,10 @@ export function MeetsParisBarChart({
               const entry = companyById.get(companyId);
               if (!entry) return null;
 
-              const baseColor = entry.meetsParis ? COLORS.blue3 : COLORS.pink3;
-              const categoryLabel = entry.meetsParis ? trueLabel : falseLabel;
-              const maxInGroup = maxByGroup.get(categoryLabel) ?? 0;
+              const isHighlighted = highlightedCompanyId === companyId;
+              const isDimmed =
+                highlightedCompanyId != null &&
+                highlightedCompanyId !== companyId;
 
               return (
                 <Bar
@@ -252,6 +329,8 @@ export function MeetsParisBarChart({
                   animationDuration={reduceMotion ? 0 : barDuration * 1000}
                   animationEasing="ease-out"
                   onClick={() => handleBarClick(companyId)}
+                  onMouseEnter={() => setHoveredCompanyId(companyId)}
+                  onMouseLeave={() => setHoveredCompanyId(null)}
                   className="cursor-pointer"
                 >
                   {chartData.map((row) => {
@@ -268,13 +347,14 @@ export function MeetsParisBarChart({
                     return (
                       <Cell
                         key={`${companyId}-${row.category}`}
-                        fill={baseColor}
-                        fillOpacity={getSegmentOpacity(
-                          entry.emissions,
-                          maxInGroup,
-                        )}
-                        stroke="var(--black-4)"
-                        strokeWidth={1}
+                        fill={`url(#${getPatternId(companyId)})`}
+                        fillOpacity={isDimmed ? 0.45 : 1}
+                        stroke={
+                          isHighlighted
+                            ? "rgba(255,255,255,0.9)"
+                            : "var(--black-4)"
+                        }
+                        strokeWidth={isHighlighted ? 2 : 1}
                       />
                     );
                   })}
@@ -285,47 +365,55 @@ export function MeetsParisBarChart({
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center justify-center gap-6">
-          <div className="flex items-center gap-2">
-            <span
-              className="inline-block w-3 h-3 rounded-sm shrink-0"
-              style={{ backgroundColor: COLORS.blue3 }}
-            />
-            <span className="text-xs text-white/40">
-              {trueLabel}{" "}
-              <span className="text-orange-2">
-                ({formatCategoryTotal(trueLabel)})
+      <div className="mt-6 flex flex-col gap-3">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center justify-center gap-6">
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-block w-3 h-3 rounded-sm shrink-0"
+                style={{ backgroundColor: COLORS.blue3 }}
+              />
+              <span className="text-xs text-white/40">
+                {trueLabel}{" "}
+                <span className="text-orange-2">
+                  ({formatCategoryTotal(trueLabel)})
+                </span>
               </span>
-            </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-block w-3 h-3 rounded-sm shrink-0"
+                style={{ backgroundColor: COLORS.pink3 }}
+              />
+              <span className="text-xs text-white/40">
+                {falseLabel}{" "}
+                <span className="text-orange-2">
+                  ({formatCategoryTotal(falseLabel)})
+                </span>
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span
-              className="inline-block w-3 h-3 rounded-sm shrink-0"
-              style={{ backgroundColor: COLORS.pink3 }}
-            />
-            <span className="text-xs text-white/40">
-              {falseLabel}{" "}
-              <span className="text-orange-2">
-                ({formatCategoryTotal(falseLabel)})
-              </span>
+
+          <div className="flex items-center justify-between md:justify-end gap-4 text-xs text-grey px-1">
+            <span>
+              {t(
+                "companiesOverviewPage.visualizations.meetsParis.companiesCount",
+                {
+                  count: entries.length,
+                },
+              )}
+            </span>
+            <span>
+              {t(
+                "companiesOverviewPage.visualizations.meetsParis.emissionsUnit",
+              )}
             </span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between md:justify-end gap-4 text-xs text-grey px-1">
-          <span>
-            {t(
-              "companiesOverviewPage.visualizations.meetsParis.companiesCount",
-              {
-                count: entries.length,
-              },
-            )}
-          </span>
-          <span>
-            {t("companiesOverviewPage.visualizations.meetsParis.emissionsUnit")}
-          </span>
-        </div>
+        <p className="text-xs text-white/40 text-center md:text-left px-1">
+          {t("companiesOverviewPage.visualizations.meetsParis.segmentHint")}
+        </p>
       </div>
 
       {isMobile && activeCompanyId && companyById.has(activeCompanyId) && (
