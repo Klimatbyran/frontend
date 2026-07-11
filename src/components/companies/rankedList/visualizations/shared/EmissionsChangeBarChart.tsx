@@ -246,7 +246,9 @@ export function EmissionsChangeBarChart({
                     style={{
                       height: `${barHeightPercent}%`,
                       backgroundColor: COLORS.black2,
-                      transition: reduceMotion ? undefined : "height 0.5s ease-out",
+                      transition: reduceMotion
+                        ? undefined
+                        : "height 0.5s ease-out",
                     }}
                   >
                     {bin.companies.map((company) => {
@@ -276,11 +278,7 @@ export function EmissionsChangeBarChart({
                           aria-label={company.name}
                           onClick={() => handleSegmentClick(company.id)}
                           onMouseEnter={(event) =>
-                            handleSegmentPointerEnter(
-                              event,
-                              company,
-                              bin.label,
-                            )
+                            handleSegmentPointerEnter(event, company, bin.label)
                           }
                           onMouseMove={(event) =>
                             handleSegmentPointerMove(event, company, bin.label)
