@@ -1,7 +1,17 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import type { CompanyWithKPIs } from "@/types/company";
-import { getCompanyColors } from "@/lib/constants/companyColors";
+import { COLORS } from "@/lib/colors";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartMotion } from "@/hooks/useChartMotion";
@@ -9,11 +19,9 @@ import {
   formatEmissionsAbsolute,
   formatEmissionsAbsoluteCompact,
 } from "@/utils/formatting/localization";
-import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import {
   buildEmissionsChangeHistogram,
   type EmissionsChangeCompanyEntry,
-  type EmissionsChangeHistogramBin,
 } from "@/utils/visualizations/emissionsChangeHistogram";
 
 interface EmissionsChangeBarChartProps {
@@ -21,47 +29,96 @@ interface EmissionsChangeBarChartProps {
   onCompanyClick?: (company: CompanyWithKPIs) => void;
 }
 
-interface TooltipState {
-  company: EmissionsChangeCompanyEntry;
-  position: { x: number; y: number };
-}
-
-function getYAxisTicks(maxValue: number): number[] {
-  if (maxValue <= 0) {
-    return [0];
-  }
-
-  const roughStep = maxValue / 4;
-  const magnitude = Math.pow(10, Math.floor(Math.log10(roughStep)));
-  const normalized = roughStep / magnitude;
-  const niceNormalized =
-    normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
-  const step = niceNormalized * magnitude;
-  const ticks: number[] = [];
-
-  for (let value = 0; value <= maxValue; value += step) {
-    ticks.push(Math.round(value));
-  }
-
-  if (ticks[ticks.length - 1] < maxValue) {
-    ticks.push(Math.round(maxValue));
-  }
-
-  return ticks;
-}
-
-function getBinColor(
-  bin: EmissionsChangeHistogramBin,
-  minChange: number,
-  maxChange: number,
-): string {
-  const midpoint = (bin.min + bin.max) / 2;
-  return createSymmetricRangeGradient(minChange, maxChange, midpoint);
+interface ChartRow {
+  label: string;
+  fullLabel: string;
+  totalEmissions: number;
+  binMid: number;
+  [companyId: string]: number | string;
 }
 
 function formatCompactBinLabel(label: string): string {
   const [start] = label.split("–");
   return start.replace("%", "");
+}
+
+function getBinBarColor(binMid: number): string {
+  if (binMid < 0) {
+    return COLORS.blue3;
+  }
+
+  if (binMid > 0) {
+    return COLORS.pink3;
+  }
+
+  return COLORS.blue3;
+}
+
+function getSegmentOpacity(segmentIndex: number, segmentCount: number): number {
+  if (segmentCount <= 1) {
+    return 1;
+  }
+
+  const minOpacity = 0.5;
+  return minOpacity + (segmentIndex / (segmentCount - 1)) * (1 - minOpacity);
+}
+
+function ChartTooltip({
+  active,
+  payload,
+  label,
+  companyById,
+  currentLanguage,
+  t,
+}: {
+  active?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any[];
+  label?: string;
+  companyById: Map<string, EmissionsChangeCompanyEntry>;
+  currentLanguage: ReturnType<typeof useLanguage>["currentLanguage"];
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  if (!active || !payload?.length) {
+    return null;
+  }
+
+  const activeSegment = [...payload]
+    .reverse()
+    .find((item) => typeof item.value === "number" && item.value > 0);
+
+  if (!activeSegment) {
+    return null;
+  }
+
+  const company = companyById.get(String(activeSegment.dataKey));
+  if (!company) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-level-1 border border-white/10 bg-black-1 px-3 py-2 text-xs text-white shadow-xl">
+      <p className="font-medium">{company.name}</p>
+      <p className="text-grey">{label}</p>
+      <p className="text-grey">
+        {t(
+          "companiesOverviewPage.visualizations.emissionsChange.tooltip.change",
+          { value: company.changePercent.toFixed(1) },
+        )}
+      </p>
+      <p className="text-grey">
+        {t(
+          "companiesOverviewPage.visualizations.emissionsChange.tooltip.emissions",
+          {
+            value: formatEmissionsAbsolute(
+              company.emissions,
+              currentLanguage,
+            ),
+          },
+        )}
+      </p>
+    </div>
+  );
 }
 
 export function EmissionsChangeBarChart({
@@ -72,8 +129,6 @@ export function EmissionsChangeBarChart({
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
   const { reduceMotion, barDuration } = useChartMotion();
-  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
-  const [mobileTooltipOpen, setMobileTooltipOpen] = useState(false);
   const [mobileSelectedCompanyId, setMobileSelectedCompanyId] = useState<
     string | null
   >(null);
@@ -83,7 +138,7 @@ export function EmissionsChangeBarChart({
     [companies],
   );
 
-  const companyById = useMemo(() => {
+  const companySourceById = useMemo(() => {
     const map = new Map<string, CompanyWithKPIs>();
     companies.forEach((company) => {
       map.set(company.id, company);
@@ -91,209 +146,176 @@ export function EmissionsChangeBarChart({
     return map;
   }, [companies]);
 
-  const changeRange = useMemo(() => {
+  const { chartData, stackCompanies, companyEntryById } = useMemo(() => {
     if (!histogram) {
-      return { min: 0, max: 0 };
+      return {
+        chartData: [] as ChartRow[],
+        stackCompanies: [] as EmissionsChangeCompanyEntry[],
+        companyEntryById: new Map<string, EmissionsChangeCompanyEntry>(),
+      };
     }
 
-    const values = histogram.bins.flatMap((bin) =>
-      bin.companies.map((company) => company.changePercent),
+    const entries = new Map<string, EmissionsChangeCompanyEntry>();
+    histogram.bins.forEach((bin) => {
+      bin.companies.forEach((company) => {
+        entries.set(company.id, company);
+      });
+    });
+
+    const stackCompanies = Array.from(entries.values()).sort(
+      (a, b) => a.emissions - b.emissions,
     );
 
-    return {
-      min: Math.min(...values),
-      max: Math.max(...values),
-    };
+    const chartData = histogram.bins.map((bin) => {
+      const row: ChartRow = {
+        label: formatCompactBinLabel(bin.label),
+        fullLabel: bin.label,
+        totalEmissions: bin.totalEmissions,
+        binMid: (bin.min + bin.max) / 2,
+      };
+
+      stackCompanies.forEach((company) => {
+        row[company.id] = 0;
+      });
+
+      bin.companies.forEach((company) => {
+        row[company.id] = company.emissions;
+      });
+
+      return row;
+    });
+
+    return { chartData, stackCompanies, companyEntryById: entries };
   }, [histogram]);
 
-  const yTicks = useMemo(
-    () => (histogram ? getYAxisTicks(histogram.maxTotalEmissions) : [0]),
-    [histogram],
-  );
+  const handleCompanyClick = useCallback(
+    (companyId: string) => {
+      const company = companySourceById.get(companyId);
+      if (!company) {
+        return;
+      }
 
-  const handleSegmentInteraction = useCallback(
-    (
-      company: EmissionsChangeCompanyEntry,
-      event: React.MouseEvent<HTMLDivElement>,
-    ) => {
       if (isMobile) {
-        if (mobileTooltipOpen && mobileSelectedCompanyId === company.id) {
-          const sourceCompany = companyById.get(company.id);
-          if (sourceCompany) {
-            onCompanyClick?.(sourceCompany);
-          }
-          setMobileTooltipOpen(false);
+        if (mobileSelectedCompanyId === companyId) {
+          onCompanyClick?.(company);
           setMobileSelectedCompanyId(null);
-          setTooltip(null);
           return;
         }
 
-        setMobileTooltipOpen(true);
-        setMobileSelectedCompanyId(company.id);
-        setTooltip({
-          company,
-          position: { x: event.clientX, y: event.clientY },
-        });
+        setMobileSelectedCompanyId(companyId);
         return;
       }
 
-      const sourceCompany = companyById.get(company.id);
-      if (sourceCompany) {
-        onCompanyClick?.(sourceCompany);
-      }
+      onCompanyClick?.(company);
     },
-    [
-      companyById,
-      isMobile,
-      mobileSelectedCompanyId,
-      mobileTooltipOpen,
-      onCompanyClick,
-    ],
-  );
-
-  const handleSegmentHover = useCallback(
-    (company: EmissionsChangeCompanyEntry, event: React.MouseEvent) => {
-      if (isMobile) {
-        return;
-      }
-
-      setTooltip({
-        company,
-        position: { x: event.clientX, y: event.clientY },
-      });
-    },
-    [isMobile],
+    [companySourceById, isMobile, mobileSelectedCompanyId, onCompanyClick],
   );
 
   if (!histogram || histogram.bins.length === 0) {
     return null;
   }
 
+  const maxTotalEmissions = histogram.maxTotalEmissions;
+
   return (
-    <div
-      className="relative flex h-full min-h-0 w-full flex-col gap-3"
-      onClick={() => {
-        if (isMobile && mobileTooltipOpen) {
-          setMobileTooltipOpen(false);
-          setMobileSelectedCompanyId(null);
-          setTooltip(null);
-        }
-      }}
-    >
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <div className="flex h-full min-h-0 w-full min-w-0 flex-1 gap-2 overflow-hidden">
-          <div className="flex h-full w-12 shrink-0 flex-col justify-between py-0 text-right text-[10px] text-grey">
-            {[...yTicks].reverse().map((tick) => (
-              <span key={tick}>
-                {formatEmissionsAbsoluteCompact(tick, currentLanguage)}
-              </span>
+    <div className="relative flex h-full min-h-0 w-full flex-col gap-3">
+      <div className="min-h-0 flex-1">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={chartData}
+            margin={{ top: 16, right: 4, bottom: 4, left: 0 }}
+          >
+            <CartesianGrid
+              stroke="var(--black-4)"
+              strokeDasharray="3 3"
+              vertical={false}
+            />
+            <XAxis
+              dataKey="label"
+              tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
+              tickLine={false}
+              axisLine={false}
+              interval="preserveStartEnd"
+            />
+            <YAxis
+              tick={{ fontSize: 11, fill: "rgba(255,255,255,0.45)" }}
+              tickLine={false}
+              axisLine={false}
+              width={48}
+              tickFormatter={(value) =>
+                formatEmissionsAbsoluteCompact(value, currentLanguage)
+              }
+              domain={[0, maxTotalEmissions]}
+            />
+            <Tooltip
+              cursor={{ fill: "rgba(255,255,255,0.05)" }}
+              content={(props) => (
+                <ChartTooltip
+                  {...props}
+                  companyById={companyEntryById}
+                  currentLanguage={currentLanguage}
+                  t={t}
+                />
+              )}
+            />
+            {stackCompanies.map((company, stackIndex) => (
+              <Bar
+                key={company.id}
+                dataKey={company.id}
+                stackId="emissions"
+                maxBarSize={32}
+                radius={
+                  stackIndex === stackCompanies.length - 1
+                    ? [3, 3, 0, 0]
+                    : [0, 0, 0, 0]
+                }
+                isAnimationActive={!reduceMotion}
+                animationBegin={0}
+                animationDuration={reduceMotion ? 0 : barDuration * 1000}
+                animationEasing="ease-out"
+              >
+                {chartData.map((row, binIndex) => {
+                  const value = row[company.id];
+                  if (typeof value !== "number" || value <= 0) {
+                    return <Cell key={`${company.id}-${binIndex}`} fill="none" />;
+                  }
+
+                  const bin = histogram.bins[binIndex];
+                  const companiesInBin = bin.companies.filter(
+                    (entry) => entry.emissions > 0,
+                  );
+                  const segmentIndex = companiesInBin.findIndex(
+                    (entry) => entry.id === company.id,
+                  );
+                  const color = getBinBarColor(row.binMid as number);
+                  const opacity = getSegmentOpacity(
+                    segmentIndex,
+                    companiesInBin.length,
+                  );
+
+                  return (
+                    <Cell
+                      key={`${company.id}-${binIndex}`}
+                      fill={color}
+                      fillOpacity={opacity}
+                      cursor="pointer"
+                      onClick={() => handleCompanyClick(company.id)}
+                    />
+                  );
+                })}
+              </Bar>
             ))}
-          </div>
-
-          <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-            <div className="flex h-full min-h-0 flex-1 items-end gap-px border-b border-black-4">
-              {histogram.bins.map((bin) => {
-                const barHeight =
-                  histogram.maxTotalEmissions > 0
-                    ? (bin.totalEmissions / histogram.maxTotalEmissions) * 100
-                    : 0;
-                const binColor = getBinColor(
-                  bin,
-                  changeRange.min,
-                  changeRange.max,
-                );
-
-                return (
-                  <div
-                    key={bin.id}
-                    className="flex h-full min-w-0 flex-1 basis-0 flex-col items-center justify-end"
-                  >
-                    <div
-                      className="flex w-full flex-col justify-end overflow-hidden rounded-t-sm border border-black-4/80"
-                      style={{
-                        height: `${barHeight}%`,
-                        minHeight: bin.companies.length > 0 ? "6px" : "0px",
-                        transition: reduceMotion
-                          ? undefined
-                          : `height ${barDuration}s ease-out`,
-                      }}
-                      title={t(
-                        "companiesOverviewPage.visualizations.emissionsChange.binSummary",
-                        {
-                          range: bin.label,
-                          count: bin.companies.length,
-                          emissions: formatEmissionsAbsolute(
-                            bin.totalEmissions,
-                            currentLanguage,
-                          ),
-                        },
-                      )}
-                    >
-                      {bin.companies.map((company) => {
-                        const segmentHeight =
-                          bin.totalEmissions > 0
-                            ? (company.emissions / bin.totalEmissions) * 100
-                            : 0;
-                        const color = getCompanyColors(company.colorIndex).base;
-
-                        return (
-                          <div
-                            key={company.id}
-                            className="w-full min-w-0 cursor-pointer transition-opacity hover:opacity-80"
-                            style={{
-                              height: `${segmentHeight}%`,
-                              minHeight: segmentHeight > 0 ? "1px" : "0px",
-                              backgroundColor: color,
-                              boxShadow: `inset 0 0 0 1px ${binColor}33`,
-                            }}
-                            onMouseEnter={(event) =>
-                              handleSegmentHover(company, event)
-                            }
-                            onMouseMove={(event) =>
-                              handleSegmentHover(company, event)
-                            }
-                            onMouseLeave={() => setTooltip(null)}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleSegmentInteraction(company, event);
-                            }}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="mt-1 flex w-full shrink-0 gap-px overflow-hidden">
-              {histogram.bins.map((bin) => (
-                <div
-                  key={`${bin.id}-label`}
-                  className="min-w-0 flex-1 basis-0 truncate text-center text-[9px] leading-tight text-grey"
-                  title={bin.label}
-                >
-                  {formatCompactBinLabel(bin.label)}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
-      <div className="flex shrink-0 flex-wrap items-center gap-3 text-xs text-grey">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 px-1">
         <div className="flex items-center gap-2">
           <span
-            className="inline-block h-3 w-3 rounded-sm"
-            style={{
-              background: createSymmetricRangeGradient(
-                changeRange.min,
-                changeRange.max,
-                changeRange.min,
-              ),
-            }}
+            className="inline-block h-3 w-3 shrink-0 rounded-sm"
+            style={{ backgroundColor: COLORS.blue3 }}
           />
-          <span>
+          <span className="text-xs text-white/40">
             {t(
               "companiesOverviewPage.visualizations.emissionsChange.legend.reduction",
             )}
@@ -301,33 +323,10 @@ export function EmissionsChangeBarChart({
         </div>
         <div className="flex items-center gap-2">
           <span
-            className="inline-block h-3 w-3 rounded-sm"
-            style={{
-              background: createSymmetricRangeGradient(
-                changeRange.min,
-                changeRange.max,
-                0,
-              ),
-            }}
+            className="inline-block h-3 w-3 shrink-0 rounded-sm"
+            style={{ backgroundColor: COLORS.pink3 }}
           />
-          <span>
-            {t(
-              "companiesOverviewPage.visualizations.emissionsChange.legend.neutral",
-            )}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-3 w-3 rounded-sm"
-            style={{
-              background: createSymmetricRangeGradient(
-                changeRange.min,
-                changeRange.max,
-                changeRange.max,
-              ),
-            }}
-          />
-          <span>
+          <span className="text-xs text-white/40">
             {t(
               "companiesOverviewPage.visualizations.emissionsChange.legend.increase",
             )}
@@ -335,40 +334,12 @@ export function EmissionsChangeBarChart({
         </div>
       </div>
 
-      {tooltip && (!isMobile || mobileTooltipOpen) && (
-        <div
-          className="pointer-events-none fixed z-50 rounded-level-1 border border-black-4 bg-black-1 px-3 py-2 text-xs text-white shadow-xl"
-          style={{
-            left: tooltip.position.x + 12,
-            top: tooltip.position.y + 12,
-          }}
-        >
-          <p className="font-medium">{tooltip.company.name}</p>
-          <p className="text-grey">
-            {t(
-              "companiesOverviewPage.visualizations.emissionsChange.tooltip.change",
-              { value: tooltip.company.changePercent.toFixed(1) },
-            )}
-          </p>
-          <p className="text-grey">
-            {t(
-              "companiesOverviewPage.visualizations.emissionsChange.tooltip.emissions",
-              {
-                value: formatEmissionsAbsolute(
-                  tooltip.company.emissions,
-                  currentLanguage,
-                ),
-              },
-            )}
-          </p>
-          {isMobile && (
-            <p className="mt-1 text-white/70">
-              {t(
-                "companiesOverviewPage.visualizations.emissionsChange.tooltip.tapAgain",
-              )}
-            </p>
+      {isMobile && mobileSelectedCompanyId && (
+        <p className="shrink-0 px-1 text-xs text-white/50">
+          {t(
+            "companiesOverviewPage.visualizations.emissionsChange.tooltip.tapAgain",
           )}
-        </div>
+        </p>
       )}
     </div>
   );
