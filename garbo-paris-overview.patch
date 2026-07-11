@@ -1,7 +1,7 @@
 From 762e66703a57b1876c8452783e8773189e183135 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Sat, 11 Jul 2026 09:56:48 +0000
-Subject: [PATCH] Add lightweight companies Paris overview endpoint
+Subject: [PATCH 1/2] Add lightweight companies Paris overview endpoint
 
 Expose GET /api/companies/paris-overview with precomputed meetsParis
 status and latest-year emissions so the frontend overview chart can load
@@ -438,6 +438,88 @@ index 0000000..e8d2e38
 +    tags: company.tags ?? [],
 +  }
 +}
+-- 
+2.43.0
+
+
+From ae9d303ea268c8f2504fbf21220434581cdef13d Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Sat, 11 Jul 2026 12:34:34 +0000
+Subject: [PATCH 2/2] Harden Paris overview response mapping
+
+Normalize invalid wikidata IDs to null and coerce sector codes to
+strings so response serialization does not fail on edge-case data.
+---
+ .../company-emissions/companyMeetsParis.test.ts | 17 +++++++++++++++++
+ src/lib/company-emissions/companyMeetsParis.ts  | 16 ++++++++++++++--
+ 2 files changed, 31 insertions(+), 2 deletions(-)
+
+diff --git a/src/lib/company-emissions/companyMeetsParis.test.ts b/src/lib/company-emissions/companyMeetsParis.test.ts
+index cff26e0..357c87a 100644
+--- a/src/lib/company-emissions/companyMeetsParis.test.ts
++++ b/src/lib/company-emissions/companyMeetsParis.test.ts
+@@ -52,6 +52,23 @@ describe('calculateCompanyMeetsParis', () => {
+ })
+ 
+ describe('toCompanyParisOverviewItem', () => {
++  it('normalizes invalid wikidata ids to null', () => {
++    const item = toCompanyParisOverviewItem({
++      id: 'company-id',
++      wikidataId: '',
++      name: 'Example AB',
++      reportingPeriods: [
++        {
++          endDate: '2024-12-31',
++          emissions: { calculatedTotalEmissions: 1000 },
++        },
++      ],
++      futureEmissionsTrendSlope: -20,
++    })
++
++    expect(item.wikidataId).toBeNull()
++  })
++
+   it('maps only fields needed for the Paris overview chart', () => {
+     const item = toCompanyParisOverviewItem({
+       id: 'company-id',
+diff --git a/src/lib/company-emissions/companyMeetsParis.ts b/src/lib/company-emissions/companyMeetsParis.ts
+index e8d2e38..d769684 100644
+--- a/src/lib/company-emissions/companyMeetsParis.ts
++++ b/src/lib/company-emissions/companyMeetsParis.ts
+@@ -143,6 +143,15 @@ export interface CompanyParisOverviewItem {
+   tags: string[]
+ }
+ 
++function normalizeWikidataId(
++  wikidataId: string | null | undefined
++): string | null {
++  if (!wikidataId || !/^Q\d+$/.test(wikidataId)) {
++    return null
++  }
++  return wikidataId
++}
++
+ export function toCompanyParisOverviewItem(company: {
+   id: string
+   wikidataId?: string | null
+@@ -174,12 +183,15 @@ export function toCompanyParisOverviewItem(company: {
+ 
+   return {
+     id: company.id,
+-    wikidataId: company.wikidataId ?? null,
++    wikidataId: normalizeWikidataId(company.wikidataId),
+     name: company.name,
+     meetsParis,
+     emissions: emissions != null && emissions > 0 ? emissions : null,
+     emissionsYear,
+-    sectorCode: company.industry?.industryGics?.sectorCode ?? null,
++    sectorCode:
++      company.industry?.industryGics?.sectorCode != null
++        ? String(company.industry.industryGics.sectorCode)
++        : null,
+     tags: company.tags ?? [],
+   }
+ }
 -- 
 2.43.0
 

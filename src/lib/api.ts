@@ -1,6 +1,7 @@
 import createClient from "openapi-fetch";
 import type { paths } from "./api-types";
 import type { CompanyParisOverviewItem } from "@/types/companyParisOverview";
+import { mapCompanyListItemToParisOverview } from "@/types/companyParisOverview";
 import { authMiddleware } from "./auth-middleware";
 
 export const API_BASE_URL = "https://api.unearthdata.ai/api";
@@ -86,14 +87,19 @@ export async function getCompanies() {
 export async function getCompanyParisOverview() {
   try {
     const response = await fetch(apiUrl("/companies/paris-overview"));
-    if (!response.ok) {
-      throw new Error(`Failed to fetch Paris overview: ${response.status}`);
+    if (response.ok) {
+      return (await response.json()) as CompanyParisOverviewItem[];
     }
-    return (await response.json()) as CompanyParisOverviewItem[];
+
+    console.warn(
+      `Paris overview endpoint unavailable (${response.status}), falling back to full company list`,
+    );
   } catch (error) {
-    console.error("Error fetching company Paris overview:", error);
-    return [];
+    console.warn("Paris overview fetch failed, falling back to full company list", error);
   }
+
+  const companies = await getCompanies();
+  return companies.map(mapCompanyListItemToParisOverview);
 }
 
 export async function getCompanyDetails(id: string) {
