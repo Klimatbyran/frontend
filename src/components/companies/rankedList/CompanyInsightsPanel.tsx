@@ -15,10 +15,14 @@ import {
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
 import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
+import { getTopParisEmissionsCompanies } from "@/utils/insights/meetsParisChartData";
+import { DEFAULT_BOOLEAN_DATA_COLORS } from "@/utils/ui/colors";
 import {
   DistributionBox,
   BooleanSummaryBox,
 } from "../../ranked/InsightsPanelParts";
+
+const MEETS_PARIS_KPI_KEY = "meetsParis";
 
 type InsightsPanelSection = "stats" | "top" | "bottom" | "distribution";
 
@@ -141,7 +145,62 @@ function CompanyInsightsPanel({
     <BooleanSummaryBox distributionStats={statistics.distributionStats} />
   );
 
-  const topPanel = !selectedKPI.isBoolean ? (
+  const isMeetsParisKpi =
+    selectedKPI.isBoolean && selectedKPI.key === MEETS_PARIS_KPI_KEY;
+
+  const renderParisEmissionsList = (meetsParis: boolean) => {
+    const { entities, unitScale } = getTopParisEmissionsCompanies(
+      companyData,
+      meetsParis,
+    );
+
+    if (entities.length === 0) {
+      return (
+        <div className="flex h-full items-center justify-center rounded-level-2 bg-black-2 p-8">
+          <p className="text-lg text-white">
+            {t("companies.list.insights.noData.metric", {
+              metric: t(`companies.list.kpis.${kpiKey}.label`),
+            })}
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <InsightsList<CompanyWithKPIs & { rankedEmissions: number }>
+        key={
+          listKey
+            ? `${meetsParis ? "paris-yes" : "paris-no"}-${listKey}`
+            : undefined
+        }
+        title={t(
+          meetsParis
+            ? "companiesOverviewPage.visualizations.meetsParis.topEmittersMeetingGoal"
+            : "companiesOverviewPage.visualizations.meetsParis.topEmittersMissingGoal",
+          {
+            nrOfEntities: entities.length,
+            entityPlural,
+          },
+        )}
+        entities={entities}
+        totalCount={entities.length}
+        dataPointKey="rankedEmissions"
+        unit={unitScale.unit}
+        entityType="companies"
+        nameKey="name"
+        showBars
+        colorItem={() =>
+          meetsParis
+            ? DEFAULT_BOOLEAN_DATA_COLORS.positive
+            : DEFAULT_BOOLEAN_DATA_COLORS.negative
+        }
+      />
+    );
+  };
+
+  const topPanel = isMeetsParisKpi ? (
+    renderParisEmissionsList(true)
+  ) : !selectedKPI.isBoolean ? (
     <InsightsList<CompanyWithKPIs>
       key={listKey ? `top-${listKey}` : undefined}
       title={t(
@@ -166,7 +225,9 @@ function CompanyInsightsPanel({
     booleanSummary
   );
 
-  const bottomPanel = !selectedKPI.isBoolean ? (
+  const bottomPanel = isMeetsParisKpi ? (
+    renderParisEmissionsList(false)
+  ) : !selectedKPI.isBoolean ? (
     <InsightsList<CompanyWithKPIs>
       key={listKey ? `bottom-${listKey}` : undefined}
       title={t("rankedInsights.titleWorst", {

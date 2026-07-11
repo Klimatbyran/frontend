@@ -338,6 +338,8 @@
         "otherSegmentCount_plural": "{{count}} företag",
         "otherSegmentAria": "Övriga, {{count}} företag",
         "otherSegmentAria_plural": "Övriga, {{count}} företag",
+        "topEmittersMeetingGoal": "Största utsläpp som klarar Paris ({{nrOfEntities}} {{entityPlural}})",
+        "topEmittersMissingGoal": "Största utsläpp som missar Paris ({{nrOfEntities}} {{entityPlural}})",
         "description": "Totala utsläpp från senaste rapporterade år, staplade per företag och grupperade efter om företaget är på väg att klara Parisavtalet.",
         "learnMore": "Läs mer"
       },
