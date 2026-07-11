@@ -328,7 +328,21 @@
         "title": "Emissions Change from Base Year",
         "description": "Only companies with a defined base year and comparable follow-up emissions data are ranked.",
         "noComparableData": "No companies in this sector with comparable emissions change data.",
-        "unknown": "Unknown"
+        "unknown": "Unknown",
+        "binSummary": "{{range}}: {{count}} companies, {{emissions}} tCO2e total",
+        "companiesCount": "{{count}} companies",
+        "segmentHint": "Each company is a stacked segment within the bar. Hover or tap a segment for details.",
+        "legend": {
+          "reduction": "Reduction",
+          "neutral": "Near zero",
+          "increase": "Increase",
+          "companyDivider": "Dark lines separate companies within each bar"
+        },
+        "tooltip": {
+          "change": "Change from base year: {{value}}%",
+          "emissions": "Latest reported emissions: {{value}} tCO2e",
+          "tapAgain": "Tap again to open company"
+        }
       },
       "meetsParis": {
         "legend": {
