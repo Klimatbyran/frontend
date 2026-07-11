@@ -75,15 +75,18 @@ export function sumSeriesAtYear(
 function collectYears(series: NationEmissionSeries): number[] {
   const years = new Set<number>();
   (
-    ["territorialFossil", "productionBased", "biogenic", "consumptionAbroad"] as const
-  ).forEach(
-    (layer) => {
-      Object.keys(series[layer]).forEach((year) => {
-        const parsed = Number(year);
-        if (!Number.isNaN(parsed)) years.add(parsed);
-      });
-    },
-  );
+    [
+      "territorialFossil",
+      "productionBased",
+      "biogenic",
+      "consumptionAbroad",
+    ] as const
+  ).forEach((layer) => {
+    Object.keys(series[layer]).forEach((year) => {
+      const parsed = Number(year);
+      if (!Number.isNaN(parsed)) years.add(parsed);
+    });
+  });
   return [...years].sort((a, b) => a - b);
 }
 
