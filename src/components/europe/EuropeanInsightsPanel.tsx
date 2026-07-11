@@ -134,7 +134,7 @@ function EuropeanInsightsPanel({
         selectedKPI.higherIsBetter
           ? "rankedInsights.titleTop"
           : "rankedInsights.titleBest",
-        { entityPlural },
+        { nrOfEntities: topCountries.length, entityPlural },
       )}
       entities={topCountries}
       totalCount={countryData.length}
@@ -152,7 +152,10 @@ function EuropeanInsightsPanel({
 
   const bottomPanel = !selectedKPI.isBoolean ? (
     <InsightsList<EuropeanCountry>
-      title={t("rankedInsights.titleWorst", { entityPlural })}
+      title={t("rankedInsights.titleWorst", {
+        nrOfEntities: bottomCountries.length,
+        entityPlural,
+      })}
       entities={bottomCountries}
       totalCount={countryData.length}
       isBottomRanking
