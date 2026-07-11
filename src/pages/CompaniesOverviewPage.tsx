@@ -16,12 +16,20 @@ import {
 import RankedList from "@/components/ranked/RankedList";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
-import { IndustryFilter } from "@/components/companies/rankedList/IndustryFilter";
-import { CountryFilter } from "@/components/companies/rankedList/CountryFilter";
 import {
+  FilterPopover,
+  type FilterGroup,
+} from "@/components/explore/FilterPopover";
+import { FilterBadges } from "@/components/companies/list/FilterBadges";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import {
+  buildCountryActiveFilters,
+  buildCountryFilterGroup,
   companyMatchesCountries,
   getAvailableCountryOptions,
   parseCountriesFromURL,
+  toggleCountrySelection,
+  useCompanyCountryNames,
 } from "@/hooks/companies/companyCountryFilterUtils";
 import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
 import {
@@ -43,6 +51,9 @@ export function CompaniesOverviewPage() {
   const { isMobile } = useScreenSize();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
+  const sectorNames = useSectorNames();
+  const countryNames = useCompanyCountryNames();
+  const [filterOpen, setFilterOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -82,8 +93,7 @@ export function CompaniesOverviewPage() {
     if (sectorParam && availableSectors.includes(sectorParam)) {
       return sectorParam;
     }
-    // Default to first available sector if none selected
-    return availableSectors.length > 0 ? availableSectors[0] : null;
+    return null;
   }, [location.search, availableSectors]);
 
   const setSectorInURL = useCallback(
@@ -137,36 +147,24 @@ export function CompaniesOverviewPage() {
   const selectedSector = useMemo(() => getSectorFromURL(), [getSectorFromURL]);
   const viewMode = getViewModeFromURL();
 
-  // Ensure a sector is written to the URL once sectors are known
-  useEffect(() => {
-    if (availableSectors.length === 0) return;
-
-    const params = new URLSearchParams(location.search);
-    const sectorParam = params.get("sector");
-
-    if (sectorParam && availableSectors.includes(sectorParam)) {
-      return;
-    }
-
-    setSectorInURL(availableSectors[0]);
-  }, [availableSectors, location.search, setSectorInURL]);
-
   useEffect(() => {
     setSelectedKPI(getKPIFromURL());
   }, [getKPIFromURL]);
 
   // Filter and enrich companies with KPI values
   const companiesWithKPIs: CompanyWithKPIs[] = useMemo(() => {
-    if (!companies || !selectedSector) return [];
+    if (!companies) return [];
 
     const filtered = companies.filter((company) => {
       if (!companyMatchesCountries(company, selectedCountries)) {
         return false;
       }
 
-      const sectorCode = company.industry?.industryGics?.sectorCode;
-      if (sectorCode !== selectedSector) {
-        return false;
+      if (selectedSector) {
+        const sectorCode = company.industry?.industryGics?.sectorCode;
+        if (sectorCode !== selectedSector) {
+          return false;
+        }
       }
 
       if (
@@ -183,12 +181,95 @@ export function CompaniesOverviewPage() {
   }, [companies, selectedCountries, selectedSector, selectedKPI.key]);
 
   const handleSectorChange = (sector: string) => {
+    if (sector === "all") {
+      setSectorInURL(null);
+      return;
+    }
     setSectorInURL(sector);
   };
 
   const handleCountriesChange = (countries: CompanyCountryTagSlug[]) => {
     setCountriesInURL(countries);
   };
+
+  const filterGroups: FilterGroup[] = useMemo(() => {
+    const groups: FilterGroup[] = [];
+
+    if (availableSectors.length > 0) {
+      groups.push({
+        heading: t("companiesOverviewPage.filterByIndustry"),
+        options: [
+          {
+            value: "all",
+            label: t("explorePage.companies.allSectors"),
+          },
+          ...availableSectors.map((code) => ({
+            value: code,
+            label: sectorNames[code as keyof typeof sectorNames] || code,
+          })),
+        ],
+        selectedValues: selectedSector ? [selectedSector] : ["all"],
+        onSelect: handleSectorChange,
+        selectMultiple: false,
+      });
+    }
+
+    const countryGroup = buildCountryFilterGroup({
+      t,
+      countryNames,
+      availableCountries,
+      selectedCountries,
+      onSelect: (value) =>
+        handleCountriesChange(toggleCountrySelection(selectedCountries, value)),
+    });
+
+    if (countryGroup) {
+      groups.push(countryGroup);
+    }
+
+    return groups;
+  }, [
+    availableSectors,
+    selectedSector,
+    availableCountries,
+    selectedCountries,
+    sectorNames,
+    countryNames,
+    t,
+  ]);
+
+  const activeFilters = useMemo(() => {
+    const filters = [];
+
+    if (selectedSector) {
+      filters.push({
+        type: "filter" as const,
+        label:
+          sectorNames[selectedSector as keyof typeof sectorNames] ||
+          selectedSector,
+        onRemove: () => setSectorInURL(null),
+      });
+    }
+
+    filters.push(
+      ...buildCountryActiveFilters({
+        countryNames,
+        selectedCountries,
+        onRemove: (country) =>
+          handleCountriesChange(
+            selectedCountries.filter((value) => value !== country),
+          ),
+      }),
+    );
+
+    return filters;
+  }, [
+    selectedSector,
+    selectedCountries,
+    sectorNames,
+    countryNames,
+    setSectorInURL,
+  ]);
 
   const handleCompanyClick = (company: CompanyWithKPIs) => {
     navigate(getCompanyDetailPath(company));
@@ -308,20 +389,19 @@ export function CompaniesOverviewPage() {
         iconMap={COMPANY_KPI_ICONS}
         translationPrefix="companies.list"
         label={t("companies.list.dataSelector.label")}
+        actions={
+          <>
+            <FilterPopover
+              filterOpen={filterOpen}
+              setFilterOpen={setFilterOpen}
+              groups={filterGroups}
+            />
+            {activeFilters.length > 0 && (
+              <FilterBadges filters={activeFilters} view="graphs" />
+            )}
+          </>
+        }
       />
-
-      <div className="mb-4 space-y-4">
-        <IndustryFilter
-          availableSectors={availableSectors}
-          selectedSector={selectedSector}
-          onSectorChange={handleSectorChange}
-        />
-        <CountryFilter
-          availableCountries={availableCountries}
-          selectedCountries={selectedCountries}
-          onCountriesChange={handleCountriesChange}
-        />
-      </div>
 
       <div className="space-y-6">
         {/* Row 1: graph/list toggle | stats */}
@@ -348,13 +428,13 @@ export function CompaniesOverviewPage() {
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
               section="top"
-              listKey={selectedSector ?? undefined}
+              listKey={selectedSector ?? "all"}
             />
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}
               selectedKPI={selectedKPI}
               section="bottom"
-              listKey={selectedSector ?? undefined}
+              listKey={selectedSector ?? "all"}
             />
             <CompanyInsightsPanel
               companyData={companiesWithKPIs}
