@@ -1549,6 +1549,7 @@
         "description": "Top {{count}} facilities and other point sources in {{year}}, ranked by emissions.",
         "source": "Source: Climate TRACE",
         "listLabel": "Emissions",
+        "legendTitle": "Sectors",
         "noMapData": "Map data is unavailable for this country.",
         "empty": "No point source data available for this country."
       },

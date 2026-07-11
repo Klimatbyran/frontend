@@ -88,24 +88,63 @@ function EmissionSourceTooltip({
   const sectorInfo = getSectorInfo(source.sector);
 
   return (
-    <div className="absolute top-4 left-4 z-[500] max-w-sm bg-black/40 backdrop-blur-sm p-4 rounded-2xl pointer-events-none">
-      <p className="text-white font-medium text-xl">{source.name}</p>
-      <div className="space-y-1 mt-2">
-        <p className="text-white/70">{sectorInfo.translatedName}</p>
-        <p className="text-orange-2">
-          {formatEmissionsAbsoluteCompact(
-            Math.round(source.emissionsQuantity),
-            currentLanguage,
-          )}{" "}
-          tCO₂e
-        </p>
-        <p className="text-white/50 text-sm">
-          {t("rankedList.rank", {
-            rank: String(source.rank),
-            total: String(totalSources),
-          })}
+    <div className="pointer-events-none absolute top-4 left-4 z-[500] max-w-[15rem] rounded-2xl border border-white/10 bg-black-1/80 p-4 shadow-xl ring-1 ring-white/5 backdrop-blur-md sm:max-w-sm">
+      <div className="flex items-center gap-2">
+        <span
+          className="h-2.5 w-2.5 shrink-0 rounded-full"
+          style={{ backgroundColor: sectorInfo.color }}
+        />
+        <p className="truncate text-xs font-medium uppercase tracking-wide text-white/60">
+          {sectorInfo.translatedName}
         </p>
       </div>
+      <p className="mt-1.5 text-lg font-semibold leading-tight text-white">
+        {source.name}
+      </p>
+      <p className="mt-2 text-2xl font-bold" style={{ color: sectorInfo.color }}>
+        {formatEmissionsAbsoluteCompact(
+          Math.round(source.emissionsQuantity),
+          currentLanguage,
+        )}{" "}
+        <span className="text-sm font-medium text-white/50">tCO₂e</span>
+      </p>
+      <p className="mt-1 text-xs text-white/50">
+        {t("rankedList.rank", {
+          rank: String(source.rank),
+          total: String(totalSources),
+        })}
+      </p>
+    </div>
+  );
+}
+
+function SectorLegend({
+  sectors,
+}: {
+  sectors: { name: string; color: string }[];
+}) {
+  const { t } = useTranslation();
+
+  if (sectors.length === 0) return null;
+
+  return (
+    <div className="pointer-events-none absolute top-4 right-4 z-[500] max-w-[55%] rounded-2xl border border-white/10 bg-black-1/70 p-3 shadow-lg ring-1 ring-white/5 backdrop-blur-md">
+      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-white/50">
+        {t("europe.detailPage.emissionSources.legendTitle")}
+      </p>
+      <ul className="flex flex-col gap-1.5">
+        {sectors.map((sector) => (
+          <li key={sector.name} className="flex items-center gap-2">
+            <span
+              className="h-2 w-2 shrink-0 rounded-full"
+              style={{ backgroundColor: sector.color }}
+            />
+            <span className="truncate text-xs text-white/80">
+              {sector.name}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -154,6 +193,18 @@ function EmissionSourcesMapContent({
     () => Math.max(...sources.map((source) => source.emissionsQuantity), 0),
     [sources],
   );
+
+  const legendSectors = useMemo(() => {
+    const seen = new Set<string>();
+    const result: { name: string; color: string }[] = [];
+    for (const source of sources) {
+      if (seen.has(source.sector)) continue;
+      seen.add(source.sector);
+      const info = getSectorInfo(source.sector);
+      result.push({ name: info.translatedName, color: info.color });
+    }
+    return result.sort((a, b) => a.name.localeCompare(b.name));
+  }, [sources, getSectorInfo]);
 
   const {
     mapRef,
@@ -233,11 +284,12 @@ function EmissionSourcesMapContent({
         )}
         {sources.map((source) => {
           const sectorInfo = getSectorInfo(source.sector);
-          const radius = getEmissionSourceMarkerRadius(
+          const baseRadius = getEmissionSourceMarkerRadius(
             source.emissionsQuantity,
             maxEmissions,
           );
           const isHovered = hoveredSourceId === source.id;
+          const radius = isHovered ? baseRadius + 3 : baseRadius;
 
           return (
             <CircleMarker
@@ -245,13 +297,17 @@ function EmissionSourcesMapContent({
               center={[source.centroid.latitude, source.centroid.longitude]}
               radius={radius}
               pathOptions={{
-                color: sectorInfo.color,
+                color: isHovered ? "var(--white)" : sectorInfo.color,
                 fillColor: sectorInfo.color,
-                fillOpacity: isHovered ? 1 : 0.85,
-                weight: isHovered ? 2 : 1,
+                fillOpacity: isHovered ? 0.95 : 0.75,
+                opacity: isHovered ? 1 : 0.9,
+                weight: isHovered ? 2.5 : 1,
               }}
               eventHandlers={{
-                mouseover: () => onHoverSource(source.id),
+                mouseover: (event) => {
+                  (event.target as L.Path).bringToFront?.();
+                  onHoverSource(source.id);
+                },
                 mouseout: () => onHoverSource(null),
               }}
             />
@@ -263,12 +319,14 @@ function EmissionSourcesMapContent({
         />
       </MapContainer>
 
-      {hoveredSource && (
+      {hoveredSource ? (
         <EmissionSourceTooltip
           source={hoveredSource}
           totalSources={sources.length}
           getSectorInfo={getSectorInfo}
         />
+      ) : (
+        <SectorLegend sectors={legendSectors} />
       )}
 
       <MapZoomControls
@@ -351,7 +409,7 @@ export function CountryEmissionSourcesMap({
   const mapPanel = (
     <div
       className={cn(
-        "relative min-w-0 overflow-hidden rounded-xl bg-black-2",
+        "relative min-w-0 overflow-hidden rounded-xl bg-black-2 ring-1 ring-white/10 shadow-2xl shadow-black/40",
         EMISSION_SOURCES_MAP_CLASS,
       )}
     >
