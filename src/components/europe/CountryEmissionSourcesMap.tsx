@@ -205,7 +205,10 @@ function EmissionSourcesMapContent({
             data={regionsGeoData}
             style={() =>
               onRegionSelect
-                ? { ...REGION_OUTLINE_STYLE, className: INTERACTIVE_REGION_CLASS }
+                ? {
+                    ...REGION_OUTLINE_STYLE,
+                    className: INTERACTIVE_REGION_CLASS,
+                  }
                 : REGION_OUTLINE_STYLE
             }
             onEachFeature={(feature, layer) => {
