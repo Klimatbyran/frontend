@@ -1,4 +1,5 @@
 import { useMemo, useState, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -56,7 +57,7 @@ export function MeetsParisBarChart({
   onCompanyClick,
 }: MeetsParisBarChartProps) {
   const { t } = useTranslation();
-  const { reduceMotion } = useChartMotion();
+  const { reduceMotion, barDuration, fadeDuration, ease } = useChartMotion();
   const { isMobile } = useScreenSize();
   const [activeCompanyId, setActiveCompanyId] = useState<string | null>(null);
   const [hoveredCompanyId, setHoveredCompanyId] = useState<string | null>(null);
@@ -148,6 +149,16 @@ export function MeetsParisBarChart({
   const yAxisWidth = isMobile ? 52 : Y_AXIS_WIDTH;
   const chartMinHeight = isMobile ? 220 : CHART_MIN_HEIGHT;
   const outerMinHeight = isMobile ? 280 : OUTER_MIN_HEIGHT;
+  const barTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: barDuration, ease };
+  const segmentTransition = reduceMotion
+    ? { duration: 0 }
+    : {
+        layout: { duration: barDuration, ease },
+        opacity: { duration: fadeDuration },
+        default: { duration: barDuration, ease },
+      };
 
   const handleSegmentClick = useCallback(
     (segment: ChartSegment) => {
@@ -229,13 +240,14 @@ export function MeetsParisBarChart({
                 const isBottomTick = tick === 0;
 
                 return (
-                  <span
+                  <motion.span
                     key={tick}
                     className={cn(
                       "absolute whitespace-nowrap text-white/45",
                       isMobile ? "left-1 text-[10px]" : "left-4 text-[11px]",
                     )}
-                    style={
+                    initial={false}
+                    animate={
                       isTopTick
                         ? { top: 0 }
                         : isBottomTick
@@ -247,12 +259,15 @@ export function MeetsParisBarChart({
                                     100
                                   : 0
                               }%`,
-                              transform: "translateY(50%)",
                             }
                     }
+                    transition={barTransition}
+                    style={{
+                      transform: isTopTick || isBottomTick ? undefined : "translateY(50%)",
+                    }}
                   >
                     {formatAxisTick(tick)}
-                  </span>
+                  </motion.span>
                 );
               })}
           </div>
@@ -263,7 +278,7 @@ export function MeetsParisBarChart({
               isMobile ? "gap-3 px-1" : "gap-[10%] px-2",
             )}
           >
-            {groups.map((group) => {
+            {groups.map((group, groupIndex) => {
               const barHeightPercent =
                 maxBarTotal > 0 ? (group.total / maxBarTotal) * 100 : 0;
 
@@ -280,55 +295,63 @@ export function MeetsParisBarChart({
                       : { width: BAR_MAX_WIDTH, maxWidth: "48%" }
                   }
                 >
-                  <div
+                  <motion.div
                     className="flex w-full flex-col gap-px overflow-hidden rounded-md"
-                    style={{
-                      height: `${barHeightPercent}%`,
-                      backgroundColor: COLORS.black2,
-                      transition: reduceMotion
-                        ? undefined
-                        : "height 0.5s ease-out",
+                    initial={false}
+                    animate={{ height: `${barHeightPercent}%` }}
+                    transition={{
+                      ...barTransition,
+                      delay: reduceMotion ? 0 : groupIndex * 0.05,
                     }}
+                    style={{ backgroundColor: COLORS.black2 }}
                   >
-                    {group.segments.map((segment) => {
-                      const isHighlighted = highlightedCompanyId === segment.id;
-                      const isDimmed =
-                        highlightedCompanyId != null &&
-                        highlightedCompanyId !== segment.id;
+                    <AnimatePresence initial={false} mode="popLayout">
+                      {group.segments.map((segment) => {
+                        const isHighlighted = highlightedCompanyId === segment.id;
+                        const isDimmed =
+                          highlightedCompanyId != null &&
+                          highlightedCompanyId !== segment.id;
 
-                      return (
-                        <button
-                          key={segment.id}
-                          type="button"
-                          className="w-full min-h-[1px] border-0 p-0 cursor-pointer"
-                          style={{
-                            flex: `${segment.emissions} 1 0`,
-                            backgroundColor: group.color,
-                            borderRadius: SEGMENT_RADIUS,
-                            opacity: isDimmed ? 0.45 : 1,
-                            boxShadow: isHighlighted
-                              ? "inset 0 0 0 2px rgba(255,255,255,0.9)"
-                              : undefined,
-                          }}
-                          aria-label={
-                            segment.entry?.company.name ??
-                            t(
-                              "companiesOverviewPage.visualizations.meetsParis.otherSegmentAria",
-                              { count: segment.aggregateCount ?? 0 },
-                            )
-                          }
-                          onClick={() => handleSegmentClick(segment)}
-                          onMouseEnter={(event) =>
-                            handleSegmentPointerEnter(event, segment)
-                          }
-                          onMouseMove={(event) =>
-                            handleSegmentPointerMove(event, segment)
-                          }
-                          onMouseLeave={handleSegmentPointerLeave}
-                        />
-                      );
-                    })}
-                  </div>
+                        return (
+                          <motion.button
+                            key={segment.id}
+                            type="button"
+                            layout={!reduceMotion}
+                            initial={reduceMotion ? false : { opacity: 0 }}
+                            animate={{ opacity: isDimmed ? 0.45 : 1 }}
+                            exit={
+                              reduceMotion ? undefined : { opacity: 0 }
+                            }
+                            transition={segmentTransition}
+                            className="w-full min-h-[1px] border-0 p-0 cursor-pointer"
+                            style={{
+                              flex: `${segment.emissions} 1 0`,
+                              backgroundColor: group.color,
+                              borderRadius: SEGMENT_RADIUS,
+                              boxShadow: isHighlighted
+                                ? "inset 0 0 0 2px rgba(255,255,255,0.9)"
+                                : undefined,
+                            }}
+                            aria-label={
+                              segment.entry?.company.name ??
+                              t(
+                                "companiesOverviewPage.visualizations.meetsParis.otherSegmentAria",
+                                { count: segment.aggregateCount ?? 0 },
+                              )
+                            }
+                            onClick={() => handleSegmentClick(segment)}
+                            onMouseEnter={(event) =>
+                              handleSegmentPointerEnter(event, segment)
+                            }
+                            onMouseMove={(event) =>
+                              handleSegmentPointerMove(event, segment)
+                            }
+                            onMouseLeave={handleSegmentPointerLeave}
+                          />
+                        );
+                      })}
+                    </AnimatePresence>
+                  </motion.div>
                 </div>
               );
             })}
