@@ -40,7 +40,12 @@ describe("nation routing", () => {
 describe("getEntityDetailPath", () => {
   it("routes Sweden to the localized nation detail page", () => {
     expect(
-      getEntityDetailPath("europe", { id: SWEDEN_ISO3, name: "Sweden" }, undefined, "sv"),
+      getEntityDetailPath(
+        "europe",
+        { id: SWEDEN_ISO3, name: "Sweden" },
+        undefined,
+        "sv",
+      ),
     ).toBe("/sverige");
     expect(getEntityDetailPath("europe", "swe", undefined, "en")).toBe(
       "/sweden",
@@ -48,9 +53,9 @@ describe("getEntityDetailPath", () => {
   });
 
   it("defaults Sweden nation routing to Swedish slug", () => {
-    expect(getEntityDetailPath("europe", { id: SWEDEN_ISO3, name: "Sweden" })).toBe(
-      "/sverige",
-    );
+    expect(
+      getEntityDetailPath("europe", { id: SWEDEN_ISO3, name: "Sweden" }),
+    ).toBe("/sverige");
   });
 
   it("routes other European countries by ISO3 code", () => {

@@ -9,7 +9,11 @@ import { CountryEmissionSourcesMap } from "@/components/europe/CountryEmissionSo
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import { useEuropeanCountryPageData } from "@/hooks/europe/useEuropeanCountryPageData";
 import { useLanguage } from "@/components/LanguageProvider";
-import { localizedPath, SWEDEN_ISO3, getNationDetailPath } from "@/utils/routing";
+import {
+  localizedPath,
+  SWEDEN_ISO3,
+  getNationDetailPath,
+} from "@/utils/routing";
 
 export function EuropeanCountryDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -36,7 +40,15 @@ export function EuropeanCountryDetailPage() {
   } = pageData;
 
   if (id?.toUpperCase() === SWEDEN_ISO3) {
-    return <Navigate to={localizedPath(currentLanguage, getNationDetailPath(currentLanguage))} replace />;
+    return (
+      <Navigate
+        to={localizedPath(
+          currentLanguage,
+          getNationDetailPath(currentLanguage),
+        )}
+        replace
+      />
+    );
   }
 
   if (loading) return <PageLoading />;

@@ -1,4 +1,8 @@
-import { localizedPath, resolveNavPath, isNationDetailPath } from "@/utils/routing";
+import {
+  localizedPath,
+  resolveNavPath,
+  isNationDetailPath,
+} from "@/utils/routing";
 import { isNavSubGroup, NavLink, NavSubItem } from "./types";
 
 function stripQuery(path: string): string {

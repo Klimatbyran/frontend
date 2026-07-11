@@ -87,7 +87,11 @@ function NationDetailContent({
 export function NationDetailRoute() {
   const { currentLanguage } = useLanguage();
   const location = useLocation();
-  const slug = location.pathname.split("/").filter(Boolean).pop()?.toLowerCase();
+  const slug = location.pathname
+    .split("/")
+    .filter(Boolean)
+    .pop()
+    ?.toLowerCase();
   const expectedSlug = getNationUrlSlug(currentLanguage);
 
   if (
@@ -96,7 +100,10 @@ export function NationDetailRoute() {
   ) {
     return (
       <Navigate
-        to={localizedPath(currentLanguage, getNationDetailPath(currentLanguage))}
+        to={localizedPath(
+          currentLanguage,
+          getNationDetailPath(currentLanguage),
+        )}
         replace
       />
     );

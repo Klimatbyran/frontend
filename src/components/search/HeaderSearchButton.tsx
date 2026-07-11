@@ -54,7 +54,9 @@ export const HeaderSearchButton = ({
         navigate(`/regions/${response.id}`);
         break;
       case "nations":
-        navigate(localizedPath(currentLanguage, getNationDetailPath(currentLanguage)));
+        navigate(
+          localizedPath(currentLanguage, getNationDetailPath(currentLanguage)),
+        );
         break;
       case "blogPosts":
         navigate(`/insights/${response.id}`);
