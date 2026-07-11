@@ -70,16 +70,17 @@ export function MeetsParisEmissionsPieChart({
   const totalScaled = totalEmissions / unitScale.divisor;
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="flex w-full justify-center">
+    <div className="flex h-full min-h-0 flex-col gap-3">
+      <div className="flex shrink-0 justify-center">
         <SectorPieChart
           data={pieData}
-          desktopScale
+          maxOuterRadius={88}
+          chartMinHeight={150}
           tooltipContent={MeetsParisPieTooltip}
         />
       </div>
 
-      <div className="grid w-full grid-cols-1 gap-2">
+      <div className="flex min-h-0 flex-1 flex-col justify-center gap-1">
         {pieData.map((entry) => {
           const percentage =
             entry.value / totalScaled < 0.001

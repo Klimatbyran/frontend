@@ -335,10 +335,10 @@
         "no": "No",
         "unknown": "Unknown",
         "units": {
-          "Mt": "Mt",
-          "Gt": "Gt",
-          "kt": "kt",
-          "t": "t"
+          "Mt": "million tonnes CO₂e",
+          "Gt": "billion tonnes CO₂e",
+          "kt": "thousand tonnes CO₂e",
+          "t": "tonnes CO₂e"
         },
         "emissionsPieTitle": "Emissions by Paris status",
         "emissionsPieSubtitle": "Share of total reported emissions from companies that meet, miss, or have unknown Paris alignment.",

@@ -33,7 +33,7 @@ function MeetsParisPieTooltip({ active, payload }: MeetsParisPieTooltipProps) {
   const amount =
     data?.rawEmissions != null && data.unitScale
       ? formatParisEmissionsAmount(data.rawEmissions, data.unitScale, t)
-      : `${safeValue.toFixed(1)} Mt`;
+      : `${safeValue.toFixed(1)} million tonnes CO₂e`;
 
   return (
     <div className="pointer-events-none rounded-lg border border-black-1 bg-black-2 p-4 text-white shadow-xl">

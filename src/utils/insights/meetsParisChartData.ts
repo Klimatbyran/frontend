@@ -99,7 +99,6 @@ export function getParisEmissionsBreakdown(companies: CompanyWithKPIs[]): {
   const unitScale = getBestUnit(
     Math.max(maxEmissions, totalEmissions),
     "tonnes",
-    { maxDivisor: 1_000_000 },
   );
 
   return { segments, unitScale, totalEmissions };

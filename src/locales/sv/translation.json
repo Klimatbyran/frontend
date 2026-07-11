@@ -335,10 +335,10 @@
         "no": "Nej",
         "unknown": "Okänt",
         "units": {
-          "Mt": "mton",
-          "Gt": "gton",
-          "kt": "kton",
-          "t": "ton"
+          "Mt": "miljonton CO₂e",
+          "Gt": "gigaton CO₂e",
+          "kt": "kiloton CO₂e",
+          "t": "ton CO₂e"
         },
         "emissionsPieTitle": "Utsläpp per Parisstatus",
         "emissionsPieSubtitle": "Andel av totala rapporterade utsläpp från företag som klarar, missar eller har okänd Parisstatus.",

@@ -27,6 +27,8 @@ interface SectorPieChartProps {
   customActionLabel?: string;
   desktopScale?: boolean;
   animationKey?: string;
+  maxOuterRadius?: number;
+  chartMinHeight?: number;
   tooltipContent?: React.ComponentType<{
     active?: boolean;
     payload?: Array<{
@@ -51,12 +53,14 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   customActionLabel,
   desktopScale = false,
   animationKey,
+  maxOuterRadius,
+  chartMinHeight = 200,
   tooltipContent: TooltipContentComponent,
 }) => {
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { size, containerRef } = useResponsiveChartSize();
+  const { size, containerRef } = useResponsiveChartSize(false, maxOuterRadius);
 
   const pieData: PieChartItem[] = data
     ? data
@@ -137,7 +141,8 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   return (
     <div
       ref={containerRef}
-      className="w-full min-h-[200px] flex items-center justify-center"
+      className="flex w-full items-center justify-center"
+      style={{ minHeight: chartMinHeight, maxHeight: chartMinHeight }}
     >
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>
