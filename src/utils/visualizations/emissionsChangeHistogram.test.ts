@@ -79,9 +79,7 @@ describe("emissionsChangeHistogram", () => {
     const allCompanyIds = histogram?.bins.flatMap((bin) =>
       bin.companies.map((company) => company.id),
     );
-    expect(allCompanyIds).toEqual(
-      expect.arrayContaining(["1", "2", "3"]),
-    );
+    expect(allCompanyIds).toEqual(expect.arrayContaining(["1", "2", "3"]));
   });
 
   it("sizes company segments by their latest reported emissions", () => {

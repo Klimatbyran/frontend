@@ -90,9 +90,7 @@ export function assignValueToBin(
   return bins[bins.length - 1];
 }
 
-export function buildEmissionsChangeHistogram(
-  companies: CompanyWithKPIs[],
-): {
+export function buildEmissionsChangeHistogram(companies: CompanyWithKPIs[]): {
   bins: EmissionsChangeHistogramBin[];
   binWidth: number;
   maxTotalEmissions: number;

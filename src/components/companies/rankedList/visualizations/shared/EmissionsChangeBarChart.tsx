@@ -112,10 +112,7 @@ export function EmissionsChangeBarChart({
       event: React.MouseEvent<HTMLDivElement>,
     ) => {
       if (isMobile) {
-        if (
-          mobileTooltipOpen &&
-          mobileSelectedCompanyId === company.id
-        ) {
+        if (mobileTooltipOpen && mobileSelectedCompanyId === company.id) {
           const sourceCompany = companyById.get(company.id);
           if (sourceCompany) {
             onCompanyClick?.(sourceCompany);
@@ -182,9 +179,7 @@ export function EmissionsChangeBarChart({
     >
       <div className="flex items-center justify-between gap-3 text-xs text-grey">
         <span>
-          {t(
-            "companiesOverviewPage.visualizations.emissionsChange.yAxisLabel",
-          )}
+          {t("companiesOverviewPage.visualizations.emissionsChange.yAxisLabel")}
         </span>
         <span>
           {t(
