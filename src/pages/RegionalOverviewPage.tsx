@@ -102,10 +102,7 @@ export function RegionalOverviewPage() {
 
   if (regionsLoading) {
     return (
-      <OverviewPageSkeleton
-        variant="regions"
-        chipCount={regionalKPIs.length}
-      />
+      <OverviewPageSkeleton variant="regions" chipCount={regionalKPIs.length} />
     );
   }
 
