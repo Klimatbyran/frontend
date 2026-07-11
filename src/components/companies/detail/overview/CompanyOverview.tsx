@@ -125,17 +125,6 @@ export function CompanyOverview({
           </div>
         )}
         <CompanyDescription description={description} />
-        <div className="flex flex-row items-center gap-2 my-4">
-          <Text
-            variant="body"
-            className="text-grey text-sm md:text-base lg:text-lg"
-          >
-            {t("companies.overview.sector")}:
-          </Text>
-          <Text variant="body" className="text-sm md:text-base lg:text-lg">
-            {sectorName}
-          </Text>
-        </div>
       </div>
 
       <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">
@@ -223,6 +212,7 @@ export function CompanyOverview({
       <OverviewStatistics
         selectedPeriod={selectedPeriod}
         currentLanguage={currentLanguage}
+        sectorName={sectorName}
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}
