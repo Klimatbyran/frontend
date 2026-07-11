@@ -49,9 +49,7 @@ export const SourcesContent = () => {
             {group.sources.map((key) => (
               <LinkButton
                 key={key}
-                title={t(
-                  `methodsPage.territorial.sources.links.${key}.title`,
-                )}
+                title={t(`methodsPage.territorial.sources.links.${key}.title`)}
                 text={t(`methodsPage.territorial.sources.links.${key}.text`)}
                 link={t(`methodsPage.territorial.sources.links.${key}.link`)}
               />
