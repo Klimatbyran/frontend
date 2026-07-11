@@ -33,8 +33,8 @@ export function EmissionsChangeVisualization({
   }
 
   return (
-    <div className="w-full h-full flex flex-col gap-3">
-      <div className="relative flex-1 bg-black-2 rounded-level-2 p-4 overflow-hidden">
+    <div className="flex h-full min-h-0 w-full flex-col">
+      <div className="relative flex h-full min-h-0 flex-1 overflow-hidden rounded-level-2 bg-black-2 p-4">
         <EmissionsChangeBarChart
           companies={companies}
           onCompanyClick={onCompanyClick}

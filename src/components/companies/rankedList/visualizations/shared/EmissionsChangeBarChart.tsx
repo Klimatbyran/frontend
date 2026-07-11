@@ -59,6 +59,11 @@ function getBinColor(
   return createSymmetricRangeGradient(minChange, maxChange, midpoint);
 }
 
+function formatCompactBinLabel(label: string): string {
+  const [start] = label.split("–");
+  return start.replace("%", "");
+}
+
 export function EmissionsChangeBarChart({
   companies,
   onCompanyClick,
@@ -164,11 +169,9 @@ export function EmissionsChangeBarChart({
     return null;
   }
 
-  const chartHeight = 320;
-
   return (
     <div
-      className="relative flex h-full min-h-[420px] flex-col gap-4"
+      className="relative flex h-full min-h-0 w-full flex-col gap-3"
       onClick={() => {
         if (isMobile && mobileTooltipOpen) {
           setMobileTooltipOpen(false);
@@ -177,7 +180,7 @@ export function EmissionsChangeBarChart({
         }
       }}
     >
-      <div className="flex items-center justify-between gap-3 text-xs text-grey">
+      <div className="flex shrink-0 items-center justify-between gap-3 text-xs text-grey">
         <span>
           {t("companiesOverviewPage.visualizations.emissionsChange.yAxisLabel")}
         </span>
@@ -189,114 +192,108 @@ export function EmissionsChangeBarChart({
         </span>
       </div>
 
-      <div className="flex flex-1 gap-3">
-        <div
-          className="flex w-14 shrink-0 flex-col justify-between text-right text-[11px] text-grey"
-          style={{ height: chartHeight }}
-        >
-          {[...yTicks].reverse().map((tick) => (
-            <span key={tick}>
-              {formatEmissionsAbsoluteCompact(tick, currentLanguage)}
-            </span>
-          ))}
-        </div>
-
-        <div className="relative flex-1 overflow-x-auto pb-2">
-          <div
-            className="flex min-w-full items-end gap-1 border-b border-black-4 px-1"
-            style={{ height: chartHeight }}
-          >
-            {histogram.bins.map((bin) => {
-              const barHeight =
-                histogram.maxTotalEmissions > 0
-                  ? (bin.totalEmissions / histogram.maxTotalEmissions) *
-                    chartHeight
-                  : 0;
-              const binColor = getBinColor(
-                bin,
-                changeRange.min,
-                changeRange.max,
-              );
-
-              return (
-                <div
-                  key={bin.id}
-                  className="flex min-w-[44px] flex-1 flex-col items-center justify-end"
-                >
-                  <div
-                    className="flex w-full flex-col justify-end overflow-hidden rounded-t-md border border-black-4/80"
-                    style={{
-                      height: `${barHeight}px`,
-                      minHeight: bin.companies.length > 0 ? "8px" : "0px",
-                      transition: reduceMotion
-                        ? undefined
-                        : `height ${barDuration}s ease-out`,
-                    }}
-                    title={t(
-                      "companiesOverviewPage.visualizations.emissionsChange.binSummary",
-                      {
-                        range: bin.label,
-                        count: bin.companies.length,
-                        emissions: formatEmissionsAbsolute(
-                          bin.totalEmissions,
-                          currentLanguage,
-                        ),
-                      },
-                    )}
-                  >
-                    {bin.companies.map((company) => {
-                      const segmentHeight =
-                        bin.totalEmissions > 0
-                          ? (company.emissions / bin.totalEmissions) * 100
-                          : 0;
-                      const color = getCompanyColors(company.colorIndex).base;
-
-                      return (
-                        <div
-                          key={company.id}
-                          className="w-full cursor-pointer transition-opacity hover:opacity-80"
-                          style={{
-                            height: `${segmentHeight}%`,
-                            minHeight: segmentHeight > 0 ? "2px" : "0px",
-                            backgroundColor: color,
-                            boxShadow: `inset 0 0 0 1px ${binColor}33`,
-                          }}
-                          onMouseEnter={(event) =>
-                            handleSegmentHover(company, event)
-                          }
-                          onMouseMove={(event) =>
-                            handleSegmentHover(company, event)
-                          }
-                          onMouseLeave={() => setTooltip(null)}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleSegmentInteraction(company, event);
-                          }}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+      <div className="flex min-h-0 flex-1 flex-col justify-end overflow-hidden">
+        <div className="flex min-h-[180px] w-full min-w-0 gap-2 overflow-hidden">
+          <div className="flex h-full w-12 shrink-0 flex-col justify-between py-0 text-right text-[10px] text-grey">
+            {[...yTicks].reverse().map((tick) => (
+              <span key={tick}>
+                {formatEmissionsAbsoluteCompact(tick, currentLanguage)}
+              </span>
+            ))}
           </div>
 
-          <div className="mt-2 flex min-w-full gap-1 px-1">
-            {histogram.bins.map((bin) => (
-              <div
-                key={`${bin.id}-label`}
-                className="min-w-[44px] flex-1 text-center text-[10px] leading-tight text-grey"
-              >
-                <span className="block rotate-[-35deg] origin-top-left translate-x-3 whitespace-nowrap">
-                  {bin.label}
-                </span>
-              </div>
-            ))}
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+            <div className="flex min-h-0 flex-1 items-end gap-px border-b border-black-4">
+              {histogram.bins.map((bin) => {
+                const barHeight =
+                  histogram.maxTotalEmissions > 0
+                    ? (bin.totalEmissions / histogram.maxTotalEmissions) * 100
+                    : 0;
+                const binColor = getBinColor(
+                  bin,
+                  changeRange.min,
+                  changeRange.max,
+                );
+
+                return (
+                  <div
+                    key={bin.id}
+                    className="flex h-full min-w-0 flex-1 basis-0 flex-col items-center justify-end"
+                  >
+                    <div
+                      className="flex w-full flex-col justify-end overflow-hidden rounded-t-sm border border-black-4/80"
+                      style={{
+                        height: `${barHeight}%`,
+                        minHeight: bin.companies.length > 0 ? "6px" : "0px",
+                        transition: reduceMotion
+                          ? undefined
+                          : `height ${barDuration}s ease-out`,
+                      }}
+                      title={t(
+                        "companiesOverviewPage.visualizations.emissionsChange.binSummary",
+                        {
+                          range: bin.label,
+                          count: bin.companies.length,
+                          emissions: formatEmissionsAbsolute(
+                            bin.totalEmissions,
+                            currentLanguage,
+                          ),
+                        },
+                      )}
+                    >
+                      {bin.companies.map((company) => {
+                        const segmentHeight =
+                          bin.totalEmissions > 0
+                            ? (company.emissions / bin.totalEmissions) * 100
+                            : 0;
+                        const color = getCompanyColors(company.colorIndex).base;
+
+                        return (
+                          <div
+                            key={company.id}
+                            className="w-full min-w-0 cursor-pointer transition-opacity hover:opacity-80"
+                            style={{
+                              height: `${segmentHeight}%`,
+                              minHeight: segmentHeight > 0 ? "1px" : "0px",
+                              backgroundColor: color,
+                              boxShadow: `inset 0 0 0 1px ${binColor}33`,
+                            }}
+                            onMouseEnter={(event) =>
+                              handleSegmentHover(company, event)
+                            }
+                            onMouseMove={(event) =>
+                              handleSegmentHover(company, event)
+                            }
+                            onMouseLeave={() => setTooltip(null)}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleSegmentInteraction(company, event);
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-1 flex w-full shrink-0 gap-px overflow-hidden">
+              {histogram.bins.map((bin) => (
+                <div
+                  key={`${bin.id}-label`}
+                  className="min-w-0 flex-1 basis-0 truncate text-center text-[9px] leading-tight text-grey"
+                  title={bin.label}
+                >
+                  {formatCompactBinLabel(bin.label)}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4 text-xs text-grey">
+      <div className="flex shrink-0 flex-wrap items-center gap-3 text-xs text-grey">
         <div className="flex items-center gap-2">
           <span
             className="inline-block h-3 w-3 rounded-sm"
