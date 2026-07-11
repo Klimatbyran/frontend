@@ -39,7 +39,7 @@ export function TurnoverEmissionsHistory({
 
   return (
     <SectionWithHelp helpItems={["companyTurnover", "historicalEmissions"]}>
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-8">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch lg:gap-8">
         <div className="flex w-full flex-col lg:w-1/2">
           <CardHeader
             title={t("companies.turnoverEmissionsHistory.title")}
