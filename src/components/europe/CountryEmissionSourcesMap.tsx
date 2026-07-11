@@ -101,7 +101,10 @@ function EmissionSourceTooltip({
       <p className="mt-1.5 text-lg font-semibold leading-tight text-white">
         {source.name}
       </p>
-      <p className="mt-2 text-2xl font-bold" style={{ color: sectorInfo.color }}>
+      <p
+        className="mt-2 text-2xl font-bold"
+        style={{ color: sectorInfo.color }}
+      >
         {formatEmissionsAbsoluteCompact(
           Math.round(source.emissionsQuantity),
           currentLanguage,
