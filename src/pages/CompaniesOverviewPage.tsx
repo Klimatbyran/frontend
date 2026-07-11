@@ -21,7 +21,6 @@ import {
   type FilterGroup,
 } from "@/components/explore/FilterPopover";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
-import { cn } from "@/lib/utils";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import {
   buildCountryActiveFilters,
@@ -390,25 +389,19 @@ export function CompaniesOverviewPage() {
         iconMap={COMPANY_KPI_ICONS}
         translationPrefix="companies.list"
         label={t("companies.list.dataSelector.label")}
-      />
-
-      <div className={cn("flex flex-wrap items-center gap-2 mb-4")}>
-        <FilterPopover
-          filterOpen={filterOpen}
-          setFilterOpen={setFilterOpen}
-          groups={filterGroups}
-        />
-        {activeFilters.length > 0 && (
-          <div
-            className={cn(
-              "flex flex-wrap gap-2",
-              isMobile ? "w-full" : "flex-1",
+        actions={
+          <>
+            <FilterPopover
+              filterOpen={filterOpen}
+              setFilterOpen={setFilterOpen}
+              groups={filterGroups}
+            />
+            {activeFilters.length > 0 && (
+              <FilterBadges filters={activeFilters} view="graphs" />
             )}
-          >
-            <FilterBadges filters={activeFilters} view="graphs" />
-          </div>
-        )}
-      </div>
+          </>
+        }
+      />
 
       <div className="space-y-6">
         {/* Row 1: graph/list toggle | stats */}

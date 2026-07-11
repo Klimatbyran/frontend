@@ -91,7 +91,9 @@ vi.mock("@/components/layout/PageHeader", () => ({
 }));
 
 vi.mock("@/components/ranked/KPIChipSelector", () => ({
-  KPIChipSelector: () => <div data-testid="kpi-selector" />,
+  KPIChipSelector: ({ actions }: { actions?: React.ReactNode }) => (
+    <div data-testid="kpi-selector">{actions}</div>
+  ),
 }));
 
 vi.mock("@/components/ranked/OverviewSplitLayout", async (importOriginal) => {

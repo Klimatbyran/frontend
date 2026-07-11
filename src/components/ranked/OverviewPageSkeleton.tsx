@@ -25,27 +25,33 @@ function SkeletonBlock({ className = "" }: { className?: string }) {
   return <div className={`${SHIMMER} ${className}`} />;
 }
 
-function KPIChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
+function KPIChipSelectorSkeleton({
+  chipCount,
+  showActions = false,
+}: {
+  chipCount: number;
+  showActions?: boolean;
+}) {
   return (
     <div className="mb-6 space-y-3">
       <SkeletonBlock className="h-3 w-36 mx-1" />
-      <SkeletonBlock className="md:hidden h-12 w-full rounded-xl" />
-      <div className="hidden md:flex gap-2 flex-wrap">
-        {Array.from({ length: chipCount }, (_, i) => (
-          <SkeletonBlock
-            key={i}
-            className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
-          />
-        ))}
+      <div className="md:hidden flex items-center gap-2">
+        <SkeletonBlock className="h-12 flex-1 rounded-xl" />
+        {showActions && <SkeletonBlock className="h-9 w-24 rounded-md shrink-0" />}
       </div>
-    </div>
-  );
-}
-
-function FilterBarSkeleton() {
-  return (
-    <div className="mb-4 flex flex-wrap items-center gap-2">
-      <SkeletonBlock className="h-9 w-24 rounded-md" />
+      <div className="hidden md:flex flex-wrap items-center gap-2">
+        <div className="flex gap-2 flex-wrap flex-1 min-w-0">
+          {Array.from({ length: chipCount }, (_, i) => (
+            <SkeletonBlock
+              key={i}
+              className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
+            />
+          ))}
+        </div>
+        {showActions && (
+          <SkeletonBlock className="h-9 w-24 rounded-md shrink-0" />
+        )}
+      </div>
     </div>
   );
 }
@@ -147,9 +153,10 @@ export function OverviewPageSkeleton({
     <>
       <PageHeader title={title} description={description} className="-ml-4" />
 
-      <KPIChipSelectorSkeleton chipCount={chipCount} />
-
-      {variant === "companies" && <FilterBarSkeleton />}
+      <KPIChipSelectorSkeleton
+        chipCount={chipCount}
+        showActions={variant === "companies"}
+      />
 
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
