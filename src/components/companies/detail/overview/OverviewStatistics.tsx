@@ -58,7 +58,7 @@ export function OverviewStatistics({
       </SupplementalDataField>
 
       {selectedPeriod?.reportURL && (
-        <div className="flex items-end self-start">
+        <div className="flex items-end @lg:self-end">
           <a
             href={selectedPeriod.reportURL}
             target="_blank"
