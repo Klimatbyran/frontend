@@ -380,16 +380,16 @@ export function MeetsParisBarChart({
         <div className="flex items-center gap-2">
           <span
             className="inline-block h-3 w-3 shrink-0 rounded-sm"
-            style={{ backgroundColor: COLORS.blue3 }}
+            style={{ backgroundColor: COLORS.pink3 }}
           />
-          <span className="text-xs text-white/40">{trueLabel}</span>
+          <span className="text-xs text-white/40">{falseLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           <span
             className="inline-block h-3 w-3 shrink-0 rounded-sm"
-            style={{ backgroundColor: COLORS.pink3 }}
+            style={{ backgroundColor: COLORS.blue3 }}
           />
-          <span className="text-xs text-white/40">{falseLabel}</span>
+          <span className="text-xs text-white/40">{trueLabel}</span>
         </div>
       </div>
 
