@@ -34,8 +34,8 @@ const EMISSION_SOURCES_PANEL_CLASS =
   "h-[min(32rem,55vh)] min-h-[20rem] md:h-[min(42rem,70vh)] md:min-h-[28rem]";
 
 const COUNTRY_OUTLINE_STYLE: L.PathOptions = {
-  fillColor: "var(--black-2)",
-  fillOpacity: 0.5,
+  fillColor: "var(--black-1)",
+  fillOpacity: 0.6,
   color: "var(--grey)",
   weight: 1,
 };
@@ -141,7 +141,7 @@ function EmissionSourcesMapContent({
 
   if (!isMounted) {
     return (
-      <div className="h-full w-full rounded-xl bg-black-3 animate-pulse" />
+      <div className="h-full w-full rounded-xl bg-black-2 animate-pulse" />
     );
   }
 
@@ -154,7 +154,7 @@ function EmissionSourcesMapContent({
         style={{
           height: "100%",
           width: "100%",
-          backgroundColor: "var(--black-3)",
+          backgroundColor: "var(--black-2)",
           zIndex: 0,
         }}
         zoomControl={false}
@@ -285,14 +285,14 @@ export function CountryEmissionSourcesMap({
   const mapPanel = (
     <div
       className={cn(
-        "relative min-w-0 overflow-hidden rounded-xl bg-black-3",
+        "relative min-w-0 overflow-hidden rounded-xl bg-black-2",
         EMISSION_SOURCES_MAP_CLASS,
       )}
     >
       {loading ? (
-        <div className="h-full w-full rounded-xl bg-black-3 animate-pulse" />
+        <div className="h-full w-full rounded-xl bg-black-2 animate-pulse" />
       ) : !hasCountryGeometry ? (
-        <div className="flex h-full items-center justify-center rounded-xl bg-black-3 px-6 text-center text-white/70">
+        <div className="flex h-full items-center justify-center rounded-xl bg-black-2 px-6 text-center text-white/70">
           {t("europe.detailPage.emissionSources.noMapData")}
         </div>
       ) : (
@@ -308,7 +308,7 @@ export function CountryEmissionSourcesMap({
   );
 
   return (
-    <SectionWithHelp helpItems={[]} className="bg-black-3">
+    <SectionWithHelp helpItems={[]}>
       <div className="md:hidden">
         {cardHeader}
 
