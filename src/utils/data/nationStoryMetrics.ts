@@ -11,7 +11,8 @@ export type NationEmissionSeries = {
 
 export type NationStackDataPoint = {
   year: number;
-  productionBased: number;
+  territorialFossil: number;
+  productionBeyondTerritorial: number;
   biogenic: number;
   consumptionAbroad: number;
   combined: number;
@@ -94,6 +95,7 @@ function getLatestCompleteYear(series: NationEmissionSeries): number {
   const years = collectYears(series);
   const completeYears = years.filter(
     (year) =>
+      series.territorialFossil[year] !== undefined &&
       series.productionBased[year] !== undefined &&
       series.biogenic[year] !== undefined &&
       series.consumptionAbroad[year] !== undefined,
@@ -105,13 +107,19 @@ export function buildStackChartData(
   series: NationEmissionSeries,
 ): NationStackDataPoint[] {
   return collectYears(series).map((year) => {
+    const territorialFossil = toMton(series.territorialFossil[year] ?? 0);
     const productionBased = toMton(series.productionBased[year] ?? 0);
+    const productionBeyondTerritorial = Math.max(
+      0,
+      productionBased - territorialFossil,
+    );
     const biogenic = toMton(series.biogenic[year] ?? 0);
     const consumptionAbroad = toMton(series.consumptionAbroad[year] ?? 0);
 
     return {
       year,
-      productionBased,
+      territorialFossil,
+      productionBeyondTerritorial,
       biogenic,
       consumptionAbroad,
       combined: productionBased + biogenic + consumptionAbroad,

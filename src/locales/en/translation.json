@@ -1489,6 +1489,7 @@
         "question": "So how have the different emission perspectives changed since 1990?"
       },
       "graph": {
+        "territorialFossil": "Territorial emissions",
         "productionBased": "Production-based emissions",
         "biogenic": "Biogenic emissions",
         "consumptionAbroad": "Consumption-based abroad"
@@ -1496,9 +1497,10 @@
       "stacked": {
         "title": "Combined emissions since 1990",
         "description": "When production-based, biogenic and consumption-based emissions are added together, the picture looks very different. The stack shows how the three layers combined have barely changed since 1990 – a different story from the official statistics.",
-        "layerCaption1": "First we draw the production-based emissions – fossil emissions linked to the Swedish economy.",
-        "layerCaption2": "Now we add the biogenic emissions on top.",
-        "layerCaption3": "And finally the consumption-based emissions abroad – the full picture."
+        "layerCaption1": "First we draw the territorial emissions – what we usually discuss.",
+        "layerCaption2": "Now we add production-based emissions – Swedish shipping and aviation outside the country's borders.",
+        "layerCaption3": "Then we add the biogenic emissions on top.",
+        "layerCaption4": "And finally the consumption-based emissions abroad – the full picture."
       },
       "conclusion": {
         "eyebrow": "The takeaway",

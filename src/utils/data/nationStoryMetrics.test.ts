@@ -62,7 +62,9 @@ describe("nationStoryMetrics", () => {
     const point2024 = stackData.find((point) => point.year === 2024);
 
     expect(point2024?.combined).toBeCloseTo(159.9, 0);
-    expect(point2024?.productionBased).toBeCloseTo(52.1, 0);
+    expect(point2024?.territorialFossil).toBeCloseTo(47.5, 0);
+    expect(point2024?.productionBeyondTerritorial).toBeCloseTo(4.6, 0);
+    expect(point2024?.biogenic).toBeCloseTo(47.4, 0);
   });
 
   it("calculates percent change correctly", () => {

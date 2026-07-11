@@ -33,22 +33,28 @@ import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
 const LAYERS = [
   {
-    dataKey: "productionBased" as const,
+    dataKey: "territorialFossil" as const,
     color: "var(--orange-2)",
-    translationKey: "nation.story.graph.productionBased",
+    translationKey: "nation.story.graph.territorialFossil",
     captionKey: "nation.story.stacked.layerCaption1",
+  },
+  {
+    dataKey: "productionBeyondTerritorial" as const,
+    color: "var(--blue-3)",
+    translationKey: "nation.story.graph.productionBased",
+    captionKey: "nation.story.stacked.layerCaption2",
   },
   {
     dataKey: "biogenic" as const,
     color: "var(--green-3)",
     translationKey: "nation.story.graph.biogenic",
-    captionKey: "nation.story.stacked.layerCaption2",
+    captionKey: "nation.story.stacked.layerCaption3",
   },
   {
     dataKey: "consumptionAbroad" as const,
     color: "var(--pink-3)",
     translationKey: "nation.story.graph.consumptionAbroad",
-    captionKey: "nation.story.stacked.layerCaption3",
+    captionKey: "nation.story.stacked.layerCaption4",
   },
 ];
 
