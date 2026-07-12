@@ -16,14 +16,13 @@ import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
 import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
 import { getTopParisEmissionsCompanies } from "@/utils/insights/meetsParisChartData";
+import { isMeetsParisKpi, PARIS_STATUS_COLORS } from "@/utils/insights/meetsParisKpi";
 import { MeetsParisEmissionsPieChart } from "@/components/companies/rankedList/visualizations/shared/MeetsParisEmissionsPieChart";
-import { DEFAULT_BOOLEAN_DATA_COLORS } from "@/utils/ui/colors";
 import {
   DistributionBox,
   BooleanSummaryBox,
+  InsightsEmptyState,
 } from "../../ranked/InsightsPanelParts";
-
-const MEETS_PARIS_KPI_KEY = "meetsParis";
 
 type InsightsPanelSection = "stats" | "top" | "bottom" | "distribution";
 
@@ -37,7 +36,7 @@ interface InsightsPanelProps {
 
 const MIN_COMPANIES = 2;
 
-function InsightsEmptyState({ message }: { message: string }) {
+function FramedInsightsEmptyState({ message }: { message: string }) {
   return (
     <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
       <p className="text-white text-lg">{message}</p>
@@ -113,8 +112,7 @@ function buildCompanyInsightsPanels(
     t,
   } = insightsData;
 
-  const isMeetsParisKpi =
-    selectedKPI.isBoolean && selectedKPI.key === MEETS_PARIS_KPI_KEY;
+  const isMeetsParisKpiSelected = isMeetsParisKpi(selectedKPI);
 
   const booleanSummary = (
     <BooleanSummaryBox distributionStats={statistics.distributionStats} />
@@ -128,13 +126,11 @@ function buildCompanyInsightsPanels(
 
     if (entities.length === 0) {
       return (
-        <div className="flex h-full items-center justify-center rounded-level-2 bg-black-2 p-8">
-          <p className="text-lg text-white">
-            {t("companies.list.insights.noData.metric", {
-              metric: t(`companies.list.kpis.${kpiKey}.label`),
-            })}
-          </p>
-        </div>
+        <InsightsEmptyState
+          message={t("companies.list.insights.noData.metric", {
+            metric: t(`companies.list.kpis.${kpiKey}.label`),
+          })}
+        />
       );
     }
 
@@ -161,9 +157,7 @@ function buildCompanyInsightsPanels(
         nameKey="name"
         showBars
         colorItem={() =>
-          meetsParis
-            ? DEFAULT_BOOLEAN_DATA_COLORS.positive
-            : DEFAULT_BOOLEAN_DATA_COLORS.negative
+          meetsParis ? PARIS_STATUS_COLORS.yes : PARIS_STATUS_COLORS.no
         }
       />
     );
@@ -184,6 +178,7 @@ function buildCompanyInsightsPanels(
         bottomPerformer={bottomPerformer}
         chart={
           selectedKPI.isBoolean ? (
+            // Company-count pie: how many companies meet vs miss Paris.
             <KPIDistributionChart<CompanyWithKPIs>
               data={companyData}
               selectedKPI={selectedKPI}
@@ -196,7 +191,7 @@ function buildCompanyInsightsPanels(
         sourceLinks={sourceLinks}
       />
     ),
-    distribution: isMeetsParisKpi ? (
+    distribution: isMeetsParisKpiSelected ? (
       <DistributionBox
         entityType="companies"
         title={t(
@@ -221,7 +216,7 @@ function buildCompanyInsightsPanels(
         }
       />
     ),
-    top: isMeetsParisKpi ? (
+    top: isMeetsParisKpiSelected ? (
       renderParisEmissionsList(true)
     ) : !selectedKPI.isBoolean ? (
       <InsightsList<CompanyWithKPIs>
@@ -247,7 +242,7 @@ function buildCompanyInsightsPanels(
     ) : (
       booleanSummary
     ),
-    bottom: isMeetsParisKpi ? (
+    bottom: isMeetsParisKpiSelected ? (
       renderParisEmissionsList(false)
     ) : !selectedKPI.isBoolean ? (
       <InsightsList<CompanyWithKPIs>
@@ -283,7 +278,7 @@ function CompanyInsightsPanel({
 
   if (!companyData?.length) {
     return (
-      <InsightsEmptyState
+      <FramedInsightsEmptyState
         message={t("companies.list.insights.noData.company")}
       />
     );
@@ -293,7 +288,7 @@ function CompanyInsightsPanel({
 
   if (insightsData.statistics.validData.length < MIN_COMPANIES) {
     return (
-      <InsightsEmptyState
+      <FramedInsightsEmptyState
         message={t("companies.list.insights.noData.metric", {
           metric: t(`companies.list.kpis.${insightsData.kpiKey}.label`),
         })}

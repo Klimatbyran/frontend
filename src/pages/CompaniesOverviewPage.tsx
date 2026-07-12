@@ -2,8 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useCompanies } from "@/hooks/companies/useCompanies";
-import { useCompanyParisOverview } from "@/hooks/companies/useCompanyParisOverview";
+import { useCompaniesOverviewSource } from "@/hooks/companies/useCompaniesOverviewSource";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
@@ -33,6 +32,7 @@ import {
   useCompaniesOverviewUrlState,
   useCompaniesWithKPIs,
 } from "./companiesOverviewPageUtils";
+import { isMeetsParisKpi } from "@/utils/insights/meetsParisKpi";
 
 const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
   meetsParis: <Leaf className="w-4 h-4" />,
@@ -116,7 +116,7 @@ function CompaniesOverviewMainGrid({
         </div>
       </div>
 
-      {(selectedKPI.key === "meetsParis" || !selectedKPI.isBoolean) && (
+      {(isMeetsParisKpi(selectedKPI) || !selectedKPI.isBoolean) && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}
@@ -239,27 +239,9 @@ export function CompaniesOverviewPage() {
       companyKPIs[0]
     );
   });
-  const usesParisOverview = selectedKPI.key === "meetsParis";
 
-  const {
-    companies: fullCompanies,
-    companiesLoading: fullCompaniesLoading,
-    companiesError: fullCompaniesError,
-  } = useCompanies({ enabled: !usesParisOverview });
-
-  const {
-    companies: parisOverviewCompanies,
-    companiesLoading: parisOverviewLoading,
-    companiesError: parisOverviewError,
-  } = useCompanyParisOverview({ enabled: usesParisOverview });
-
-  const companies = usesParisOverview ? parisOverviewCompanies : fullCompanies;
-  const companiesLoading = usesParisOverview
-    ? parisOverviewLoading
-    : fullCompaniesLoading;
-  const companiesError = usesParisOverview
-    ? parisOverviewError
-    : fullCompaniesError;
+  const { companies, companiesLoading, companiesError } =
+    useCompaniesOverviewSource(selectedKPI);
 
   const availableSectors = useMemo(() => {
     if (!companies) return [];

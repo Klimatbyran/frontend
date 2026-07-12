@@ -5,9 +5,12 @@ import { useChartMotion } from "@/hooks/useChartMotion";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { COLORS } from "@/lib/colors";
 import { cn } from "@/lib/utils";
-import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { formatWithScale } from "@/utils/data/unitScaling";
-import type { CompanyParisEmissionsEntry } from "@/utils/insights/meetsParisChartData";
+import {
+  buildParisBarChartGroups,
+  type CompanyParisEmissionsEntry,
+  type ParisBarChartSegment,
+} from "@/utils/insights/meetsParisChartData";
 
 const SEGMENT_RADIUS = 6;
 const BAR_MAX_WIDTH = 180;
@@ -15,31 +18,11 @@ const Y_AXIS_WIDTH = 72;
 const CHART_MIN_HEIGHT = 260;
 const OUTER_MIN_HEIGHT = 320;
 const PLOT_INSET_TOP = 8;
-const TOP_EMITTERS_PER_BAR = 10;
 
 interface MeetsParisBarChartProps {
   entries: CompanyParisEmissionsEntry[];
   unitScale: { unit: string; divisor: number };
   onCompanyClick?: (entry: CompanyParisEmissionsEntry) => void;
-}
-
-interface ChartSegment {
-  id: string;
-  emissions: number;
-  entry: CompanyParisEmissionsEntry | null;
-  aggregateCount?: number;
-}
-
-interface BarGroup {
-  category: string;
-  categoryKey: "yes" | "no";
-  color: string;
-  total: number;
-  segments: ChartSegment[];
-}
-
-function getEntryKey(entry: CompanyParisEmissionsEntry): string {
-  return getCompanyUrlSegment(entry.company);
 }
 
 function buildYAxisTicks(maxValue: number, tickCount = 4): number[] {
@@ -62,78 +45,25 @@ export function MeetsParisBarChart({
   const [activeCompanyId, setActiveCompanyId] = useState<string | null>(null);
   const [hoveredCompanyId, setHoveredCompanyId] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{
-    segment: ChartSegment;
+    segment: ParisBarChartSegment;
     x: number;
     y: number;
   } | null>(null);
 
-  const trueLabel = t("companiesOverviewPage.visualizations.meetsParis.yes");
   const falseLabel = t("companiesOverviewPage.visualizations.meetsParis.no");
+  const trueLabel = t("companiesOverviewPage.visualizations.meetsParis.yes");
   const otherLabel = t(
     "companiesOverviewPage.visualizations.meetsParis.otherSegment",
   );
 
-  const { groups, companyById, maxBarTotal } = useMemo(() => {
-    const yesEntries = entries.filter((entry) => entry.meetsParis);
-    const noEntries = entries.filter((entry) => !entry.meetsParis);
-    const byId = new Map(entries.map((entry) => [getEntryKey(entry), entry]));
-
-    const buildGroup = (
-      category: string,
-      categoryKey: "yes" | "no",
-      color: string,
-      groupEntries: CompanyParisEmissionsEntry[],
-    ): BarGroup => {
-      const sortedDesc = [...groupEntries].sort(
-        (a, b) => b.emissions - a.emissions,
-      );
-      const topEntries = sortedDesc.slice(0, TOP_EMITTERS_PER_BAR);
-      const remainingEntries = sortedDesc.slice(TOP_EMITTERS_PER_BAR);
-
-      const individualSegments: ChartSegment[] = topEntries.map((entry) => ({
-        id: getEntryKey(entry),
-        entry,
-        emissions: entry.emissions,
-      }));
-
-      const otherSegment: ChartSegment | null =
-        remainingEntries.length > 0
-          ? {
-              id: `other-${categoryKey}`,
-              entry: null,
-              emissions: remainingEntries.reduce(
-                (sum, entry) => sum + entry.emissions,
-                0,
-              ),
-              aggregateCount: remainingEntries.length,
-            }
-          : null;
-
-      // Stack top-to-bottom: largest emitters on top, smaller above Other, Other at bottom.
-      const segments = otherSegment
-        ? [...individualSegments, otherSegment]
-        : individualSegments;
-
-      return {
-        category,
-        categoryKey,
-        color,
-        total: groupEntries.reduce((sum, entry) => sum + entry.emissions, 0),
-        segments,
-      };
-    };
-
-    const chartGroups = [
-      buildGroup(falseLabel, "no", COLORS.pink3, noEntries),
-      buildGroup(trueLabel, "yes", COLORS.blue3, yesEntries),
-    ];
-
-    return {
-      groups: chartGroups,
-      companyById: byId,
-      maxBarTotal: Math.max(...chartGroups.map((group) => group.total), 0),
-    };
-  }, [entries, falseLabel, trueLabel]);
+  const { groups, companyById, maxBarTotal } = useMemo(
+    () =>
+      buildParisBarChartGroups(entries, {
+        no: falseLabel,
+        yes: trueLabel,
+      }),
+    [entries, falseLabel, trueLabel],
+  );
 
   const yAxisTicks = useMemo(
     () => buildYAxisTicks(maxBarTotal / unitScale.divisor),
@@ -161,16 +91,7 @@ export function MeetsParisBarChart({
       };
 
   const handleSegmentClick = useCallback(
-    (segment: ChartSegment) => {
-      if (!segment.entry) {
-        if (isMobile) {
-          setActiveCompanyId((current) =>
-            current === segment.id ? null : segment.id,
-          );
-        }
-        return;
-      }
-
+    (segment: ParisBarChartSegment) => {
       if (isMobile) {
         setActiveCompanyId((current) =>
           current === segment.id ? null : segment.id,
@@ -178,13 +99,15 @@ export function MeetsParisBarChart({
         return;
       }
 
-      onCompanyClick?.(segment.entry);
+      if (segment.entry) {
+        onCompanyClick?.(segment.entry);
+      }
     },
     [isMobile, onCompanyClick],
   );
 
   const handleSegmentPointerEnter = useCallback(
-    (event: React.MouseEvent, segment: ChartSegment) => {
+    (event: React.MouseEvent, segment: ParisBarChartSegment) => {
       setHoveredCompanyId(segment.id);
       setTooltip({
         segment,
@@ -196,7 +119,7 @@ export function MeetsParisBarChart({
   );
 
   const handleSegmentPointerMove = useCallback(
-    (event: React.MouseEvent, segment: ChartSegment) => {
+    (event: React.MouseEvent, segment: ParisBarChartSegment) => {
       setTooltip({
         segment,
         x: event.clientX,

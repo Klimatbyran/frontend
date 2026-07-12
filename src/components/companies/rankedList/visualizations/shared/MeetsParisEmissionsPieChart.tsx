@@ -4,19 +4,17 @@ import { useLanguage } from "@/components/LanguageProvider";
 import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
-import { COLORS } from "@/lib/colors";
+import { InsightsEmptyState } from "@/components/ranked/InsightsPanelParts";
 import { formatPercent } from "@/utils/formatting/localization";
 import type { UnitScale } from "@/utils/data/unitScaling";
 import { getParisEmissionsBreakdown } from "@/utils/insights/meetsParisChartData";
+import {
+  getParisStatusLabels,
+  PARIS_STATUS_COLORS,
+} from "@/utils/insights/meetsParisKpi";
 import type { CompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import { formatParisEmissionsAmount } from "./meetsParisEmissionsFormat";
 import MeetsParisPieTooltip from "./MeetsParisPieTooltip";
-
-const STATUS_COLORS = {
-  yes: COLORS.blue3,
-  no: COLORS.pink3,
-  unknown: COLORS.grey,
-} as const;
 
 type ParisPieChartItem = PieChartItem & {
   rawEmissions: number;
@@ -36,19 +34,14 @@ export function MeetsParisEmissionsPieChart({
   const { pieData, unitScale, totalEmissions } = useMemo(() => {
     const { segments, unitScale, totalEmissions } =
       getParisEmissionsBreakdown(companies);
-
-    const statusLabels = {
-      yes: t("companiesOverviewPage.visualizations.meetsParis.yes"),
-      no: t("companiesOverviewPage.visualizations.meetsParis.no"),
-      unknown: t("companiesOverviewPage.visualizations.meetsParis.unknown"),
-    };
+    const statusLabels = getParisStatusLabels(t);
 
     const pieData: ParisPieChartItem[] = segments.map((segment) => ({
       name: statusLabels[segment.status],
       value: segment.emissions / unitScale.divisor,
       rawEmissions: segment.emissions,
       unitScale,
-      color: STATUS_COLORS[segment.status],
+      color: PARIS_STATUS_COLORS[segment.status],
       status: segment.status,
     }));
 
@@ -57,13 +50,11 @@ export function MeetsParisEmissionsPieChart({
 
   if (pieData.length === 0 || totalEmissions <= 0) {
     return (
-      <div className="flex h-full min-h-[200px] items-center justify-center">
-        <p className="text-grey text-lg">
-          {t("companies.list.insights.noData.metric", {
-            metric: t("companies.list.kpis.meetsParis.label"),
-          })}
-        </p>
-      </div>
+      <InsightsEmptyState
+        message={t("companies.list.insights.noData.metric", {
+          metric: t("companies.list.kpis.meetsParis.label"),
+        })}
+      />
     );
   }
 

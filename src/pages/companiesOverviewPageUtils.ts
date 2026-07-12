@@ -20,6 +20,7 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
+import { isMeetsParisKpi } from "@/utils/insights/meetsParisKpi";
 
 export function useCompaniesOverviewUrlState(
   companyKPIs: CompanyKPIValue[],
@@ -125,7 +126,7 @@ export function useCompaniesWithKPIs(
       return true;
     });
 
-    const usesParisOverview = selectedKPI.key === "meetsParis";
+    const usesParisOverview = isMeetsParisKpi(selectedKPI);
 
     return usesParisOverview
       ? filtered
