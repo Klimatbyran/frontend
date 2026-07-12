@@ -16,7 +16,10 @@ import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
 import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
 import { getTopParisEmissionsCompanies } from "@/utils/insights/meetsParisChartData";
-import { isMeetsParisKpi, PARIS_STATUS_COLORS } from "@/utils/insights/meetsParisKpi";
+import {
+  isMeetsParisKpi,
+  PARIS_STATUS_COLORS,
+} from "@/utils/insights/meetsParisKpi";
 import { MeetsParisEmissionsPieChart } from "@/components/companies/rankedList/visualizations/shared/MeetsParisEmissionsPieChart";
 import {
   DistributionBox,

@@ -1,6 +1,4 @@
-import {
-  createSymmetricRangeGradient,
-} from "@/utils/ui/colorGradients";
+import { createSymmetricRangeGradient } from "@/utils/ui/colorGradients";
 import {
   DEFAULT_BOOLEAN_DATA_COLORS,
   DEFAULT_NULL_DATA_COLOR,

@@ -168,7 +168,9 @@ export function buildParisBarChartGroups(
 } {
   const yesEntries = entries.filter((entry) => entry.meetsParis);
   const noEntries = entries.filter((entry) => !entry.meetsParis);
-  const companyById = new Map(entries.map((entry) => [getEntryKey(entry), entry]));
+  const companyById = new Map(
+    entries.map((entry) => [getEntryKey(entry), entry]),
+  );
 
   const buildGroup = (
     category: string,

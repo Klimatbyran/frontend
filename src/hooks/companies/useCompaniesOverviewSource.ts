@@ -32,8 +32,6 @@ export function useCompaniesOverviewSource(
     companiesLoading: usesParisOverview
       ? parisOverviewLoading
       : fullCompaniesLoading,
-    companiesError: usesParisOverview
-      ? parisOverviewError
-      : fullCompaniesError,
+    companiesError: usesParisOverview ? parisOverviewError : fullCompaniesError,
   };
 }
