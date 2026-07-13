@@ -54,13 +54,18 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   desktopScale = false,
   animationKey,
   maxOuterRadius,
-  chartMinHeight = 200,
+  chartMinHeight,
   tooltipContent: TooltipContentComponent,
 }) => {
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { size, containerRef } = useResponsiveChartSize(false, maxOuterRadius);
+  const hasFixedHeight = chartMinHeight != null;
+  const { size, containerRef } = useResponsiveChartSize(
+    false,
+    maxOuterRadius,
+    hasFixedHeight,
+  );
 
   const pieData: PieChartItem[] = data
     ? data
@@ -141,8 +146,12 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   return (
     <div
       ref={containerRef}
-      className="flex w-full items-center justify-center"
-      style={{ minHeight: chartMinHeight, maxHeight: chartMinHeight }}
+      className={`flex w-full items-center justify-center${hasFixedHeight ? "" : " min-h-[200px]"}`}
+      style={
+        hasFixedHeight
+          ? { minHeight: chartMinHeight, maxHeight: chartMinHeight }
+          : undefined
+      }
     >
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>
