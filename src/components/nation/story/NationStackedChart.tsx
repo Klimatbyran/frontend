@@ -111,7 +111,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
         style={stageStyle}
       >
         <div className="w-full max-w-4xl mx-auto">
-          <SectionWithHelp helpItems={[]} className={className}>
+          <SectionWithHelp helpItems={[]} compactLayout className={className}>
             <CardHeader
               title={t("nation.story.stacked.title")}
               description={t("nation.story.stacked.description")}
@@ -184,14 +184,15 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               </ResponsiveContainer>
             </div>
 
-            <ChartFooter>
+            <ChartFooter className="mt-1 mb-0 space-y-2">
               <EnhancedLegend
                 items={visibleLegendItems}
-                className="[&_span]:text-base md:[&_span]:text-lg"
+                className="gap-2 md:gap-3 [&_span]:text-base md:[&_span]:text-lg"
               />
               <ChartYearControls
                 chartEndYear={chartEndYear}
                 setChartEndYear={setChartEndYear}
+                className="!mt-0 !px-0"
               />
             </ChartFooter>
           </SectionWithHelp>
