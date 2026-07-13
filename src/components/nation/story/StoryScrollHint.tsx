@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { NATION_STORY_TEXT } from "@/components/nation/story/nationStoryColors";
 
 export function StoryScrollHint() {
   const { t } = useTranslation();
@@ -32,12 +33,12 @@ export function StoryScrollHint() {
             }
           : { duration: 0.35 }
       }
-      className="absolute bottom-6 md:bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-1 text-grey transition-colors hover:text-white"
+      className={`absolute bottom-6 md:bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-1.5 ${NATION_STORY_TEXT.secondary} transition-colors hover:text-white`}
     >
-      <span className="text-xs uppercase tracking-widest">
+      <span className="text-sm md:text-base uppercase tracking-widest">
         {t("nation.story.scrollHint.text")}
       </span>
-      <ChevronDown className="h-7 w-7" strokeWidth={1.5} aria-hidden />
+      <ChevronDown className="h-8 w-8" strokeWidth={2} aria-hidden />
     </motion.button>
   );
 }

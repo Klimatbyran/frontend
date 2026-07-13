@@ -5,6 +5,10 @@ import {
   type NationStoryMetrics,
 } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
+import {
+  NATION_STORY_COLORS,
+  NATION_STORY_TEXT,
+} from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
 type JourneyStep = {
@@ -36,7 +40,7 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
       key: "step1",
       labelKey: "nation.story.journey.step1.label",
       textKey: "nation.story.journey.step1.text",
-      color: "var(--orange-2)",
+      color: NATION_STORY_COLORS.territorial,
       total: territorial,
       delta: territorial,
       layer: true,
@@ -45,7 +49,7 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
       key: "step2",
       labelKey: "nation.story.journey.step2.label",
       textKey: "nation.story.journey.step2.text",
-      color: "var(--blue-3)",
+      color: NATION_STORY_COLORS.production,
       total: production,
       delta: production - territorial,
       layer: true,
@@ -54,7 +58,7 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
       key: "step3",
       labelKey: "nation.story.journey.step3.label",
       textKey: "nation.story.journey.step3.text",
-      color: "var(--pink-3)",
+      color: NATION_STORY_COLORS.consumption,
       total: production + consumption,
       delta: consumption,
       layer: true,
@@ -63,7 +67,7 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
       key: "step4",
       labelKey: "nation.story.journey.step4.label",
       textKey: "nation.story.journey.step4.text",
-      color: "var(--pink-2)",
+      color: NATION_STORY_COLORS.eCommerceRing,
       total: production + consumption,
       delta: 0,
       layer: false,
@@ -74,7 +78,7 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
       key: "step5",
       labelKey: "nation.story.journey.step5.label",
       textKey: "nation.story.journey.step5.text",
-      color: "var(--green-3)",
+      color: NATION_STORY_COLORS.biogenic,
       total: production + consumption + biogenic,
       delta: biogenic,
       layer: true,
@@ -134,7 +138,7 @@ export function NationEmissionsJourney({
                   <motion.div
                     key={layer.key}
                     className="absolute left-1/2 top-1/2 rounded-full"
-                    style={{ backgroundColor: layer.color, opacity: 0.92 }}
+                    style={{ backgroundColor: layer.color, opacity: 1 }}
                     initial={{ width: 0, height: 0, x: "-50%", y: "-50%" }}
                     animate={{ width: d, height: d, x: "-50%", y: "-50%" }}
                     transition={{ type: "spring", stiffness: 140, damping: 20 }}
@@ -151,7 +155,7 @@ export function NationEmissionsJourney({
                     height: diameterFor(current.total) + 26,
                     x: "-50%",
                     y: "-50%",
-                    borderColor: "var(--pink-2)",
+                    borderColor: NATION_STORY_COLORS.eCommerceRing,
                   }}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -161,16 +165,18 @@ export function NationEmissionsJourney({
 
               {/* Running total on top */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-black font-bold text-2xl md:text-4xl tabular-nums select-none leading-none text-center">
+                <span className="text-black font-bold text-3xl md:text-5xl tabular-nums select-none leading-none text-center">
                   {formatMton(current.total, currentLanguage, 0)}
-                  <span className="block text-xs md:text-sm font-medium mt-1">
+                  <span className="block text-sm md:text-base font-semibold mt-1">
                     {t("nation.story.unit.mton")}
                   </span>
                 </span>
               </div>
             </div>
 
-            <p className="mt-6 md:mt-10 text-xs uppercase tracking-widest text-grey">
+            <p
+              className={`mt-6 md:mt-10 text-sm md:text-base uppercase tracking-widest ${NATION_STORY_TEXT.eyebrow}`}
+            >
               {t("nation.story.journey.runningTotalLabel")}
             </p>
           </div>
@@ -184,18 +190,22 @@ export function NationEmissionsJourney({
               transition={{ duration: 0.4 }}
               className="space-y-3"
             >
-              <p className="flex items-center gap-2 text-lg md:text-xl text-white font-medium">
+              <p className="flex items-center gap-3 text-xl md:text-2xl text-white font-medium">
                 <span
-                  className="w-3 h-3 rounded-full shrink-0"
+                  className="w-4 h-4 rounded-full shrink-0"
                   style={{ backgroundColor: current.color }}
                 />
                 {t(current.labelKey)}
               </p>
-              <p className="text-base md:text-lg text-grey leading-relaxed">
+              <p
+                className={`text-lg md:text-xl ${NATION_STORY_TEXT.body} leading-relaxed`}
+              >
                 {t(current.textKey)}
               </p>
               {current.badgeKey && (
-                <p className="text-sm text-pink-2">{t(current.badgeKey)}</p>
+                <p className="text-base md:text-lg text-pink-1 font-medium">
+                  {t(current.badgeKey)}
+                </p>
               )}
             </motion.div>
 
@@ -205,12 +215,17 @@ export function NationEmissionsJourney({
                 .slice(0, step + 1)
                 .filter((s) => s.layer)
                 .map((s, i) => (
-                  <div key={s.key} className="flex items-center gap-2 text-sm">
+                  <div
+                    key={s.key}
+                    className="flex items-center gap-2.5 text-base md:text-lg"
+                  >
                     <span
-                      className="w-2.5 h-2.5 rounded-full shrink-0"
+                      className="w-3.5 h-3.5 rounded-full shrink-0"
                       style={{ backgroundColor: s.color }}
                     />
-                    <span className="text-grey flex-1">{t(s.labelKey)}</span>
+                    <span className={`${NATION_STORY_TEXT.secondary} flex-1`}>
+                      {t(s.labelKey)}
+                    </span>
                     <span className="text-white tabular-nums shrink-0">
                       {i === 0 ? "" : "+"}
                       {formatMton(s.delta, currentLanguage, 0)}{" "}

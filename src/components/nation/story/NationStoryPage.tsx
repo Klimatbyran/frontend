@@ -4,6 +4,7 @@ import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { StoryScrollHint } from "@/components/nation/story/StoryScrollHint";
+import { NATION_STORY_TEXT } from "@/components/nation/story/nationStoryColors";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationStoryDetails } from "@/hooks/nation/useNationStoryDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
@@ -43,14 +44,18 @@ export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
             alt=""
             className="h-12 w-20 mx-auto object-contain opacity-90 rounded-sm"
           />
-          <h1 className="text-4xl md:text-6xl font-light">{countryName}</h1>
-          <p className="text-lg md:text-xl text-grey leading-relaxed">
+          <h1 className="text-5xl md:text-7xl font-light">{countryName}</h1>
+          <p
+            className={`text-xl md:text-2xl ${NATION_STORY_TEXT.body} leading-relaxed`}
+          >
             {t("nation.story.intro.paragraph1")}
           </p>
-          <p className="text-lg md:text-xl text-grey leading-relaxed">
+          <p
+            className={`text-xl md:text-2xl ${NATION_STORY_TEXT.body} leading-relaxed`}
+          >
             {t("nation.story.intro.paragraph2")}
           </p>
-          <p className="text-lg md:text-xl text-white leading-relaxed">
+          <p className="text-xl md:text-2xl text-white leading-relaxed font-medium">
             {t("nation.story.intro.paragraph3")}
           </p>
         </div>
@@ -68,7 +73,7 @@ export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.5 }}
-            className="text-lg md:text-xl text-grey leading-relaxed"
+            className={`text-xl md:text-2xl ${NATION_STORY_TEXT.body} leading-relaxed`}
           >
             {t("nation.story.bathtub.text")}
           </motion.p>
@@ -77,7 +82,7 @@ export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-xl md:text-2xl text-white font-light leading-snug"
+            className="text-2xl md:text-3xl text-white font-light leading-snug"
           >
             {t("nation.story.bathtub.question")}
           </motion.p>

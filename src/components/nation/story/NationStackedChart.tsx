@@ -29,30 +29,34 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import {
+  NATION_STORY_CHART,
+  NATION_STORY_COLORS,
+} from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
 const LAYERS = [
   {
     dataKey: "territorialFossil" as const,
-    color: "var(--orange-2)",
+    color: NATION_STORY_COLORS.territorial,
     translationKey: "nation.story.graph.territorialFossil",
     captionKey: "nation.story.stacked.layerCaption1",
   },
   {
     dataKey: "productionBeyondTerritorial" as const,
-    color: "var(--blue-3)",
+    color: NATION_STORY_COLORS.production,
     translationKey: "nation.story.graph.productionBased",
     captionKey: "nation.story.stacked.layerCaption2",
   },
   {
     dataKey: "biogenic" as const,
-    color: "var(--green-3)",
+    color: NATION_STORY_COLORS.biogenic,
     translationKey: "nation.story.graph.biogenic",
     captionKey: "nation.story.stacked.layerCaption3",
   },
   {
     dataKey: "consumptionAbroad" as const,
-    color: "var(--pink-3)",
+    color: NATION_STORY_COLORS.consumption,
     translationKey: "nation.story.graph.consumptionAbroad",
     captionKey: "nation.story.stacked.layerCaption4",
   },
@@ -111,7 +115,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             <CardHeader
               title={t("nation.story.stacked.title")}
               description={t("nation.story.stacked.description")}
-              className="[&>div]:mb-4 [&>div]:@lg:mb-6"
+              className="[&>div]:mb-4 [&>div]:@lg:mb-6 [&_[class*='text-grey']]:text-white/85 [&_[class*='text-grey']]:text-base md:[&_[class*='text-grey']]:text-lg"
             />
 
             {/* Caption explaining the layer currently being drawn */}
@@ -121,10 +125,10 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="flex items-center gap-2 text-sm md:text-base text-white"
+                className={`flex items-center gap-3 text-base md:text-lg text-white font-medium`}
               >
                 <span
-                  className="w-3 h-3 rounded-full shrink-0"
+                  className="w-4 h-4 rounded-full shrink-0"
                   style={{ backgroundColor: LAYERS[visibleLayers - 1].color }}
                 />
                 {t(LAYERS[visibleLayers - 1].captionKey)}
@@ -166,9 +170,9 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                       dataKey={layer.dataKey}
                       stackId="emissions"
                       stroke={layer.color}
-                      strokeWidth={1.5}
+                      strokeWidth={NATION_STORY_CHART.strokeWidth}
                       fill={layer.color}
-                      fillOpacity={0.6}
+                      fillOpacity={NATION_STORY_CHART.fillOpacity}
                       name={t(layer.translationKey)}
                       connectNulls={false}
                       isAnimationActive
@@ -181,7 +185,10 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             </div>
 
             <ChartFooter>
-              <EnhancedLegend items={visibleLegendItems} />
+              <EnhancedLegend
+                items={visibleLegendItems}
+                className="[&_span]:text-base md:[&_span]:text-lg"
+              />
               <ChartYearControls
                 chartEndYear={chartEndYear}
                 setChartEndYear={setChartEndYear}
