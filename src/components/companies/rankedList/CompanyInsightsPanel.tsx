@@ -15,7 +15,10 @@ import {
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
 import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
-import { getTopParisEmissionsCompanies, getParisEmissionsBreakdown } from "@/utils/insights/meetsParisChartData";
+import {
+  getTopParisEmissionsCompanies,
+  getParisEmissionsBreakdown,
+} from "@/utils/insights/meetsParisChartData";
 import {
   isMeetsParisKpi,
   PARIS_STATUS_COLORS,

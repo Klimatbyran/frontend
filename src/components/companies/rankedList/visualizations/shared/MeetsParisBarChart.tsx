@@ -384,8 +384,9 @@ export function MeetsParisBarChart({
         </div>
       </div>
 
-      {isMobile && activeCompanyId && (
-        companyById.has(activeCompanyId) ? (
+      {isMobile &&
+        activeCompanyId &&
+        (companyById.has(activeCompanyId) ? (
           <button
             type="button"
             className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white transition-colors hover:bg-white/5"
@@ -417,8 +418,7 @@ export function MeetsParisBarChart({
               )}
             </span>
           </div>
-        )
-      )}
+        ))}
     </div>
   );
 }
