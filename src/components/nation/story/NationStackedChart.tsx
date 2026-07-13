@@ -29,6 +29,7 @@ import {
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { cn } from "@/lib/utils";
 import {
   NATION_STORY_CHART,
   NATION_STORY_COLORS,
@@ -111,7 +112,13 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
         style={stageStyle}
       >
         <div className="w-full max-w-4xl mx-auto">
-          <SectionWithHelp helpItems={[]} compactLayout className={className}>
+          <SectionWithHelp
+            helpItems={[]}
+            className={cn(
+              className,
+              "pb-2 md:pb-3 [&>div]:pb-2 [&>div]:mb-0 md:[&>div]:mb-2",
+            )}
+          >
             <CardHeader
               title={t("nation.story.stacked.title")}
               description={t("nation.story.stacked.description")}
