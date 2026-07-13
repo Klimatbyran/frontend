@@ -4,8 +4,7 @@ import {
   Geometry,
   GeoJsonProperties,
 } from "geojson";
-import type { MutableRefObject } from "react";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useState, type MutableRefObject } from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import type L from "leaflet";
 import { MapController } from "./MapController";

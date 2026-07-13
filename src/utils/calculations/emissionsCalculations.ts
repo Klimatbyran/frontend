@@ -2,7 +2,7 @@
  * Common utility functions for emissions calculations
  */
 
-import { yearFromIsoDate } from "@/utils/date";
+export { calculateEmissionsChangeFromBaseYear } from "./emissionsBaseYear";
 
 /**
  * Get year-over-year emissions change percentage from API
@@ -171,12 +171,6 @@ export function getMinYear(
 
 /**
  * Calculate Paris Agreement line value (Carbon Law) for a given year.
- * Formula: currentValue * (1 - reductionRate)^(year - currentYear)
- * @param year - Target year for calculation
- * @param currentYear - Current year
- * @param currentYearValue - Emissions value for current year
- * @param reductionRate - Annual reduction rate (default: 0.1172 = 11.72%)
- * @returns Calculated Paris Agreement value or null if year is in the past
  */
 export function calculateParisValue(
   year: number,
@@ -211,12 +205,6 @@ export function calculateParisValue(
 
 /**
  * Get regression points based on base year logic.
- * When baseYear is provided and different from the latest year, uses all data from baseYear onward.
- * Otherwise, uses the last two data points for regression.
- *
- * @param data - Array of data points with year and total values
- * @param baseYear - Optional base year for trend calculations
- * @returns Array of DataPoint objects for regression analysis
  */
 export function getRegressionPoints(
   data: { year: number; total: number | null | undefined }[],
@@ -235,129 +223,8 @@ export function getRegressionPoints(
     return validData
       .filter((d) => d.year >= baseYear)
       .map((d) => ({ year: d.year, value: d.total }));
-  } else {
-    const sorted = validData.sort((a, b) => a.year - b.year);
-    return sorted.slice(-2).map((d) => ({ year: d.year, value: d.total }));
-  }
-}
-
-/**
- * Calculate emissions change from base year to latest reporting period
- * Uses calculatedTotalEmissions from the API
- *
- * @param company - The company to calculate change for
- * @param options - Optional configuration
- * @param options.useLastPeriod - If true, uses the last period even if emissions are 0.
- *                                If false (default), finds the last period with >0 emissions.
- * @returns Percentage change as a number, or null if:
- *   - No reporting periods
- *   - No base year defined (no fallback to first period)
- *   - Baseline emissions is 0 or null
- *   - Latest period is the same year as base year (no change possible)
- *   - If useLastPeriod is false: no period with >0 emissions found after base year
- */
-export function calculateEmissionsChangeFromBaseYear(
-  company: {
-    baseYear?: { year?: number } | null;
-    reportingPeriods?: Array<{
-      startDate: string;
-      endDate: string;
-      emissions?: {
-        calculatedTotalEmissions?: number | null;
-      } | null;
-    }>;
-  },
-  options?: {
-    useLastPeriod?: boolean;
-  },
-): number | null {
-  if (!company.reportingPeriods || company.reportingPeriods.length === 0) {
-    return null;
   }
 
-  // Constraint: require a base year
-  if (!company.baseYear?.year) {
-    return null;
-  }
-
-  const baseYear = company.baseYear.year;
-  const baseYearStr = baseYear.toString();
-
-  // Sort periods by start date (oldest first)
-  const periods = [...company.reportingPeriods].sort((a, b) =>
-    a.startDate.localeCompare(b.startDate),
-  );
-
-  if (periods.length < 1) {
-    return null;
-  }
-
-  // Find baseline period matching the base year (using endDate year)
-  const baselinePeriod = periods.find(
-    (p) => yearFromIsoDate(p.endDate) === baseYearStr,
-  );
-
-  if (!baselinePeriod) {
-    return null;
-  }
-
-  const baselineEmissions =
-    baselinePeriod.emissions?.calculatedTotalEmissions ?? null;
-
-  // Baseline emissions must be valid and > 0
-  // Exclude companies where base year data is 0, null, or undefined
-  // Cannot calculate meaningful change from base year without valid baseline data
-  if (
-    baselineEmissions === null ||
-    baselineEmissions === undefined ||
-    baselineEmissions === 0
-  ) {
-    return null;
-  }
-
-  // Find latest period based on option
-  let latestPeriod: (typeof periods)[0] | null = null;
-
-  if (options?.useLastPeriod) {
-    // Use the last period in the array (even if 0)
-    latestPeriod = periods[periods.length - 1];
-  } else {
-    // Find latest period with >0 emissions after the base year
-    for (let i = periods.length - 1; i >= 0; i--) {
-      const periodYear = Number(yearFromIsoDate(periods[i].endDate));
-      if (periodYear <= baseYear) {
-        continue;
-      }
-
-      const emissions = periods[i].emissions?.calculatedTotalEmissions ?? null;
-      if (emissions !== null && emissions > 0) {
-        latestPeriod = periods[i];
-        break;
-      }
-    }
-  }
-
-  if (!latestPeriod) {
-    return null;
-  }
-
-  // Latest period must be after the base year
-  const latestYear = Number(yearFromIsoDate(latestPeriod.endDate));
-  if (latestYear <= baseYear) {
-    return null;
-  }
-
-  const latestEmissions = latestPeriod.emissions?.calculatedTotalEmissions ?? 0;
-
-  // Calculate percentage change
-  const changePercent =
-    ((latestEmissions - baselineEmissions) / baselineEmissions) * 100;
-
-  // Filter out extreme outliers (>200% in either direction) as likely data quality issues
-  // These often indicate missing base year data, scope changes, mergers, etc.
-  if (Math.abs(changePercent) > 200) {
-    return null;
-  }
-
-  return changePercent;
+  const sorted = validData.sort((a, b) => a.year - b.year);
+  return sorted.slice(-2).map((d) => ({ year: d.year, value: d.total }));
 }

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Helmet } from "react-helmet-async";
 import { SeoMeta } from "@/types/seo";
 import { buildAbsoluteUrl, buildAbsoluteImageUrl } from "@/utils/seo";
@@ -25,30 +26,126 @@ function imageMimeType(imageUrl: string): string {
   return "image/png";
 }
 
+function renderHreflangLinks(
+  hreflang: NonNullable<SeoMeta["hreflang"]>,
+): ReactNode {
+  return hreflang.map(({ lang: hLang, href }) => (
+    <link key={hLang} rel="alternate" hrefLang={hLang} href={href} />
+  ));
+}
+
+function renderOpenGraphMeta({
+  og,
+  canonicalUrl,
+  ogLocale,
+  ogImage,
+  ogImageWidth,
+  ogImageHeight,
+  ogImageAlt,
+}: {
+  og: NonNullable<SeoMeta["og"]>;
+  canonicalUrl?: string;
+  ogLocale: string;
+  ogImage?: string;
+  ogImageWidth: number;
+  ogImageHeight: number;
+  ogImageAlt: string;
+}): ReactNode {
+  return (
+    <>
+      <meta property="og:site_name" content="Klimatkollen" />
+      <meta property="og:locale" content={ogLocale} />
+      {og.title && <meta property="og:title" content={og.title} />}
+      {og.description && (
+        <meta property="og:description" content={og.description} />
+      )}
+      {ogImage && (
+        <>
+          <meta property="og:image" content={ogImage} />
+          <meta property="og:image:width" content={String(ogImageWidth)} />
+          <meta property="og:image:height" content={String(ogImageHeight)} />
+          <meta property="og:image:alt" content={ogImageAlt} />
+          <meta property="og:image:type" content={imageMimeType(ogImage)} />
+        </>
+      )}
+      {og.type && <meta property="og:type" content={og.type} />}
+      {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    </>
+  );
+}
+
+function renderTwitterMeta({
+  twitter,
+  twitterImage,
+  twitterImageAlt,
+}: {
+  twitter: NonNullable<SeoMeta["twitter"]>;
+  twitterImage?: string;
+  twitterImageAlt: string;
+}): ReactNode {
+  return (
+    <>
+      {twitter.card && <meta name="twitter:card" content={twitter.card} />}
+      <meta name="twitter:site" content="@klimatkollen" />
+      {twitter.title && <meta name="twitter:title" content={twitter.title} />}
+      {twitter.description && (
+        <meta name="twitter:description" content={twitter.description} />
+      )}
+      {twitterImage && (
+        <>
+          <meta name="twitter:image" content={twitterImage} />
+          <meta name="twitter:image:alt" content={twitterImageAlt} />
+        </>
+      )}
+    </>
+  );
+}
+
+function renderBasicMetaTags({
+  title,
+  description,
+  canonicalUrl,
+  noindex,
+}: {
+  title: string;
+  description?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}): ReactNode {
+  return (
+    <>
+      <title>{title}</title>
+      {description && <meta name="description" content={description} />}
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
+    </>
+  );
+}
+
+function resolveSeoImageUrls(meta: SeoMeta) {
+  const canonicalUrl = meta.canonical
+    ? buildAbsoluteUrl(meta.canonical)
+    : undefined;
+  const ogImage = meta.og?.image
+    ? buildAbsoluteImageUrl(meta.og.image)
+    : undefined;
+  const twitterImage = meta.twitter?.image
+    ? buildAbsoluteImageUrl(meta.twitter.image)
+    : undefined;
+  const lang = meta.canonical ? detectLangFromPath(meta.canonical) : "sv";
+  const ogLocale = meta.og?.locale ?? toOgLocale(lang);
+  return { canonicalUrl, ogImage, twitterImage, ogLocale };
+}
+
 /**
  * SEO component that renders meta tags based on a SeoMeta model.
  * Handles title, description, canonical, robots, hreflang, OpenGraph, and Twitter tags.
  */
 export function Seo({ meta }: SeoProps) {
-  const {
-    title,
-    description,
-    canonical,
-    noindex,
-    hreflang,
-    og,
-    twitter,
-    structuredData,
-  } = meta;
-
-  const canonicalUrl = canonical ? buildAbsoluteUrl(canonical) : undefined;
-  const ogImage = og?.image ? buildAbsoluteImageUrl(og.image) : undefined;
-  const twitterImage = twitter?.image
-    ? buildAbsoluteImageUrl(twitter.image)
-    : undefined;
-
-  const lang = canonical ? detectLangFromPath(canonical) : "sv";
-  const ogLocale = og?.locale ?? toOgLocale(lang);
+  const { title, description, noindex, hreflang, og, twitter, structuredData } =
+    meta;
+  const { canonicalUrl, ogImage, twitterImage, ogLocale } =
+    resolveSeoImageUrls(meta);
 
   const ogImageWidth = og?.imageWidth ?? 1200;
   const ogImageHeight = og?.imageHeight ?? 630;
@@ -57,62 +154,29 @@ export function Seo({ meta }: SeoProps) {
 
   return (
     <Helmet>
-      <title>{title}</title>
-
-      {description && <meta name="description" content={description} />}
-
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-
-      {noindex && <meta name="robots" content="noindex, nofollow" />}
-
-      {hreflang?.map(({ lang: hLang, href }) => (
-        <link key={hLang} rel="alternate" hrefLang={hLang} href={href} />
-      ))}
-
-      {og && (
-        <>
-          <meta property="og:site_name" content="Klimatkollen" />
-          <meta property="og:locale" content={ogLocale} />
-          {og.title && <meta property="og:title" content={og.title} />}
-          {og.description && (
-            <meta property="og:description" content={og.description} />
-          )}
-          {ogImage && (
-            <>
-              <meta property="og:image" content={ogImage} />
-              <meta property="og:image:width" content={String(ogImageWidth)} />
-              <meta
-                property="og:image:height"
-                content={String(ogImageHeight)}
-              />
-              <meta property="og:image:alt" content={ogImageAlt} />
-              <meta property="og:image:type" content={imageMimeType(ogImage)} />
-            </>
-          )}
-          {og.type && <meta property="og:type" content={og.type} />}
-          {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
-        </>
-      )}
-
-      {twitter && (
-        <>
-          {twitter.card && <meta name="twitter:card" content={twitter.card} />}
-          <meta name="twitter:site" content="@klimatkollen" />
-          {twitter.title && (
-            <meta name="twitter:title" content={twitter.title} />
-          )}
-          {twitter.description && (
-            <meta name="twitter:description" content={twitter.description} />
-          )}
-          {twitterImage && (
-            <>
-              <meta name="twitter:image" content={twitterImage} />
-              <meta name="twitter:image:alt" content={twitterImageAlt} />
-            </>
-          )}
-        </>
-      )}
-
+      {renderBasicMetaTags({
+        title,
+        description,
+        canonicalUrl,
+        noindex,
+      })}
+      {hreflang && renderHreflangLinks(hreflang)}
+      {og &&
+        renderOpenGraphMeta({
+          og,
+          canonicalUrl,
+          ogLocale,
+          ogImage,
+          ogImageWidth,
+          ogImageHeight,
+          ogImageAlt,
+        })}
+      {twitter &&
+        renderTwitterMeta({
+          twitter,
+          twitterImage,
+          twitterImageAlt,
+        })}
       {structuredData && (
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}

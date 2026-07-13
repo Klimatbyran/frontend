@@ -102,12 +102,7 @@ export function RegionalOverviewPage() {
 
   if (regionsLoading) {
     return (
-      <OverviewPageSkeleton
-        title={t("regionalOverviewPage.title")}
-        description={t("regionalOverviewPage.description")}
-        variant="regions"
-        chipCount={regionalKPIs.length}
-      />
+      <OverviewPageSkeleton variant="regions" chipCount={regionalKPIs.length} />
     );
   }
 
@@ -166,9 +161,8 @@ export function RegionalOverviewPage() {
   return (
     <>
       <PageHeader
+        variant="title-only"
         title={t("regionalOverviewPage.title")}
-        description={t("regionalOverviewPage.description")}
-        className="-ml-4"
       />
 
       <KPIChipSelector<Region>

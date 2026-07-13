@@ -159,3 +159,186 @@ export function createScopeEmissionsMetric(
       }),
   };
 }
+
+export function createCompanyOverviewSection(t: TFunction): ComparisonSection {
+  return {
+    id: "companyOverview",
+    label: t("explorePage.comparison.sections.companyOverview"),
+    metrics: [
+      {
+        id: "turnover",
+        label: t("companies.overview.turnover"),
+        getValue: (item, translate) =>
+          getDetailValue(
+            item,
+            "turnover",
+            translate("companies.overview.notReported"),
+            {
+              isAIGenerated: item.comparisonDetails?.turnoverIsAIGenerated,
+            },
+          ),
+      },
+      {
+        id: "employees",
+        label: t("companies.overview.employees"),
+        getValue: (item, translate) =>
+          getDetailValue(
+            item,
+            "employees",
+            translate("companies.overview.notReported"),
+            {
+              isAIGenerated: item.comparisonDetails?.employeesIsAIGenerated,
+            },
+          ),
+      },
+    ],
+  };
+}
+
+export function createCompanyReportingSection(t: TFunction): ComparisonSection {
+  return {
+    id: "reporting",
+    label: t("explorePage.comparison.sections.reporting"),
+    metrics: [
+      {
+        id: "reportingSince",
+        label: t("companies.card.reportingSince"),
+        getValue: (item, translate) => ({
+          text:
+            item.baseYear != null
+              ? String(item.baseYear)
+              : translate("unknown"),
+          colorClass: "text-white",
+        }),
+      },
+      {
+        id: "scope3Coverage",
+        label: t("companies.card.scope3Coverage"),
+        getValue: (item, translate) => ({
+          text: item.hasScope3Coverage ? translate("yes") : translate("no"),
+          colorClass: item.hasScope3Coverage ? "text-green-3" : "text-pink-3",
+          displayAsBadge: true,
+        }),
+      },
+    ],
+  };
+}
+
+export function createSustainableTransportSection(
+  t: TFunction,
+): ComparisonSection {
+  return {
+    id: "sustainableTransport",
+    label: t("explorePage.comparison.sections.sustainableTransport"),
+    metrics: [
+      {
+        id: "electricCarChange",
+        label: t("municipalityDetailPage.electricCarChange"),
+        getValue: (item, translate) =>
+          getDetailValue(
+            item,
+            "electricCarChangePercent",
+            translate("companies.card.noData"),
+            { colorClass: "text-orange-2" },
+          ),
+      },
+      {
+        id: "electricCarsPerChargePoint",
+        label: t("municipalityDetailPage.electricCarsPerChargePoint"),
+        getValue: (item, translate) =>
+          getDetailValue(
+            item,
+            "electricCarsPerChargePoint",
+            translate("companies.card.noData"),
+            {
+              colorClass:
+                item.comparisonDetails?.electricCarsPerChargePointColorClass ??
+                "text-white",
+            },
+          ),
+      },
+      {
+        id: "bicycleMetrePerCapita",
+        label: t("municipalityDetailPage.bicycleMetrePerCapita"),
+        getValue: (item, translate) =>
+          getDetailValue(
+            item,
+            "bicycleMetrePerCapita",
+            translate("companies.card.noData"),
+            { colorClass: "text-orange-2" },
+          ),
+      },
+    ],
+  };
+}
+
+export function createProcurementSection(t: TFunction): ComparisonSection {
+  return {
+    id: "procurement",
+    label: t("explorePage.comparison.sections.procurement"),
+    metrics: [
+      {
+        id: "procurementRequirements",
+        label: t("municipalityDetailPage.procurementRequirements"),
+        getValue: (item, translate) =>
+          getDetailValue(
+            item,
+            "procurementRequirements",
+            translate("companies.card.noData"),
+            {
+              colorClass:
+                item.comparisonDetails?.procurementColorClass ?? "text-white",
+            },
+          ),
+      },
+    ],
+  };
+}
+
+export function createPoliticsSection(t: TFunction): ComparisonSection {
+  return {
+    id: "politics",
+    label: t("explorePage.comparison.sections.politics"),
+    metrics: [
+      {
+        id: "politicalRule",
+        label: t("municipalityDetailPage.politicalRule"),
+        getValue: (item, translate) =>
+          getDetailValue(
+            item,
+            "politicalRule",
+            translate("companies.card.noData"),
+          ),
+      },
+      {
+        id: "politicalKSO",
+        label: t("municipalityDetailPage.politicalKSO"),
+        getValue: (item, translate) =>
+          getDetailValue(
+            item,
+            "politicalKSO",
+            translate("companies.card.noData"),
+          ),
+      },
+    ],
+  };
+}
+
+export function createClimatePlanSection(t: TFunction): ComparisonSection {
+  return {
+    id: "climatePlan",
+    label: t("explorePage.comparison.sections.climatePlan"),
+    metrics: [
+      {
+        id: "hasClimatePlan",
+        label: t("municipalities.card.climatePlan"),
+        getValue: getClimatePlanStatus,
+      },
+      {
+        id: "climatePlanAdopted",
+        label: t("municipalities.card.climatePlanAdopted"),
+        getValue: getClimatePlanAdopted,
+      },
+    ],
+  };
+}

@@ -151,7 +151,7 @@ describe("buildCompanySeoDescription", () => {
         {
           endDate: "2023-12-31",
           emissions: {
-            calculatedTotalEmissions: null as any,
+            calculatedTotalEmissions: null as unknown as number,
           },
         },
       ],

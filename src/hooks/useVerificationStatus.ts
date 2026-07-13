@@ -14,75 +14,88 @@ import type {
   AIGeneratable,
 } from "@/types/company";
 
-export function useVerificationStatus() {
-  /**
-   * Check if data is AI-generated (generic for any data with metadata)
-   */
-  const isAIGenerated = <T extends AIGeneratable>(
+function hasAIGeneratableMetadata(obj: unknown): obj is AIGeneratable {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "metadata" in obj &&
+    typeof (obj as { metadata?: unknown }).metadata === "object"
+  );
+}
+
+function isDataAIGenerated<T extends AIGeneratable>(
+  data: T | undefined | null,
+): boolean {
+  if (!data) return false;
+
+  const verifiedBy = data.metadata?.verifiedBy;
+  const noVerifier =
+    !verifiedBy ||
+    (typeof verifiedBy.name === "string" &&
+      (!verifiedBy.name || verifiedBy.name.trim() === ""));
+  const isGarbo = data.metadata?.user?.name === "Garbo (Klimatkollen)";
+
+  return noVerifier || isGarbo;
+}
+
+function hasAIGeneratedScope3Categories(
+  categories: Array<{ metadata?: unknown }> | undefined,
+  isAIGenerated: <T extends AIGeneratable>(
     data: T | undefined | null,
-  ): boolean => {
-    if (!data) return false;
-
-    // Check if verifiedBy is missing or empty
-    const verifiedBy = data.metadata?.verifiedBy;
-    const noVerifier =
-      !verifiedBy ||
-      (typeof verifiedBy.name === "string" &&
-        (!verifiedBy.name || verifiedBy.name.trim() === ""));
-
-    // Check if the user is Garbo (Klimatkollen)
-    const isGarbo = data.metadata?.user?.name === "Garbo (Klimatkollen)";
-
-    return noVerifier || isGarbo;
-  };
-
-  /**
-   * Type guard to check if an object has the AIGeneratable structure
-   */
-  function hasAIGeneratableMetadata(obj: unknown): obj is AIGeneratable {
-    return (
-      typeof obj === "object" &&
-      obj !== null &&
-      "metadata" in obj &&
-      typeof (obj as { metadata?: unknown }).metadata === "object"
-    );
+  ) => boolean,
+): boolean {
+  if (!categories) {
+    return false;
   }
 
-  /**
-   * Check if any emissions data in a ReportingPeriod is AI-generated
-   */
+  return categories.some(
+    (category) => hasAIGeneratableMetadata(category) && isAIGenerated(category),
+  );
+}
+
+function hasAIGeneratedScopeEmissions(
+  emissions: ReportingPeriod["emissions"],
+  isAIGenerated: <T extends AIGeneratable>(
+    data: T | undefined | null,
+  ) => boolean,
+): boolean {
+  if (!emissions) {
+    return false;
+  }
+
+  if (hasAIGeneratableMetadata(emissions) && isAIGenerated(emissions)) {
+    return true;
+  }
+
+  if (isAIGenerated(emissions.scope1)) return true;
+  if (isAIGenerated(emissions.scope2)) return true;
+
+  const statedTotal = emissions.scope3?.statedTotalEmissions;
+  if (
+    statedTotal &&
+    hasAIGeneratableMetadata(statedTotal) &&
+    isAIGenerated(statedTotal)
+  ) {
+    return true;
+  }
+
+  return hasAIGeneratedScope3Categories(
+    emissions.scope3?.categories,
+    isAIGenerated,
+  );
+}
+
+export function useVerificationStatus() {
+  const isAIGenerated = isDataAIGenerated;
+
   function isEmissionsAIGenerated(
     period: ReportingPeriod | ReportingPeriodFromList,
   ): boolean {
-    if (!period || !period.emissions) return false;
-
-    // Check main emissions object
-    if (hasAIGeneratableMetadata(period.emissions)) {
-      if (isAIGenerated(period.emissions)) return true;
+    if (!period?.emissions) {
+      return false;
     }
 
-    // Check individual scope emissions
-    if (isAIGenerated(period.emissions.scope1)) return true;
-    if (isAIGenerated(period.emissions.scope2)) return true;
-
-    if (period.emissions.scope3?.statedTotalEmissions) {
-      if (
-        hasAIGeneratableMetadata(period.emissions.scope3.statedTotalEmissions)
-      ) {
-        if (isAIGenerated(period.emissions.scope3.statedTotalEmissions))
-          return true;
-      }
-    }
-
-    // Check scope 3 categories if they exist
-    if (period.emissions.scope3?.categories) {
-      for (const category of period.emissions.scope3.categories) {
-        if (hasAIGeneratableMetadata(category)) {
-          if (isAIGenerated(category)) return true;
-        }
-      }
-    }
-    return false;
+    return hasAIGeneratedScopeEmissions(period.emissions, isAIGenerated);
   }
 
   return { isAIGenerated, isEmissionsAIGenerated };

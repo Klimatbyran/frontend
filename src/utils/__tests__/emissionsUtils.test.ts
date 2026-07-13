@@ -45,7 +45,9 @@ describe("validateData", () => {
   });
 
   it("should return false for array with undefined year", () => {
-    expect(validateData([{ year: undefined as any }])).toBe(false);
+    expect(validateData([{ year: undefined as unknown as number }])).toBe(
+      false,
+    );
   });
 
   it("should return true for valid data", () => {

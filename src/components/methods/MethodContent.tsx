@@ -1,22 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, forwardRef } from "react";
-import { RelatableNumbersContent } from "@/components/methods/content/relatableNumbers";
 import { getMethodById } from "@/lib/methods/methodologyData";
-import { SourcesContent } from "./content/SourcesContent";
-import { CompanyDataOverviewContent } from "./content/CompanyDataOverview";
-import { DataCollectionProcessContent } from "./content/DataCollectionProcess";
-import { EmissionsAndCategoriesContent } from "./content/EmissionsCategories";
-import { HistoricalDataContent } from "./content/HistoricalData";
-import { ParisAgreementContent } from "./content/ParisAgreementContent";
-import { EmissionTypesContent } from "./content/EmissionTypesContent";
-import { CalculationsContent } from "./content/CalculationsContent";
-import { CarbonLawContent } from "./content/CarbonLaw";
-import { MunicipalityAndRegionDataOverviewContent } from "./content/MunicipalityAndRegionDataOverview";
-import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
-import { NationDataOverviewContent } from "./content/NationDataOverview";
-import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
-import { TrendlineContent } from "./content/TrendLineMethodContent";
-import { InterpretingOnTrackContent } from "./content/InprepretingOnTrackContent";
+import { getMethodContentComponent } from "./methodContentRegistry";
 
 interface MethodologyContentProps {
   method: string;
@@ -46,43 +31,7 @@ export const MethodologyContent = forwardRef<
     );
   }
 
-  const renderContent = () => {
-    switch (method) {
-      case "sources":
-        return <SourcesContent />;
-
-      case "parisAgreement":
-        return <ParisAgreementContent />;
-      case "carbonLaw":
-        return <CarbonLawContent />;
-      case "trendline":
-        return <TrendlineContent />;
-      case "parisAlignment":
-        return <ParisAlignmentMethodContent />;
-      case "interpretingOnTrack":
-        return <InterpretingOnTrackContent />;
-      case "emissionTypes":
-        return <EmissionTypesContent />;
-      case "municipalityAndRegionDataOverview":
-        return <MunicipalityAndRegionDataOverviewContent />;
-      case "municipalityKPIs":
-        return <MunicipalityKPIsContent />;
-      case "companyDataOverview":
-        return <CompanyDataOverviewContent />;
-      case "emissionCategories":
-        return <EmissionsAndCategoriesContent />;
-      case "historicalData":
-        return <HistoricalDataContent />;
-      case "calculations":
-        return <CalculationsContent />;
-      case "companyDataCollection":
-        return <DataCollectionProcessContent />;
-      case "relatableNumbers":
-        return <RelatableNumbersContent />;
-      case "nationDataOverview":
-        return <NationDataOverviewContent />;
-    }
-  };
+  const ContentComponent = getMethodContentComponent(method);
 
   return (
     <div
@@ -99,7 +48,9 @@ export const MethodologyContent = forwardRef<
             {t(`methodsPage.${methodData.category}.${method}.description`)}
           </p>
         </div>
-        <div className="prose prose-invert max-w-none">{renderContent()}</div>
+        <div className="prose prose-invert max-w-none">
+          {ContentComponent ? <ContentComponent /> : null}
+        </div>
       </div>
     </div>
   );

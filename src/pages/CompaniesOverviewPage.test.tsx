@@ -91,7 +91,9 @@ vi.mock("@/components/layout/PageHeader", () => ({
 }));
 
 vi.mock("@/components/ranked/KPIChipSelector", () => ({
-  KPIChipSelector: () => <div data-testid="kpi-selector" />,
+  KPIChipSelector: ({ actions }: { actions?: React.ReactNode }) => (
+    <div data-testid="kpi-selector">{actions}</div>
+  ),
 }));
 
 vi.mock("@/components/ranked/OverviewSplitLayout", async (importOriginal) => {
@@ -118,27 +120,31 @@ vi.mock("@/components/companies/rankedList/CompanyKPIVisualization", () => ({
   CompanyKPIVisualization: () => <div data-testid="kpi-visualization" />,
 }));
 
-vi.mock("@/components/companies/rankedList/IndustryFilter", () => ({
-  IndustryFilter: ({
-    availableSectors,
-    selectedSector,
-    onSectorChange,
+vi.mock("@/components/explore/FilterPopover", () => ({
+  FilterPopover: ({
+    groups,
   }: {
-    availableSectors: string[];
-    selectedSector: string | null;
-    onSectorChange: (sector: string) => void;
+    groups: Array<{
+      options: Array<{ value: string; label: string }>;
+      selectedValues: string[];
+      onSelect: (value: string) => void;
+    }>;
   }) => (
-    <div>
-      {availableSectors.map((sector) => (
-        <button
-          key={sector}
-          type="button"
-          aria-pressed={selectedSector === sector}
-          onClick={() => onSectorChange(sector)}
-        >
-          {sector}
-        </button>
-      ))}
+    <div data-testid="filter-popover">
+      {groups.flatMap((group) =>
+        group.options
+          .filter((option) => option.value !== "all")
+          .map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              aria-pressed={group.selectedValues.includes(option.value)}
+              onClick={() => group.onSelect(option.value)}
+            >
+              {option.value}
+            </button>
+          )),
+      )}
     </div>
   ),
 }));
@@ -176,6 +182,39 @@ function LocationDisplay() {
 describe("CompaniesOverviewPage", () => {
   beforeEach(() => {
     capturedTopLists.length = 0;
+  });
+
+  it("shows all companies by default when no sector filter is set", async () => {
+    render(
+      <MemoryRouter initialEntries={["/en/companies"]}>
+        <Routes>
+          <Route
+            path="/en/companies"
+            element={
+              <>
+                <CompaniesOverviewPage />
+                <LocationDisplay />
+              </>
+            }
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(capturedTopLists.at(-1)).toEqual([
+        "Duni AB",
+        "Materials Two",
+        "Materials Three",
+        "Health One",
+        "Health Two",
+        "Health Three",
+      ]);
+    });
+
+    expect(screen.getByTestId("location-search")).not.toHaveTextContent(
+      "sector=",
+    );
   });
 
   it("keeps the top insights list scoped to the selected sector when switching", async () => {

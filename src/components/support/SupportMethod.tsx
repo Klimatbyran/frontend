@@ -5,7 +5,7 @@ interface SupportMethodProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  details: string[] | Record<string, string> | { [key: string]: any };
+  details: string[] | Record<string, string>;
   action?: {
     text: string;
     link: string;

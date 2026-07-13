@@ -2,7 +2,6 @@ import {
   OVERVIEW_PANEL_HEIGHT,
   OVERVIEW_PANEL_MD_HEIGHT,
 } from "@/components/ranked/OverviewSplitLayout";
-import { PageHeader } from "@/components/layout/PageHeader";
 
 export type OverviewPageSkeletonVariant =
   | "municipalities"
@@ -10,8 +9,6 @@ export type OverviewPageSkeletonVariant =
   | "companies";
 
 interface OverviewPageSkeletonProps {
-  title: string;
-  description?: string;
   variant?: OverviewPageSkeletonVariant;
   /** Number of KPI chip placeholders on desktop */
   chipCount?: number;
@@ -20,39 +17,37 @@ interface OverviewPageSkeletonProps {
 const SHIMMER = "bg-white/10 rounded animate-pulse";
 
 const CHIP_WIDTHS = ["w-20", "w-28", "w-24", "w-32", "w-28", "w-36", "w-24"];
-const SECTOR_WIDTHS = ["w-16", "w-24", "w-20", "w-28", "w-20", "w-24"];
 
 function SkeletonBlock({ className = "" }: { className?: string }) {
   return <div className={`${SHIMMER} ${className}`} />;
 }
 
-function KPIChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
+function KPIChipSelectorSkeleton({
+  chipCount,
+  showActions = false,
+}: {
+  chipCount: number;
+  showActions?: boolean;
+}) {
   return (
-    <div className="mb-6 space-y-3">
+    <div className="mb-4 space-y-2">
       <SkeletonBlock className="h-3 w-36 mx-1" />
-      <SkeletonBlock className="md:hidden h-12 w-full rounded-xl" />
-      <div className="hidden md:flex gap-2 flex-wrap">
-        {Array.from({ length: chipCount }, (_, i) => (
-          <SkeletonBlock
-            key={i}
-            className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
-          />
-        ))}
+      <div className="flex flex-col gap-2">
+        <SkeletonBlock className="md:hidden h-12 w-full rounded-xl" />
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="hidden md:flex gap-2 flex-wrap min-w-0">
+            {Array.from({ length: chipCount }, (_, i) => (
+              <SkeletonBlock
+                key={i}
+                className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
+              />
+            ))}
+          </div>
+          {showActions && (
+            <SkeletonBlock className="h-9 w-24 rounded-md w-full md:w-auto" />
+          )}
+        </div>
       </div>
-    </div>
-  );
-}
-
-function IndustryFilterSkeleton() {
-  return (
-    <div className="mb-4 flex flex-wrap items-center gap-2">
-      <SkeletonBlock className="h-4 w-28" />
-      {Array.from({ length: 6 }, (_, i) => (
-        <SkeletonBlock
-          key={i}
-          className={`h-8 rounded-level-1 ${SECTOR_WIDTHS[i % SECTOR_WIDTHS.length]}`}
-        />
-      ))}
     </div>
   );
 }
@@ -145,18 +140,17 @@ function DistributionPanelSkeleton() {
 
 /** Skeleton that mirrors the overview page layout while data loads. */
 export function OverviewPageSkeleton({
-  title,
-  description,
   variant = "municipalities",
   chipCount = variant === "regions" ? 2 : variant === "companies" ? 2 : 7,
 }: OverviewPageSkeletonProps) {
   return (
     <>
-      <PageHeader title={title} description={description} className="-ml-4" />
+      <SkeletonBlock className="h-9 w-56 md:w-72 mb-2 md:mb-3" />
 
-      <KPIChipSelectorSkeleton chipCount={chipCount} />
-
-      {variant === "companies" && <IndustryFilterSkeleton />}
+      <KPIChipSelectorSkeleton
+        chipCount={chipCount}
+        showActions={variant === "companies"}
+      />
 
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">

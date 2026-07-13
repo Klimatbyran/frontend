@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { RegionForExplore } from "./useRegionsForExplore";
-import { getLastEmissionYear } from "./useRegionsForExplore";
+import {
+  type RegionForExplore,
+  getLastEmissionYear,
+} from "./useRegionsForExplore";
 import { useRegionSortOptions } from "./useRegionSorting";
 import {
   useExploreFilters,
