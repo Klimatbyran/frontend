@@ -5,6 +5,7 @@ import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { StoryScrollHint } from "@/components/nation/story/StoryScrollHint";
+import { StoryStageProvider } from "@/components/nation/story/storyStageContext";
 import { NATION_STORY_TEXT } from "@/components/nation/story/nationStoryColors";
 import { useLanguage } from "@/components/LanguageProvider";
 import type { NationStoryDetails } from "@/hooks/nation/useNationStoryDetails";
@@ -30,9 +31,10 @@ export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
   const conclusionRef = useRef<HTMLElement>(null);
 
   return (
-    <div className="bg-black text-white pb-24">
-      {/* Intro */}
-      <section className="relative flex items-start justify-center min-h-screen px-4 md:px-8 pt-16 md:pt-24 pb-10">
+    <StoryStageProvider>
+      <div className="bg-black text-white pb-24">
+        {/* Intro */}
+        <section className="relative flex items-start justify-center min-h-screen px-4 md:px-8 pt-16 md:pt-24 pb-10">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg"
@@ -97,6 +99,7 @@ export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
       </section>
 
       <StoryScrollHint endRef={conclusionRef} />
-    </div>
+      </div>
+    </StoryStageProvider>
   );
 }

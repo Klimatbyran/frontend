@@ -10,6 +10,7 @@ import {
   NATION_STORY_TEXT,
 } from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
+import { useReportStoryStage } from "@/components/nation/story/storyStageContext";
 
 type JourneyStep = {
   key: string;
@@ -108,10 +109,11 @@ export function NationEmissionsJourney({
   const steps = buildSteps(metrics);
   const maxTotal = steps[steps.length - 1].total;
 
-  const { ref, step, sectionVh, stageStyle } = usePinnedSteps(
+  const { ref, step, sectionVh, stageStyle, mode } = usePinnedSteps(
     steps.length,
     JOURNEY_STEP_VH,
   );
+  useReportStoryStage("journey", mode);
 
   const current = steps[step];
   const newestLayerKey = steps
