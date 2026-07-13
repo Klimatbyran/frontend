@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNationDetails } from "@/lib/api";
-import nationFixture from "@/data/nation-data.fixture.json";
 import type { NationEmissionSeries } from "@/utils/data/nationStoryMetrics";
 
 export type NationStoryDetails = {
@@ -91,24 +90,14 @@ function transformRawNation(response: RawNationResponse): NationStoryDetails {
   };
 }
 
-function getFixtureNation(): RawNationResponse {
-  const fixtureEntry = nationFixture[0] as RawNationResponse;
-  return fixtureEntry;
-}
-
 async function fetchNationStoryDetails(): Promise<NationStoryDetails> {
   const data = await getNationDetails();
   const raw = (Array.isArray(data) ? data[0] : data) as RawNationResponse;
 
-  if (hasStorySchema(raw)) {
-    return transformRawNation(raw);
-  }
-
-  if (import.meta.env.DEV) {
-    console.warn(
-      "[nation-story] API response missing story fields; using nation-data.fixture.json",
+  if (!hasStorySchema(raw)) {
+    throw new Error(
+      "Nation API response is missing required story emission series",
     );
-    return transformRawNation(getFixtureNation());
   }
 
   return transformRawNation(raw);
