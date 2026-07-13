@@ -76,13 +76,13 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
           >
             {t("nation.story.conclusion.fullLabel")}
           </p>
-          <p className="text-6xl md:text-8xl font-light text-pink-1 tabular-nums leading-none">
+          <p className="text-6xl md:text-8xl font-light text-pink-3 tabular-nums leading-none">
             {formatMton(metrics.combinedLatestMton, currentLanguage, 0)}
           </p>
           <p className={`text-lg md:text-xl ${NATION_STORY_TEXT.body} mt-2`}>
             {t("nation.story.unit.millionTco2e")}
           </p>
-          <p className="mt-4 text-xl md:text-2xl font-medium text-pink-1 tabular-nums">
+          <p className="mt-4 text-xl md:text-2xl font-medium text-pink-3 tabular-nums">
             {formatPercentChange(
               metrics.combinedChangePercent,
               currentLanguage,
