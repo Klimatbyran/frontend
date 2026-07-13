@@ -76,6 +76,15 @@ export function MeetsParisBarChart({
   );
 
   const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
+  const activeSegment = useMemo(
+    () =>
+      activeCompanyId
+        ? groups
+            .flatMap((group) => group.segments)
+            .find((segment) => segment.id === activeCompanyId)
+        : undefined,
+    [activeCompanyId, groups],
+  );
   const yAxisWidth = isMobile ? 52 : Y_AXIS_WIDTH;
   const chartMinHeight = isMobile ? 220 : CHART_MIN_HEIGHT;
   const outerMinHeight = isMobile ? 280 : OUTER_MIN_HEIGHT;
@@ -376,41 +385,39 @@ export function MeetsParisBarChart({
       </div>
 
       {isMobile && activeCompanyId && (
-        <button
-          type="button"
-          className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white transition-colors hover:bg-white/5"
-          onClick={() => {
-            const entry = companyById.get(activeCompanyId);
-            if (entry) onCompanyClick?.(entry);
-          }}
-        >
-          {companyById.has(activeCompanyId) ? (
-            <>
-              <span className="font-medium">
-                {companyById.get(activeCompanyId)!.company.name}
-              </span>
-              <span className="mt-1 block text-orange-2">
-                {formatWithScale(
-                  companyById.get(activeCompanyId)!.emissions,
-                  unitScale,
-                )}
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="font-medium">{otherLabel}</span>
-              <span className="mt-1 block text-orange-2">
-                {formatWithScale(
-                  groups
-                    .flatMap((group) => group.segments)
-                    .find((segment) => segment.id === activeCompanyId)
-                    ?.emissions ?? 0,
-                  unitScale,
-                )}
-              </span>
-            </>
-          )}
-        </button>
+        companyById.has(activeCompanyId) ? (
+          <button
+            type="button"
+            className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white transition-colors hover:bg-white/5"
+            onClick={() => {
+              const entry = companyById.get(activeCompanyId);
+              if (entry) onCompanyClick?.(entry);
+            }}
+          >
+            <span className="font-medium">
+              {companyById.get(activeCompanyId)!.company.name}
+            </span>
+            <span className="mt-1 block text-orange-2">
+              {formatWithScale(
+                companyById.get(activeCompanyId)!.emissions,
+                unitScale,
+              )}
+            </span>
+          </button>
+        ) : (
+          <div className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white">
+            <span className="font-medium">{otherLabel}</span>
+            <span className="mt-1 block text-orange-2">
+              {formatWithScale(activeSegment?.emissions ?? 0, unitScale)}
+            </span>
+            <span className="mt-1 block text-xs text-white/50">
+              {t(
+                "companiesOverviewPage.visualizations.meetsParis.otherSegmentCount",
+                { count: activeSegment?.aggregateCount ?? 0 },
+              )}
+            </span>
+          </div>
+        )
       )}
     </div>
   );

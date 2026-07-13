@@ -60,6 +60,8 @@ index 8486cff..ff263a6 100644
 +      if (!companies) {
 +        companies = await companyService.getParisOverviewForPublicRead()
 +        await redisCache.set(dataCacheKey, JSON.stringify(companies))
++      } else {
++        companies = JSON.parse(companies)
 +      }
 +
 +      reply.header('ETag', `${currentEtag}`)

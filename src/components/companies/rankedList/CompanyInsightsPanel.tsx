@@ -15,7 +15,7 @@ import {
 import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
 import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
-import { getTopParisEmissionsCompanies } from "@/utils/insights/meetsParisChartData";
+import { getTopParisEmissionsCompanies, getParisEmissionsBreakdown } from "@/utils/insights/meetsParisChartData";
 import {
   isMeetsParisKpi,
   PARIS_STATUS_COLORS,
@@ -38,6 +38,19 @@ interface InsightsPanelProps {
 }
 
 const MIN_COMPANIES = 2;
+
+function hasEnoughInsightsData(
+  companyData: CompanyWithKPIs[],
+  selectedKPI: CompanyKPIValue,
+  validDataCount: number,
+): boolean {
+  if (isMeetsParisKpi(selectedKPI)) {
+    const { totalEmissions } = getParisEmissionsBreakdown(companyData);
+    return totalEmissions > 0;
+  }
+
+  return validDataCount >= MIN_COMPANIES;
+}
 
 function FramedInsightsEmptyState({ message }: { message: string }) {
   return (
@@ -289,7 +302,13 @@ function CompanyInsightsPanel({
 
   const insightsData = getCompanyInsightsData(companyData, selectedKPI, t);
 
-  if (insightsData.statistics.validData.length < MIN_COMPANIES) {
+  if (
+    !hasEnoughInsightsData(
+      companyData,
+      selectedKPI,
+      insightsData.statistics.validData.length,
+    )
+  ) {
     return (
       <FramedInsightsEmptyState
         message={t("companies.list.insights.noData.metric", {
