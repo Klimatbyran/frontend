@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { NationConclusion } from "@/components/nation/story/NationConclusion";
@@ -14,17 +15,10 @@ type NationStoryPageProps = {
   metrics: NationStoryMetrics;
 };
 
-function FullScreenSection({
-  children,
-  showScrollHint = false,
-}: {
-  children: React.ReactNode;
-  showScrollHint?: boolean;
-}) {
+function FullScreenSection({ children }: { children: React.ReactNode }) {
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center px-4 md:px-8 py-10">
       <div className="w-full max-w-4xl mx-auto">{children}</div>
-      {showScrollHint && <StoryScrollHint />}
     </section>
   );
 }
@@ -33,6 +27,7 @@ export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const countryName = nation.country[currentLanguage];
+  const conclusionRef = useRef<HTMLElement>(null);
 
   return (
     <div className="bg-black text-white pb-24">
@@ -59,14 +54,13 @@ export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
             {t("nation.story.intro.paragraph3")}
           </p>
         </div>
-        <StoryScrollHint />
       </section>
 
       {/* Scroll-driven journey: bubble builds up layer by layer */}
       <NationEmissionsJourney metrics={metrics} />
 
       {/* Bathtub metaphor – after the bubble journey */}
-      <FullScreenSection showScrollHint>
+      <FullScreenSection>
         <div className="max-w-2xl mx-auto text-center space-y-6">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -93,9 +87,16 @@ export function NationStoryPage({ nation, metrics }: NationStoryPageProps) {
       <NationStackedChart data={metrics.stackData} />
 
       {/* Conclusion – the punchline tying the journey together */}
-      <FullScreenSection>
-        <NationConclusion metrics={metrics} />
-      </FullScreenSection>
+      <section
+        ref={conclusionRef}
+        className="relative min-h-[80vh] flex items-center justify-center px-4 md:px-8 py-10"
+      >
+        <div className="w-full max-w-4xl mx-auto">
+          <NationConclusion metrics={metrics} />
+        </div>
+      </section>
+
+      <StoryScrollHint endRef={conclusionRef} />
     </div>
   );
 }
