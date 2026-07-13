@@ -1511,6 +1511,10 @@
         "paragraph2": "Ofta tittar man bara på de territoriella växthusgasutsläppen – utsläpp som uppstår innanför Sveriges geografiska gränser. Det är huvudmåttet som används för att följa upp Sveriges nationella och internationella klimatmål, och räknar exempelvis in inrikesflyg, el och fjärrvärme samt avfall.",
         "paragraph3": "Men Sveriges klimatpåverkan är större än så. Låt oss bredda perspektivet – steg för steg."
       },
+      "scrollHint": {
+        "text": "Scrolla för att fortsätta",
+        "label": "Scrolla nedåt för att fortsätta berättelsen"
+      },
       "journey": {
         "runningTotalLabel": "Sveriges utsläpp hittills",
         "step1": {

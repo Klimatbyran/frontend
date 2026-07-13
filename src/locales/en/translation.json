@@ -1461,6 +1461,10 @@
         "paragraph2": "Usually only territorial greenhouse gas emissions are considered – emissions that occur within Sweden's geographic borders. It is the main measure used to track Sweden's national and international climate goals, and includes for example domestic aviation, electricity and district heating, and waste.",
         "paragraph3": "But Sweden's climate impact is larger than that. Let's broaden the perspective – step by step."
       },
+      "scrollHint": {
+        "text": "Scroll to continue",
+        "label": "Scroll down to continue the story"
+      },
       "journey": {
         "runningTotalLabel": "Sweden's emissions so far",
         "step1": {
