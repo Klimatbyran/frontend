@@ -91,30 +91,36 @@ function collectYears(series: NationEmissionSeries): number[] {
   return [...years].sort((a, b) => a - b);
 }
 
-function getLatestCompleteYear(series: NationEmissionSeries): number {
-  const years = collectYears(series);
-  const completeYears = years.filter(
-    (year) =>
-      series.territorialFossil[year] !== undefined &&
-      series.productionBased[year] !== undefined &&
-      series.biogenic[year] !== undefined &&
-      series.consumptionAbroad[year] !== undefined,
+function isCompleteYear(series: NationEmissionSeries, year: number): boolean {
+  return (
+    series.territorialFossil[year] !== undefined &&
+    series.productionBased[year] !== undefined &&
+    series.biogenic[year] !== undefined &&
+    series.consumptionAbroad[year] !== undefined
   );
-  return completeYears.at(-1) ?? years.at(-1) ?? NATION_BASELINE_YEAR;
+}
+
+function getCompleteYears(series: NationEmissionSeries): number[] {
+  return collectYears(series).filter((year) => isCompleteYear(series, year));
+}
+
+function getLatestCompleteYear(series: NationEmissionSeries): number {
+  const completeYears = getCompleteYears(series);
+  return completeYears.at(-1) ?? collectYears(series).at(-1) ?? NATION_BASELINE_YEAR;
 }
 
 export function buildStackChartData(
   series: NationEmissionSeries,
 ): NationStackDataPoint[] {
-  return collectYears(series).map((year) => {
-    const territorialFossil = toMton(series.territorialFossil[year] ?? 0);
-    const productionBased = toMton(series.productionBased[year] ?? 0);
+  return getCompleteYears(series).map((year) => {
+    const territorialFossil = toMton(series.territorialFossil[year]);
+    const productionBased = toMton(series.productionBased[year]);
     const productionBeyondTerritorial = Math.max(
       0,
       productionBased - territorialFossil,
     );
-    const biogenic = toMton(series.biogenic[year] ?? 0);
-    const consumptionAbroad = toMton(series.consumptionAbroad[year] ?? 0);
+    const biogenic = toMton(series.biogenic[year]);
+    const consumptionAbroad = toMton(series.consumptionAbroad[year]);
 
     return {
       year,

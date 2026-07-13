@@ -71,4 +71,18 @@ describe("nationStoryMetrics", () => {
     expect(percentChange(100, 150)).toBe(50);
     expect(percentChange(200, 100)).toBe(-50);
   });
+
+  it("excludes years with missing layers from stack chart data", () => {
+    const incompleteSeries: NationEmissionSeries = {
+      ...series,
+      consumptionAbroad: Object.fromEntries(
+        Object.entries(series.consumptionAbroad).filter(([year]) => year !== "2024"),
+      ),
+    };
+
+    const stackData = buildStackChartData(incompleteSeries);
+
+    expect(stackData.some((point) => point.year === 2024)).toBe(false);
+    expect(stackData.at(-1)?.year).toBe(2023);
+  });
 });

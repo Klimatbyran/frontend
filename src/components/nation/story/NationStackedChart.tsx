@@ -47,7 +47,7 @@ const LAYERS = [
   {
     dataKey: "productionBeyondTerritorial" as const,
     color: NATION_STORY_COLORS.production,
-    translationKey: "nation.story.graph.productionBased",
+    translationKey: "nation.story.graph.productionBeyondTerritorial",
     captionKey: "nation.story.stacked.layerCaption2",
   },
   {

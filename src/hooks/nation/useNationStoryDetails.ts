@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNationDetails } from "@/lib/api";
+import { extractYearRecord } from "@/utils/data/nationTerritorialTransforms";
 import type { NationEmissionSeries } from "@/utils/data/nationStoryMetrics";
 
 export type NationStoryDetails = {
@@ -29,50 +30,19 @@ function normalizeCountry(
   return { sv: country.sv, en: country.en };
 }
 
-function isYearlyRecord(value: unknown): value is YearlyRecord {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    !Array.isArray(value) &&
-    Object.keys(value).some((key) => !Number.isNaN(Number(key)))
-  );
-}
-
-function extractYearRecord(
+function hasEmissionData(
   emissions: EmissionSeries | YearlyRecord | undefined,
-): Record<number, number> {
-  const record: Record<number, number> = {};
-
-  if (!emissions) return record;
-
-  if (isYearlyRecord(emissions)) {
-    Object.entries(emissions).forEach(([year, value]) => {
-      const parsedYear = Number(year);
-      if (!Number.isNaN(parsedYear) && typeof value === "number") {
-        record[parsedYear] = value;
-      }
-    });
-    return record;
-  }
-
-  emissions.forEach((point) => {
-    if (!point) return;
-    const parsedYear = Number(point.year);
-    if (!Number.isNaN(parsedYear)) {
-      record[parsedYear] = point.value;
-    }
-  });
-
-  return record;
+): boolean {
+  return Object.keys(extractYearRecord(emissions)).length > 0;
 }
 
 function hasStorySchema(response: RawNationResponse): boolean {
   const territorial = response.territorialFossilEmissions ?? response.emissions;
   return (
-    !!territorial &&
-    !!response.productionBasedEmissions &&
-    !!response.biogenicEmissions &&
-    !!response.consumptionAbroadEmissions
+    hasEmissionData(territorial) &&
+    hasEmissionData(response.productionBasedEmissions) &&
+    hasEmissionData(response.biogenicEmissions) &&
+    hasEmissionData(response.consumptionAbroadEmissions)
   );
 }
 

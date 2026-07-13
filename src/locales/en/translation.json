@@ -1449,7 +1449,7 @@
   },
   "nation": {
     "detailPage": {
-      "regions": "Utforska Sveriges län"
+      "regions": "Explore Sweden's counties"
     },
     "story": {
       "unit": {
@@ -1496,6 +1496,7 @@
       "graph": {
         "territorialFossil": "Territorial emissions",
         "productionBased": "Production-based emissions",
+        "productionBeyondTerritorial": "Shipping and aviation abroad",
         "biogenic": "Biogenic emissions",
         "consumptionAbroad": "Consumption-based abroad"
       },
