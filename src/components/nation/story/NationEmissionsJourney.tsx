@@ -28,6 +28,15 @@ type JourneyStep = {
 };
 
 const MAX_DIAMETER = 300;
+/** Scroll distance per journey step – higher = more time to watch each layer grow. */
+const JOURNEY_STEP_VH = 115;
+/** Gentle spring so each new onion layer visibly expands. */
+const LAYER_GROW_TRANSITION = {
+  type: "spring" as const,
+  stiffness: 48,
+  damping: 16,
+  mass: 1.6,
+};
 
 function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
   const territorial = metrics.territorialLatestMton;
@@ -99,9 +108,16 @@ export function NationEmissionsJourney({
   const steps = buildSteps(metrics);
   const maxTotal = steps[steps.length - 1].total;
 
-  const { ref, step, sectionVh, stageStyle } = usePinnedSteps(steps.length);
+  const { ref, step, sectionVh, stageStyle } = usePinnedSteps(
+    steps.length,
+    JOURNEY_STEP_VH,
+  );
 
   const current = steps[step];
+  const newestLayerKey = steps
+    .slice(0, step + 1)
+    .filter((s) => s.layer)
+    .at(-1)?.key;
 
   // All layer-circles revealed so far, largest drawn first (behind) so each
   // colour shows as a ring around the previous – i.e. the types stacked up.
@@ -134,14 +150,21 @@ export function NationEmissionsJourney({
             >
               {revealedLayers.map((layer) => {
                 const d = diameterFor(layer.total);
+                const isGrowingLayer = layer.key === newestLayerKey;
                 return (
                   <motion.div
                     key={layer.key}
                     className="absolute left-1/2 top-1/2 rounded-full"
                     style={{ backgroundColor: layer.color, opacity: 1 }}
-                    initial={{ width: 0, height: 0, x: "-50%", y: "-50%" }}
+                    initial={
+                      isGrowingLayer
+                        ? { width: 0, height: 0, x: "-50%", y: "-50%" }
+                        : { width: d, height: d, x: "-50%", y: "-50%" }
+                    }
                     animate={{ width: d, height: d, x: "-50%", y: "-50%" }}
-                    transition={{ type: "spring", stiffness: 140, damping: 20 }}
+                    transition={
+                      isGrowingLayer ? LAYER_GROW_TRANSITION : { duration: 0 }
+                    }
                   />
                 );
               })}
@@ -157,9 +180,9 @@ export function NationEmissionsJourney({
                     y: "-50%",
                     borderColor: NATION_STORY_COLORS.eCommerceRing,
                   }}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.85 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4 }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 />
               )}
 
