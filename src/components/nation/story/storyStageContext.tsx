@@ -51,7 +51,9 @@ export function StoryStageProvider({ children }: { children: ReactNode }) {
 function useStoryStageContext() {
   const context = useContext(StoryStageContext);
   if (!context) {
-    throw new Error("useStoryStageContext must be used within StoryStageProvider");
+    throw new Error(
+      "useStoryStageContext must be used within StoryStageProvider",
+    );
   }
   return context;
 }

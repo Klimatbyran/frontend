@@ -80,7 +80,9 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   const [chartEndYear, setChartEndYear] = useState(currentYear);
 
   // Scroll-driven: each step reveals one more area layer.
-  const { ref, step, sectionVh, stageStyle, mode } = usePinnedSteps(LAYERS.length);
+  const { ref, step, sectionVh, stageStyle, mode } = usePinnedSteps(
+    LAYERS.length,
+  );
   useReportStoryStage("stacked-chart", mode);
   const visibleLayers = step + 1;
 
