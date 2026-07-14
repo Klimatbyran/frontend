@@ -26,6 +26,7 @@ import {
   MunicipalitiesOverviewPage,
   MunicipalityDetailPage,
   NationDetailPage,
+  Valet2026Page,
   NewsLetterArchivePage,
   NotFoundPage,
   ParisAlignedStatisticsPage,
@@ -44,8 +45,6 @@ import {
 import { AuthCallback } from "./pages/AuthCallback";
 import { LandingPage } from "./pages/LandingPage";
 import { ComparisonRouteLayout } from "./components/compare/ComparisonRouteLayout";
-
-void StagingProtectedRoute; // referenced so dead-code scripts keep the component; eslint/ts unused-import satisfied
 
 function ComparisonRoutes({ basePath }: { basePath: string }) {
   return (
@@ -126,6 +125,9 @@ function TerritoryRoutes({ basePath }: { basePath: string }) {
     <>
       <Route path={`${basePath}/regions`} element={<RegionalOverviewPage />} />
       <Route path={`${basePath}/nation`} element={<NationDetailPage />} />
+      <Route element={<StagingProtectedRoute />}>
+        <Route path={`${basePath}/valet-2026`} element={<Valet2026Page />} />
+      </Route>
       <Route
         path={`${basePath}/municipalities`}
         element={<MunicipalitiesOverviewPage />}

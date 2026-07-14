@@ -124,6 +124,11 @@ export const NationDetailPage = lazy(() =>
     default: m.NationDetailPage,
   })),
 );
+export const Valet2026Page = lazy(() =>
+  import("./pages/Valet2026Page").then((m) => ({
+    default: m.Valet2026Page,
+  })),
+);
 export const CompaniesOverviewPage = lazy(() =>
   import("./pages/CompaniesOverviewPage").then((m) => ({
     default: m.CompaniesOverviewPage,
