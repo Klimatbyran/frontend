@@ -2153,6 +2153,7 @@
       }
     },
     "filter": "Filter:",
+    "removeFilter": "Ta bort filter",
     "sorting": "Sorterar:",
     "sortingOptions": {
       "aToZ": "A-Ö",

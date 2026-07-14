@@ -2103,6 +2103,7 @@
       }
     },
     "filter": "Filter:",
+    "removeFilter": "Remove filter",
     "sorting": "Sorting by:",
     "sortingOptions": {
       "aToZ": "A-Z",
