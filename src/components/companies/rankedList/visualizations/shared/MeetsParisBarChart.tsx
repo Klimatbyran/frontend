@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
@@ -56,7 +56,7 @@ export function MeetsParisBarChart({
     "companiesOverviewPage.visualizations.meetsParis.otherSegment",
   );
 
-  const { groups, companyById, maxBarTotal } = useMemo(
+  const { groups, maxBarTotal } = useMemo(
     () =>
       buildParisBarChartGroups(entries, {
         no: falseLabel,
@@ -64,6 +64,29 @@ export function MeetsParisBarChart({
       }),
     [entries, falseLabel, trueLabel],
   );
+
+  const validSegmentIds = useMemo(
+    () =>
+      new Set(
+        groups.flatMap((group) => group.segments.map((segment) => segment.id)),
+      ),
+    [groups],
+  );
+
+  const activeSegment = useMemo(() => {
+    if (!activeCompanyId) return null;
+    return (
+      groups
+        .flatMap((group) => group.segments)
+        .find((segment) => segment.id === activeCompanyId) ?? null
+    );
+  }, [activeCompanyId, groups]);
+
+  useEffect(() => {
+    if (activeCompanyId && !validSegmentIds.has(activeCompanyId)) {
+      setActiveCompanyId(null);
+    }
+  }, [activeCompanyId, validSegmentIds]);
 
   const yAxisTicks = useMemo(
     () => buildYAxisTicks(maxBarTotal / unitScale.divisor),
@@ -76,15 +99,6 @@ export function MeetsParisBarChart({
   );
 
   const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
-  const activeSegment = useMemo(
-    () =>
-      activeCompanyId
-        ? groups
-            .flatMap((group) => group.segments)
-            .find((segment) => segment.id === activeCompanyId)
-        : undefined,
-    [activeCompanyId, groups],
-  );
   const yAxisWidth = isMobile ? 52 : Y_AXIS_WIDTH;
   const chartMinHeight = isMobile ? 220 : CHART_MIN_HEIGHT;
   const outerMinHeight = isMobile ? 280 : OUTER_MIN_HEIGHT;
@@ -385,36 +399,30 @@ export function MeetsParisBarChart({
       </div>
 
       {isMobile &&
-        activeCompanyId &&
-        (companyById.has(activeCompanyId) ? (
+        activeSegment &&
+        (activeSegment.entry ? (
           <button
             type="button"
             className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white transition-colors hover:bg-white/5"
-            onClick={() => {
-              const entry = companyById.get(activeCompanyId);
-              if (entry) onCompanyClick?.(entry);
-            }}
+            onClick={() => onCompanyClick?.(activeSegment.entry!)}
           >
             <span className="font-medium">
-              {companyById.get(activeCompanyId)!.company.name}
+              {activeSegment.entry.company.name}
             </span>
             <span className="mt-1 block text-orange-2">
-              {formatWithScale(
-                companyById.get(activeCompanyId)!.emissions,
-                unitScale,
-              )}
+              {formatWithScale(activeSegment.emissions, unitScale)}
             </span>
           </button>
         ) : (
           <div className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white">
             <span className="font-medium">{otherLabel}</span>
             <span className="mt-1 block text-orange-2">
-              {formatWithScale(activeSegment?.emissions ?? 0, unitScale)}
+              {formatWithScale(activeSegment.emissions, unitScale)}
             </span>
             <span className="mt-1 block text-xs text-white/50">
               {t(
                 "companiesOverviewPage.visualizations.meetsParis.otherSegmentCount",
-                { count: activeSegment?.aggregateCount ?? 0 },
+                { count: activeSegment.aggregateCount ?? 0 },
               )}
             </span>
           </div>
