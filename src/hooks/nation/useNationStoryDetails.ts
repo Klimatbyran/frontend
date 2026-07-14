@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getNationDetails } from "@/lib/api";
+import { getAdditionalNationData } from "@/lib/api";
 import { normalizeNationCountry } from "@/hooks/nation/normalizeNationCountry";
 import { extractYearRecord } from "@/utils/data/nationTerritorialTransforms";
 import type { NationEmissionSeries } from "@/utils/data/nationStoryMetrics";
@@ -53,7 +53,7 @@ function transformRawNation(response: RawNationResponse): NationStoryDetails {
 }
 
 async function fetchNationStoryDetails(): Promise<NationStoryDetails> {
-  const data = await getNationDetails();
+  const data = await getAdditionalNationData();
   const raw = (Array.isArray(data) ? data[0] : data) as RawNationResponse;
 
   if (!hasStorySchema(raw)) {
@@ -71,7 +71,7 @@ export function useNationStoryDetails() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["nation-story"],
+    queryKey: ["additional-nation-story"],
     queryFn: fetchNationStoryDetails,
   });
 

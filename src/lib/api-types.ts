@@ -2803,6 +2803,88 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/additional-nation-data/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get additional national data
+         * @description Retrieve supplementary national (Sweden) data with territorial fossil, production-based, biogenic, consumption abroad, oil export, and e-commerce emissions. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            country: {
+                                sv: string;
+                                en: string;
+                            };
+                            logoUrl?: string | null;
+                            territorialFossilEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            productionBasedEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            biogenicEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            consumptionAbroadEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            exportOfOilProductsEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                            eCommerceEmissions: ({
+                                year: string;
+                                value: number;
+                            } | null)[];
+                        };
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            message?: string;
+                            details?: unknown;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/nation/": {
         parameters: {
             query?: never;
