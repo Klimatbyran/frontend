@@ -221,23 +221,21 @@ export function RankedList<T extends Record<string, unknown>>({
     <button
       key={String(index)}
       onClick={() => onItemClick?.(item)}
-      className="w-full p-4 hover:bg-black/70 transition-colors flex items-start justify-between gap-4 group"
+      className="w-full px-4 hover:bg-black/70 transition-colors flex items-center gap-4 group"
     >
-      <div className="flex items-center gap-4">
-        <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">
-          {selectedDataPoint.isBoolean
-            ? ""
-            : isMissingRankedValue(
-                  item[selectedDataPoint.key],
-                  selectedDataPoint.isBoolean,
-                )
-              ? "—"
-              : getOriginalRank(item)}
-        </span>
-        <span className="text-white/90 text-sm md:text-base text-left break-words">
-          {String(item[searchKey])}
-        </span>
-      </div>
+      <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">
+        {selectedDataPoint.isBoolean
+          ? ""
+          : isMissingRankedValue(
+                item[selectedDataPoint.key],
+                selectedDataPoint.isBoolean,
+              )
+            ? "—"
+            : getOriginalRank(item)}
+      </span>
+      <span className="text-white/90 w-full text-sm md:text-base text-left break-words line-clamp-2">
+        {String(item[searchKey])}
+      </span>
       <span
         className={cn(
           selectedDataPoint.isBoolean || item[selectedDataPoint.key] === null
@@ -321,6 +319,10 @@ export function RankedList<T extends Record<string, unknown>>({
                   colorItem ? colorItem(item) : defaultColorItem(item),
                 ),
           )}
+          {paginatedData.length < itemsPerPage &&
+            Array(itemsPerPage - paginatedData.length)
+              .fill(0)
+              .map((_, i) => <div key={`empty-${i}`} />)}
         </div>
       </div>
       {totalPages > 1 && (
