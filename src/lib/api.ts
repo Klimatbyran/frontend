@@ -331,6 +331,12 @@ export async function getNationDetails() {
   return data;
 }
 
+export async function getAdditionalNationData() {
+  const { data, error } = await GET("/additional-nation-data/", {});
+  if (error) throw error;
+  return data;
+}
+
 export async function getNationSectorEmissions() {
   const { data, error } = await GET("/nation/sector-emissions", {});
   if (error) throw error;
