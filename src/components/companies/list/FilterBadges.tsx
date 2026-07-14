@@ -36,7 +36,7 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
             {filter.type === "filter" && filter.onRemove && (
               <button
                 type="button"
-                title={t("explorePage.companies.removeFilter")}
+                title={t("explorePage.removeFilter")}
                 onClick={(e) => {
                   e.preventDefault();
                   filter.onRemove?.();
