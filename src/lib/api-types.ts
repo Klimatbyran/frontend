@@ -2894,7 +2894,7 @@ export interface paths {
         };
         /**
          * Get national data
-         * @description Retrieve national (Sweden) data with territorial fossil, biogenic, consumption abroad, oil export, and e-commerce emissions. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
+         * @description Retrieve national (Sweden) data with historical emissions, trends, and Paris agreement compliance status. Returns 304 Not Modified if the resource has not changed since the last request (based on ETag).
          */
         get: {
             parameters: {
@@ -2917,30 +2917,22 @@ export interface paths {
                                 en: string;
                             };
                             logoUrl?: string | null;
-                            territorialFossilEmissions: ({
+                            emissions: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            productionBasedEmissions: ({
+                            totalTrend: number;
+                            totalCarbonLaw: number;
+                            approximatedHistoricalEmission: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            biogenicEmissions: ({
+                            trend: ({
                                 year: string;
                                 value: number;
                             } | null)[];
-                            consumptionAbroadEmissions: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            exportOfOilProductsEmissions: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
-                            eCommerceEmissions: ({
-                                year: string;
-                                value: number;
-                            } | null)[];
+                            historicalEmissionChangePercent: number;
+                            meetsParis: boolean;
                         };
                     };
                 };
