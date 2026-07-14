@@ -17,6 +17,7 @@ export function usePinnedSteps(stepCount: number, stepVh = 90) {
   const ref = useRef<HTMLElement>(null);
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState<PinMode>("before");
+  const [stageBounds, setStageBounds] = useState({ left: 0, width: 0 });
   const sectionVh = stepCount * stepVh;
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export function usePinnedSteps(stepCount: number, stepVh = 90) {
         stepCount - 1,
       );
 
+      setStageBounds({ left: rect.left, width: rect.width });
       setMode(nextMode);
       setStep(nextStep);
     };
@@ -54,7 +56,12 @@ export function usePinnedSteps(stepCount: number, stepVh = 90) {
 
   const stageStyle: React.CSSProperties =
     mode === "pinned"
-      ? { position: "fixed", top: 0, left: 0, right: 0 }
+      ? {
+          position: "fixed",
+          top: 0,
+          left: stageBounds.left,
+          width: stageBounds.width,
+        }
       : mode === "before"
         ? { position: "absolute", top: 0, left: 0, right: 0 }
         : {

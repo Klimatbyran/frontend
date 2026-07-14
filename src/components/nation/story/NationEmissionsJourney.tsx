@@ -129,6 +129,8 @@ export function NationEmissionsJourney({
     .sort((a, b) => b.total - a.total);
 
   const showRing = steps.slice(0, step + 1).some((s) => s.ring);
+  const ringStep = steps.find((s) => s.ring);
+  const ringTotal = ringStep?.total ?? current.total;
 
   const diameterFor = (total: number) =>
     Math.sqrt(total / maxTotal) * MAX_DIAMETER;
@@ -172,12 +174,12 @@ export function NationEmissionsJourney({
               })}
 
               {/* Private e-commerce: thin dashed ring around the current total */}
-              {showRing && (
+              {showRing && ringStep && (
                 <motion.span
                   className="absolute left-1/2 top-1/2 rounded-full border-2 border-dashed"
                   style={{
-                    width: diameterFor(current.total) + 26,
-                    height: diameterFor(current.total) + 26,
+                    width: diameterFor(ringTotal) + 26,
+                    height: diameterFor(ringTotal) + 26,
                     x: "-50%",
                     y: "-50%",
                     borderColor: NATION_STORY_COLORS.eCommerceRing,
