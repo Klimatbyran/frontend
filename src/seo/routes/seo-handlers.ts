@@ -160,10 +160,6 @@ const SIMPLE_SEO_ROUTES: Record<
     titleKey: "nationDetailPage.title",
     descriptionKey: "nationDetailPage.description",
   },
-  "/valet-2026": {
-    titleKey: "valet2026Page.title",
-    descriptionKey: "valet2026Page.description",
-  },
   "/data-download": {
     titleKey: "dataDownloadPage.title",
     descriptionKey: "dataDownloadPage.description",

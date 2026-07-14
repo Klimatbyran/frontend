@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import {
   Area,
   AreaChart,
@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   formatMton,
+  NATION_BASELINE_YEAR,
   type NationStackDataPoint,
 } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -19,7 +20,6 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   ChartFooter,
   ChartTooltip,
-  ChartYearControls,
   EnhancedLegend,
   getCurrentYearReferenceLineProps,
   getResponsiveChartMargin,
@@ -76,8 +76,12 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
-  const currentYear = new Date().getFullYear();
-  const [chartEndYear, setChartEndYear] = useState(currentYear);
+  const latestYear = data.at(-1)?.year ?? NATION_BASELINE_YEAR;
+  const xAxisTicks = useMemo(() => {
+    const ticks = [1990, 2000, 2010, 2020];
+    if (latestYear > 2020) ticks.push(latestYear);
+    return ticks;
+  }, [latestYear]);
 
   // Scroll-driven: each step reveals one more area layer.
   const { ref, step, sectionVh, stageStyle, mode } = usePinnedSteps(
@@ -96,11 +100,6 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
         isDashed: false,
       })),
     [t, visibleLayers],
-  );
-
-  const filteredData = useMemo(
-    () => data.filter((d) => d.year <= chartEndYear),
-    [data, chartEndYear],
   );
 
   const chartHeight = isMobile ? 240 : 320;
@@ -149,14 +148,14 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             <div style={{ width: "100%", height: chartHeight }}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
-                  data={filteredData}
+                  data={data}
                   margin={getResponsiveChartMargin(isMobile)}
                 >
                   <XAxis
                     {...getXAxisProps(
                       "year",
-                      [1990, currentYear],
-                      [1990, 2000, 2010, 2020, currentYear],
+                      [NATION_BASELINE_YEAR, latestYear],
+                      xAxisTicks,
                     )}
                   />
                   <YAxis {...getYAxisProps(currentLanguage)} />
@@ -172,7 +171,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                     wrapperStyle={{ outline: "none", zIndex: 60 }}
                   />
                   <ReferenceLine
-                    {...getCurrentYearReferenceLineProps(currentYear)}
+                    {...getCurrentYearReferenceLineProps(latestYear)}
                   />
                   {LAYERS.slice(0, visibleLayers).map((layer) => (
                     <Area
@@ -199,11 +198,6 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               <EnhancedLegend
                 items={visibleLegendItems}
                 className="gap-2 md:gap-3 [&_span]:text-base md:[&_span]:text-lg"
-              />
-              <ChartYearControls
-                chartEndYear={chartEndYear}
-                setChartEndYear={setChartEndYear}
-                className="!mt-0 !px-0"
               />
             </ChartFooter>
           </SectionWithHelp>

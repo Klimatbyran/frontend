@@ -106,7 +106,9 @@ function getCompleteYears(series: NationEmissionSeries): number[] {
 
 function getLatestCompleteYear(series: NationEmissionSeries): number {
   const completeYears = getCompleteYears(series);
-  return completeYears.at(-1) ?? collectYears(series).at(-1) ?? NATION_BASELINE_YEAR;
+  return (
+    completeYears.at(-1) ?? collectYears(series).at(-1) ?? NATION_BASELINE_YEAR
+  );
 }
 
 export function buildStackChartData(

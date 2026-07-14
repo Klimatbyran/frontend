@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNationDetails } from "@/lib/api";
+import { normalizeNationCountry } from "@/hooks/nation/normalizeNationCountry";
 import { extractYearRecord } from "@/utils/data/nationTerritorialTransforms";
 import type { NationEmissionSeries } from "@/utils/data/nationStoryMetrics";
 
@@ -20,15 +21,6 @@ type RawNationResponse = {
   consumptionAbroadEmissions?: EmissionSeries | YearlyRecord;
   emissions?: EmissionSeries | YearlyRecord;
 };
-
-function normalizeCountry(
-  country: RawNationResponse["country"],
-): NationStoryDetails["country"] {
-  if (typeof country === "string") {
-    return { sv: country, en: country === "Sverige" ? "Sweden" : country };
-  }
-  return { sv: country.sv, en: country.en };
-}
 
 function hasEmissionData(
   emissions: EmissionSeries | YearlyRecord | undefined,
@@ -51,7 +43,7 @@ function transformRawNation(response: RawNationResponse): NationStoryDetails {
     response.territorialFossilEmissions ?? response.emissions;
 
   return {
-    country: normalizeCountry(response.country),
+    country: normalizeNationCountry(response.country),
     logoUrl: response.logoUrl ?? null,
     territorialFossil: extractYearRecord(territorialSource),
     productionBased: extractYearRecord(response.productionBasedEmissions),

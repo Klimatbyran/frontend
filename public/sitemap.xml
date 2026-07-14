@@ -38,15 +38,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://klimatkollen.se/sv/nation" />
   </url>
   <url>
-    <loc>https://klimatkollen.se/sv/valet-2026</loc>
-    <lastmod>2026-07-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="sv" href="https://klimatkollen.se/sv/valet-2026" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://klimatkollen.se/en/valet-2026" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://klimatkollen.se/sv/valet-2026" />
-  </url>
-  <url>
     <loc>https://klimatkollen.se/sv/about</loc>
     <lastmod>2025-09-15</lastmod>
     <changefreq>monthly</changefreq>
@@ -126,15 +117,6 @@
     <xhtml:link rel="alternate" hreflang="sv" href="https://klimatkollen.se/sv/nation" />
     <xhtml:link rel="alternate" hreflang="en" href="https://klimatkollen.se/en/nation" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://klimatkollen.se/sv/nation" />
-  </url>
-  <url>
-    <loc>https://klimatkollen.se/en/valet-2026</loc>
-    <lastmod>2026-07-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="sv" href="https://klimatkollen.se/sv/valet-2026" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://klimatkollen.se/en/valet-2026" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://klimatkollen.se/sv/valet-2026" />
   </url>
   <url>
     <loc>https://klimatkollen.se/en/about</loc>

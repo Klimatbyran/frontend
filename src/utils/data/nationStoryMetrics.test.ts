@@ -76,7 +76,9 @@ describe("nationStoryMetrics", () => {
     const incompleteSeries: NationEmissionSeries = {
       ...series,
       consumptionAbroad: Object.fromEntries(
-        Object.entries(series.consumptionAbroad).filter(([year]) => year !== "2024"),
+        Object.entries(series.consumptionAbroad).filter(
+          ([year]) => year !== "2024",
+        ),
       ),
     };
 
