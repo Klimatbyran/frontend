@@ -12,10 +12,13 @@ import { MunicipalitiesSection } from "@/components/landing/MunicipalitiesSectio
 import { CountriesSection } from "@/components/landing/CountriesSection";
 import { PartnersSection } from "@/components/landing/PartnersSection";
 import { MissionSection } from "../components/landing/MissionSection";
+import { LandingPageLoading } from "@/components/landing/LandingPageLoading";
 import { Text } from "@/components/ui/text";
+import { useLandingPageReady } from "@/hooks/landing/useLandingPageReady";
 
 export function LandingPage() {
   const { t } = useTranslation();
+  const isPageReady = useLandingPageReady();
   const municipalitiesSectionRef = useRef<HTMLDivElement | null>(null);
   const [fadeChevron, setFadeChevron] = useState(false);
 
@@ -66,6 +69,20 @@ export function LandingPage() {
     };
   }, [throttledScroll]);
 
+  if (!isPageReady) {
+    return (
+      <>
+        <PageSEO
+          title={pageTitle}
+          description={pageDescription}
+          canonicalUrl={canonicalUrl}
+          structuredData={structuredData}
+        />
+        <LandingPageLoading />
+      </>
+    );
+  }
+
   return (
     <>
       <PageSEO
@@ -74,7 +91,7 @@ export function LandingPage() {
         canonicalUrl={canonicalUrl}
         structuredData={structuredData}
       />
-      <div className="flex flex-col items-center h-screen">
+      <div className="flex flex-col items-center h-screen animate-in fade-in-0 duration-500">
         <div className="flex-1 flex flex-col items-center text-center px-4 pt-32 md:pt-48 md:pb-2">
           <div className="max-w-lg md:max-w-4xl mx-auto space-y-2">
             <h1 className="text-4xl md:text-7xl font-light tracking-tight">
