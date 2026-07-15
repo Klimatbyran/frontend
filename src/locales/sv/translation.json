@@ -1509,14 +1509,17 @@
       "intro": {
         "paragraph1": "Partier av olika färger brukar säga att Sveriges utsläpp minskat med en tredjedel samtidigt som ekonomin har fördubblats. Men allt beror på vilken data du väljer att presentera, under vilken tidsperiod och vilka typer av utsläpp du väljer att ha med.",
         "paragraph2": "Ofta tittar man bara på de territoriella växthusgasutsläppen – utsläpp som uppstår innanför Sveriges geografiska gränser. Det är huvudmåttet som används för att följa upp Sveriges nationella och internationella klimatmål, och räknar exempelvis in inrikesflyg, el och fjärrvärme samt avfall.",
-        "paragraph3": "Men Sveriges klimatpåverkan är större än så. Låt oss bredda perspektivet – steg för steg."
+        "paragraph3": "Men Sveriges klimatpåverkan är större än så. Låt oss bredda perspektivet – steg för steg.",
+        "previewRatio": "större än det vi brukar prata om",
+        "previewCaption": "Territoriella {{reported}} Mton blir {{full}} Mton när hela bilden räknas in ({{year}})."
       },
       "scrollHint": {
-        "text": "Scrolla för att fortsätta",
-        "label": "Scrolla nedåt för att fortsätta berättelsen"
+        "text": "Scrolla för mer",
+        "label": "Scrolla nedåt till nästa del av berättelsen",
+        "upLabel": "Scrolla uppåt till föregående del"
       },
       "journey": {
-        "runningTotalLabel": "Sveriges utsläpp hittills",
+        "dataYear": "Siffrorna avser {{year}}.",
         "step1": {
           "label": "Territoriella utsläpp",
           "text": "Utsläpp som uppstår innanför Sveriges geografiska gränser – huvudmåttet för våra klimatmål. Här räknas exempelvis inrikesflyg, el och fjärrvärme samt avfall."
@@ -1555,8 +1558,8 @@
         "description": "När man slår samman produktionsbaserade, biogena och konsumtionsbaserade utsläpp ser bilden helt annorlunda ut. Stacken visar hur de tre lagren tillsammans knappt förändrats sedan 1990 – en annan berättelse än den officiella statistiken.",
         "layerCaption1": "Först ritar vi ut de territoriella utsläppen – det vi vanligtvis diskuterar.",
         "layerCaption2": "Nu lägger vi till produktionsbaserade utsläpp – svenska rederier och flyg utanför landets gränser.",
-        "layerCaption3": "Sedan lägger vi till de biogena utsläppen ovanpå.",
-        "layerCaption4": "Och slutligen de konsumtionsbaserade utsläppen utomlands – hela bilden."
+        "layerCaption3": "Sedan lägger vi till konsumtionsbaserade utsläpp utomlands.",
+        "layerCaption4": "Och slutligen de biogena utsläppen ovanpå – hela bilden."
       },
       "conclusion": {
         "eyebrow": "Slutsatsen",

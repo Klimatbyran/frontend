@@ -51,15 +51,15 @@ const LAYERS = [
     captionKey: "nation.story.stacked.layerCaption2",
   },
   {
-    dataKey: "biogenic" as const,
-    color: NATION_STORY_COLORS.biogenic,
-    translationKey: "nation.story.graph.biogenic",
-    captionKey: "nation.story.stacked.layerCaption3",
-  },
-  {
     dataKey: "consumptionAbroad" as const,
     color: NATION_STORY_COLORS.consumption,
     translationKey: "nation.story.graph.consumptionAbroad",
+    captionKey: "nation.story.stacked.layerCaption3",
+  },
+  {
+    dataKey: "biogenic" as const,
+    color: NATION_STORY_COLORS.biogenic,
+    translationKey: "nation.story.graph.biogenic",
     captionKey: "nation.story.stacked.layerCaption4",
   },
 ];
@@ -146,7 +146,14 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             </div>
 
             <div style={{ width: "100%", height: chartHeight }}>
-              <ResponsiveContainer width="100%" height="100%">
+              <motion.div
+                key={visibleLayers}
+                className="h-full w-full"
+                initial={{ clipPath: "inset(0 100% 0 0)" }}
+                animate={{ clipPath: "inset(0 0% 0 0)" }}
+                transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                   data={data}
                   margin={getResponsiveChartMargin(isMobile)}
@@ -192,6 +199,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                   ))}
                 </AreaChart>
               </ResponsiveContainer>
+              </motion.div>
             </div>
 
             <ChartFooter className="mt-1 mb-0 space-y-2">

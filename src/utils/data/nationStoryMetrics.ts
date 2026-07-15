@@ -7,6 +7,7 @@ export type NationEmissionSeries = {
   productionBased: Record<number, number>;
   biogenic: Record<number, number>;
   consumptionAbroad: Record<number, number>;
+  eCommerce?: Record<number, number>;
 };
 
 export type NationStackDataPoint = {
@@ -36,6 +37,7 @@ export type NationStoryMetrics = {
   consumptionLatestMton: number;
   consumption1990Mton: number;
   consumptionChangePercent: number;
+  eCommerceLatestMton: number;
   stackData: NationStackDataPoint[];
 };
 
@@ -153,6 +155,7 @@ export function computeNationStoryMetrics(
   const consumption1990Tonnes =
     series.consumptionAbroad[NATION_BASELINE_YEAR] ?? 0;
   const consumptionLatestTonnes = series.consumptionAbroad[latestYear] ?? 0;
+  const eCommerceLatestTonnes = series.eCommerce?.[latestYear] ?? 0;
 
   const ratioReportedToFull =
     territorialLatestTonnes > 0
@@ -192,6 +195,7 @@ export function computeNationStoryMetrics(
       consumption1990Tonnes,
       consumptionLatestTonnes,
     ),
+    eCommerceLatestMton: toMton(eCommerceLatestTonnes),
     stackData: buildStackChartData(series),
   };
 }

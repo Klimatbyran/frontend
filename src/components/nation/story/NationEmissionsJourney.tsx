@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { Warehouse } from "lucide-react";
 import {
   formatMton,
   type NationStoryMetrics,
@@ -17,21 +18,14 @@ type JourneyStep = {
   labelKey: string;
   textKey: string;
   color: string;
-  /** cumulative total in Mton after this step */
   total: number;
-  /** this step's own contribution in Mton */
   delta: number;
-  /** drawn as an added colored circle layer (vs a thin ring for tiny additions) */
   layer: boolean;
-  /** small extra addition drawn as a dashed ring (private e-commerce) */
-  ring?: boolean;
   badgeKey?: string;
 };
 
-const MAX_DIAMETER = 300;
-/** Scroll distance per journey step – higher = more time to watch each layer grow. */
+const MAX_DIAMETER = 380;
 const JOURNEY_STEP_VH = 115;
-/** Gentle spring so each new onion layer visibly expands. */
 const LAYER_GROW_TRANSITION = {
   type: "spring" as const,
   stiffness: 48,
@@ -79,9 +73,8 @@ function buildSteps(metrics: NationStoryMetrics): JourneyStep[] {
       textKey: "nation.story.journey.step4.text",
       color: NATION_STORY_COLORS.eCommerceRing,
       total: production + consumption,
-      delta: 0,
+      delta: metrics.eCommerceLatestMton,
       layer: false,
-      ring: true,
       badgeKey: "nation.story.journey.step4.badge",
     },
     {
@@ -108,6 +101,8 @@ export function NationEmissionsJourney({
 
   const steps = buildSteps(metrics);
   const maxTotal = steps[steps.length - 1].total;
+  const consumptionTotal =
+    metrics.productionLatestMton + metrics.consumptionLatestMton;
 
   const { ref, step, sectionVh, stageStyle, mode } = usePinnedSteps(
     steps.length,
@@ -121,19 +116,26 @@ export function NationEmissionsJourney({
     .filter((s) => s.layer)
     .at(-1)?.key;
 
-  // All layer-circles revealed so far, largest drawn first (behind) so each
-  // colour shows as a ring around the previous – i.e. the types stacked up.
   const revealedLayers = steps
     .slice(0, step + 1)
     .filter((s) => s.layer)
     .sort((a, b) => b.total - a.total);
 
-  const showRing = steps.slice(0, step + 1).some((s) => s.ring);
-  const ringStep = steps.find((s) => s.ring);
-  const ringTotal = ringStep?.total ?? current.total;
+  const showECommerceMarker = step >= 3 && metrics.eCommerceLatestMton > 0;
 
   const diameterFor = (total: number) =>
     Math.sqrt(total / maxTotal) * MAX_DIAMETER;
+
+  const consumptionDiameter = diameterFor(consumptionTotal);
+  const eCommerceMarkerSize = Math.max(
+    16,
+    Math.min(
+      consumptionDiameter *
+        Math.sqrt(metrics.eCommerceLatestMton / metrics.consumptionLatestMton) *
+        0.9,
+      40,
+    ),
+  );
 
   return (
     <section
@@ -146,8 +148,7 @@ export function NationEmissionsJourney({
         style={stageStyle}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center w-full max-w-5xl mx-auto">
-          {/* Bubble = accumulating colored layers */}
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center">
             <div
               className="relative"
               style={{ width: MAX_DIAMETER, height: MAX_DIAMETER }}
@@ -173,26 +174,35 @@ export function NationEmissionsJourney({
                 );
               })}
 
-              {/* Private e-commerce: thin dashed ring around the current total */}
-              {showRing && ringStep && (
-                <motion.span
-                  className="absolute left-1/2 top-1/2 rounded-full border-2 border-dashed"
+              {showECommerceMarker && (
+                <motion.div
+                  className="absolute flex items-center justify-center rounded-md border border-pink-1/80 bg-pink-1/25 text-pink-1 shadow-sm"
                   style={{
-                    width: diameterFor(ringTotal) + 26,
-                    height: diameterFor(ringTotal) + 26,
-                    x: "-50%",
-                    y: "-50%",
-                    borderColor: NATION_STORY_COLORS.eCommerceRing,
+                    width: eCommerceMarkerSize,
+                    height: eCommerceMarkerSize,
+                    left: `calc(50% + ${consumptionDiameter * 0.17}px)`,
+                    top: `calc(50% + ${consumptionDiameter * 0.11}px)`,
+                    transform: "translate(-50%, -50%)",
                   }}
-                  initial={{ opacity: 0, scale: 0.85 }}
+                  initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                />
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  title={t("nation.story.journey.step4.label")}
+                >
+                  <Warehouse
+                    className="shrink-0"
+                    style={{
+                      width: eCommerceMarkerSize * 0.55,
+                      height: eCommerceMarkerSize * 0.55,
+                    }}
+                    strokeWidth={2.2}
+                    aria-hidden
+                  />
+                </motion.div>
               )}
 
-              {/* Running total on top */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-black font-bold text-3xl md:text-5xl tabular-nums select-none leading-none text-center">
+                <span className="text-black font-bold text-4xl md:text-6xl tabular-nums select-none leading-none text-center">
                   {formatMton(current.total, currentLanguage, 0)}
                   <span className="block text-sm md:text-base font-semibold mt-1">
                     {t("nation.story.unit.mton")}
@@ -200,15 +210,8 @@ export function NationEmissionsJourney({
                 </span>
               </div>
             </div>
-
-            <p
-              className={`mt-6 md:mt-10 text-sm md:text-base uppercase tracking-widest ${NATION_STORY_TEXT.eyebrow}`}
-            >
-              {t("nation.story.journey.runningTotalLabel")}
-            </p>
           </div>
 
-          {/* Caption + legend of layers added so far */}
           <div className="space-y-4">
             <motion.div
               key={current.key}
@@ -217,17 +220,18 @@ export function NationEmissionsJourney({
               transition={{ duration: 0.4 }}
               className="space-y-3"
             >
-              <p className="flex items-center gap-3 text-xl md:text-2xl text-white font-medium">
-                <span
-                  className="w-4 h-4 rounded-full shrink-0"
-                  style={{ backgroundColor: current.color }}
-                />
+              <p className="text-xl md:text-2xl text-white font-medium">
                 {t(current.labelKey)}
               </p>
               <p
                 className={`text-lg md:text-xl ${NATION_STORY_TEXT.body} leading-relaxed`}
               >
                 {t(current.textKey)}
+                <span className="block text-sm text-white/60 mt-2">
+                  {t("nation.story.journey.dataYear", {
+                    year: metrics.latestYear,
+                  })}
+                </span>
               </p>
               {current.badgeKey && (
                 <p className="text-base md:text-lg text-pink-1 font-medium">
@@ -236,7 +240,6 @@ export function NationEmissionsJourney({
               )}
             </motion.div>
 
-            {/* Legend: each type and what it adds to the total */}
             <div className="space-y-1.5 border-t border-white/10 pt-3">
               {steps
                 .slice(0, step + 1)

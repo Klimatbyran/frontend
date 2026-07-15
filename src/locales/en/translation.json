@@ -1459,14 +1459,17 @@
       "intro": {
         "paragraph1": "Parties across the political spectrum often say Sweden's emissions have fallen by a third while the economy has doubled. But everything depends on which data you choose to present, over what time period, and which types of emissions you include.",
         "paragraph2": "Usually only territorial greenhouse gas emissions are considered – emissions that occur within Sweden's geographic borders. It is the main measure used to track Sweden's national and international climate goals, and includes for example domestic aviation, electricity and district heating, and waste.",
-        "paragraph3": "But Sweden's climate impact is larger than that. Let's broaden the perspective – step by step."
+        "paragraph3": "But Sweden's climate impact is larger than that. Let's broaden the perspective – step by step.",
+        "previewRatio": "larger than we usually discuss",
+        "previewCaption": "Territorial {{reported}} Mt becomes {{full}} Mt when the full picture is counted ({{year}})."
       },
       "scrollHint": {
-        "text": "Scroll to continue",
-        "label": "Scroll down to continue the story"
+        "text": "Scroll for more",
+        "label": "Scroll down to the next part of the story",
+        "upLabel": "Scroll up to the previous part"
       },
       "journey": {
-        "runningTotalLabel": "Sweden's emissions so far",
+        "dataYear": "Figures refer to {{year}}.",
         "step1": {
           "label": "Territorial emissions",
           "text": "Emissions that occur within Sweden's geographic borders – the main measure for our climate goals. It includes for example domestic aviation, electricity and district heating, and waste."
@@ -1505,8 +1508,8 @@
         "description": "When production-based, biogenic and consumption-based emissions are added together, the picture looks very different. The stack shows how the three layers combined have barely changed since 1990 – a different story from the official statistics.",
         "layerCaption1": "First we draw the territorial emissions – what we usually discuss.",
         "layerCaption2": "Now we add production-based emissions – Swedish shipping and aviation outside the country's borders.",
-        "layerCaption3": "Then we add the biogenic emissions on top.",
-        "layerCaption4": "And finally the consumption-based emissions abroad – the full picture."
+        "layerCaption3": "Then we add consumption-based emissions abroad.",
+        "layerCaption4": "And finally the biogenic emissions on top – the full picture."
       },
       "conclusion": {
         "eyebrow": "The takeaway",
