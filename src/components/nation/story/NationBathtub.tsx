@@ -8,7 +8,6 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { NATION_STORY_TEXT } from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
-import { useReportStoryStage } from "@/components/nation/story/storyStageContext";
 
 /** Sample years so each scroll step adds a visible water chunk. */
 function sampleBathtubYears(
@@ -28,9 +27,9 @@ type NationBathtubProps = {
   data: NationBathtubDataPoint[];
 };
 
-const TUB_INNER_TOP = 48;
+const TUB_WATER_TOP = 52;
 const TUB_INNER_BOTTOM = 168;
-const TUB_INNER_HEIGHT = TUB_INNER_BOTTOM - TUB_INNER_TOP;
+const TUB_WATER_HEIGHT = TUB_INNER_BOTTOM - TUB_WATER_TOP;
 
 export function NationBathtub({ data }: NationBathtubProps) {
   const { t } = useTranslation();
@@ -38,11 +37,10 @@ export function NationBathtub({ data }: NationBathtubProps) {
   const steps = useMemo(() => sampleBathtubYears(data), [data]);
   const maxCumulative = steps.at(-1)?.cumulativeMton ?? 1;
 
-  const { ref, step, sectionVh, stageStyle, mode } = usePinnedSteps(
+  const { ref, step, sectionVh, stageStyle } = usePinnedSteps(
     Math.max(steps.length, 1),
     70,
   );
-  useReportStoryStage("bathtub", mode);
 
   const current = steps[step] ?? steps[0];
   if (!current) return null;
@@ -51,7 +49,7 @@ export function NationBathtub({ data }: NationBathtubProps) {
     step === 0 ? 0 : (steps[step - 1]?.cumulativeMton ?? 0);
   const chunkMton = current.cumulativeMton - previousCumulative;
   const fillRatio = Math.min(current.cumulativeMton / maxCumulative, 1);
-  const waterTop = TUB_INNER_BOTTOM - fillRatio * TUB_INNER_HEIGHT;
+  const waterTop = TUB_INNER_BOTTOM - fillRatio * TUB_WATER_HEIGHT;
 
   // Chunk bands: each sampled year contributes a layer of water
   const chunks = steps.slice(0, step + 1);
@@ -126,12 +124,12 @@ export function NationBathtub({ data }: NationBathtubProps) {
                     index === 0 ? 0 : chunks[index - 1].cumulativeMton;
                   const bottom =
                     TUB_INNER_BOTTOM -
-                    (prevCumulative / maxCumulative) * TUB_INNER_HEIGHT;
+                    (prevCumulative / maxCumulative) * TUB_WATER_HEIGHT;
                   const top =
                     TUB_INNER_BOTTOM -
-                    (chunk.cumulativeMton / maxCumulative) * TUB_INNER_HEIGHT;
+                    (chunk.cumulativeMton / maxCumulative) * TUB_WATER_HEIGHT;
                   const height = Math.max(bottom - top, 0);
-                  const opacity =
+                  const fillAlpha =
                     0.35 + (index / Math.max(chunks.length, 1)) * 0.45;
                   return (
                     <motion.rect
@@ -139,9 +137,9 @@ export function NationBathtub({ data }: NationBathtubProps) {
                       x={40}
                       width={140}
                       initial={{ y: bottom, height: 0, opacity: 0 }}
-                      animate={{ y: top, height, opacity }}
+                      animate={{ y: top, height, opacity: 1 }}
                       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                      fill={`rgba(56, 189, 248, ${opacity})`}
+                      fill={`rgba(56, 189, 248, ${fillAlpha})`}
                     />
                   );
                 })}

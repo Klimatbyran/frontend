@@ -35,7 +35,6 @@ import {
   NATION_STORY_COLORS,
 } from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
-import { useReportStoryStage } from "@/components/nation/story/storyStageContext";
 
 const LAYERS = [
   {
@@ -84,10 +83,9 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   }, [latestYear]);
 
   // Scroll-driven: each step reveals one more area layer.
-  const { ref, step, sectionVh, stageStyle, mode } = usePinnedSteps(
+  const { ref, step, sectionVh, stageStyle } = usePinnedSteps(
     LAYERS.length,
   );
-  useReportStoryStage("stacked-chart", mode);
   const visibleLayers = step + 1;
 
   const visibleLegendItems: LegendItem[] = useMemo(
