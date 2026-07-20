@@ -51,15 +51,15 @@ const LAYERS = [
     captionKey: "nation.story.stacked.layerCaption2",
   },
   {
-    dataKey: "biogenic" as const,
-    color: NATION_STORY_COLORS.biogenic,
-    translationKey: "nation.story.graph.biogenic",
-    captionKey: "nation.story.stacked.layerCaption3",
-  },
-  {
     dataKey: "consumptionAbroad" as const,
     color: NATION_STORY_COLORS.consumption,
     translationKey: "nation.story.graph.consumptionAbroad",
+    captionKey: "nation.story.stacked.layerCaption3",
+  },
+  {
+    dataKey: "biogenic" as const,
+    color: NATION_STORY_COLORS.biogenic,
+    translationKey: "nation.story.graph.biogenic",
     captionKey: "nation.story.stacked.layerCaption4",
   },
 ];

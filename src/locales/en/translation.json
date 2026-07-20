@@ -1501,7 +1501,7 @@
       "graph": {
         "territorialFossil": "Territorial emissions",
         "productionBased": "Production-based emissions",
-        "productionBeyondTerritorial": "Production-based emissions",
+        "productionBeyondTerritorial": "Shipping and aviation abroad",
         "biogenic": "Biogenic emissions",
         "consumptionAbroad": "Consumption-based emissions abroad"
       },
@@ -1515,8 +1515,8 @@
         "description": "",
         "ariaLabel": "Historical emissions",
         "layerCaption1": "First we have territorial emissions – fossil emissions within Sweden's borders.",
-        "layerCaption2": "Now we add production-based emissions – roughly equivalent to territorial emissions plus emissions from Swedish shipping and airlines outside the country's borders.",
-        "layerCaption3": "Then we add consumption-based emissions abroad, including private e-commerce imports.",
+        "layerCaption2": "Now we add emissions from Swedish shipping and airlines outside the country's borders.",
+        "layerCaption3": "Then we add consumption-based emissions abroad.",
         "layerCaption4": "And finally the biogenic emissions to show the full picture."
       },
       "conclusion": {

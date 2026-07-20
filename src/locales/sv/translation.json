@@ -1541,7 +1541,7 @@
         },
         "step5": {
           "label": "Biogena utsläpp",
-          "text": "Till sist har vi biogena koldioxidutsläpp som frigörs när trä och annat biologiskt material förbränns, exempelvis i fjärrvärmen, i pappersindustrin och från bilar med biodrivmedel. Biogena utsläpp ingår i det naturliga kretsloppet. Det kan dock ta decennier för ny skog att bilda samma mängd koldioxid, därför har även biogena utsläpp klimatpåverkan här och nu."
+          "text": "Till sist har vi biogena koldioxidutsläpp som frigörs när trä och annat biologiskt material förbränns, exempelvis i fjärrvärmen, i pappersindustrin och från bilar med biodrivmedel. Biogena utsläpp ingår i det naturliga kretsloppet. Det kan dock ta decennier för ny skog att binda samma mängd koldioxid, därför har även biogena utsläpp klimatpåverkan här och nu."
         }
       },
       "bathtub": {
@@ -1551,7 +1551,7 @@
       "graph": {
         "territorialFossil": "Territoriella utsläpp",
         "productionBased": "Produktionsbaserade utsläpp",
-        "productionBeyondTerritorial": "Produktionsbaserade utsläpp",
+        "productionBeyondTerritorial": "Rederier och flyg utanför gränserna",
         "biogenic": "Biogena utsläpp",
         "consumptionAbroad": "Konsumtionsbaserade utomlands"
       },
@@ -1565,8 +1565,8 @@
         "description": "",
         "ariaLabel": "Historiska utsläpp",
         "layerCaption1": "Först har vi de territoriella utsläppen – fossila utsläpp inom Sveriges gränser.",
-        "layerCaption2": "Nu lägger vi till produktionsbaserade utsläpp – ungefär likvärdigt med de territoriella plus utsläpp från svenska rederier och svenska flygbolag utanför landets gränser.",
-        "layerCaption3": "Sedan lägger vi till de konsumtionsbaserade utsläppen utomlands, inklusive privat e-handelsimport.",
+        "layerCaption2": "Nu lägger vi till utsläpp från svenska rederier och flygbolag utanför landets gränser.",
+        "layerCaption3": "Sedan lägger vi till de konsumtionsbaserade utsläppen utomlands.",
         "layerCaption4": "Och slutligen de biogena utsläppen för att ge hela bilden."
       },
       "conclusion": {
