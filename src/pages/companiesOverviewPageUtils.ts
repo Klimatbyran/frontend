@@ -20,6 +20,7 @@ import {
   enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
 import { DataPoint } from "@/types/rankings";
+import { isMeetsParisKpi } from "@/utils/insights/meetsParisKpi";
 
 export function useCompaniesOverviewUrlState(
   companyKPIs: CompanyKPIValue[],
@@ -125,7 +126,11 @@ export function useCompaniesWithKPIs(
       return true;
     });
 
-    return filtered.map((company) => enrichCompanyWithKPIs(company));
+    const usesParisOverview = isMeetsParisKpi(selectedKPI);
+
+    return usesParisOverview
+      ? filtered
+      : filtered.map((company) => enrichCompanyWithKPIs(company));
   }, [companies, selectedCountries, selectedSector, selectedKPI.key]);
 }
 

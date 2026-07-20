@@ -27,6 +27,16 @@ interface SectorPieChartProps {
   customActionLabel?: string;
   desktopScale?: boolean;
   animationKey?: string;
+  maxOuterRadius?: number;
+  chartMinHeight?: number;
+  tooltipContent?: React.ComponentType<{
+    active?: boolean;
+    payload?: Array<{
+      name?: string;
+      value?: number | null;
+      payload?: { total?: number | null } | null;
+    }>;
+  }>;
 }
 
 const PIE_CORNER_RADIUS = 8;
@@ -43,11 +53,19 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   customActionLabel,
   desktopScale = false,
   animationKey,
+  maxOuterRadius,
+  chartMinHeight,
+  tooltipContent: TooltipContentComponent,
 }) => {
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { size, containerRef } = useResponsiveChartSize();
+  const hasFixedHeight = chartMinHeight != null;
+  const { size, containerRef } = useResponsiveChartSize(
+    false,
+    maxOuterRadius,
+    hasFixedHeight,
+  );
 
   const pieData: PieChartItem[] = data
     ? data
@@ -128,7 +146,12 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   return (
     <div
       ref={containerRef}
-      className="w-full min-h-[200px] flex items-center justify-center"
+      className={`flex w-full items-center justify-center${hasFixedHeight ? "" : " min-h-[200px]"}`}
+      style={
+        hasFixedHeight
+          ? { minHeight: chartMinHeight, maxHeight: chartMinHeight }
+          : undefined
+      }
     >
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>
@@ -159,7 +182,13 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             ))}
           </Pie>
           <Tooltip
-            content={<PieTooltip customActionLabel={customActionLabel} />}
+            content={
+              TooltipContentComponent ? (
+                <TooltipContentComponent />
+              ) : (
+                <PieTooltip customActionLabel={customActionLabel} />
+              )
+            }
             animationDuration={0}
             isAnimationActive={false}
           />

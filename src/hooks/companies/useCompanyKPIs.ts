@@ -9,7 +9,7 @@ import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
 import {
-  createBudgetKPIColorGetter,
+  createBooleanKPIColorGetter,
   createSymmetricKPIColorGetter,
 } from "@/utils/insights/kpiColorUtils";
 
@@ -69,8 +69,10 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
           false: t("companies.list.kpis.meetsParis.booleanLabels.false"),
         },
         nullValues: t("companies.list.kpis.meetsParis.nullValues"),
-        createKPIColorGetter: (companies: CompanyWithKPIs[]) =>
-          createBudgetKPIColorGetter(companies),
+        createKPIColorGetter: createBooleanKPIColorGetter<CompanyWithKPIs>(
+          "meetsParis",
+          true,
+        ),
       },
     ];
   }, [t]);

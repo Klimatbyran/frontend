@@ -332,18 +332,24 @@
         "unknown": "Okänt"
       },
       "meetsParis": {
-        "legend": {
-          "belowBudget": "Under budget",
-          "aboveBudget": "Över budget"
+        "yes": "Ja",
+        "no": "Nej",
+        "unknown": "Okänt",
+        "units": {
+          "Mt": "miljonton CO₂e",
+          "Gt": "gigaton CO₂e",
+          "kt": "kiloton CO₂e",
+          "t": "ton CO₂e"
         },
-        "budgetThreshold": "Budgettröskel (0{{unit}})",
-        "description": "Ton över eller under varje företags kolbudget. Vi uppskattar framtida utsläpp med en LAD-trendlinje och jämför kumulativa utsläpp 2025–2050 med en Carbon Law-väg (11,7% årlig minskning).",
-        "learnMore": "Läs mer",
-        "tooltip": {
-          "underBudget": "under kolbudget",
-          "overBudget": "över kolbudget",
-          "onBudget": "på kolbudget"
-        }
+        "emissionsPieTitle": "Utsläpp per Parisstatus",
+        "emissionsPieSubtitle": "Andel av totala rapporterade utsläpp från företag som klarar, missar eller har okänd Parisstatus.",
+        "otherSegment": "Övriga",
+        "otherSegmentCount": "{{count}} företag",
+        "otherSegmentCount_plural": "{{count}} företag",
+        "otherSegmentAria": "Övriga, {{count}} företag",
+        "otherSegmentAria_plural": "Övriga, {{count}} företag",
+        "topEmittersMeetingGoal": "{{nrOfEntries}} största utsläppare som klarar Paris",
+        "topEmittersMissingGoal": "{{nrOfEntries}} största utsläppare som missar Paris"
       },
       "beeswarm": {
         "capped": "(begränsad)",

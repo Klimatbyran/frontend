@@ -23,8 +23,6 @@ interface BeeswarmChartProps<T> {
   showLegend?: boolean;
   legendMin?: number;
   legendMax?: number;
-  getMeetsParis?: (item: T) => boolean | null;
-  getBudgetValue?: (item: T) => number;
   getRank?: (item: T) => number | null;
   totalCount?: number;
 }
@@ -323,8 +321,6 @@ export function BeeswarmChart<T>({
   showLegend = true,
   legendMin,
   legendMax,
-  getMeetsParis,
-  getBudgetValue,
   getRank,
   totalCount,
 }: BeeswarmChartProps<T>) {
@@ -449,8 +445,6 @@ export function BeeswarmChart<T>({
           rawValue={hoveredRawValue}
           isCapped={isHoveredCapped}
           capThreshold={capThreshold}
-          meetsParis={getMeetsParis?.(hoveredItem.item)}
-          budgetValue={getBudgetValue?.(hoveredItem.item)}
           rank={getRank?.(hoveredItem.item)}
           total={totalCount}
           isMobile={isMobile}

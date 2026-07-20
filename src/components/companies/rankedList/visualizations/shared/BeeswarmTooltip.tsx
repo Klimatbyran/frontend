@@ -11,8 +11,6 @@ interface BeeswarmTooltipProps {
   rawValue?: number;
   isCapped?: boolean;
   capThreshold?: number;
-  meetsParis?: boolean | null;
-  budgetValue?: number;
   rank?: number | null;
   total?: number;
   isMobile?: boolean;
@@ -85,49 +83,6 @@ function TooltipShell({
   );
 }
 
-function MeetsParisTooltipContent({
-  meetsParis,
-  budgetValue,
-  unit,
-  formatValue,
-  t,
-}: {
-  meetsParis: boolean | null;
-  budgetValue: number;
-  unit: string;
-  formatValue?: (value: number, unit: string) => string;
-  t: ReturnType<typeof useTranslation>["t"];
-}) {
-  const meetsParisLabel =
-    meetsParis === true
-      ? t("companies.list.kpis.meetsParis.booleanLabels.true")
-      : meetsParis === false
-        ? t("companies.list.kpis.meetsParis.booleanLabels.false")
-        : t("companies.list.kpis.meetsParis.nullValues");
-
-  const budgetDisplay = formatNumericValue(budgetValue, unit, formatValue);
-
-  const budgetStatus =
-    budgetValue < 0
-      ? t("companiesOverviewPage.visualizations.meetsParis.tooltip.underBudget")
-      : budgetValue > 0
-        ? t(
-            "companiesOverviewPage.visualizations.meetsParis.tooltip.overBudget",
-          )
-        : t("companiesOverviewPage.visualizations.meetsParis.tooltip.onBudget");
-
-  return (
-    <>
-      <p className="text-white/70">
-        <span className="text-orange-2">{meetsParisLabel}</span>
-      </p>
-      <p className="text-white/50 text-sm">
-        {budgetDisplay} {budgetStatus}
-      </p>
-    </>
-  );
-}
-
 function DefaultTooltipContent({
   value,
   unit,
@@ -193,8 +148,6 @@ export function BeeswarmTooltip({
   rawValue,
   isCapped,
   capThreshold,
-  meetsParis,
-  budgetValue,
   rank,
   total,
   isMobile,
@@ -215,36 +168,23 @@ export function BeeswarmTooltip({
 
   if (!position) return null;
 
-  const isMeetsParisMode =
-    meetsParis !== undefined && budgetValue !== undefined;
-
   return (
     <TooltipShell
       tooltipRef={tooltipRef}
       companyName={companyName}
       onClick={handleTooltipMobileClick}
     >
-      {isMeetsParisMode ? (
-        <MeetsParisTooltipContent
-          meetsParis={meetsParis}
-          budgetValue={budgetValue}
-          unit={unit}
-          formatValue={formatValue}
-          t={t}
-        />
-      ) : (
-        <DefaultTooltipContent
-          value={value}
-          unit={unit}
-          formatValue={formatValue}
-          rank={rank}
-          total={total}
-          isCapped={isCapped}
-          rawValue={rawValue}
-          capThreshold={capThreshold}
-          t={t}
-        />
-      )}
+      <DefaultTooltipContent
+        value={value}
+        unit={unit}
+        formatValue={formatValue}
+        rank={rank}
+        total={total}
+        isCapped={isCapped}
+        rawValue={rawValue}
+        capThreshold={capThreshold}
+        t={t}
+      />
     </TooltipShell>
   );
 }
