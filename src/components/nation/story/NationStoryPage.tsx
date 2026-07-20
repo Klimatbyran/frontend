@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { NationBathtub } from "@/components/nation/story/NationBathtub";
@@ -29,7 +28,6 @@ export function NationStoryPage({
   metrics,
 }: NationStoryPageProps) {
   const { t } = useTranslation();
-  const conclusionRef = useRef<HTMLElement>(null);
 
   return (
     <div className="bg-black text-white pb-24">
@@ -104,16 +102,13 @@ export function NationStoryPage({
       <NationStackedChart data={metrics.stackData} />
 
       {/* Conclusion – the punchline tying the journey together */}
-      <section
-        ref={conclusionRef}
-        className="relative min-h-[80vh] flex items-center justify-center px-4 md:px-8 py-10"
-      >
+      <section className="relative min-h-[80vh] flex items-center justify-center px-4 md:px-8 py-10">
         <div className="w-full max-w-4xl mx-auto">
           <NationConclusion metrics={metrics} />
         </div>
       </section>
 
-      <StoryScrollHint endRef={conclusionRef} />
+      <StoryScrollHint />
     </div>
   );
 }

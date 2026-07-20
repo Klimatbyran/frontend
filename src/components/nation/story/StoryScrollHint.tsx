@@ -1,27 +1,30 @@
-import { useRef, type RefObject } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
-type StoryScrollHintProps = {
-  /** Hide the hint once this element (typically the conclusion) enters the viewport. */
-  endRef: RefObject<HTMLElement | null>;
-};
-
-export function StoryScrollHint({ endRef }: StoryScrollHintProps) {
+/** Bounce chevron at the bottom of the first viewport only. */
+export function StoryScrollHint() {
   const { t } = useTranslation();
-  const ref = useRef<HTMLButtonElement>(null);
-  const endReached = useInView(endRef, { amount: 0.35 });
-  // Show from the intro onward; only hide once the final conclusion is in view.
-  const visible = !endReached;
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      // Hide once the user has scrolled most of the way off the first screen.
+      setVisible(window.scrollY < window.innerHeight * 0.55);
+    };
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    return () => window.removeEventListener("scroll", updateVisibility);
+  }, []);
 
   const scrollDown = () => {
-    window.scrollBy({ top: window.innerHeight * 0.75, behavior: "smooth" });
+    window.scrollBy({ top: window.innerHeight * 0.85, behavior: "smooth" });
   };
 
   return (
     <motion.button
-      ref={ref}
       type="button"
       onClick={scrollDown}
       aria-label={t("nation.story.scrollHint.label")}
