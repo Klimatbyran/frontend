@@ -1545,7 +1545,8 @@
         "text": "Atmosfären reagerar på mängden växthusgaser totalt – och de stannar kvar och ansamlas över tid. Lite som ett badkar, där kranen står på. Innan kranen dras åt helt, kommer vattennivån att fortsätta stiga. Och atmosfären har redan passerat gränsen för 1,5 graders uppvärmning. Därför är det avgörande viktigt hur snabbt vi minskar utsläppen ner mot noll.",
         "question": "Hur har det gått med det sedan 1990?",
         "levelCaption": "{{value}} Mton ansamlat sedan 1990",
-        "chunkCaption": "+{{value}} Mton tillkom fram till {{year}}"
+        "chunkCaptionSingleYear": "+{{value}} Mton tillkom {{year}}",
+        "chunkCaptionYearRange": "+{{value}} Mton tillkom {{fromYear}}–{{toYear}}"
       },
       "graph": {
         "territorialFossil": "Territoriella utsläpp",

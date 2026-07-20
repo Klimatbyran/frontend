@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
@@ -23,6 +23,16 @@ function sampleBathtubYears(
   return sampled;
 }
 
+/**
+ * Absolute fragment URL so SVG clipPath works with <base href="/">.
+ * Bare url(#id) resolves against the base and breaks on locale routes.
+ */
+function svgLocalUrl(elementId: string): string {
+  if (typeof window === "undefined") return `url(#${elementId})`;
+  const { origin, pathname, search } = window.location;
+  return `url(${origin}${pathname}${search}#${elementId})`;
+}
+
 type NationBathtubProps = {
   data: NationBathtubDataPoint[];
 };
@@ -30,10 +40,15 @@ type NationBathtubProps = {
 const TUB_WATER_TOP = 52;
 const TUB_INNER_BOTTOM = 168;
 const TUB_WATER_HEIGHT = TUB_INNER_BOTTOM - TUB_WATER_TOP;
+const TUB_WATER_CLIP_PATH =
+  "M40 52 h140 v82 c0 24 -26 34 -70 34 s-70 -10 -70 -34 z";
 
 export function NationBathtub({ data }: NationBathtubProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  // useId can include ":" which is awkward in url(#…) fragments
+  const waterClipId = `tub-water-clip-${useId().replace(/:/g, "")}`;
+  const waterClipUrl = useMemo(() => svgLocalUrl(waterClipId), [waterClipId]);
   const steps = useMemo(() => sampleBathtubYears(data), [data]);
   const maxCumulative = steps.at(-1)?.cumulativeMton ?? 1;
 
@@ -45,14 +60,29 @@ export function NationBathtub({ data }: NationBathtubProps) {
   const current = steps[step] ?? steps[0];
   if (!current) return null;
 
-  const previousCumulative =
-    step === 0 ? 0 : (steps[step - 1]?.cumulativeMton ?? 0);
+  const previous = step === 0 ? null : steps[step - 1];
+  const previousCumulative = previous?.cumulativeMton ?? 0;
   const chunkMton = current.cumulativeMton - previousCumulative;
+  // Milestone chunks cover the years after the previous sample through current.
+  const chunkFromYear = previous ? previous.year + 1 : current.year;
+  const chunkToYear = current.year;
   const fillRatio = Math.min(current.cumulativeMton / maxCumulative, 1);
   const waterTop = TUB_INNER_BOTTOM - fillRatio * TUB_WATER_HEIGHT;
 
   // Chunk bands: each sampled year contributes a layer of water
   const chunks = steps.slice(0, step + 1);
+
+  const chunkCaption =
+    chunkFromYear === chunkToYear
+      ? t("nation.story.bathtub.chunkCaptionSingleYear", {
+          value: formatMton(chunkMton, currentLanguage, 0),
+          year: chunkToYear,
+        })
+      : t("nation.story.bathtub.chunkCaptionYearRange", {
+          value: formatMton(chunkMton, currentLanguage, 0),
+          fromYear: chunkFromYear,
+          toYear: chunkToYear,
+        });
 
   return (
     <section
@@ -114,11 +144,11 @@ export function NationBathtub({ data }: NationBathtubProps) {
               />
               {/* Water chunks clipped inside tub */}
               <defs>
-                <clipPath id="tub-water-clip">
-                  <path d="M40 52 h140 v82 c0 24 -26 34 -70 34 s-70 -10 -70 -34 z" />
+                <clipPath id={waterClipId}>
+                  <path d={TUB_WATER_CLIP_PATH} />
                 </clipPath>
               </defs>
-              <g clipPath="url(#tub-water-clip)">
+              <g clipPath={waterClipUrl}>
                 {chunks.map((chunk, index) => {
                   const prevCumulative =
                     index === 0 ? 0 : chunks[index - 1].cumulativeMton;
@@ -173,10 +203,7 @@ export function NationBathtub({ data }: NationBathtubProps) {
               <p
                 className={`text-sm md:text-base ${NATION_STORY_TEXT.secondary}`}
               >
-                {t("nation.story.bathtub.chunkCaption", {
-                  value: formatMton(chunkMton, currentLanguage, 0),
-                  year: current.year,
-                })}
+                {chunkCaption}
               </p>
             </div>
           </div>

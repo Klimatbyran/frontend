@@ -1495,7 +1495,8 @@
         "text": "The atmosphere responds to the total amount of greenhouse gases – and they stay and accumulate over time. A bit like a bathtub with the tap running: until the tap is fully closed, the water level will keep rising. And the atmosphere has already passed the threshold for 1.5°C of warming. That is why how quickly we cut emissions toward zero is critically important.",
         "question": "How has that gone since 1990?",
         "levelCaption": "{{value}} Mt accumulated since 1990",
-        "chunkCaption": "+{{value}} Mt added by {{year}}"
+        "chunkCaptionSingleYear": "+{{value}} Mt added in {{year}}",
+        "chunkCaptionYearRange": "+{{value}} Mt added {{fromYear}}–{{toYear}}"
       },
       "graph": {
         "territorialFossil": "Territorial emissions",
