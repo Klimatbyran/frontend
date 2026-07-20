@@ -1460,14 +1460,14 @@
         "title": "Sweden's emissions",
         "paragraph1": "We often hear that Sweden's emissions have fallen by a third while the economy has doubled. But is that really true?",
         "paragraph2": "What we usually hear about are territorial emissions – fossil greenhouse gas emissions within Sweden's borders. That is the measure used to track Sweden's climate goals.",
-        "paragraph3": "But Sweden's emissions are actually larger than that. Let's look at it, step by step."
+        "paragraph3": "But Sweden's emissions are actually larger than that. Let's look at it, step by step.",
+        "previewRatio": "larger than what we usually talk about"
       },
       "scrollHint": {
         "text": "Scroll for more",
         "label": "Scroll down to the next part of the story"
       },
       "journey": {
-        "runningTotalLabel": "Sweden's emissions so far",
         "dataYear": "Figures refer to {{year}}.",
         "step1": {
           "label": "Territorial emissions",
@@ -1493,7 +1493,9 @@
       },
       "bathtub": {
         "text": "The atmosphere responds to the total amount of greenhouse gases – and they stay and accumulate over time. A bit like a bathtub with the tap running: until the tap is fully closed, the water level will keep rising. And the atmosphere has already passed the threshold for 1.5°C of warming. That is why how quickly we cut emissions toward zero is critically important.",
-        "question": "How has that gone since 1990?"
+        "question": "How has that gone since 1990?",
+        "levelCaption": "{{value}} Mt accumulated since 1990",
+        "chunkCaption": "+{{value}} Mt added by {{year}}"
       },
       "graph": {
         "territorialFossil": "Territorial emissions",

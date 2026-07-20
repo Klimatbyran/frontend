@@ -1510,14 +1510,14 @@
         "title": "Sveriges utsläpp",
         "paragraph1": "Vi får ofta höra att Sveriges utsläpp minskat med en tredjedel samtidigt som ekonomin har fördubblats. Men stämmer det verkligen?",
         "paragraph2": "Det vi oftast hör om är territoriella utsläpp, det vill säga fossila växthusgasutsläpp inom Sveriges gränser. Det är det måttet som används för att följa upp Sveriges klimatmål.",
-        "paragraph3": "Men Sveriges utsläpp är egentligen större än så. Låt oss titta på det, steg för steg."
+        "paragraph3": "Men Sveriges utsläpp är egentligen större än så. Låt oss titta på det, steg för steg.",
+        "previewRatio": "större än det vi brukar prata om"
       },
       "scrollHint": {
         "text": "Scrolla för mer",
         "label": "Scrolla nedåt till nästa del av berättelsen"
       },
       "journey": {
-        "runningTotalLabel": "Sveriges utsläpp hittills",
         "dataYear": "Siffrorna avser {{year}}.",
         "step1": {
           "label": "Territoriella utsläpp",
@@ -1543,7 +1543,9 @@
       },
       "bathtub": {
         "text": "Atmosfären reagerar på mängden växthusgaser totalt – och de stannar kvar och ansamlas över tid. Lite som ett badkar, där kranen står på. Innan kranen dras åt helt, kommer vattennivån att fortsätta stiga. Och atmosfären har redan passerat gränsen för 1,5 graders uppvärmning. Därför är det avgörande viktigt hur snabbt vi minskar utsläppen ner mot noll.",
-        "question": "Hur har det gått med det sedan 1990?"
+        "question": "Hur har det gått med det sedan 1990?",
+        "levelCaption": "{{value}} Mton ansamlat sedan 1990",
+        "chunkCaption": "+{{value}} Mton tillkom fram till {{year}}"
       },
       "graph": {
         "territorialFossil": "Territoriella utsläpp",

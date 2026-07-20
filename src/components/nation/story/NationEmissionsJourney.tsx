@@ -202,11 +202,8 @@ export function NationEmissionsJourney({
             </div>
 
             <p
-              className={`mt-6 md:mt-10 text-sm md:text-base uppercase tracking-widest ${NATION_STORY_TEXT.eyebrow}`}
+              className={`text-sm md:text-base ${NATION_STORY_TEXT.secondary} mt-6 md:mt-10`}
             >
-              {t("nation.story.journey.runningTotalLabel")}
-            </p>
-            <p className={`text-sm md:text-base ${NATION_STORY_TEXT.secondary}`}>
               {t("nation.story.journey.dataYear", { year: metrics.latestYear })}
             </p>
           </div>
@@ -220,13 +217,6 @@ export function NationEmissionsJourney({
               transition={{ duration: 0.4 }}
               className="space-y-3"
             >
-              <p className="flex items-center gap-3 text-xl md:text-2xl text-white font-medium">
-                <span
-                  className="w-4 h-4 rounded-full shrink-0"
-                  style={{ backgroundColor: current.color }}
-                />
-                {t(current.labelKey)}
-              </p>
               <p
                 className={`text-lg md:text-xl ${NATION_STORY_TEXT.body} leading-relaxed`}
               >

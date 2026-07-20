@@ -18,6 +18,20 @@ export type NationStackDataPoint = {
   combined: number;
 };
 
+export type NationTrendDataPoint = {
+  year: number;
+  territorialFossil: number;
+  productionBased: number;
+  biogenic: number;
+  consumptionAbroad: number;
+};
+
+export type NationBathtubDataPoint = {
+  year: number;
+  annualMton: number;
+  cumulativeMton: number;
+};
+
 export type NationStoryMetrics = {
   latestYear: number;
   ratioReportedToFull: number;
@@ -37,6 +51,8 @@ export type NationStoryMetrics = {
   consumption1990Mton: number;
   consumptionChangePercent: number;
   stackData: NationStackDataPoint[];
+  lineData: NationTrendDataPoint[];
+  bathtubData: NationBathtubDataPoint[];
 };
 
 const TONNES_PER_MTON = 1_000_000;
@@ -135,6 +151,30 @@ export function buildStackChartData(
   });
 }
 
+export function buildTrendChartData(
+  series: NationEmissionSeries,
+): NationTrendDataPoint[] {
+  return getCompleteYears(series).map((year) => ({
+    year,
+    territorialFossil: toMton(series.territorialFossil[year]),
+    productionBased: toMton(series.productionBased[year]),
+    biogenic: toMton(series.biogenic[year]),
+    consumptionAbroad: toMton(series.consumptionAbroad[year]),
+  }));
+}
+
+/** Running total of annual combined emissions – the bathtub water level. */
+export function buildBathtubData(
+  series: NationEmissionSeries,
+): NationBathtubDataPoint[] {
+  let cumulativeMton = 0;
+  return getCompleteYears(series).map((year) => {
+    const annualMton = toMton(sumSeriesAtYear(series, year));
+    cumulativeMton += annualMton;
+    return { year, annualMton, cumulativeMton };
+  });
+}
+
 export function computeNationStoryMetrics(
   series: NationEmissionSeries,
 ): NationStoryMetrics {
@@ -193,5 +233,7 @@ export function computeNationStoryMetrics(
       consumptionLatestTonnes,
     ),
     stackData: buildStackChartData(series),
+    lineData: buildTrendChartData(series),
+    bathtubData: buildBathtubData(series),
   };
 }

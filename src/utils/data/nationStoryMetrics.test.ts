@@ -67,6 +67,20 @@ describe("nationStoryMetrics", () => {
     expect(point2024?.biogenic).toBeCloseTo(47.4, 0);
   });
 
+  it("builds trend and bathtub series alongside stack metrics", () => {
+    const metrics = computeNationStoryMetrics(series);
+
+    expect(metrics.lineData[0]?.year).toBe(NATION_BASELINE_YEAR);
+    expect(metrics.lineData.at(-1)?.year).toBe(metrics.latestYear);
+    expect(metrics.bathtubData[0]?.cumulativeMton).toBeCloseTo(
+      metrics.bathtubData[0]?.annualMton ?? 0,
+      5,
+    );
+    expect(metrics.bathtubData.at(-1)?.cumulativeMton).toBeGreaterThan(
+      metrics.bathtubData[0]?.cumulativeMton ?? 0,
+    );
+  });
+
   it("calculates percent change correctly", () => {
     expect(percentChange(100, 150)).toBe(50);
     expect(percentChange(200, 100)).toBe(-50);
