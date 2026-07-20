@@ -1510,14 +1510,11 @@
         "title": "Sveriges utsläpp",
         "paragraph1": "Vi får ofta höra att Sveriges utsläpp minskat med en tredjedel samtidigt som ekonomin har fördubblats. Men stämmer det verkligen?",
         "paragraph2": "Det vi oftast hör om är territoriella utsläpp, det vill säga fossila växthusgasutsläpp inom Sveriges gränser. Det är det måttet som används för att följa upp Sveriges klimatmål.",
-        "paragraph3": "Men Sveriges utsläpp är egentligen större än så. Låt oss titta på det, steg för steg.",
-        "previewRatio": "större än det vi brukar prata om",
-        "previewCaption": "Territoriella {{reported}} Mton blir {{full}} Mton när hela bilden räknas in ({{year}})."
+        "paragraph3": "Men Sveriges utsläpp är egentligen större än så. Låt oss titta på det, steg för steg."
       },
       "scrollHint": {
         "text": "Scrolla för mer",
-        "label": "Scrolla nedåt till nästa del av berättelsen",
-        "upLabel": "Scrolla uppåt till föregående del"
+        "label": "Scrolla nedåt till nästa del av berättelsen"
       },
       "journey": {
         "runningTotalLabel": "Sveriges utsläpp hittills",
@@ -1562,8 +1559,6 @@
       },
       "stacked": {
         "title": "Sveriges utsläpp sedan 1990",
-        "description": "",
-        "ariaLabel": "Historiska utsläpp",
         "layerCaption1": "Först har vi de territoriella utsläppen – fossila utsläpp inom Sveriges gränser.",
         "layerCaption2": "Nu lägger vi till utsläpp från svenska rederier och flygbolag utanför landets gränser.",
         "layerCaption3": "Sedan lägger vi till de konsumtionsbaserade utsläppen utomlands.",
@@ -1574,8 +1569,7 @@
         "title": "Sveriges utsläpp är större än vad vi tror och har inte minskat så mycket som vi tror",
         "usualLabel": "Det vi vanligtvis diskuterar",
         "fullLabel": "Sveriges egentliga utsläpp",
-        "since1990": "sedan 1990",
-        "body": "Den vanliga siffran vi hör om ger en överdrivet positiv bild. Om vi räknar in även andra utsläpp som Sverige kan påverka får vi en mer heltäckande bild – som berättar en annan historia."
+        "since1990": "sedan 1990"
       }
     }
   },

@@ -1460,14 +1460,11 @@
         "title": "Sweden's emissions",
         "paragraph1": "We often hear that Sweden's emissions have fallen by a third while the economy has doubled. But is that really true?",
         "paragraph2": "What we usually hear about are territorial emissions – fossil greenhouse gas emissions within Sweden's borders. That is the measure used to track Sweden's climate goals.",
-        "paragraph3": "But Sweden's emissions are actually larger than that. Let's look at it, step by step.",
-        "previewRatio": "larger than what we usually talk about",
-        "previewCaption": "Territorial {{reported}} Mt becomes {{full}} Mt when the full picture is counted ({{year}})."
+        "paragraph3": "But Sweden's emissions are actually larger than that. Let's look at it, step by step."
       },
       "scrollHint": {
         "text": "Scroll for more",
-        "label": "Scroll down to the next part of the story",
-        "upLabel": "Scroll up to the previous part"
+        "label": "Scroll down to the next part of the story"
       },
       "journey": {
         "runningTotalLabel": "Sweden's emissions so far",
@@ -1496,7 +1493,7 @@
       },
       "bathtub": {
         "text": "The atmosphere responds to the total amount of greenhouse gases – and they stay and accumulate over time. A bit like a bathtub with the tap running: until the tap is fully closed, the water level will keep rising. And the atmosphere has already passed the threshold for 1.5°C of warming. That is why how quickly we cut emissions toward zero is critically important.",
-        "question": "How has it gone since 1990?"
+        "question": "How has that gone since 1990?"
       },
       "graph": {
         "territorialFossil": "Territorial emissions",
@@ -1512,8 +1509,6 @@
       },
       "stacked": {
         "title": "Sweden's emissions since 1990",
-        "description": "",
-        "ariaLabel": "Historical emissions",
         "layerCaption1": "First we have territorial emissions – fossil emissions within Sweden's borders.",
         "layerCaption2": "Now we add emissions from Swedish shipping and airlines outside the country's borders.",
         "layerCaption3": "Then we add consumption-based emissions abroad.",
@@ -1524,8 +1519,7 @@
         "title": "Sweden's emissions are larger than we think and have not fallen as much as we think",
         "usualLabel": "What we usually discuss",
         "fullLabel": "Sweden's actual emissions",
-        "since1990": "since 1990",
-        "body": "The usual figure we hear about gives an overly positive picture. When we also include other emissions that Sweden can influence, we get a more complete picture – one that tells a different story."
+        "since1990": "since 1990"
       }
     }
   },

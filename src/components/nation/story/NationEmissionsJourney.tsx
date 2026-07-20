@@ -206,6 +206,9 @@ export function NationEmissionsJourney({
             >
               {t("nation.story.journey.runningTotalLabel")}
             </p>
+            <p className={`text-sm md:text-base ${NATION_STORY_TEXT.secondary}`}>
+              {t("nation.story.journey.dataYear", { year: metrics.latestYear })}
+            </p>
           </div>
 
           {/* Caption + legend of layers added so far */}

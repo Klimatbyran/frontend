@@ -124,7 +124,6 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
           >
             <CardHeader
               title={t("nation.story.stacked.title")}
-              description={t("nation.story.stacked.description")}
               className="[&>div]:mb-4 [&>div]:@lg:mb-6 [&_[class*='text-grey']]:text-white/85 [&_[class*='text-grey']]:text-base md:[&_[class*='text-grey']]:text-lg"
             />
 

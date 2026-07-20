@@ -95,16 +95,6 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
           </p>
         </div>
       </motion.div>
-
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.5, delay: 0.25 }}
-        className="text-xl md:text-2xl text-white leading-relaxed"
-      >
-        {t("nation.story.conclusion.body")}
-      </motion.p>
     </div>
   );
 }
