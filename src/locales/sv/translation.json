@@ -1507,41 +1507,46 @@
         "millionTco2e": "miljoner ton CO₂e"
       },
       "intro": {
-        "paragraph1": "Partier av olika färger brukar säga att Sveriges utsläpp minskat med en tredjedel samtidigt som ekonomin har fördubblats. Men allt beror på vilken data du väljer att presentera, under vilken tidsperiod och vilka typer av utsläpp du väljer att ha med.",
-        "paragraph2": "Ofta tittar man bara på de territoriella växthusgasutsläppen – utsläpp som uppstår innanför Sveriges geografiska gränser. Det är huvudmåttet som används för att följa upp Sveriges nationella och internationella klimatmål, och räknar exempelvis in inrikesflyg, el och fjärrvärme samt avfall.",
-        "paragraph3": "Men Sveriges klimatpåverkan är större än så. Låt oss bredda perspektivet – steg för steg."
+        "title": "Sveriges utsläpp",
+        "paragraph1": "Vi får ofta höra att Sveriges utsläpp minskat med en tredjedel samtidigt som ekonomin har fördubblats. Men stämmer det verkligen?",
+        "paragraph2": "Det vi oftast hör om är territoriella utsläpp, det vill säga fossila växthusgasutsläpp inom Sveriges gränser. Det är det måttet som används för att följa upp Sveriges klimatmål.",
+        "paragraph3": "Men Sveriges utsläpp är egentligen större än så. Låt oss titta på det, steg för steg.",
+        "previewRatio": "större än det vi brukar prata om"
       },
       "scrollHint": {
-        "text": "Scrolla för att fortsätta",
-        "label": "Scrolla nedåt för att fortsätta berättelsen"
+        "text": "Scrolla för mer",
+        "label": "Scrolla nedåt till nästa del av berättelsen"
       },
       "journey": {
-        "runningTotalLabel": "Sveriges utsläpp hittills",
+        "dataYear": "Siffrorna avser {{year}}.",
         "step1": {
           "label": "Territoriella utsläpp",
-          "text": "Utsläpp som uppstår innanför Sveriges geografiska gränser – huvudmåttet för våra klimatmål. Här räknas exempelvis inrikesflyg, el och fjärrvärme samt avfall."
+          "text": "Först har vi alltså utsläpp innanför Sveriges gränser. Här ingår bland annat utsläpp från industrin, inrikestransporter, jordbruk, uppvärmning och avfall."
         },
         "step2": {
           "label": "Produktionsbaserade utsläpp",
-          "text": "Men svenskars utsläpp sker också på andra platser. I ett produktionsperspektiv tittar vi på den svenska ekonomin istället för geografin – här ingår även svenska rederier och flygbolag på internationellt vatten och i internationellt luftrum."
+          "text": "Med produktionsbaserade utsläpp menas utsläpp från den svenska ekonomin. Det är ungefär likvärdigt med de territoriella utsläppen, men omfattar också utsläpp från svenska rederier på internationellt vatten och svenska flygbolag i internationellt luftrum."
         },
         "step3": {
           "label": "Konsumtion utomlands",
-          "text": "Svenskar orsakar också utsläpp genom sin livsstil och konsumtion, i Sverige och utomlands. Här räknas hushållens och offentlig konsumtion samt investeringar – medan utsläpp från varor som produceras i Sverige men exporteras räknas bort."
+          "text": "Men svenskar orsakar också utsläpp genom vår konsumtion utomlands. Här inkluderas utsläpp från tillverkning och transport av importerade varor till svensk hushållskonsumtion, offentlig verksamhet och investeringar. Svenskarnas utrikesflyg ingår här, men utsläpp från varor som produceras i Sverige men exporteras till andra länder räknas bort."
         },
         "step4": {
           "label": "Privat e-handel",
-          "text": "Dessutom har vi beräknat utsläppen från privatkonsumtion – det vi klickar hem från exempelvis Amazon och Shein. Utifrån paketstatistik och en utsläppsfaktor för kläder motsvarar det cirka 310 000 ton CO₂e, ungefär lika mycket som hela Gävle (2024).",
-          "badge": "+310 000 ton ≈ Gävle"
+          "text": "Vi har också satt siffror på utsläppen från privat e-handelsimport, exempelvis när vi klickar hem prylar från Amazon och Shein. Dessa utsläpp ingår idag inte i den offentliga statistiken. Det handlar om ytterligare 326 000 ton, motsvarande utsläppen i Gävle 2024 (328 000 ton).",
+          "badge": "+326 000 ton ≈ Gävle"
         },
         "step5": {
           "label": "Biogena utsläpp",
-          "text": "Biogena CO₂-utsläpp från mänsklig aktivitet – biobränslen i el och fjärrvärme, industri, transporter, arbetsmaskiner och avfall. Det kan ta decennier för ny skog att binda samma mängd koldioxid, därför är även biogena utsläpp ett klimatproblem här och nu."
+          "text": "Till sist har vi biogena koldioxidutsläpp som frigörs när trä och annat biologiskt material förbränns, exempelvis i fjärrvärmen, i pappersindustrin och från bilar med biodrivmedel. Biogena utsläpp ingår i det naturliga kretsloppet. Det kan dock ta decennier för ny skog att binda samma mängd koldioxid, därför har även biogena utsläpp klimatpåverkan här och nu."
         }
       },
       "bathtub": {
-        "text": "Atmosfären reagerar på mängden växthusgaser totalt – och dessa ackumuleras över tid. Lite som ett badkar där kranen står på: tills kranen dras åt helt fortsätter vattnet att stiga. Därför spelar det roll hur snabbt vi minskar utsläppen ner mot noll.",
-        "question": "Så hur har de olika utsläppsperspektiven förändrats sedan 1990?"
+        "text": "Atmosfären reagerar på mängden växthusgaser totalt – och de stannar kvar och ansamlas över tid. Lite som ett badkar, där kranen står på. Innan kranen dras åt helt, kommer vattennivån att fortsätta stiga. Och atmosfären har redan passerat gränsen för 1,5 graders uppvärmning. Därför är det avgörande viktigt hur snabbt vi minskar utsläppen ner mot noll.",
+        "question": "Hur har det gått med det sedan 1990?",
+        "levelCaption": "{{value}} Mton ansamlat sedan 1990",
+        "chunkCaptionSingleYear": "+{{value}} Mton tillkom {{year}}",
+        "chunkCaptionYearRange": "+{{value}} Mton tillkom {{fromYear}}–{{toYear}}"
       },
       "graph": {
         "territorialFossil": "Territoriella utsläpp",
@@ -1550,21 +1555,24 @@
         "biogenic": "Biogena utsläpp",
         "consumptionAbroad": "Konsumtionsbaserade utomlands"
       },
+      "interlude": {
+        "eyebrow": "Slutsats",
+        "title": "Vi diskuterar bara en del av Sveriges utsläpp",
+        "body": "Den vanliga siffran vi hör om ger en överdrivet positiv bild. Om vi räknar in även andra utsläpp som Sverige kan påverka får vi en mer heltäckande bild – som berättar en annan historia."
+      },
       "stacked": {
-        "title": "De samlade utsläppen sedan 1990",
-        "description": "När man slår samman produktionsbaserade, biogena och konsumtionsbaserade utsläpp ser bilden helt annorlunda ut. Stacken visar hur de tre lagren tillsammans knappt förändrats sedan 1990 – en annan berättelse än den officiella statistiken.",
-        "layerCaption1": "Först ritar vi ut de territoriella utsläppen – det vi vanligtvis diskuterar.",
-        "layerCaption2": "Nu lägger vi till produktionsbaserade utsläpp – svenska rederier och flyg utanför landets gränser.",
-        "layerCaption3": "Sedan lägger vi till de biogena utsläppen ovanpå.",
-        "layerCaption4": "Och slutligen de konsumtionsbaserade utsläppen utomlands – hela bilden."
+        "title": "Sveriges utsläpp sedan 1990",
+        "layerCaption1": "Först har vi de territoriella utsläppen – fossila utsläpp inom Sveriges gränser.",
+        "layerCaption2": "Nu lägger vi till utsläpp från svenska rederier och flygbolag utanför landets gränser.",
+        "layerCaption3": "Sedan lägger vi till de konsumtionsbaserade utsläppen utomlands.",
+        "layerCaption4": "Och slutligen de biogena utsläppen för att ge hela bilden."
       },
       "conclusion": {
-        "eyebrow": "Slutsatsen",
-        "title": "Vi diskuterar bara en bråkdel av Sveriges utsläpp",
+        "eyebrow": "Slutsats",
+        "title": "Sveriges utsläpp är större än vad vi tror och har inte minskat så mycket som vi tror",
         "usualLabel": "Det vi vanligtvis diskuterar",
-        "fullLabel": "Sveriges samlade utsläpp",
-        "since1990": "sedan 1990",
-        "body": "Den vanliga siffran ger en överdrivet optimistisk bild. Räknar vi in allt får vi en betydligt mer realistisk bild av hur det faktiskt går – och ändå har vi inte räknat allt."
+        "fullLabel": "Sveriges egentliga utsläpp",
+        "since1990": "sedan 1990"
       }
     }
   },

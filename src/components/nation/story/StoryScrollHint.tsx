@@ -2,22 +2,21 @@ import { useRef, type RefObject } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useStoryStageVisible } from "@/components/nation/story/storyStageContext";
 
 type StoryScrollHintProps = {
   /** Hide the hint once this element (typically the conclusion) enters the viewport. */
   endRef: RefObject<HTMLElement | null>;
 };
 
+/** Fixed bounce chevron shown through the story until the conclusion. */
 export function StoryScrollHint({ endRef }: StoryScrollHintProps) {
   const { t } = useTranslation();
   const ref = useRef<HTMLButtonElement>(null);
   const endReached = useInView(endRef, { amount: 0.35 });
-  const isOnStage = useStoryStageVisible();
-  const visible = isOnStage && !endReached;
+  const visible = !endReached;
 
   const scrollDown = () => {
-    window.scrollBy({ top: window.innerHeight * 0.75, behavior: "smooth" });
+    window.scrollBy({ top: window.innerHeight * 0.85, behavior: "smooth" });
   };
 
   return (
