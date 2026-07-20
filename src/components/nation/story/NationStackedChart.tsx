@@ -2,7 +2,6 @@ import { FC, useMemo } from "react";
 import {
   Area,
   AreaChart,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -21,10 +20,7 @@ import {
   ChartFooter,
   ChartTooltip,
   EnhancedLegend,
-  getCurrentYearReferenceLineProps,
-  getResponsiveChartMargin,
   getXAxisProps,
-  getYAxisProps,
   type LegendItem,
 } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
@@ -35,6 +31,16 @@ import {
   NATION_STORY_COLORS,
 } from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
+
+/** Story chart needs room for Y ticks; shared chart margins are negative and clip them. */
+function getStoryChartMargin(isMobile: boolean) {
+  return {
+    top: 8,
+    right: 12,
+    left: isMobile ? 12 : 20,
+    bottom: 0,
+  };
+}
 
 const LAYERS = [
   {
@@ -142,10 +148,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
 
             <div style={{ width: "100%", height: chartHeight }}>
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={data}
-                  margin={getResponsiveChartMargin(isMobile)}
-                >
+                <AreaChart data={data} margin={getStoryChartMargin(isMobile)}>
                   <XAxis
                     {...getXAxisProps(
                       "year",
@@ -153,7 +156,27 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                       xAxisTicks,
                     )}
                   />
-                  <YAxis {...getYAxisProps(currentLanguage)} />
+                  <YAxis
+                    stroke="var(--grey)"
+                    tickLine={false}
+                    axisLine={false}
+                    width={isMobile ? 48 : 56}
+                    tick={{ fill: "var(--grey)", fontSize: 12 }}
+                    tickFormatter={(value: number) =>
+                      formatMton(value, currentLanguage, 0)
+                    }
+                    domain={[0, "auto"]}
+                    label={{
+                      value: t("nation.story.unit.mton"),
+                      angle: -90,
+                      position: "insideLeft",
+                      style: {
+                        fill: "var(--grey)",
+                        fontSize: 12,
+                        textAnchor: "middle",
+                      },
+                    }}
+                  />
                   <Tooltip
                     content={
                       <ChartTooltip
@@ -164,9 +187,6 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                       />
                     }
                     wrapperStyle={{ outline: "none", zIndex: 60 }}
-                  />
-                  <ReferenceLine
-                    {...getCurrentYearReferenceLineProps(latestYear)}
                   />
                   {LAYERS.slice(0, visibleLayers).map((layer) => (
                     <Area
