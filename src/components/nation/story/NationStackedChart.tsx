@@ -36,8 +36,8 @@ import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 function getStoryChartMargin(isMobile: boolean) {
   return {
     top: 8,
-    right: 12,
-    left: isMobile ? 12 : 20,
+    right: isMobile ? 4 : 12,
+    left: isMobile ? 4 : 20,
     bottom: 0,
   };
 }
@@ -104,7 +104,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
     [t, visibleLayers],
   );
 
-  const chartHeight = isMobile ? 240 : 320;
+  const chartHeight = isMobile ? 180 : 320;
 
   return (
     <section
@@ -113,7 +113,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
       style={{ height: `${sectionVh}vh` }}
     >
       <div
-        className="h-screen flex items-center px-4 md:px-8"
+        className="h-[100svh] flex items-center px-4 md:px-8 py-3 md:py-0"
         style={stageStyle}
       >
         <div className="w-full max-w-4xl mx-auto">
@@ -121,25 +121,26 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             helpItems={[]}
             className={cn(
               className,
-              "pb-2 md:pb-3 [&>div]:pb-2 [&>div]:mb-0 md:[&>div]:mb-2",
+              "pb-1 md:pb-3 [&>div]:pb-1 [&>div]:mb-0 md:[&>div]:mb-2",
             )}
           >
             <CardHeader
               title={t("nation.story.stacked.title")}
-              className="[&>div]:mb-4 [&>div]:@lg:mb-6 [&_[class*='text-grey']]:text-white/85 [&_[class*='text-grey']]:text-base md:[&_[class*='text-grey']]:text-lg"
+              unit={t("nation.story.unit.mton")}
+              className="[&>div]:mb-2 md:[&>div]:mb-4 [&>div]:@lg:mb-6 [&_h3]:!text-xl md:[&_h3]:!text-4xl [&_[class*='text-grey']]:text-white/85 [&_[class*='text-grey']]:text-sm md:[&_[class*='text-grey']]:text-lg"
             />
 
             {/* Caption explaining the layer currently being drawn */}
-            <div className="min-h-[2.5rem] mb-2">
+            <div className="min-h-[2rem] md:min-h-[2.5rem] mb-1 md:mb-2">
               <motion.p
                 key={visibleLayers}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className={`flex items-center gap-3 text-base md:text-lg text-white font-medium`}
+                className="flex items-center gap-2 md:gap-3 text-sm md:text-lg text-white font-medium"
               >
                 <span
-                  className="w-4 h-4 rounded-full shrink-0"
+                  className="w-3 h-3 md:w-4 md:h-4 rounded-full shrink-0"
                   style={{ backgroundColor: LAYERS[visibleLayers - 1].color }}
                 />
                 {t(LAYERS[visibleLayers - 1].captionKey)}
@@ -160,22 +161,26 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                     stroke="var(--grey)"
                     tickLine={false}
                     axisLine={false}
-                    width={isMobile ? 48 : 56}
-                    tick={{ fill: "var(--grey)", fontSize: 12 }}
+                    width={isMobile ? 36 : 56}
+                    tick={{ fill: "var(--grey)", fontSize: isMobile ? 10 : 12 }}
                     tickFormatter={(value: number) =>
                       formatMton(value, currentLanguage, 0)
                     }
                     domain={[0, "auto"]}
-                    label={{
-                      value: t("nation.story.unit.mton"),
-                      angle: -90,
-                      position: "insideLeft",
-                      style: {
-                        fill: "var(--grey)",
-                        fontSize: 12,
-                        textAnchor: "middle",
-                      },
-                    }}
+                    {...(!isMobile
+                      ? {
+                          label: {
+                            value: t("nation.story.unit.mton"),
+                            angle: -90,
+                            position: "insideLeft" as const,
+                            style: {
+                              fill: "var(--grey)",
+                              fontSize: 12,
+                              textAnchor: "middle",
+                            },
+                          },
+                        }
+                      : {})}
                   />
                   <Tooltip
                     content={
@@ -212,7 +217,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             <ChartFooter className="mt-1 mb-0 space-y-2">
               <EnhancedLegend
                 items={visibleLegendItems}
-                className="gap-2 md:gap-3 [&_span]:text-base md:[&_span]:text-lg"
+                className="gap-1.5 md:gap-3 [&_span]:text-xs md:[&_span]:text-lg"
               />
             </ChartFooter>
           </SectionWithHelp>

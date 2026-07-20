@@ -7,7 +7,6 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   NATION_STORY_COLORS,
-  NATION_STORY_TEXT,
 } from "@/components/nation/story/nationStoryColors";
 import {
   SWEDEN_OUTLINE_PATH,
@@ -36,12 +35,12 @@ export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
       transition={{ duration: 0.45 }}
       className="py-1 space-y-2"
     >
-      <div className="relative mx-auto w-[140px] md:w-[168px]">
+      <div className="relative mx-auto w-[112px] md:w-[168px]">
         <svg
           viewBox={SWEDEN_OUTLINE_VIEWBOX}
           className="w-full h-auto"
           role="img"
-          aria-label={t("nation.story.intro.previewRatio")}
+          aria-label={`${reported}–${full} ${t("nation.story.unit.mton")}`}
         >
           <motion.path
             d={SWEDEN_OUTLINE_PATH}
@@ -106,12 +105,6 @@ export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
           </text>
         </svg>
       </div>
-
-      <p
-        className={`text-sm md:text-base ${NATION_STORY_TEXT.eyebrow} max-w-xs mx-auto`}
-      >
-        {t("nation.story.intro.previewRatio")}
-      </p>
     </motion.div>
   );
 }

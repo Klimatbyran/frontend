@@ -91,16 +91,16 @@ export function NationBathtub({ data }: NationBathtubProps) {
       style={{ height: `${sectionVh}vh` }}
     >
       <div
-        className="h-screen flex items-center px-4 md:px-8"
+        className="h-[100svh] flex items-center px-4 md:px-8 py-3 md:py-0"
         style={stageStyle}
       >
-        <div className="w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center">
-          <div className="space-y-6 text-center md:text-left">
+        <div className="w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-14 items-center">
+          <div className="space-y-3 md:space-y-6 text-center md:text-left order-2 md:order-1">
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className={`text-lg md:text-xl ${NATION_STORY_TEXT.body} leading-relaxed`}
+              className={`text-sm md:text-xl ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
             >
               {t("nation.story.bathtub.text")}
             </motion.p>
@@ -108,16 +108,16 @@ export function NationBathtub({ data }: NationBathtubProps) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.1 }}
-              className="text-2xl md:text-3xl text-white font-light leading-snug"
+              className="text-lg md:text-3xl text-white font-light leading-snug"
             >
               {t("nation.story.bathtub.question")}
             </motion.p>
           </div>
 
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-2 md:gap-4 order-1 md:order-2">
             <svg
               viewBox="0 0 220 200"
-              className="w-56 md:w-72 h-auto"
+              className="w-40 md:w-72 h-auto"
               aria-hidden
             >
               {/* Tap */}
@@ -186,22 +186,22 @@ export function NationBathtub({ data }: NationBathtubProps) {
               </g>
             </svg>
 
-            <div className="text-center space-y-1 min-h-[4.5rem]">
+            <div className="text-center space-y-0.5 md:space-y-1 min-h-[3.5rem] md:min-h-[4.5rem]">
               <motion.p
                 key={current.year}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-3xl md:text-4xl font-light tabular-nums"
+                className="text-2xl md:text-4xl font-light tabular-nums"
               >
                 {current.year}
               </motion.p>
-              <p className={`text-base md:text-lg ${NATION_STORY_TEXT.body}`}>
+              <p className={`text-sm md:text-lg ${NATION_STORY_TEXT.body}`}>
                 {t("nation.story.bathtub.levelCaption", {
                   value: formatMton(current.cumulativeMton, currentLanguage, 0),
                 })}
               </p>
               <p
-                className={`text-sm md:text-base ${NATION_STORY_TEXT.secondary}`}
+                className={`text-xs md:text-base ${NATION_STORY_TEXT.secondary}`}
               >
                 {chunkCaption}
               </p>

@@ -5,6 +5,7 @@ import {
   type NationStoryMetrics,
 } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   NATION_STORY_COLORS,
   NATION_STORY_TEXT,
@@ -27,7 +28,9 @@ type JourneyStep = {
   badgeKey?: string;
 };
 
-const MAX_DIAMETER = 300;
+/** Desktop onion diameter; mobile scales down so text + bubble fit one screen. */
+const DESKTOP_MAX_DIAMETER = 300;
+const MOBILE_MAX_DIAMETER = 168;
 /** Scroll distance per journey step – higher = more time to watch each layer grow. */
 const JOURNEY_STEP_VH = 115;
 /** Gentle spring so each new onion layer visibly expands. */
@@ -104,9 +107,11 @@ export function NationEmissionsJourney({
 }: NationEmissionsJourneyProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
 
   const steps = buildSteps(metrics);
   const maxTotal = steps[steps.length - 1].total;
+  const maxDiameter = isMobile ? MOBILE_MAX_DIAMETER : DESKTOP_MAX_DIAMETER;
 
   const { ref, step, sectionVh, stageStyle } = usePinnedSteps(
     steps.length,
@@ -131,7 +136,7 @@ export function NationEmissionsJourney({
   const ringTotal = ringStep?.total ?? current.total;
 
   const diameterFor = (total: number) =>
-    Math.sqrt(total / maxTotal) * MAX_DIAMETER;
+    Math.sqrt(total / maxTotal) * maxDiameter;
 
   return (
     <section
@@ -140,15 +145,15 @@ export function NationEmissionsJourney({
       style={{ height: `${sectionVh}vh` }}
     >
       <div
-        className="h-screen flex items-center px-4 md:px-8"
+        className="h-[100svh] flex items-center px-4 md:px-8 py-3 md:py-0"
         style={stageStyle}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center w-full max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 items-center w-full max-w-5xl mx-auto">
           {/* Bubble = accumulating colored layers */}
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-2 md:gap-4 order-1">
             <div
               className="relative"
-              style={{ width: MAX_DIAMETER, height: MAX_DIAMETER }}
+              style={{ width: maxDiameter, height: maxDiameter }}
             >
               {revealedLayers.map((layer) => {
                 const d = diameterFor(layer.total);
@@ -176,8 +181,8 @@ export function NationEmissionsJourney({
                 <motion.span
                   className="absolute left-1/2 top-1/2 rounded-full border-2 border-dashed"
                   style={{
-                    width: diameterFor(ringTotal) + 26,
-                    height: diameterFor(ringTotal) + 26,
+                    width: diameterFor(ringTotal) + (isMobile ? 16 : 26),
+                    height: diameterFor(ringTotal) + (isMobile ? 16 : 26),
                     x: "-50%",
                     y: "-50%",
                     borderColor: NATION_STORY_COLORS.eCommerceRing,
@@ -190,9 +195,9 @@ export function NationEmissionsJourney({
 
               {/* Running total on top */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-black font-bold text-3xl md:text-5xl tabular-nums select-none leading-none text-center">
+                <span className="text-black font-bold text-2xl md:text-5xl tabular-nums select-none leading-none text-center">
                   {formatMton(current.total, currentLanguage, 0)}
-                  <span className="block text-sm md:text-base font-semibold mt-1">
+                  <span className="block text-xs md:text-base font-semibold mt-0.5 md:mt-1">
                     {t("nation.story.unit.mton")}
                   </span>
                 </span>
@@ -200,45 +205,45 @@ export function NationEmissionsJourney({
             </div>
 
             <p
-              className={`text-sm md:text-base ${NATION_STORY_TEXT.secondary} mt-6 md:mt-10`}
+              className={`text-xs md:text-base ${NATION_STORY_TEXT.secondary} mt-1 md:mt-10`}
             >
               {t("nation.story.journey.dataYear", { year: metrics.latestYear })}
             </p>
           </div>
 
           {/* Caption + legend of layers added so far */}
-          <div className="space-y-4">
+          <div className="space-y-2.5 md:space-y-4 order-2 min-h-0">
             <motion.div
               key={current.key}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="space-y-3"
+              className="space-y-2 md:space-y-3"
             >
               <p
-                className={`text-lg md:text-xl ${NATION_STORY_TEXT.body} leading-relaxed`}
+                className={`text-sm md:text-xl ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
               >
                 {t(current.textKey)}
               </p>
               {current.badgeKey && (
-                <p className="text-base md:text-lg text-pink-1 font-medium">
+                <p className="text-sm md:text-lg text-pink-1 font-medium">
                   {t(current.badgeKey)}
                 </p>
               )}
             </motion.div>
 
             {/* Legend: each type and what it adds to the total */}
-            <div className="space-y-1.5 border-t border-white/10 pt-3">
+            <div className="space-y-1 border-t border-white/10 pt-2 md:pt-3">
               {steps
                 .slice(0, step + 1)
                 .filter((s) => s.layer)
                 .map((s, i) => (
                   <div
                     key={s.key}
-                    className="flex items-center gap-2.5 text-base md:text-lg"
+                    className="flex items-center gap-2 md:gap-2.5 text-sm md:text-lg"
                   >
                     <span
-                      className="w-3.5 h-3.5 rounded-full shrink-0"
+                      className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full shrink-0"
                       style={{ backgroundColor: s.color }}
                     />
                     <span className={`${NATION_STORY_TEXT.secondary} flex-1`}>
