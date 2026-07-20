@@ -127,7 +127,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             <CardHeader
               title={t("nation.story.stacked.title")}
               unit={t("nation.story.unit.mton")}
-              className="[&>div]:mb-2 md:[&>div]:mb-4 [&>div]:@lg:mb-6 [&_h3]:!text-xl md:[&_h3]:!text-4xl [&_[class*='text-grey']]:text-white/85 [&_[class*='text-grey']]:text-sm md:[&_[class*='text-grey']]:text-lg"
+              className="[&>div]:mb-2 md:[&>div]:mb-4 [&>div]:@lg:mb-6 [&_.text-4xl]:!text-xl md:[&_.text-4xl]:!text-4xl [&_[class*='text-grey']]:text-white/85 [&_[class*='text-grey']]:text-sm md:[&_[class*='text-grey']]:text-lg"
             />
 
             {/* Caption explaining the layer currently being drawn */}

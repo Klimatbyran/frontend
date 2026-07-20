@@ -54,7 +54,9 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
           <p className="text-4xl md:text-8xl font-light text-blue-2 tabular-nums leading-none">
             {formatMton(metrics.territorialLatestMton, currentLanguage, 0)}
           </p>
-          <p className={`text-base md:text-xl ${NATION_STORY_TEXT.body} mt-1.5 md:mt-2`}>
+          <p
+            className={`text-base md:text-xl ${NATION_STORY_TEXT.body} mt-1.5 md:mt-2`}
+          >
             {t("nation.story.unit.millionTco2e")}
           </p>
           <p className="mt-3 md:mt-4 text-lg md:text-2xl font-medium text-blue-2 tabular-nums">
@@ -79,7 +81,9 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
           <p className="text-4xl md:text-8xl font-light text-pink-3 tabular-nums leading-none">
             {formatMton(metrics.combinedLatestMton, currentLanguage, 0)}
           </p>
-          <p className={`text-base md:text-xl ${NATION_STORY_TEXT.body} mt-1.5 md:mt-2`}>
+          <p
+            className={`text-base md:text-xl ${NATION_STORY_TEXT.body} mt-1.5 md:mt-2`}
+          >
             {t("nation.story.unit.millionTco2e")}
           </p>
           <p className="mt-3 md:mt-4 text-lg md:text-2xl font-medium text-pink-3 tabular-nums">

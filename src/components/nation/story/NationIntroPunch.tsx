@@ -5,9 +5,7 @@ import {
   type NationStoryMetrics,
 } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
-import {
-  NATION_STORY_COLORS,
-} from "@/components/nation/story/nationStoryColors";
+import { NATION_STORY_COLORS } from "@/components/nation/story/nationStoryColors";
 import {
   SWEDEN_OUTLINE_PATH,
   SWEDEN_OUTLINE_VIEWBOX,
