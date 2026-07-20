@@ -83,9 +83,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   }, [latestYear]);
 
   // Scroll-driven: each step reveals one more area layer.
-  const { ref, step, sectionVh, stageStyle } = usePinnedSteps(
-    LAYERS.length,
-  );
+  const { ref, step, sectionVh, stageStyle } = usePinnedSteps(LAYERS.length);
   const visibleLayers = step + 1;
 
   const visibleLegendItems: LegendItem[] = useMemo(
