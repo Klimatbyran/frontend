@@ -25,7 +25,10 @@ function FullScreenSection({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function NationStoryPage({ nation: _nation, metrics }: NationStoryPageProps) {
+export function NationStoryPage({
+  nation: _nation,
+  metrics,
+}: NationStoryPageProps) {
   const { t } = useTranslation();
   const conclusionRef = useRef<HTMLElement>(null);
 

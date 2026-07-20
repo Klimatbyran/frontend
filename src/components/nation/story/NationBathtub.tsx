@@ -6,9 +6,7 @@ import {
   type NationBathtubDataPoint,
 } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
-import {
-  NATION_STORY_TEXT,
-} from "@/components/nation/story/nationStoryColors";
+import { NATION_STORY_TEXT } from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 import { useReportStoryStage } from "@/components/nation/story/storyStageContext";
 
@@ -133,7 +131,8 @@ export function NationBathtub({ data }: NationBathtubProps) {
                     TUB_INNER_BOTTOM -
                     (chunk.cumulativeMton / maxCumulative) * TUB_INNER_HEIGHT;
                   const height = Math.max(bottom - top, 0);
-                  const opacity = 0.35 + (index / Math.max(chunks.length, 1)) * 0.45;
+                  const opacity =
+                    0.35 + (index / Math.max(chunks.length, 1)) * 0.45;
                   return (
                     <motion.rect
                       key={chunk.year}
@@ -173,7 +172,9 @@ export function NationBathtub({ data }: NationBathtubProps) {
                   value: formatMton(current.cumulativeMton, currentLanguage, 0),
                 })}
               </p>
-              <p className={`text-sm md:text-base ${NATION_STORY_TEXT.secondary}`}>
+              <p
+                className={`text-sm md:text-base ${NATION_STORY_TEXT.secondary}`}
+              >
                 {t("nation.story.bathtub.chunkCaption", {
                   value: formatMton(chunkMton, currentLanguage, 0),
                   year: current.year,
