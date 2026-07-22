@@ -6,7 +6,10 @@ import {
   type NationBathtubDataPoint,
 } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
-import { NATION_STORY_TEXT } from "@/components/nation/story/nationStoryColors";
+import {
+  NATION_STORY_TEXT,
+  NATION_STORY_TYPE,
+} from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
 /** Sample years so each scroll step adds a visible water chunk. */
@@ -100,7 +103,7 @@ export function NationBathtub({ data }: NationBathtubProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className={`text-sm md:text-xl ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
+              className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}
             >
               {t("nation.story.bathtub.text")}
             </motion.p>
@@ -108,7 +111,7 @@ export function NationBathtub({ data }: NationBathtubProps) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.1 }}
-              className="text-lg md:text-3xl text-white font-light leading-snug"
+              className={`${NATION_STORY_TYPE.emphasis} text-white`}
             >
               {t("nation.story.bathtub.question")}
             </motion.p>
@@ -191,17 +194,19 @@ export function NationBathtub({ data }: NationBathtubProps) {
                 key={current.year}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-2xl md:text-4xl font-light tabular-nums"
+                className={NATION_STORY_TYPE.stat}
               >
                 {current.year}
               </motion.p>
-              <p className={`text-sm md:text-lg ${NATION_STORY_TEXT.body}`}>
+              <p
+                className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.body}`}
+              >
                 {t("nation.story.bathtub.levelCaption", {
                   value: formatMton(current.cumulativeMton, currentLanguage, 0),
                 })}
               </p>
               <p
-                className={`text-xs md:text-base ${NATION_STORY_TEXT.secondary}`}
+                className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary}`}
               >
                 {chunkCaption}
               </p>

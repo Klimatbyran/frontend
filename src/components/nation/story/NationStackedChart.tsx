@@ -23,12 +23,12 @@ import {
   getXAxisProps,
   type LegendItem,
 } from "@/components/charts";
-import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { cn } from "@/lib/utils";
 import {
   NATION_STORY_CHART,
   NATION_STORY_COLORS,
+  NATION_STORY_TYPE,
 } from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
@@ -124,11 +124,11 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               "pb-1 md:pb-3 [&>div]:pb-1 [&>div]:mb-0 md:[&>div]:mb-2",
             )}
           >
-            <CardHeader
-              title={t("nation.story.stacked.title")}
-              unit={t("nation.story.unit.mton")}
-              className="[&>div]:mb-2 md:[&>div]:mb-4 [&>div]:@lg:mb-6 [&_.text-4xl]:!text-xl md:[&_.text-4xl]:!text-4xl [&_[class*='text-grey']]:text-white/85 [&_[class*='text-grey']]:text-sm md:[&_[class*='text-grey']]:text-lg"
-            />
+            <h2
+              className={`${NATION_STORY_TYPE.title} text-white mb-2 md:mb-4`}
+            >
+              {t("nation.story.stacked.title")}
+            </h2>
 
             {/* Caption explaining the layer currently being drawn */}
             <div className="min-h-[2rem] md:min-h-[2.5rem] mb-1 md:mb-2">
@@ -137,7 +137,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="flex items-center gap-2 md:gap-3 text-sm md:text-lg text-white font-medium"
+                className={`flex items-center gap-2 md:gap-3 ${NATION_STORY_TYPE.emphasis} text-white`}
               >
                 <span
                   className="w-3 h-3 md:w-4 md:h-4 rounded-full shrink-0"
@@ -217,7 +217,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             <ChartFooter className="mt-1 mb-0 space-y-2">
               <EnhancedLegend
                 items={visibleLegendItems}
-                className="gap-1.5 md:gap-3 [&_span]:text-xs md:[&_span]:text-lg"
+                className="gap-1.5 md:gap-3 [&_span]:text-sm md:[&_span]:text-base"
               />
             </ChartFooter>
           </SectionWithHelp>

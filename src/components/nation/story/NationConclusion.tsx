@@ -6,7 +6,10 @@ import {
 } from "@/utils/data/nationStoryMetrics";
 import { formatPercentChange } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
-import { NATION_STORY_TEXT } from "@/components/nation/story/nationStoryColors";
+import {
+  NATION_STORY_TEXT,
+  NATION_STORY_TYPE,
+} from "@/components/nation/story/nationStoryColors";
 
 type NationConclusionProps = {
   metrics: NationStoryMetrics;
@@ -23,7 +26,7 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.5 }}
         transition={{ duration: 0.4 }}
-        className={`text-sm md:text-lg uppercase tracking-widest ${NATION_STORY_TEXT.eyebrow}`}
+        className={`${NATION_STORY_TYPE.eyebrow} ${NATION_STORY_TEXT.eyebrow}`}
       >
         {t("nation.story.conclusion.eyebrow")}
       </motion.p>
@@ -33,7 +36,7 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.5 }}
         transition={{ duration: 0.45, delay: 0.05 }}
-        className="text-2xl md:text-5xl font-light leading-tight"
+        className={`${NATION_STORY_TYPE.title} leading-tight`}
       >
         {t("nation.story.conclusion.title")}
       </motion.h2>
@@ -47,25 +50,27 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
       >
         <div className="p-1 md:p-2">
           <p
-            className={`text-sm md:text-lg uppercase tracking-wide ${NATION_STORY_TEXT.secondary} mb-2 md:mb-3`}
+            className={`${NATION_STORY_TYPE.eyebrow} ${NATION_STORY_TEXT.secondary} mb-2 md:mb-3`}
           >
             {t("nation.story.conclusion.usualLabel")}
           </p>
-          <p className="text-4xl md:text-8xl font-light text-blue-2 tabular-nums leading-none">
+          <p className={`${NATION_STORY_TYPE.display} text-blue-2`}>
             {formatMton(metrics.territorialLatestMton, currentLanguage, 0)}
           </p>
           <p
-            className={`text-base md:text-xl ${NATION_STORY_TEXT.body} mt-1.5 md:mt-2`}
+            className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body} mt-1.5 md:mt-2`}
           >
             {t("nation.story.unit.millionTco2e")}
           </p>
-          <p className="mt-3 md:mt-4 text-lg md:text-2xl font-medium text-blue-2 tabular-nums">
+          <p
+            className={`mt-3 md:mt-4 ${NATION_STORY_TYPE.emphasis} text-blue-2 tabular-nums`}
+          >
             {formatPercentChange(
               metrics.territorialChangePercent,
               currentLanguage,
             )}{" "}
             <span
-              className={`text-base md:text-lg font-normal ${NATION_STORY_TEXT.secondary}`}
+              className={`font-normal ${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary}`}
             >
               {t("nation.story.conclusion.since1990")}
             </span>
@@ -74,25 +79,27 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
 
         <div className="p-1 md:p-2">
           <p
-            className={`text-sm md:text-lg uppercase tracking-wide ${NATION_STORY_TEXT.secondary} mb-2 md:mb-3`}
+            className={`${NATION_STORY_TYPE.eyebrow} ${NATION_STORY_TEXT.secondary} mb-2 md:mb-3`}
           >
             {t("nation.story.conclusion.fullLabel")}
           </p>
-          <p className="text-4xl md:text-8xl font-light text-pink-3 tabular-nums leading-none">
+          <p className={`${NATION_STORY_TYPE.display} text-pink-3`}>
             {formatMton(metrics.combinedLatestMton, currentLanguage, 0)}
           </p>
           <p
-            className={`text-base md:text-xl ${NATION_STORY_TEXT.body} mt-1.5 md:mt-2`}
+            className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body} mt-1.5 md:mt-2`}
           >
             {t("nation.story.unit.millionTco2e")}
           </p>
-          <p className="mt-3 md:mt-4 text-lg md:text-2xl font-medium text-pink-3 tabular-nums">
+          <p
+            className={`mt-3 md:mt-4 ${NATION_STORY_TYPE.emphasis} text-pink-3 tabular-nums`}
+          >
             {formatPercentChange(
               metrics.combinedChangePercent,
               currentLanguage,
             )}{" "}
             <span
-              className={`text-base md:text-lg font-normal ${NATION_STORY_TEXT.secondary}`}
+              className={`font-normal ${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary}`}
             >
               {t("nation.story.conclusion.since1990")}
             </span>

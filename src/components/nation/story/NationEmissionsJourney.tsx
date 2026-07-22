@@ -9,6 +9,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   NATION_STORY_COLORS,
   NATION_STORY_TEXT,
+  NATION_STORY_TYPE,
 } from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
 
@@ -195,9 +196,13 @@ export function NationEmissionsJourney({
 
               {/* Running total on top */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-black font-bold text-2xl md:text-5xl tabular-nums select-none leading-none text-center">
+                <span
+                  className={`${NATION_STORY_TYPE.stat} text-black font-bold select-none leading-none text-center`}
+                >
                   {formatMton(current.total, currentLanguage, 0)}
-                  <span className="block text-xs md:text-base font-semibold mt-0.5 md:mt-1">
+                  <span
+                    className={`block ${NATION_STORY_TYPE.meta} font-semibold mt-0.5 md:mt-1`}
+                  >
                     {t("nation.story.unit.mton")}
                   </span>
                 </span>
@@ -205,7 +210,7 @@ export function NationEmissionsJourney({
             </div>
 
             <p
-              className={`text-xs md:text-base ${NATION_STORY_TEXT.secondary} mt-1 md:mt-10`}
+              className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary} mt-1 md:mt-10`}
             >
               {t("nation.story.journey.dataYear", { year: metrics.latestYear })}
             </p>
@@ -221,12 +226,21 @@ export function NationEmissionsJourney({
               className="space-y-2 md:space-y-3"
             >
               <p
-                className={`text-sm md:text-xl ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
+                className={`flex items-center gap-2.5 md:gap-3 ${NATION_STORY_TYPE.emphasis} text-white`}
+              >
+                <span
+                  className="w-3 h-3 md:w-4 md:h-4 rounded-full shrink-0"
+                  style={{ backgroundColor: current.color }}
+                />
+                {t(current.labelKey)}
+              </p>
+              <p
+                className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}
               >
                 {t(current.textKey)}
               </p>
               {current.badgeKey && (
-                <p className="text-sm md:text-lg text-pink-1 font-medium">
+                <p className={`${NATION_STORY_TYPE.emphasis} text-pink-1`}>
                   {t(current.badgeKey)}
                 </p>
               )}
@@ -240,7 +254,7 @@ export function NationEmissionsJourney({
                 .map((s, i) => (
                   <div
                     key={s.key}
-                    className="flex items-center gap-2 md:gap-2.5 text-sm md:text-lg"
+                    className={`flex items-center gap-2 md:gap-2.5 ${NATION_STORY_TYPE.meta}`}
                   >
                     <span
                       className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full shrink-0"

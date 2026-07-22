@@ -7,7 +7,10 @@ import { NationEmissionsJourney } from "@/components/nation/story/NationEmission
 import { NationIntroPunch } from "@/components/nation/story/NationIntroPunch";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { StoryScrollHint } from "@/components/nation/story/StoryScrollHint";
-import { NATION_STORY_TEXT } from "@/components/nation/story/nationStoryColors";
+import {
+  NATION_STORY_TEXT,
+  NATION_STORY_TYPE,
+} from "@/components/nation/story/nationStoryColors";
 import type { NationStoryDetails } from "@/hooks/nation/useNationStoryDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 
@@ -41,21 +44,17 @@ export function NationStoryPage({
             alt=""
             className="h-8 w-12 md:h-10 md:w-16 mx-auto object-contain opacity-90 rounded-sm"
           />
-          <h1 className="text-2xl md:text-5xl font-light text-white">
+          <h1 className={`${NATION_STORY_TYPE.title} text-white`}>
             {t("nation.story.intro.title")}
           </h1>
-          <p
-            className={`text-base md:text-xl ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
-          >
+          <p className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}>
             {t("nation.story.intro.paragraph1")}
           </p>
           <NationIntroPunch metrics={metrics} />
-          <p
-            className={`text-sm md:text-lg ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
-          >
+          <p className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}>
             {t("nation.story.intro.paragraph2")}
           </p>
-          <p className="text-base md:text-xl text-white leading-snug md:leading-relaxed font-medium">
+          <p className={`${NATION_STORY_TYPE.body} text-white font-medium`}>
             {t("nation.story.intro.paragraph3")}
           </p>
         </div>
@@ -75,7 +74,7 @@ export function NationStoryPage({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.4 }}
-            className={`text-sm md:text-lg uppercase tracking-widest ${NATION_STORY_TEXT.eyebrow}`}
+            className={`${NATION_STORY_TYPE.eyebrow} ${NATION_STORY_TEXT.eyebrow}`}
           >
             {t("nation.story.interlude.eyebrow")}
           </motion.p>
@@ -84,7 +83,7 @@ export function NationStoryPage({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.45, delay: 0.05 }}
-            className="text-2xl md:text-5xl font-light leading-tight"
+            className={`${NATION_STORY_TYPE.title} leading-tight`}
           >
             {t("nation.story.interlude.title")}
           </motion.h2>
@@ -93,7 +92,7 @@ export function NationStoryPage({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className={`text-base md:text-2xl ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
+            className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}
           >
             {t("nation.story.interlude.body")}
           </motion.p>
