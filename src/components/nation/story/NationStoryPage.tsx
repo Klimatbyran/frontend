@@ -37,12 +37,12 @@ export function NationStoryPage({
   return (
     <div className="bg-black text-white pb-16 md:pb-24">
       {/* Intro */}
-      <section className="relative flex items-start justify-center min-h-[100svh] px-4 md:px-8 pt-4 md:pt-8 pb-20 md:pb-28">
-        <div className="max-w-3xl mx-auto text-center space-y-3 md:space-y-5 pt-1 md:pt-2">
+      <section className="relative flex items-start justify-center min-h-[100svh] px-4 md:px-8 pt-1 md:pt-2 pb-12 md:pb-14">
+        <div className="max-w-3xl mx-auto text-center space-y-2 md:space-y-3">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg"
             alt=""
-            className="h-8 w-12 md:h-10 md:w-16 mx-auto object-contain opacity-90 rounded-sm"
+            className="h-7 w-10 md:h-10 md:w-16 mx-auto object-contain opacity-90 rounded-sm"
           />
           <h1 className={`${NATION_STORY_TYPE.title} text-white`}>
             {t("nation.story.intro.title")}

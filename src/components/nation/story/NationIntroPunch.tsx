@@ -31,12 +31,15 @@ export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.35 }}
       transition={{ duration: 0.45 }}
-      className="py-1 space-y-2"
     >
-      <div className="relative mx-auto w-[112px] md:w-[168px]">
+      {/*
+        Fluid height: small phones stay compact, short laptops shrink,
+        large desktops can grow toward the original silhouette size.
+      */}
+      <div className="relative mx-auto h-[clamp(120px,26svh,180px)] md:h-[clamp(180px,30svh,340px)] w-auto aspect-[100/220]">
         <svg
           viewBox={SWEDEN_OUTLINE_VIEWBOX}
-          className="w-full h-auto"
+          className="h-full w-auto max-w-full mx-auto"
           role="img"
           aria-label={`${reported}–${full} ${t("nation.story.unit.mton")}`}
         >
