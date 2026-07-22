@@ -13,15 +13,9 @@ import {
 
 type NationIntroPunchProps = {
   metrics: NationStoryMetrics;
-  /** Extra classes for the map container width/height constraints. */
-  className?: string;
 };
 
-/** Nested Sweden silhouettes: territorial (inner) vs full emissions (outer). */
-export function NationIntroPunch({
-  metrics,
-  className = "w-[88px] md:w-[120px]",
-}: NationIntroPunchProps) {
+export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
@@ -37,76 +31,78 @@ export function NationIntroPunch({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.35 }}
       transition={{ duration: 0.45 }}
-      className={`relative mx-auto shrink-0 ${className}`}
+      className="py-1 space-y-2"
     >
-      <svg
-        viewBox={SWEDEN_OUTLINE_VIEWBOX}
-        className="w-full h-auto max-h-[42vh] md:max-h-[52vh]"
-        role="img"
-        aria-label={`${reported}–${full} ${t("nation.story.unit.mton")}`}
-      >
-        <motion.path
-          d={SWEDEN_OUTLINE_PATH}
-          fill={NATION_STORY_COLORS.consumption}
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformOrigin: "50% 50%" }}
-        />
-        <motion.g
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: innerScale }}
-          transition={{
-            duration: 0.5,
-            delay: 0.1,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ transformOrigin: "50% 45%" }}
+      <div className="relative mx-auto w-[112px] md:w-[168px]">
+        <svg
+          viewBox={SWEDEN_OUTLINE_VIEWBOX}
+          className="w-full h-auto"
+          role="img"
+          aria-label={`${reported}–${full} ${t("nation.story.unit.mton")}`}
         >
-          <path
+          <motion.path
             d={SWEDEN_OUTLINE_PATH}
-            fill={NATION_STORY_COLORS.territorial}
+            fill={NATION_STORY_COLORS.consumption}
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transformOrigin: "50% 50%" }}
           />
-        </motion.g>
+          <motion.g
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: innerScale }}
+            transition={{
+              duration: 0.5,
+              delay: 0.1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            style={{ transformOrigin: "50% 45%" }}
+          >
+            <path
+              d={SWEDEN_OUTLINE_PATH}
+              fill={NATION_STORY_COLORS.territorial}
+            />
+          </motion.g>
 
-        <text
-          x="50"
-          y="96"
-          textAnchor="middle"
-          className="fill-black font-semibold"
-          style={{ fontSize: 18 }}
-        >
-          {reported}
-        </text>
-        <text
-          x="50"
-          y="110"
-          textAnchor="middle"
-          className="fill-black/70 font-medium"
-          style={{ fontSize: 9 }}
-        >
-          {t("nation.story.unit.mton")}
-        </text>
+          <text
+            x="50"
+            y="96"
+            textAnchor="middle"
+            className="fill-black font-semibold"
+            style={{ fontSize: 18 }}
+          >
+            {reported}
+          </text>
+          <text
+            x="50"
+            y="110"
+            textAnchor="middle"
+            className="fill-black/70 font-medium"
+            style={{ fontSize: 9 }}
+          >
+            {t("nation.story.unit.mton")}
+          </text>
 
-        <text
-          x="72"
-          y="168"
-          textAnchor="middle"
-          className="fill-white font-semibold"
-          style={{ fontSize: 15 }}
-        >
-          {full}
-        </text>
-        <text
-          x="72"
-          y="180"
-          textAnchor="middle"
-          className="fill-white/85 font-medium"
-          style={{ fontSize: 8 }}
-        >
-          {t("nation.story.unit.mton")}
-        </text>
-      </svg>
+          <text
+            x="72"
+            y="168"
+            textAnchor="middle"
+            className="fill-white font-semibold"
+            style={{ fontSize: 15 }}
+          >
+            {full}
+          </text>
+          <text
+            x="72"
+            y="180"
+            textAnchor="middle"
+            className="fill-white/85 font-medium"
+            style={{ fontSize: 8 }}
+          >
+            {t("nation.story.unit.mton")}
+          </text>
+        </svg>
+      </div>
     </motion.div>
   );
 }

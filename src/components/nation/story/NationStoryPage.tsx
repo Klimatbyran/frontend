@@ -33,45 +33,31 @@ export function NationStoryPage({
 
   return (
     <div className="bg-black text-white pb-16 md:pb-24">
-      {/* Intro: text + tall Sweden map side-by-side on desktop */}
-      <section className="relative flex items-center justify-center min-h-[100svh] px-4 md:px-8 pt-4 md:pt-8 pb-20 md:pb-28">
-        <div className="w-full max-w-4xl mx-auto pt-1 md:pt-2">
-          <div className="flex flex-col items-center text-center md:text-left md:items-start gap-2 mb-4 md:mb-6">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg"
-              alt=""
-              className="h-8 w-12 md:h-10 md:w-16 object-contain opacity-90 rounded-sm"
-            />
-            <h1 className="text-2xl md:text-5xl font-light text-white">
-              {t("nation.story.intro.title")}
-            </h1>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-5 md:gap-10 items-center">
-            <div className="space-y-3 md:space-y-5 text-center md:text-left order-2 md:order-1">
-              <p
-                className={`text-base md:text-xl ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
-              >
-                {t("nation.story.intro.paragraph1")}
-              </p>
-              <p
-                className={`text-sm md:text-lg ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
-              >
-                {t("nation.story.intro.paragraph2")}
-              </p>
-              <p className="text-base md:text-xl text-white leading-snug md:leading-relaxed font-medium">
-                {t("nation.story.intro.paragraph3")}
-              </p>
-            </div>
-
-            {/* Narrow column keeps the tall silhouette from dominating */}
-            <div className="order-1 md:order-2 flex justify-center md:justify-end">
-              <NationIntroPunch
-                metrics={metrics}
-                className="w-[100px] sm:w-[112px] md:w-[128px] md:mx-0"
-              />
-            </div>
-          </div>
+      {/* Intro */}
+      <section className="relative flex items-start justify-center min-h-[100svh] px-4 md:px-8 pt-4 md:pt-8 pb-20 md:pb-28">
+        <div className="max-w-3xl mx-auto text-center space-y-3 md:space-y-5 pt-1 md:pt-2">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg"
+            alt=""
+            className="h-8 w-12 md:h-10 md:w-16 mx-auto object-contain opacity-90 rounded-sm"
+          />
+          <h1 className="text-2xl md:text-5xl font-light text-white">
+            {t("nation.story.intro.title")}
+          </h1>
+          <p
+            className={`text-base md:text-xl ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
+          >
+            {t("nation.story.intro.paragraph1")}
+          </p>
+          <NationIntroPunch metrics={metrics} />
+          <p
+            className={`text-sm md:text-lg ${NATION_STORY_TEXT.body} leading-snug md:leading-relaxed`}
+          >
+            {t("nation.story.intro.paragraph2")}
+          </p>
+          <p className="text-base md:text-xl text-white leading-snug md:leading-relaxed font-medium">
+            {t("nation.story.intro.paragraph3")}
+          </p>
         </div>
       </section>
 
