@@ -109,6 +109,10 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   return (
     <section
       ref={ref}
+      data-story-section
+      data-story-step={step}
+      data-story-steps={LAYERS.length}
+      data-story-step-vh={90}
       className="relative"
       style={{ height: `${sectionVh}vh` }}
     >

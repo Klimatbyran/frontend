@@ -837,6 +837,12 @@
           "title": "Sveriges nationella utsläpp",
           "text": "Se Sveriges nationella utsläppsdata på Klimatkollen"
         }
+      },
+      "nationEmissionsLayers": {
+        "title": "Sveriges utsläpp – hela bilden",
+        "description": "Hur Klimatkollen presenterar territoriella, produktionsbaserade, konsumtionsbaserade och biogena utsläpp för Sverige.",
+        "sectionTitle": "Källor och metod",
+        "placeholder": "Detaljerad metodbeskrivning för det här avsnittet kommer snart."
       }
     },
     "municipalityAndRegion": {
@@ -1572,7 +1578,8 @@
         "title": "Sveriges utsläpp är större än vad vi tror och har inte minskat så mycket som vi tror",
         "usualLabel": "Det vi vanligtvis diskuterar",
         "fullLabel": "Sveriges egentliga utsläpp",
-        "since1990": "sedan 1990"
+        "since1990": "sedan 1990",
+        "methodologyLink": "Läs mer om hur vi räknar på Sveriges utsläpp"
       }
     }
   },

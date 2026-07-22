@@ -40,11 +40,103 @@ type NationBathtubProps = {
   data: NationBathtubDataPoint[];
 };
 
-const TUB_WATER_TOP = 52;
-const TUB_INNER_BOTTOM = 168;
+/** Wide tub geometry (viewBox 520×280) – used full-bleed on desktop with copy inside. */
+const TUB_WATER_TOP = 72;
+const TUB_INNER_BOTTOM = 232;
 const TUB_WATER_HEIGHT = TUB_INNER_BOTTOM - TUB_WATER_TOP;
+const TUB_WATER_LEFT = 48;
+const TUB_WATER_WIDTH = 424;
 const TUB_WATER_CLIP_PATH =
-  "M40 52 h140 v82 c0 24 -26 34 -70 34 s-70 -10 -70 -34 z";
+  "M48 72 h424 v118 c0 32 -48 42 -212 42 s-212 -10 -212 -42 z";
+const TUB_OUTLINE_PATH =
+  "M40 64 h440 v126 c0 36 -52 48 -220 48 s-220 -12 -220 -48 z";
+
+type TubGraphicProps = {
+  waterClipId: string;
+  waterClipUrl: string;
+  chunks: NationBathtubDataPoint[];
+  maxCumulative: number;
+  waterTop: number;
+  /** Stronger fill when copy is not overlaid (mobile). */
+  strongerWater?: boolean;
+  className?: string;
+};
+
+function TubGraphic({
+  waterClipId,
+  waterClipUrl,
+  chunks,
+  maxCumulative,
+  waterTop,
+  strongerWater = false,
+  className,
+}: TubGraphicProps) {
+  return (
+    <svg viewBox="0 0 520 280" className={className} aria-hidden>
+      <path
+        d="M390 18 h36 a7 7 0 0 1 7 7 v12 h-12 v-7 h-31 z"
+        fill="none"
+        stroke="rgba(255,255,255,0.55)"
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M426 37 v18"
+        stroke="rgba(125, 211, 252, 0.7)"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d={TUB_OUTLINE_PATH}
+        fill="none"
+        stroke="rgba(255,255,255,0.7)"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <defs>
+        <clipPath id={waterClipId}>
+          <path d={TUB_WATER_CLIP_PATH} />
+        </clipPath>
+      </defs>
+      <g clipPath={waterClipUrl}>
+        {chunks.map((chunk, index) => {
+          const prevCumulative =
+            index === 0 ? 0 : chunks[index - 1].cumulativeMton;
+          const bottom =
+            TUB_INNER_BOTTOM -
+            (prevCumulative / maxCumulative) * TUB_WATER_HEIGHT;
+          const top =
+            TUB_INNER_BOTTOM -
+            (chunk.cumulativeMton / maxCumulative) * TUB_WATER_HEIGHT;
+          const height = Math.max(bottom - top, 0);
+          const fillAlpha = strongerWater
+            ? 0.28 + (index / Math.max(chunks.length, 1)) * 0.4
+            : 0.1 + (index / Math.max(chunks.length, 1)) * 0.22;
+          return (
+            <motion.rect
+              key={chunk.year}
+              x={TUB_WATER_LEFT}
+              width={TUB_WATER_WIDTH}
+              initial={{ y: bottom, height: 0, opacity: 0 }}
+              animate={{ y: top, height, opacity: 1 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              fill={`rgba(56, 189, 248, ${fillAlpha})`}
+            />
+          );
+        })}
+        <motion.line
+          x1={TUB_WATER_LEFT}
+          x2={TUB_WATER_LEFT + TUB_WATER_WIDTH}
+          stroke="rgba(186, 230, 253, 0.75)"
+          strokeWidth="2"
+          initial={false}
+          animate={{ y1: waterTop, y2: waterTop }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </g>
+    </svg>
+  );
+}
 
 export function NationBathtub({ data }: NationBathtubProps) {
   const { t } = useTranslation();
@@ -87,9 +179,34 @@ export function NationBathtub({ data }: NationBathtubProps) {
           toYear: chunkToYear,
         });
 
+  const yearBlock = (
+    <div className="text-center space-y-0.5 md:space-y-1 min-h-[3.5rem] md:min-h-[4.5rem]">
+      <motion.p
+        key={current.year}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={NATION_STORY_TYPE.stat}
+      >
+        {current.year}
+      </motion.p>
+      <p className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.body}`}>
+        {t("nation.story.bathtub.levelCaption", {
+          value: formatMton(current.cumulativeMton, currentLanguage, 0),
+        })}
+      </p>
+      <p className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary}`}>
+        {chunkCaption}
+      </p>
+    </div>
+  );
+
   return (
     <section
       ref={ref}
+      data-story-section
+      data-story-step={step}
+      data-story-steps={steps.length}
+      data-story-step-vh={70}
       className="relative"
       style={{ height: `${sectionVh}vh` }}
     >
@@ -97,10 +214,23 @@ export function NationBathtub({ data }: NationBathtubProps) {
         className="h-[100svh] flex items-center px-4 md:px-8 py-3 md:py-0"
         style={stageStyle}
       >
-        <div className="w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-14 items-center">
-          <div className="space-y-3 md:space-y-6 text-center md:text-left order-2 md:order-1">
+        {/* Mobile: compact tub on top, copy below (Swedish text is too long for the basin). */}
+        <div className="w-full max-w-3xl mx-auto md:hidden space-y-3">
+          <div className="flex flex-col items-center gap-2">
+            <TubGraphic
+              waterClipId={waterClipId}
+              waterClipUrl={waterClipUrl}
+              chunks={chunks}
+              maxCumulative={maxCumulative}
+              waterTop={waterTop}
+              strongerWater
+              className="w-44 h-auto"
+            />
+            {yearBlock}
+          </div>
+          <div className="space-y-2.5 text-center">
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
               className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}
@@ -108,7 +238,7 @@ export function NationBathtub({ data }: NationBathtubProps) {
               {t("nation.story.bathtub.text")}
             </motion.p>
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.1 }}
               className={`${NATION_STORY_TYPE.emphasis} text-white`}
@@ -116,102 +246,39 @@ export function NationBathtub({ data }: NationBathtubProps) {
               {t("nation.story.bathtub.question")}
             </motion.p>
           </div>
+        </div>
 
-          <div className="flex flex-col items-center gap-2 md:gap-4 order-1 md:order-2">
-            <svg
-              viewBox="0 0 220 200"
-              className="w-40 md:w-72 h-auto"
-              aria-hidden
-            >
-              {/* Tap */}
-              <path
-                d="M150 18 h28 a6 6 0 0 1 6 6 v10 h-10 v-6 h-24 z"
-                fill="none"
-                stroke="rgba(255,255,255,0.55)"
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M178 34 v14"
-                stroke="rgba(125, 211, 252, 0.85)"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-              {/* Tub outline */}
-              <path
-                d="M36 48 h148 v88 c0 28 -28 40 -74 40 s-74 -12 -74 -40 z"
-                fill="none"
-                stroke="rgba(255,255,255,0.7)"
-                strokeWidth="3"
-                strokeLinejoin="round"
-              />
-              {/* Water chunks clipped inside tub */}
-              <defs>
-                <clipPath id={waterClipId}>
-                  <path d={TUB_WATER_CLIP_PATH} />
-                </clipPath>
-              </defs>
-              <g clipPath={waterClipUrl}>
-                {chunks.map((chunk, index) => {
-                  const prevCumulative =
-                    index === 0 ? 0 : chunks[index - 1].cumulativeMton;
-                  const bottom =
-                    TUB_INNER_BOTTOM -
-                    (prevCumulative / maxCumulative) * TUB_WATER_HEIGHT;
-                  const top =
-                    TUB_INNER_BOTTOM -
-                    (chunk.cumulativeMton / maxCumulative) * TUB_WATER_HEIGHT;
-                  const height = Math.max(bottom - top, 0);
-                  const fillAlpha =
-                    0.35 + (index / Math.max(chunks.length, 1)) * 0.45;
-                  return (
-                    <motion.rect
-                      key={chunk.year}
-                      x={40}
-                      width={140}
-                      initial={{ y: bottom, height: 0, opacity: 0 }}
-                      animate={{ y: top, height, opacity: 1 }}
-                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                      fill={`rgba(56, 189, 248, ${fillAlpha})`}
-                    />
-                  );
-                })}
-                {/* Surface line */}
-                <motion.line
-                  x1={40}
-                  x2={180}
-                  stroke="rgba(186, 230, 253, 0.95)"
-                  strokeWidth="2"
-                  initial={false}
-                  animate={{ y1: waterTop, y2: waterTop }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                />
-              </g>
-            </svg>
-
-            <div className="text-center space-y-0.5 md:space-y-1 min-h-[3.5rem] md:min-h-[4.5rem]">
+        {/* Desktop: wide tub with copy inside translucent water. */}
+        <div className="hidden md:block w-full max-w-4xl mx-auto">
+          <div className="relative mx-auto w-full">
+            <TubGraphic
+              waterClipId={`${waterClipId}-desktop`}
+              waterClipUrl={svgLocalUrl(`${waterClipId}-desktop`)}
+              chunks={chunks}
+              maxCumulative={maxCumulative}
+              waterTop={waterTop}
+              className="w-full h-auto"
+            />
+            <div className="pointer-events-none absolute inset-x-[12%] top-[28%] bottom-[26%] flex flex-col items-center justify-center gap-4 text-center px-6">
               <motion.p
-                key={current.year}
-                initial={{ opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={NATION_STORY_TYPE.stat}
+                transition={{ duration: 0.45 }}
+                className="text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]"
               >
-                {current.year}
+                {t("nation.story.bathtub.text")}
               </motion.p>
-              <p
-                className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.body}`}
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.1 }}
+                className="text-xl font-medium text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]"
               >
-                {t("nation.story.bathtub.levelCaption", {
-                  value: formatMton(current.cumulativeMton, currentLanguage, 0),
-                })}
-              </p>
-              <p
-                className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary}`}
-              >
-                {chunkCaption}
-              </p>
+                {t("nation.story.bathtub.question")}
+              </motion.p>
             </div>
           </div>
+          <div className="mt-4">{yearBlock}</div>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
@@ -17,7 +18,7 @@ type NationConclusionProps = {
 
 export function NationConclusion({ metrics }: NationConclusionProps) {
   const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
+  const { currentLanguage, getLocalizedPath } = useLanguage();
 
   return (
     <div className="max-w-3xl mx-auto text-center space-y-5 md:space-y-8">
@@ -106,6 +107,21 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
           </p>
         </div>
       </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.4 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary}`}
+      >
+        <Link
+          to={getLocalizedPath("/methodology?view=nationEmissionsLayers")}
+          className="underline underline-offset-4 decoration-white/40 hover:text-white hover:decoration-white transition-colors"
+        >
+          {t("nation.story.conclusion.methodologyLink")}
+        </Link>
+      </motion.p>
     </div>
   );
 }

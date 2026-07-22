@@ -786,6 +786,12 @@
           "title": "Sweden's National Emissions",
           "text": "View Sweden's national emissions data on Klimatkollen"
         }
+      },
+      "nationEmissionsLayers": {
+        "title": "Sweden’s emissions – the full picture",
+        "description": "How Klimatkollen presents territorial, production-based, consumption-based and biogenic emissions for Sweden.",
+        "sectionTitle": "Sources and method",
+        "placeholder": "Detailed methodology for this section is coming soon."
       }
     },
     "municipalityAndRegion": {
@@ -1522,7 +1528,8 @@
         "title": "Sweden's emissions are larger than we think and have not fallen as much as we think",
         "usualLabel": "What we usually discuss",
         "fullLabel": "Sweden's actual emissions",
-        "since1990": "since 1990"
+        "since1990": "since 1990",
+        "methodologyLink": "Read more about how we calculate Sweden’s emissions"
       }
     }
   },

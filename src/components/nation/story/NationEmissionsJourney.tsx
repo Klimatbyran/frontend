@@ -142,6 +142,10 @@ export function NationEmissionsJourney({
   return (
     <section
       ref={ref}
+      data-story-section
+      data-story-step={step}
+      data-story-steps={steps.length}
+      data-story-step-vh={JOURNEY_STEP_VH}
       className="relative"
       style={{ height: `${sectionVh}vh` }}
     >
