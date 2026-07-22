@@ -839,7 +839,7 @@
         }
       },
       "nationEmissionsLayers": {
-        "title": "Sveriges utsläpp – hela bilden",
+        "title": "Nationell data detaljer",
         "description": "Hur Klimatkollen presenterar territoriella, produktionsbaserade, konsumtionsbaserade och biogena utsläpp för Sverige.",
         "sectionTitle": "Källor och metod",
         "placeholder": "Detaljerad metodbeskrivning för det här avsnittet kommer snart."
