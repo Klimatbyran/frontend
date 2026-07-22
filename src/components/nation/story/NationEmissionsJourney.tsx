@@ -234,7 +234,9 @@ export function NationEmissionsJourney({
                 />
                 {t(current.labelKey)}
               </p>
-              <p className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}>
+              <p
+                className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}
+              >
                 {t(current.textKey)}
               </p>
               {current.badgeKey && (

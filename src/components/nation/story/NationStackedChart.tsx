@@ -124,7 +124,9 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               "pb-1 md:pb-3 [&>div]:pb-1 [&>div]:mb-0 md:[&>div]:mb-2",
             )}
           >
-            <h2 className={`${NATION_STORY_TYPE.title} text-white mb-2 md:mb-4`}>
+            <h2
+              className={`${NATION_STORY_TYPE.title} text-white mb-2 md:mb-4`}
+            >
               {t("nation.story.stacked.title")}
             </h2>
 

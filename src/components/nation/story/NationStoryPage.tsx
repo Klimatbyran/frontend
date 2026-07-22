@@ -7,7 +7,10 @@ import { NationEmissionsJourney } from "@/components/nation/story/NationEmission
 import { NationIntroPunch } from "@/components/nation/story/NationIntroPunch";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { StoryScrollHint } from "@/components/nation/story/StoryScrollHint";
-import { NATION_STORY_TEXT, NATION_STORY_TYPE } from "@/components/nation/story/nationStoryColors";
+import {
+  NATION_STORY_TEXT,
+  NATION_STORY_TYPE,
+} from "@/components/nation/story/nationStoryColors";
 import type { NationStoryDetails } from "@/hooks/nation/useNationStoryDetails";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 
