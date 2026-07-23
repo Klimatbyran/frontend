@@ -840,9 +840,82 @@
       },
       "nationEmissionsLayers": {
         "title": "Nationell data detaljer",
-        "description": "Hur Klimatkollen presenterar territoriella, produktionsbaserade, konsumtionsbaserade och biogena utsläpp för Sverige.",
-        "sectionTitle": "Källor och metod",
-        "placeholder": "Detaljerad metodbeskrivning för det här avsnittet kommer snart."
+        "description": "Hur Klimatkollen bygger en bredare bild av Sveriges växthusgasutsläpp utifrån rådighet, 1990–2025.",
+        "intro": {
+          "title": "Varför en bredare bild",
+          "paragraph1": "I klimatdebatten avses ofta de territoriella fossila utsläppen inom Sveriges gränser – det mått som används i klimatmålen och rapporteras internationellt. De siffrorna är viktiga, men de täcker inte allt som Sverige kan påverka.",
+          "paragraph2": "Klimatkollen ersätter inte den officiella statistiken. Vi redovisar en bredare bild utifrån rådighet: utsläpp som svenska beslut och aktiviteter kan påverka på olika sätt – hemma och utomlands.",
+          "paragraph3": "Detaljerade beräkningar finns i vårt arbetsark. Publicerade resultat finns i detta <0>Google-ark</0>. Enhet genomgående: ton CO₂e per år.",
+          "paragraph4": "Tidsserierna löper från 1990 till 2025. Där officiella serier tar slut tidigare dokumenterar vi hur luckor fylls så att serierna förblir jämförbara."
+        },
+        "perspectives": {
+          "title": "Tre perspektiv som vi kombinerar",
+          "paragraph1": "Nationsberättelsen och diagrammen bygger på tre kompletterande perspektiv:",
+          "production": "Produktionsbaserade utsläpp – utsläpp kopplade till den svenska ekonomin (ungefär som territoriella utsläpp, men inklusive svenska rederier och flygbolag i internationell trafik).",
+          "consumption": "Konsumtionsbaserade utsläpp utomlands – utsläpp orsakade av svensk slutlig efterfrågan där utsläppen sker utanför Sverige, inklusive justerade siffror för utrikesflyg och en uppskattning av privat e-handel från utlandet.",
+          "biogenic": "Biogena koldioxidutsläpp – CO₂ som frigörs när biomassa förbränns i Sverige (till exempel i fjärrvärme, massa- och pappersindustri samt fordon på biodrivmedel).",
+          "paragraph2": "Territoriella fossila utsläpp är den välkända “rubriksiffran”. Vi visar dem som kontext och bygger sedan mot den större totalen som Sverige har rådighet över genom att kombinera produktionsbaserade utsläpp, konsumtionsbaserade utsläpp utomlands och biogen CO₂ – utan dubbelräkning av inhemska utsläpp."
+        },
+        "territorial": {
+          "title": "Territoriella utsläpp",
+          "paragraph1": "Nationell total från Naturvårdsverket, 1990–2024. Det är den officiella territoriella växthusgasserien som ofta används när man talar om “Sveriges utsläpp”.",
+          "paragraph2": "Internationellt kan metan från energisektorn vara underrapporterat i vissa inventeringar. Arbete pågår för att förbättra rapporteringen; här följer vi den officiella svenska serien.",
+          "sources": {
+            "nv": "Naturvårdsverket – Sveriges utsläpp och upptag av växthusgaser"
+          }
+        },
+        "production": {
+          "title": "Produktionsbaserade utsläpp",
+          "paragraph1": "Produktionsbaserade utsläpp kopplar växthusgaser till den svenska ekonomin snarare än till territoriet. Enligt residensprincipen ingår utsläpp utomlands från svenska rederier och flygbolag.",
+          "paragraph2": "För 2008–2025 använder vi SCB:s miljöräkenskaper. För tidigare år bryggar vi tillbaka till 1990 med SCB:s territoriella serier med och utan internationella transporter (bunkring). År 2008 ligger miljöräkenskapernas värde 54 procent upp i gapet mellan utsläpp exklusive och inklusive bunkring; samma andel används tillbaka till 1990 så att långserien blir konsistent.",
+          "paragraph3": "Detta är inte samma sak som en ren bunkringsansats (bränslen sålda i svenska hamnar och på flygplatser), som kan tankas av både svenska och utländska aktörer. Miljöräkenskaperna följer i stället svenska ekonomiska aktörer.",
+          "sources": {
+            "scbBunker": "SCB – Totala utsläpp och upptag av växthusgaser efter växthusgas och sektor",
+            "scbAccounts": "SCB – Miljöräkenskaper, utsläpp till luft efter näringsgren",
+            "scbQuality": "SCB – Kvalitetsdeklaration, miljöräkenskaperna – utsläpp till luft"
+          }
+        },
+        "consumption": {
+          "title": "Konsumtionsbaserade utsläpp utomlands",
+          "paragraph1": "Dessa siffror omfattar utsläpp drivna av svensk slutlig efterfrågan (hushåll, offentlig konsumtion och investeringar) som uppstår utanför Sverige. Inhemska utsläpp som redan ingår i den produktionsbaserade serien tas bort så att de två kan summeras utan dubbelräkning.",
+          "paragraph2": "För 2008–2023 utgår vi från SCB:s konsumtionsbaserade statistik (summan av inhemska efterfrågekomponenter). För 2024–2025 håller vi 2023 års nivå för den SCB-baserade delen. För 1990–2007 skalas Global Carbon Projects konsumtionsbaserade CO₂ för Sverige upp till alla växthusgaser med global GHG/CO₂-kvot från EDGAR, som spårar SCB:s kvot inom cirka 5 procent för 2008–2023.",
+          "paragraph3": "Utrikesflyg: vi ersätter SCB:s flygutsläpp med Chalmers beräkningar för svenskarnas utrikesflyg (1990–2017), framskrivna till 2025 med Trafikanalys personkilometer. En liknande SEI-ansats skiljer sig som mest med cirka 1,6 procent i överlappande år.",
+          "paragraph4": "Privat e-handel från utlandet (2020–2025): försändelser till privatpersoner under vissa trösklar saknas i stor utsträckning i SCB:s konsumtionskategorier. Vi skattar utsläpp med Svensk Handels omsättning för utländsk e-handel multiplicerad med den konsumtionsbaserade utsläppsintensiteten för kläder (COICOP 03.1.2). Kläder och elektronik dominerar svensk e-handel; intensiteterna är likartade. Uppskattningen för 2025 är cirka 326 000 ton CO₂e – ungefär Gävles kommunala utsläpp 2024.",
+          "paragraph5": "Så byggs serien “enbart utomlands” (förenklat): ta bort SCB:s flygutsläpp från konsumtionstotalen; ta bort andelen kvarvarande utsläpp med uppkomst i Sverige; lägg till Chalmers/Trafikanalys utrikesflyg; lägg till e-handelsuppskattningen från 2020. För åren före 2008 bakåtskrivs flyg- och importandelar med SCB:s monetära data samt BNP/import, och korskontrolleras mot SCB för 2008–2023.",
+          "paragraph6": "Osäkerhet finns kring e-handel (Svensk Handels värdeutveckling kontra paketvolymer i Transportföretagens Paketindex) och kring inbäddade transporter i intensiteterna. Vi dokumenterar antagandena snarare än att behandla serien som officiell statistik.",
+          "sources": {
+            "gcp": "Global Carbon Project – supplemental data till Global Carbon Budget",
+            "edgar": "EDGAR – växthusgasutsläpp för världens länder",
+            "scb": "SCB – Miljöpåverkan från konsumtion efter produktgrupp",
+            "chalmers": "Kamb & Larsson (Chalmers) – Klimatpåverkan från svenskars flygresor 1990–2017",
+            "trafa": "Trafikanalys – luftfartsstatistik",
+            "svenskHandel": "Svensk Handel – E-handelsindikatorn helår 2025"
+          }
+        },
+        "biogenic": {
+          "title": "Biogena koldioxidutsläpp",
+          "paragraph1": "Territoriella biogena CO₂-utsläpp från förbränning av biomassa i Sverige, 1990–2025. Naturvårdsverkets data används för 1990–2024 och skrivs fram till 2025 med utvecklingstalet i SCB:s data för 2024–2025.",
+          "paragraph2": "Endast CO₂ kan vara biogen i den här meningen: kolet i biomassa antas kunna tas upp igen av växande biomassa. Övriga växthusgaser från biomassa behandlas inte på samma sätt. Utsläpp från svartlut ingår i den nuvarande nationella biogena serien.",
+          "paragraph3": "Vi använder territoriell biogen CO₂ snarare än en produktionsbaserad residensjustering, eftersom skillnaden är marginell för den här serien och vi då kan hålla en konsekvent nationell källa/metod över hela perioden. Vi inkluderar inte LULUCF (netto från markanvändning) här; fokus är förbränningsutsläpp. Biogen CO₂ påverkar ändå klimatet här och nu om upptaget tar decennier.",
+          "sources": {
+            "nv": "Naturvårdsverket – Utsläpp av biogen koldioxid från förbränning av biomassa i Sverige",
+            "scb": "SCB – Miljöräkenskaper, utsläpp till luft (för framskrivning 2024–2025)"
+          }
+        },
+        "total": {
+          "title": "Totala utsläpp som Sverige har rådighet över",
+          "paragraph1": "Den samlade siffra som används i nationsberättelsen är summan av: produktionsbaserade utsläpp; biogen CO₂; och konsumtionsbaserade utsläpp utomlands (med Chalmers/Trafikanalys-flyg och utländsk e-handel, där inhemska konsumtionsutsläpp har tagits bort för att undvika dubbelräkning).",
+          "paragraph2": "År 2025 är denna bredare total cirka 159 Mton CO₂e, jämfört med cirka 47 Mton för enbart territoriella fossila utsläpp – ungefär tre gånger så stor. Trenderna skiljer sig mellan lagren: produktionsbaserade utsläpp har minskat sedan 1990, konsumtionsbaserade utsläpp utomlands har minskat mer måttligt, och biogen CO₂ har mer än fördubblats när uppvärmning och bränslen ställts om mot biomassa.",
+          "paragraph3": "Rådighet är inte lika stark för varje ton. Sverige har mer direkt rättslig och ekonomisk kontroll över inhemsk produktion än över en utländsk underleverantör i en värdekedja. Den kvantitativa totalen visar storleksordningen; att tolka politisk påverkan beror fortfarande på vilket utsläppsflöde det gäller."
+        },
+        "limitations": {
+          "title": "Begränsningar och vidare arbete",
+          "paragraph1": "Kända luckor och prioriteringar för att förbättra serierna inkluderar:",
+          "item1": "En helt svensk modell för konsumtionsbaserade växthusgaser 1990–2007 (i stället för nuvarande brygga).",
+          "item2": "Att förlänga flygutsläpp efter 2017 med primärdata där det är möjligt, snarare än enbart personkilometerproxy.",
+          "item3": "Bättre mätning av utländsk e-handel (till exempel kort- eller turistdata) och av konsumtionsbaserade biogena utsläpp.",
+          "item4": "Att undersöka om LULUCF och finanssektorns utsläpp kopplade till svenskars sparande kan inkluderas på ett konsekvent sätt."
+        }
       }
     },
     "municipalityAndRegion": {
