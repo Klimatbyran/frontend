@@ -1,38 +1,10 @@
 import { Trans, useTranslation } from "react-i18next";
 import { MethodSection } from "@/components/layout/MethodSection";
 
-const RESULTS_SHEET_URL =
-  "https://docs.google.com/spreadsheets/d/1_qFzu0h0sjyrQTYEPDaAQCYeLAVYsbt3";
-
 function Paragraph({ i18nKey }: { i18nKey: string }) {
   return (
     <p>
       <Trans i18nKey={i18nKey} />
-    </p>
-  );
-}
-
-function ParagraphWithLinks({
-  i18nKey,
-  hrefs,
-}: {
-  i18nKey: string;
-  hrefs: string[];
-}) {
-  return (
-    <p>
-      <Trans
-        i18nKey={i18nKey}
-        components={hrefs.map((href) => (
-          <a
-            key={href}
-            href={href}
-            className="underline hover:text-white transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          />
-        ))}
-      />
     </p>
   );
 }
@@ -78,11 +50,7 @@ export const NationEmissionsLayersContent = () => {
       <MethodSection title={t(`${base}.intro.title`)}>
         <Paragraph i18nKey={`${base}.intro.paragraph1`} />
         <Paragraph i18nKey={`${base}.intro.paragraph2`} />
-        <ParagraphWithLinks
-          i18nKey={`${base}.intro.paragraph3`}
-          hrefs={[RESULTS_SHEET_URL]}
-        />
-        <Paragraph i18nKey={`${base}.intro.paragraph4`} />
+        <Paragraph i18nKey={`${base}.intro.paragraph3`} />
       </MethodSection>
 
       <MethodSection title={t(`${base}.perspectives.title`)}>
