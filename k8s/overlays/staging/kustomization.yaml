@@ -20,4 +20,4 @@ patches:
       name: frontend
 images:
   - name: ghcr.io/klimatbyran/frontend
-    newTag: "8.1.2-rc.24" # {"$imagepolicy": "flux-system:frontend-stage:tag"}
+    newTag: "8.1.2-rc.25" # {"$imagepolicy": "flux-system:frontend-stage:tag"}
