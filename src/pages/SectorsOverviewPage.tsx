@@ -17,30 +17,10 @@ export function SectorsOverviewPage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const sectorNames = useSectorNames();
 
-  const {
-    meetsParisFilter,
-    setMeetsParisFilter,
-    filteredCompanies,
-    filterGroups,
-  } = useCompanyFilters(companies, { includeSectorFilter: false });
-
-  const activeFilters = [
-    ...(meetsParisFilter !== "all"
-      ? [
-          {
-            type: "filter" as const,
-            label: `${t("sectorsOverviewPage.filteringOptions.meetsParis")}: ${
-              meetsParisFilter === "yes"
-                ? t("sectorsOverviewPage.filteringOptions.meetsParisYes")
-                : meetsParisFilter === "no"
-                  ? t("sectorsOverviewPage.filteringOptions.meetsParisNo")
-                  : t("sectorsOverviewPage.filteringOptions.meetsParisUnknown")
-            }`,
-            onRemove: () => setMeetsParisFilter("all"),
-          },
-        ]
-      : []),
-  ];
+  const { filteredCompanies, filterGroups, activeFilters } = useCompanyFilters(
+    companies,
+    { includeSectorFilter: false },
+  );
 
   if (companiesLoading) {
     return (
