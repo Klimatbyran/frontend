@@ -39,7 +39,7 @@ spec:
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 30
-          readinessProbe:
+          startupProbe:
             exec:
               command:
                 - /bin/sh
@@ -47,6 +47,12 @@ spec:
                 - |
                   MAIN=$(grep -oE 'src="/assets/index-[^"]+\.js"' /usr/share/nginx/html/index.html | head -1 | sed 's/src="//;s/"//')
                   test -n "$MAIN" && test -f "/usr/share/nginx/html$MAIN"
+            periodSeconds: 5
+            failureThreshold: 12
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
           env:
