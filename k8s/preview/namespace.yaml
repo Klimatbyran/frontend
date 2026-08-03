@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: frontend-preview
+  labels:
+    app.kubernetes.io/name: frontend-preview
+    app.kubernetes.io/component: pr-preview

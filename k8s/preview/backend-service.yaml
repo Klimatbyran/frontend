@@ -1,0 +1,18 @@
+# Shared Garbo stage API proxy for all PR previews in this namespace.
+# Apply once with namespace.yaml (see k8s/preview/README.md).
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: frontend-preview
+  labels:
+    app.kubernetes.io/name: frontend-preview
+    app.kubernetes.io/component: backend
+spec:
+  type: ExternalName
+  externalName: garbo.garbo-stage.svc.cluster.local
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
