@@ -4,11 +4,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthProvider from "./contexts/AuthContext";
+import { registerChunkLoadRecovery } from "./lib/chunkLoadRecovery";
 import "./index.css";
 import "./i18n";
 import App from "./App";
 import { Layout } from "./components/layout/Layout";
 import { LanguageProvider } from "./components/LanguageProvider";
+
+registerChunkLoadRecovery();
 
 // Create router with all routes
 const router = createBrowserRouter([
