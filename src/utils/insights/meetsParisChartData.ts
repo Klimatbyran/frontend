@@ -163,14 +163,10 @@ export function buildParisBarChartGroups(
   labels: { no: string; yes: string },
 ): {
   groups: ParisBarChartGroup[];
-  companyById: Map<string, CompanyParisEmissionsEntry>;
   maxBarTotal: number;
 } {
   const yesEntries = entries.filter((entry) => entry.meetsParis);
   const noEntries = entries.filter((entry) => !entry.meetsParis);
-  const companyById = new Map(
-    entries.map((entry) => [getEntryKey(entry), entry]),
-  );
 
   const buildGroup = (
     category: string,
@@ -225,7 +221,6 @@ export function buildParisBarChartGroups(
 
   return {
     groups,
-    companyById,
     maxBarTotal: Math.max(...groups.map((group) => group.total), 0),
   };
 }
