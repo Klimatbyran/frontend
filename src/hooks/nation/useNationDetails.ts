@@ -7,6 +7,7 @@ import {
   extractYearRecord,
   type NationEmissionBreakdown,
 } from "@/utils/data/nationTerritorialTransforms";
+import { normalizeNationCountry } from "@/hooks/nation/normalizeNationCountry";
 
 export type NationDetails = {
   country: { sv: string; en: string };
@@ -39,16 +40,6 @@ type ApiNationResponse = {
   meetsParis?: boolean;
 };
 
-function normalizeCountry(
-  country: ApiNationResponse["country"],
-): NationDetails["country"] {
-  if (typeof country === "string") {
-    return { sv: country, en: country === "Sverige" ? "Sweden" : country };
-  }
-
-  return { sv: country.sv, en: country.en };
-}
-
 function getTerritorialFossilSeries(
   response: ApiNationResponse,
 ): EmissionSeries | undefined {
@@ -80,7 +71,7 @@ function transformLegacyNationResponse(
   response: ApiNationResponse,
 ): NationDetails {
   return {
-    country: normalizeCountry(response.country),
+    country: normalizeNationCountry(response.country),
     logoUrl: response.logoUrl ?? null,
     emissions: mapEmissionArray(getTerritorialFossilSeries(response)),
     approximatedHistoricalEmission: mapEmissionArray(
@@ -103,7 +94,7 @@ function transformNewNationResponse(
   const derived = computeNationDerivedMetrics(territorialFossil);
 
   return {
-    country: normalizeCountry(response.country),
+    country: normalizeNationCountry(response.country),
     logoUrl: response.logoUrl ?? null,
     emissions: derived.emissions,
     approximatedHistoricalEmission: derived.approximatedHistoricalEmission,

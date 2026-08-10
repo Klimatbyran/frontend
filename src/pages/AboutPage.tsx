@@ -9,6 +9,10 @@ import { MembersGrid } from "@/components/MembersGrid";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import KlimatkollenVideo from "@/components/ui/klimatkollenVideoPlayer";
 import { AccordionGroup } from "../components/layout/AccordionGroup";
+import { useLanguage } from "@/components/LanguageProvider";
+import { getReportPdfLink, reports } from "@/lib/constants/reports";
+
+const klimatbokslutReport = reports.find((report) => report.id === "7");
 
 function AboutMainContent() {
   const { t } = useTranslation();
@@ -116,6 +120,11 @@ function BoardSection() {
 
 function EmissionsSection() {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+  const reportLink = klimatbokslutReport
+    ? getReportPdfLink(klimatbokslutReport, currentLanguage)
+    : "/reports/2025_Klimatkollens_klimatbokslut_SV.pdf";
+
   return (
     <AccordionGroup
       title={t("aboutPage.emissionsSection.title")}
@@ -123,15 +132,26 @@ function EmissionsSection() {
     >
       <div className="prose prose-invert w-[90%] max-w-5xl mx-auto space-y-4">
         <p>{t("aboutPage.emissionsSection.paragraph1")}</p>
-        <p>{t("aboutPage.emissionsSection.paragraph2")}</p>
         <p>
           <Trans
-            i18nKey="aboutPage.emissionsSection.reportLink"
+            i18nKey="aboutPage.emissionsSection.paragraph2"
             components={[
               <a
-                href="/reports/2025-06-23_Klimatkollens_klimatpaverkan.pdf"
+                href={reportLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="underline hover:text-white"
+              />,
+            ]}
+          />
+        </p>
+        <p>
+          <Trans
+            i18nKey="aboutPage.emissionsSection.paragraph3"
+            components={[
+              <a
+                title="Email us"
+                href="mailto:hej@klimatkollen.se"
                 className="underline hover:text-white"
               />,
             ]}
@@ -249,6 +269,7 @@ export function AboutPage() {
         <Accordion type="single" collapsible className="space-y-6">
           <AboutMainContent />
           <OurApproachSection />
+          <EmissionsSection />
           <AccordionGroup
             title={t("aboutPage.teamSection.title")}
             value="teamSection"
@@ -256,7 +277,6 @@ export function AboutPage() {
             <MembersGrid members={teamMembers} />
           </AccordionGroup>
           <BoardSection />
-          <EmissionsSection />
           <FinancingSection />
           <PreviousProjectsSection />
         </Accordion>

@@ -71,6 +71,7 @@ export function SectorEmissionsChart({
           <SectorPieLegend
             data={Object.entries(yearData as Record<string, number>).map(
               ([sector, value]) => ({
+                key: sector,
                 name: sector,
                 value,
                 color: "",

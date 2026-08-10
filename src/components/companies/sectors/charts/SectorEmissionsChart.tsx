@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
 import { RankedCompany } from "@/types/company";
@@ -12,14 +12,16 @@ import SectorPieChart, {
 } from "@/components/charts/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/charts/sectorChart/SectorPieLegend";
 import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
-import ChartHeader from "./ChartHeader";
 import SectorChartInsights from "./SectorChartInsights";
 import { useSectorChartInsights } from "@/hooks/companies/useSectorChartInsights";
 import { useChartMotion } from "@/hooks/useChartMotion";
+import { useLanguage } from "@/components/LanguageProvider";
+import { localizedPath } from "@/utils/routing";
+import EmissionsTotalDisplay from "./EmissionsTotalDisplay";
 
 interface EmissionsChartProps {
   companies: RankedCompany[];
-  selectedSectors: string[];
+  isSectorView: boolean;
 }
 
 interface PieChartClickData {
@@ -34,43 +36,47 @@ interface PieChartClickData {
 
 const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   companies,
-  selectedSectors,
+  isSectorView,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { currentLanguage } = useLanguage();
   const { reduceMotion, fadeDuration, ease } = useChartMotion();
-
-  const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const screenSize = useScreenSize();
+  const location = useLocation();
 
   const reportingYear = getSectorsReportingYear().toString();
 
   const { pieChartData, totalEmissions } = useChartData(
     companies,
-    selectedSectors,
-    selectedSector,
+    isSectorView,
     reportingYear,
   );
 
   const insights = useSectorChartInsights(
     companies,
     pieChartData,
-    selectedSector,
+    isSectorView,
     reportingYear,
   );
 
   const handlePieClick = (data: PieChartClickData) => {
-    if (!selectedSector && data?.sectorCode) {
-      setSelectedSector(data.sectorCode);
-    } else if (selectedSector && data?.wikidataId) {
-      navigate(`/companies/${data.wikidataId}`);
+    if (!isSectorView && data?.sectorCode) {
+      navigate(
+        localizedPath(
+          currentLanguage,
+          `/sectors/${data.sectorCode}${location.search}`,
+        ),
+      );
+    } else if (isSectorView && data?.wikidataId) {
+      navigate(localizedPath(currentLanguage, `/companies/${data.wikidataId}`));
     }
   };
 
   const pieChartDataWithColor: PieChartItem[] = pieChartData.map(
     (entry, index) => ({
       ...entry,
-      color: selectedSector
+      color: isSectorView
         ? getCompanyColors(index).base
         : "sectorCode" in entry
           ? sectorColors[entry.sectorCode as keyof typeof sectorColors]?.base ||
@@ -79,20 +85,21 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
     }),
   );
 
-  const actionTooltipKey = selectedSector
+  const actionTooltipKey = isSectorView
     ? "pieLegendCompany"
     : "pieLegendSector";
 
-  const chartAnimationKey = `${selectedSector ?? "all-sectors"}-${reportingYear}`;
+  const chartAnimationKey = `${isSectorView ? "sector" : "all-sectors"}-${reportingYear}`;
 
   return (
     <>
       <div className="bg-black-2 rounded-lg border p-6 w-full space-y-6">
-        <ChartHeader
-          selectedSector={selectedSector}
-          totalEmissions={totalEmissions}
-          onSectorClear={() => setSelectedSector(null)}
-        />
+        <div className="flex flex-col">
+          <EmissionsTotalDisplay
+            totalEmissions={totalEmissions}
+            isSectorView={isSectorView}
+          />
+        </div>
 
         <div>
           {totalEmissions > 0 ? (
@@ -117,13 +124,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                     data={pieChartDataWithColor}
                     total={totalEmissions}
                     onItemClick={(entry) => {
-                      if (entry.wikidataId) {
-                        navigate(`/companies/${entry.wikidataId as string}`);
-                      } else if (entry.sectorCode) {
-                        handlePieClick({
-                          sectorCode: entry.sectorCode as string,
-                        });
-                      }
+                      handlePieClick(entry);
                     }}
                     getActionTooltip={() =>
                       t(`companyDetailPage.sectorGraphs.${actionTooltipKey}`)

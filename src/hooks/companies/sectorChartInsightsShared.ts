@@ -60,16 +60,8 @@ const INCREASING_BAR_COLORS = [
 export const countReportingCompanies = (
   companies: RankedCompany[],
   reportingYear: string,
-  sectorCode?: string,
 ): RankedCompany[] => {
   return companies.filter((company) => {
-    if (
-      sectorCode &&
-      company.industry?.industryGics?.sectorCode !== sectorCode
-    ) {
-      return false;
-    }
-
     const period = company.reportingPeriods.find((p) =>
       p.endDate.startsWith(reportingYear),
     );

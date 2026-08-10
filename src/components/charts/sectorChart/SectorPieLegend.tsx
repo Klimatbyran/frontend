@@ -55,10 +55,10 @@ const SectorPieLegend: React.FC<LegendProps> = ({
 
     if (onFilteredSectorsChange) {
       const newFiltered = new Set(filteredSectors);
-      if (newFiltered.has(entry.name)) {
-        newFiltered.delete(entry.name);
+      if (newFiltered.has(entry.key)) {
+        newFiltered.delete(entry.key);
       } else {
-        newFiltered.add(entry.name);
+        newFiltered.add(entry.key);
       }
       onFilteredSectorsChange(newFiltered);
     }
@@ -68,8 +68,8 @@ const SectorPieLegend: React.FC<LegendProps> = ({
     .filter((item) => item.value > 0)
     .map((item) => {
       if (getSectorInfo) {
-        const { color, translatedName } = getSectorInfo(item.name);
-        return { ...item, color, translatedName };
+        const { color, translatedName } = getSectorInfo(item.key);
+        return { ...item, color, name: translatedName };
       }
       return item;
     })
@@ -90,9 +90,8 @@ const SectorPieLegend: React.FC<LegendProps> = ({
             entry.value / total < 0.001
               ? "<0.1%"
               : formatPercent(entry.value / total, currentLanguage);
-          const isFiltered = filteredSectors.has(entry.name);
-          const displayName =
-            (entry.translatedName as string | undefined) ?? entry.name;
+          const isFiltered = filteredSectors.has(entry.key);
+          const displayName = (entry.name as string | undefined) ?? entry.key;
 
           return (
             <Tooltip key={`${animationKey}-legend-${index}`}>

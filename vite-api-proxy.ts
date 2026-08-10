@@ -53,9 +53,18 @@ export function devApiProxy(apiOrigin: string, apiKey?: string): Plugin {
         body: body as BodyInit | undefined,
       });
 
+      // Node fetch decompresses gzip/br bodies. Drop encoding/length so the
+      // browser does not try to decode an already-plain response (which shows
+      // up as net::ERR_CONTENT_DECODING_FAILED for endpoints like stage API).
+      const hopByHopHeaders = new Set([
+        "transfer-encoding",
+        "content-encoding",
+        "content-length",
+      ]);
+
       res.statusCode = upstream.status;
       upstream.headers.forEach((value, key) => {
-        if (key === "transfer-encoding") return;
+        if (hopByHopHeaders.has(key.toLowerCase())) return;
         res.setHeader(key, value);
       });
 

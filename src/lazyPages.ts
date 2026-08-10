@@ -21,6 +21,11 @@ export const SectorsOverviewPage = lazy(() =>
     default: m.SectorsOverviewPage,
   })),
 );
+export const SectorDetailPage = lazy(() =>
+  import("./pages/SectorDetailPage").then((m) => ({
+    default: m.SectorDetailPage,
+  })),
+);
 export const DownloadsPage = lazy(() => import("./pages/DownloadsPage"));
 export const ErrorPage = lazy(() =>
   import("./pages/ErrorPage").then((m) => ({ default: m.ErrorPage })),
@@ -122,6 +127,11 @@ export const RegionDetailPage = lazy(() =>
 export const NationDetailPage = lazy(() =>
   import("./pages/NationDetailPage").then((m) => ({
     default: m.NationDetailPage,
+  })),
+);
+export const Valet2026Page = lazy(() =>
+  import("./pages/Valet2026Page").then((m) => ({
+    default: m.Valet2026Page,
   })),
 );
 export const CompaniesOverviewPage = lazy(() =>

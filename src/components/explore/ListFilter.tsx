@@ -1,6 +1,9 @@
 import { useState, type ReactNode } from "react";
 import { Input } from "@/components/ui/input";
-import { FilterBadges } from "@/components/companies/list/FilterBadges";
+import {
+  FilterBadge,
+  FilterBadges,
+} from "@/components/companies/list/FilterBadges";
 import {
   FilterPopover,
   type FilterGroup,
@@ -21,11 +24,7 @@ interface IListFilter {
   sortDirection: string;
   setSortDirection: (direction: string) => void;
   filterGroups: FilterGroup[];
-  activeFilters: Array<{
-    type: "filter";
-    label: string;
-    onRemove: () => void;
-  }>;
+  activeFilters: FilterBadge[];
   sortOptions: readonly SortOption[];
   searchPlaceholder: string;
   comparisonToggle?: ReactNode;

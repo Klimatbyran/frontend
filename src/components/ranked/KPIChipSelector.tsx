@@ -178,7 +178,7 @@ export function KPIChipSelector<T>({
                 className="hidden md:block grow shrink basis-0 min-w-0 h-0"
                 aria-hidden="true"
               />
-              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto md:max-w-full">
+              <div className="flex flex-wrap md:flex-row-reverse items-center gap-2 w-full md:w-auto md:max-w-full">
                 {actions}
               </div>
             </>

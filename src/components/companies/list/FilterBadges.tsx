@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-interface FilterBadge {
+export interface FilterBadge {
   type: "filter" | "sort";
   label: string;
   onRemove?: () => void;
@@ -36,7 +36,7 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
             {filter.type === "filter" && filter.onRemove && (
               <button
                 type="button"
-                title={t("explorePage.companies.removeFilter")}
+                title={t("explorePage.removeFilter")}
                 onClick={(e) => {
                   e.preventDefault();
                   filter.onRemove?.();

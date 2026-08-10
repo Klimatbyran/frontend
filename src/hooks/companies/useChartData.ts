@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { RankedCompany } from "@/types/company";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { SECTOR_ORDER } from "@/lib/constants/sectors";
 
 const getEmissionsFromPeriod = (
   period: RankedCompany["reportingPeriods"][number],
@@ -50,6 +51,7 @@ const createCompanyDataItem = (
   company: RankedCompany,
   selectedYear: string,
 ): {
+  key: string;
   name: string;
   value: number;
   sectorCode: string | undefined;
@@ -73,6 +75,7 @@ const createCompanyDataItem = (
   }
 
   return {
+    key: company.id,
     name: company.name,
     value: totalEmissions,
     sectorCode: company.industry?.industryGics?.sectorCode,
@@ -93,14 +96,9 @@ const normalizeAndSortPieData = <T extends { value: number }>(
 
 const buildCompanyPieData = (
   companies: RankedCompany[],
-  selectedSector: string,
   selectedYear: string,
 ) => {
-  const sectorCompanies = companies.filter(
-    (company) => company.industry?.industryGics?.sectorCode === selectedSector,
-  );
-
-  const companyData = sectorCompanies
+  const companyData = companies
     .map((company) => createCompanyDataItem(company, selectedYear))
     .filter((item): item is NonNullable<typeof item> => item !== null);
 
@@ -110,29 +108,27 @@ const buildCompanyPieData = (
 const buildSectorPieData = (
   companies: RankedCompany[],
   selectedYear: string,
-  selectedSectors: string[],
   sectorNames: Record<string, string>,
 ) => {
-  const sectorTotals = selectedSectors
-    .map((sectorCode) => {
-      const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
-      const { scope1, scope2, scope3 } = calculateSectorScopesForYear(
-        companies,
-        sectorCode,
-        selectedYear,
-      );
-      const value = scope1 + scope2 + scope3;
+  const sectorTotals = SECTOR_ORDER.map((sectorCode) => {
+    const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
+    const { scope1, scope2, scope3 } = calculateSectorScopesForYear(
+      companies,
+      sectorCode,
+      selectedYear,
+    );
+    const value = scope1 + scope2 + scope3;
 
-      return {
-        name: sectorName,
-        value,
-        sectorCode,
-        scope1,
-        scope2,
-        scope3,
-      };
-    })
-    .filter((item) => item.value > 0);
+    return {
+      key: sectorCode,
+      name: sectorName,
+      value,
+      sectorCode,
+      scope1,
+      scope2,
+      scope3,
+    };
+  }).filter((item) => item.value > 0);
 
   const totalEmissions = sectorTotals.reduce(
     (sum, sector) => sum + sector.value,
@@ -145,23 +141,18 @@ const buildSectorPieData = (
 
 export const useChartData = (
   companies: RankedCompany[],
-  selectedSectors: string[],
-  selectedSector: string | null,
+  isSectorView: boolean,
   selectedYear: string,
 ) => {
   const sectorNames = useSectorNames();
 
-  const pieChartData = useMemo(() => {
-    if (selectedSector) {
-      return buildCompanyPieData(companies, selectedSector, selectedYear);
-    }
-    return buildSectorPieData(
-      companies,
-      selectedYear,
-      selectedSectors,
-      sectorNames,
-    );
-  }, [companies, selectedYear, selectedSectors, selectedSector, sectorNames]);
+  const pieChartData = useMemo(
+    () =>
+      isSectorView
+        ? buildCompanyPieData(companies, selectedYear)
+        : buildSectorPieData(companies, selectedYear, sectorNames),
+    [companies, selectedYear, isSectorView, sectorNames],
+  );
 
   const totalEmissions = useMemo(
     () => pieChartData.reduce((sum, item) => sum + item.value, 0),

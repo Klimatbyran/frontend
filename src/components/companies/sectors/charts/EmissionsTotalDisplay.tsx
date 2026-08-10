@@ -46,22 +46,24 @@ const EmissionsTotalDisplay: React.FC<EmissionsTotalDisplayProps> = ({
                 : "flex items-center gap-4"
           }
         >
-          <div className="text-sm text-grey">
+          <div className="text-sm text-grey flex flex-col md:flex-row items-baseline md:gap-2">
             {isSectorView
               ? t("companyDetailPage.sectorGraphs.sectorTotal")
               : t("companyDetailPage.sectorGraphs.total")}
-            <motion.span
-              key={formattedTotal}
-              className="ml-2 text-xl font-light text-orange-2 inline-block"
-              initial={reduceMotion ? false : { opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: fadeDuration, ease }}
-            >
-              {formattedTotal}
-            </motion.span>
-            <span className="ml-1 text-xl font-light text-white">
-              {t("companyDetailPage.sectorGraphs.emissionsUnit")}
-            </span>
+            <div>
+              <motion.span
+                key={formattedTotal}
+                className="text-xl font-light text-orange-2 inline-block"
+                initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: fadeDuration, ease }}
+              >
+                {formattedTotal}
+              </motion.span>
+              <span className="ml-1 text-xl font-light text-white">
+                {t("companyDetailPage.sectorGraphs.emissionsUnit")}
+              </span>
+            </div>
           </div>
         </div>
       )}

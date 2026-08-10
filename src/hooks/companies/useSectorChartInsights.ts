@@ -48,7 +48,7 @@ type PieChartEntry = {
 export const useSectorChartInsights = (
   companies: RankedCompany[],
   pieChartData: PieChartEntry[],
-  selectedSector: string | null,
+  isSectorView: boolean,
   reportingYear: string,
 ): ChartInsight[] => {
   const { t } = useTranslation();
@@ -69,15 +69,13 @@ export const useSectorChartInsights = (
       emissionsUnit,
     };
 
-    if (selectedSector) {
-      return buildSectorSelectedInsights({ ...context, selectedSector });
-    }
-
-    return buildSectorOverviewInsights(context);
+    return isSectorView
+      ? buildSectorSelectedInsights(context)
+      : buildSectorOverviewInsights(context);
   }, [
     companies,
     pieChartData,
-    selectedSector,
+    isSectorView,
     reportingYear,
     currentLanguage,
     emissionsUnit,

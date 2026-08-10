@@ -15,6 +15,7 @@ import {
   buildCountryFilterGroup,
   companyMatchesCountries,
 } from "./companyCountryFilterUtils";
+import { FilterBadge } from "@/components/companies/list/FilterBadges";
 
 type MeetsParisFilter = "all" | "yes" | "no" | "unknown";
 
@@ -278,7 +279,7 @@ function buildCompanyActiveFilters(
     setSelectedCountries: (countries: CompanyCountryTagSlug[]) => void;
     setMeetsParisFilter: (value: MeetsParisFilter) => void;
   },
-) {
+): FilterBadge[] {
   const {
     includeSectorFilter,
     sectors,

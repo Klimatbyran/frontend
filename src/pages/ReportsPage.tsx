@@ -1,7 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { ContentGridPage } from "@/components/layout/ContentGridPage";
 import { ContentCard } from "@/components/layout/ContentCard";
-import { reports } from "@/lib/constants/reports";
+import {
+  reports,
+  getReportPdfLink,
+  getReportExcerpt,
+  getReportTitle,
+} from "@/lib/constants/reports";
 import { useLanguage } from "@/components/LanguageProvider";
 
 export function ReportsPage() {
@@ -35,7 +40,7 @@ export function ReportsPage() {
         "@type": "ListItem",
         position: index + 1,
         url: `https://klimatkollen.se/reports/${report.id}`,
-        name: report.title,
+        name: getReportTitle(report, currentLanguage),
       })),
     },
   };
@@ -47,13 +52,13 @@ export function ReportsPage() {
 
   const items = sortedReports.map((report) => ({
     id: report.id.toString(),
-    title: report.title,
-    excerpt: report.excerpt,
+    title: getReportTitle(report, currentLanguage),
+    excerpt: getReportExcerpt(report, currentLanguage),
     image: report.image || "",
     category: t("reportsPage.reportCategories." + report.category),
     date: report.date,
     readTime: report.readTime,
-    link: report.link || "",
+    link: getReportPdfLink(report, currentLanguage),
     language: report.language,
   }));
 

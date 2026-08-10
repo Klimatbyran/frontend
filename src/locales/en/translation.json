@@ -16,6 +16,7 @@
     "municipalities": "Municipalities",
     "nation": "Sweden",
     "regions": "Regions",
+    "valet2026": "Election 2026",
     "about": "About",
     "aboutUs": "About Us",
     "insights": "Insights",
@@ -165,9 +166,9 @@
     },
     "emissionsSection": {
       "title": "Our Emissions",
-      "paragraph1": "As an organisation working for climate transparency, we believe it is important to be open about our own climate impact. We are working to measure and reduce the emissions associated with our operations.",
-      "paragraph2": "This includes emissions from travel, digital infrastructure, office activities and other parts of our work. We review our footprint regularly and look for ways to reduce it over time.",
-      "reportLink": "To see our full emissions breakdown, read our report <0>here</0>."
+      "paragraph1": "As we work for climate transparency and show emissions from other organisations, we think it's important to be open about our own climate impact. We work continuously to measure the emissions linked to our operations and look for ways to reduce them. We report emissions in accordance with the EU's Corporate Sustainability Reporting Directive (CSRD).",
+      "paragraph2": "Klimatkollen's greenhouse gas emissions come mainly from travel and AI services, but also from meals, office operations and other parts of our work. To see our full emissions report, including a description of our methodology, read our report <0>here</0>.",
+      "paragraph3": "If you have questions about our climate reporting, get in touch with us at <0>hej@klimatkollen.se</0>."
     },
     "financingSection": {
       "title": "How We Are Funded",
@@ -397,6 +398,7 @@
   "sectorsOverviewPage": {
     "title": "Sector Overview",
     "description": "Overview of emissions and transition at the sector level",
+    "overview": "Overview",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
     "noCompaniesFound": "No companies found",
@@ -791,6 +793,84 @@
           "title": "Sweden's National Emissions",
           "text": "View Sweden's national emissions data on Klimatkollen"
         }
+      },
+      "nationEmissionsLayers": {
+        "title": "Nation Data Details",
+        "description": "How Klimatkollen builds a fuller picture of Sweden’s greenhouse gas emissions based on influence (rådighet), 1990–2025.",
+        "intro": {
+          "title": "Why a fuller picture",
+          "paragraph1": "Official climate debate often focuses on territorial fossil emissions within Sweden’s borders – the measure used for Sweden’s climate targets and reported internationally. Those figures matter, but they do not cover everything Sweden can influence.",
+          "paragraph2": "Klimatkollen does not replace official statistics. We present a broader picture based on influence (rådighet): emissions that Swedish decisions and activities can affect in different ways – at home and abroad.",
+          "paragraph3": "The series run from 1990 through 2025. Where official series end earlier, we document how gaps are filled so the time series stay consistent."
+        },
+        "perspectives": {
+          "title": "Three perspectives we combine",
+          "paragraph1": "The nation story and charts build on three complementary perspectives:",
+          "production": "Production-based emissions – emissions linked to the Swedish economy (similar to territorial emissions, but including Swedish shipping and airlines in international traffic).",
+          "consumption": "Consumption-based emissions abroad – emissions caused by Swedish final demand where the emissions occur outside Sweden, including adjusted figures for international flights and an estimate of private e-commerce imports.",
+          "biogenic": "Biogenic CO₂ emissions – CO₂ released when biomass is burned in Sweden (for example in district heating, the pulp and paper industry, and vehicles using biofuels).",
+          "paragraph2": "Territorial fossil emissions are the familiar “headline” figure. We show them for context, then build toward the fuller total Sweden has influence over by combining production-based emissions, consumption-based emissions abroad, and biogenic CO₂ – without double-counting domestic emissions."
+        },
+        "territorial": {
+          "title": "Territorial emissions",
+          "paragraph1": "National total from the Swedish Environmental Protection Agency (Naturvårdsverket), 1990–2024. This is the official territorial greenhouse gas series commonly used when people say “Sweden’s emissions”.",
+          "paragraph2": "Internationally, methane from the energy sector may be under-reported in some inventories. Work is ongoing to improve reporting; we follow the official Swedish series here.",
+          "sources": {
+            "nv": "Naturvårdsverket – Sweden’s greenhouse gas emissions and removals"
+          }
+        },
+        "production": {
+          "title": "Production-based emissions",
+          "paragraph1": "Production-based emissions link greenhouse gases to the Swedish economy rather than to geography. Under the residence principle, emissions abroad from Swedish shipping companies and airlines are included.",
+          "paragraph2": "For 2008–2025 we use Statistics Sweden’s (SCB) environmental accounts. For earlier years we bridge back to 1990 using SCB territorial series with and without international bunker fuels. In 2008, the environmental-accounts value sits 54% of the way up the gap between emissions excluding and including bunkering; we apply that same share back to 1990 so the long series stays consistent.",
+          "paragraph3": "This is not identical to a pure bunkering approach (fuels sold in Swedish ports and airports), which can be used by both Swedish and foreign carriers. The environmental accounts follow Swedish economic actors instead.",
+          "sources": {
+            "scbBunker": "SCB – Total greenhouse gas emissions by gas and sector (incl. bunkering variants)",
+            "scbAccounts": "SCB – Environmental accounts, air emissions by industry",
+            "scbQuality": "SCB – Quality declaration, environmental accounts – air emissions"
+          }
+        },
+        "consumption": {
+          "title": "Consumption-based emissions abroad",
+          "paragraph1": "These figures cover emissions driven by Swedish final demand (households, public consumption and investment) that occur outside Sweden. Domestic emissions already covered in the production-based series are removed so the two can be added without double-counting.",
+          "paragraph2": "For 2008–2023 we start from SCB’s consumption-based statistics (sum of domestic demand components). For 2024–2025 we hold the 2023 level for the SCB-based part of the series. For 1990–2007 we scale Global Carbon Project consumption-based CO₂ for Sweden up to all greenhouse gases using the global GHG/CO₂ ratio from EDGAR, which tracks SCB’s ratio within about 5% for 2008–2023.",
+          "paragraph3": "International flights: we replace SCB flight emissions with Chalmers estimates for the Swedish population’s outbound flights (1990–2017), extended to 2025 using Trafikanalys passenger-kilometre trends. A similar SEI approach differs by at most about 1.6% in overlapping years.",
+          "paragraph4": "Private e-commerce imports (2020–2025): parcels to private individuals from outside official trade statistics thresholds are largely missing from SCB consumption categories. We estimate emissions using Svensk Handel turnover for foreign e-commerce, multiplied by the consumption-based emission intensity of clothing (COICOP 03.1.2). Clothing and electronics dominate Swedish e-commerce; their intensities are similar. The 2025 estimate is about 326,000 tonnes CO₂e – roughly Gävle’s municipal emissions in 2024.",
+          "paragraph5": "How the abroad-only series is built (simplified): remove SCB flight emissions from consumption totals; remove the share of remaining emissions that arise in Sweden; add Chalmers/Trafikanalys international flight emissions; add the e-commerce estimate from 2020 onward. For pre-2008 years, flight and import shares are back-cast with SCB monetary and GDP/import data, cross-checked against SCB for 2008–2023.",
+          "paragraph6": "Uncertainty remains around e-commerce (Svensk Handel value trends vs parcel-count growth in Transportföretagen’s Paketindex) and around embedded transport in intensities. We document these assumptions rather than treating the series as official statistics.",
+          "sources": {
+            "gcp": "Global Carbon Project – Global Carbon Budget supplemental data",
+            "edgar": "EDGAR – GHG emissions of all world countries",
+            "scb": "SCB – Environmental impact from consumption by product group",
+            "chalmers": "Kamb & Larsson (Chalmers) – Climate impact of Swedes’ air travel 1990–2017",
+            "trafa": "Trafikanalys – Civil aviation statistics",
+            "svenskHandel": "Svensk Handel – E-commerce indicator, full year 2025"
+          }
+        },
+        "biogenic": {
+          "title": "Biogenic CO₂ emissions",
+          "paragraph1": "Territorial biogenic CO₂ from burning biomass in Sweden, 1990–2025. Naturvårdsverket data are used for 1990–2024 and extended to 2025 with the year-on-year change in SCB data for 2024–2025.",
+          "paragraph2": "Only CO₂ can be biogenic in this sense: biomass carbon is assumed to be reabsorbed by growing biomass. Other greenhouse gases from biomass are not treated the same way. Black liquor emissions are included in the current national biogenic series.",
+          "paragraph3": "We use territorial biogenic CO₂ rather than a production-based residence adjustment, because the difference is marginal for this series and one consistent national source/method can then cover the full time span. We do not include LULUCF net land-use fluxes here; the focus is combustion emissions. Biogenic CO₂ still affects the climate here and now if re-uptake takes decades.",
+          "sources": {
+            "nv": "Naturvårdsverket – Biogenic CO₂ from biomass combustion in Sweden",
+            "scb": "SCB – Environmental accounts, air emissions (for 2024–2025 extension)"
+          }
+        },
+        "total": {
+          "title": "Total emissions Sweden has influence over",
+          "paragraph1": "The combined figure used in the nation story is the sum of: production-based emissions; biogenic CO₂; and consumption-based emissions abroad (with Chalmers/Trafikanalys flights and foreign e-commerce included, and domestic consumption emissions removed to avoid double-counting).",
+          "paragraph2": "In 2025 this fuller total is about 159 Mt CO₂e, compared with about 47 Mt for territorial fossil emissions alone – roughly three times larger. Trends differ by layer: production-based emissions have fallen since 1990, consumption-based emissions abroad have fallen more modestly, and biogenic CO₂ has more than doubled as heating and fuels shifted toward biomass.",
+          "paragraph3": "Influence is not equally strong for every tonne. Sweden has more direct legal and economic control over domestic production than over a foreign supplier in a value chain. The quantitative total shows scale; interpreting policy leverage still depends on the emission flow."
+        },
+        "limitations": {
+          "title": "Limitations and further work",
+          "paragraph1": "Known gaps and priorities for improving the series include:",
+          "item1": "A fully Swedish model for consumption-based greenhouse gases 1990–2007 (instead of the current bridging approach).",
+          "item2": "Extending flight emissions after 2017 with primary data rather than passenger-kilometre proxies where possible.",
+          "item3": "Better measurement of foreign e-commerce (for example card or tourism-account data) and of consumption-based biogenic emissions.",
+          "item4": "Exploring whether LULUCF and financial-sector emissions linked to Swedish savings can be included in a consistent way."
+        }
       }
     },
     "municipalityAndRegion": {
@@ -1071,17 +1151,50 @@
     "bicycleMetrePerCapita": "Bicycle path metres per capita"
   },
   "sector": {
-    "energy": "Energy",
-    "materials": "Materials",
-    "industrials": "Industrials",
-    "consumerDiscretionary": "Consumer Discretionary",
-    "consumerStaples": "Consumer Staples",
-    "healthCare": "Healthcare",
-    "financials": "Financials",
-    "informationTechnology": "Information Technology",
-    "communicationServices": "Communication Services",
-    "utilities": "Utilities",
-    "realEstate": "Real Estate"
+    "energy": {
+      "name": "Energy",
+      "title": "Energy Sector"
+    },
+    "materials": {
+      "name": "Materials",
+      "title": "Materials Sector"
+    },
+    "industrials": {
+      "name": "Industrials",
+      "title": "Industrials Sector"
+    },
+    "consumerDiscretionary": {
+      "name": "Consumer Discretionary",
+      "title": "Consumer Discretionary Sector"
+    },
+    "consumerStaples": {
+      "name": "Consumer Staples",
+      "title": "Consumer Staples Sector"
+    },
+    "healthCare": {
+      "name": "Healthcare",
+      "title": "Healthcare Sector"
+    },
+    "financials": {
+      "name": "Financials",
+      "title": "Financials Sector"
+    },
+    "informationTechnology": {
+      "name": "Information Technology",
+      "title": "Information Technology Sector"
+    },
+    "communicationServices": {
+      "name": "Communication Services",
+      "title": "Communication Services Sector"
+    },
+    "utilities": {
+      "name": "Utilities",
+      "title": "Utilities Sector"
+    },
+    "realEstate": {
+      "name": "Real Estate",
+      "title": "Real Estate Sector"
+    }
   },
   "scope": {
     "scope1": "Direct emissions from sources owned or controlled by the organisation.",
@@ -1454,7 +1567,92 @@
   },
   "nation": {
     "detailPage": {
-      "regions": "Regions"
+      "regions": "Explore Sweden's counties"
+    },
+    "story": {
+      "unit": {
+        "mton": "Mt",
+        "mtonCo2e": "Mt CO₂e",
+        "millionTon": "million tonnes",
+        "millionTco2e": "million tonnes CO₂e"
+      },
+      "intro": {
+        "eyebrow": "Election 2026",
+        "title": "Sweden's emissions",
+        "paragraph1": "We often hear that Sweden's emissions are small and that they have fallen by a third while the economy has doubled. But is that really true? Let's look at it, step by step.",
+        "usualLabel": "What we often hear about",
+        "fullLabel": "Sweden's actual emissions",
+        "previewRatio": "larger than what we usually talk about"
+      },
+      "scrollHint": {
+        "scroll": "Scroll",
+        "swipe": "Swipe",
+        "label": "Scroll down to the next part of the story"
+      },
+      "journey": {
+        "dataYear": "The figure refers to CO₂e and {{year}}.",
+        "dataYearShort": "CO₂e, year {{year}}",
+        "stepCounter": "Step {{current}} of {{total}}",
+        "totalLabel": "Total",
+        "step1": {
+          "label": "Territorial emissions",
+          "text": "We start with the figure we hear about most often: territorial emissions – fossil emissions within Sweden's borders. This includes emissions from industry, transport, agriculture, heating and waste, among other sources. This measure is used to track our climate goals."
+        },
+        "step2": {
+          "label": "Production-based emissions",
+          "text": "Production-based emissions are emissions from the Swedish economy. They are roughly equivalent to territorial emissions, but also include emissions from Swedish shipping companies and airlines abroad."
+        },
+        "step3": {
+          "label": "Consumption-based emissions abroad",
+          "text": "Swedes also cause emissions abroad through our consumption. This includes emissions from manufacturing and transport of imported goods for Swedish household consumption, public services and investments. Emissions from goods produced in Sweden and exported to other countries are excluded."
+        },
+        "step4": {
+          "label": "Private e-commerce",
+          "text": "We have also quantified emissions from private e-commerce imports – for example when we order goods from Amazon and Shein. These emissions are not included in official statistics today. They amount to an additional 326,000 tonnes, comparable to Gävle's emissions in 2024 (328,000 tonnes)."
+        },
+        "step5": {
+          "label": "Biogenic emissions",
+          "text": "Finally, we have biogenic carbon dioxide emissions released when wood and other biological material is burned. In theory the carbon dioxide can be reabsorbed, for example when new trees are planted. However, it can take several decades for new forest to bind the same amount of carbon dioxide. That is why biogenic emissions also have a climate impact here and now."
+        }
+      },
+      "bathtub": {
+        "eyebrow": "The bathtub effect",
+        "text": "The atmosphere responds to the amount of greenhouse gases – which stay and accumulate over time. Like a bathtub with the tap running: until the tap is turned off, the water level will keep rising. We have already passed 1.5°C of warming, and Sweden is approaching the point where we have emitted more than our commitment under the Paris Agreement. That is why how quickly we cut emissions is decisive.",
+        "question": "How has it gone since 1990?",
+        "waterCaptionPrefix": "Sweden has since 1990 emitted",
+        "chunkCaptionSingleYear": "+{{value}} Mt CO₂e added in {{year}}",
+        "chunkCaptionYearRange": "+{{value}} Mt CO₂e added {{fromYear}}–{{toYear}}"
+      },
+      "graph": {
+        "territorialFossil": "Territorial",
+        "productionBased": "Production-based emissions",
+        "productionBeyondTerritorial": "Production-based",
+        "biogenic": "Biogenic",
+        "consumptionAbroad": "Consumption-based abroad"
+      },
+      "interlude": {
+        "title": "We only discuss part of Sweden's emissions",
+        "body": "The usual figure we hear about gives an overly positive picture. When we also include other emissions that Sweden can influence, we get a more complete picture – one that tells a different story."
+      },
+      "stacked": {
+        "layerCounter": "Layer {{current}} of {{total}}",
+        "title": "Sweden's emissions since 1990",
+        "layerCaption1": "First we have territorial emissions – fossil emissions within Sweden's borders.",
+        "layerCaption2": "Now we add emissions from Swedish shipping companies and airlines abroad – together with the territorial emissions, this gives us the production-based emissions.",
+        "layerCaption3": "Then we add consumption-based emissions abroad, including private e-commerce imports.",
+        "layerCaption4": "And finally the biogenic emissions to show the full picture.",
+        "scrubHint": "Swipe across the chart to see values by year"
+      },
+      "conclusion": {
+        "title": "Sweden's emissions are larger than we think and have not fallen as much as we think",
+        "usualLabel": "What we usually discuss",
+        "fullLabel": "Sweden's actual emissions",
+        "since1990": "since 1990",
+        "methodologyLink": "Read more about how we calculate Sweden’s emissions",
+        "ctaLead": "Want to dig deeper into the numbers?",
+        "ctaNation": "Explore Sweden's data",
+        "ctaMunicipalities": "How does your municipality compare?"
+      }
     }
   },
   "mapControls": {
@@ -1902,6 +2100,10 @@
     "title": "Sweden's Climate Transition",
     "description": "National overview of emissions and climate transition in Sweden compared to the Paris Agreement targets."
   },
+  "valet2026Page": {
+    "title": "Election 2026 – Sweden's emissions",
+    "description": "A story about Sweden's emissions ahead of the 2026 election – from territorial figures to the full picture."
+  },
   "globalSearch": {
     "title": "Find a company, municipality, region or nation",
     "searchCategoryCompany": "Company",
@@ -2038,6 +2240,7 @@
       }
     },
     "filter": "Filter:",
+    "removeFilter": "Remove filter",
     "sorting": "Sorting by:",
     "sortingOptions": {
       "aToZ": "A-Z",

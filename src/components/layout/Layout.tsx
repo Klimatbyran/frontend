@@ -15,6 +15,9 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const params = useParams();
   const isLandingPage = /^\/(sv|en)\/?$/.test(location.pathname);
+  // The Valet 2026 story pins full-screen scenes with captions near the bottom
+  // edge; on mobile the floating corner buttons cover them, so hide them there.
+  const isStoryPage = /^\/(sv|en)\/valet-2026\/?$/.test(location.pathname);
 
   const isStagingHost =
     typeof window !== "undefined" && window.location.hostname.includes("stage");
@@ -37,16 +40,20 @@ export function Layout({ children }: LayoutProps) {
     <div className="min-h-screen w-full overflow-x-hidden bg-black-3 flex flex-col">
       <Seo meta={seoMeta} />
       <Header />
+      {/* The story page is full-bleed like the landing page – its scenes
+          manage their own padding and start right below the fixed header */}
       <main
         className={
-          isLandingPage
+          isLandingPage || isStoryPage
             ? "flex-1 min-h-0"
             : "flex-1 container mx-auto px-4 pt-24 pb-12 min-h-0"
         }
       >
         {children}
-        <ScrollToTop />
-        <SuggestEdit />
+        <div className={isStoryPage ? "hidden md:block" : undefined}>
+          <ScrollToTop />
+          <SuggestEdit />
+        </div>
       </main>
       <Footer />
     </div>

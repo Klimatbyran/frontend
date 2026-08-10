@@ -108,6 +108,8 @@ export function useCompaniesWithKPIs(
   selectedCountries: CompanyCountryTagSlug[],
   selectedKPI: CompanyKPIValue,
 ) {
+  const selectedCountriesKey = [...selectedCountries].sort().join(",");
+
   return useMemo(() => {
     if (!companies) return [];
 
@@ -131,7 +133,7 @@ export function useCompaniesWithKPIs(
     return usesParisOverview
       ? filtered
       : filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedCountries, selectedSector, selectedKPI.key]);
+  }, [companies, selectedCountriesKey, selectedSector, selectedKPI.key]);
 }
 
 export function asCompanyDataPoint(

@@ -8,10 +8,10 @@ import { SectorInfo } from "@/types/charts";
 import { SectorEmissions } from "@/types/emissions";
 
 export interface PieChartItem {
+  key: string;
   name: string;
   value: number;
   color: string;
-  translatedName?: string;
   [key: string]: unknown;
 }
 
@@ -70,25 +70,25 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   const pieData: PieChartItem[] = data
     ? data
         .filter((item) => item.value > 0)
-        .filter((item) => !filteredSectors.has(item.name))
+        .filter((item) => !filteredSectors.has(item.key))
         .sort((a, b) => b.value - a.value)
     : Object.entries(sectorEmissions?.sectors[year!] || {})
         .map(([sector, value]) => {
           const { color, translatedName } = getSectorInfo!(sector);
           return {
-            name: sector,
+            key: sector,
+            name: translatedName ?? sector,
             value: value as number,
-            color,
-            translatedName,
+            color: color,
           };
         })
         .filter((item) => item.value > 0)
-        .filter((item) => !filteredSectors.has(item.name))
+        .filter((item) => !filteredSectors.has(item.key))
         .sort((a, b) => b.value - a.value);
 
   const total = pieData.reduce((sum, item) => sum + item.value, 0);
   const pieDataWithTotal = pieData.map((item) => ({ ...item, total }));
-  const displayNameKey = nameKey ?? (data ? "name" : "translatedName");
+  const displayNameKey = nameKey ?? "name";
 
   const scale = desktopScale && !isMobile ? 1.2 : 1;
   const outerRadius = size.outerRadius * scale;
@@ -97,7 +97,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   const center = side / 2;
   const pieAnimationKey =
     animationKey ??
-    pieDataWithTotal.map((entry) => `${entry.name}-${entry.value}`).join("|");
+    pieDataWithTotal.map((entry) => `${entry.key}-${entry.value}`).join("|");
 
   const toggleFilter = (sectorName: string) => {
     if (!onFilteredSectorsChange) return;
@@ -132,14 +132,14 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
       if (clickTimeoutRef.current) {
         clearTimeout(clickTimeoutRef.current);
         clickTimeoutRef.current = null;
-        toggleFilter(clickedData.name);
+        toggleFilter(clickedData.key);
       } else {
         clickTimeoutRef.current = setTimeout(() => {
           clickTimeoutRef.current = null;
         }, 300);
       }
     } else {
-      toggleFilter(clickedData.name);
+      toggleFilter(clickedData.key);
     }
   };
 
@@ -174,7 +174,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
           >
             {pieDataWithTotal.map((entry) => (
               <Cell
-                key={entry.name}
+                key={entry.key}
                 fill={entry.color}
                 stroke={entry.color}
                 style={{ cursor: "pointer" }}
