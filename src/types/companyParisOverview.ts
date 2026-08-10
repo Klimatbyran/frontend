@@ -68,9 +68,7 @@ export function mapParisOverviewToCompanyWithKPIs(
         ? [
             {
               endDate:
-                item.emissionsYear != null
-                  ? `${item.emissionsYear}-12-31`
-                  : "",
+                item.emissionsYear != null ? `${item.emissionsYear}-12-31` : "",
               emissions: { calculatedTotalEmissions: item.emissions },
             },
           ]
