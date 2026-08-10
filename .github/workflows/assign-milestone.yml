@@ -1,5 +1,8 @@
 name: Auto-Assign Milestone to New Issues
 
+permissions:
+  issues: write
+
 on:
   issues:
     types: [opened]

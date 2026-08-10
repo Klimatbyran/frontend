@@ -5,6 +5,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 import { useLanguage } from "@/components/LanguageProvider";
 
+const GITHUB_OAUTH_CODE_PATTERN = /^[a-f0-9]{20}$/i;
+
 export const AuthCallback = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ export const AuthCallback = () => {
       return;
     }
 
-    if (code) {
+    if (code && GITHUB_OAUTH_CODE_PATTERN.test(code)) {
       authenticate(code).catch((error) => {
         console.error("Authentication error:", error);
         navigate("/", { state: { error: t("authCallbackPage.failed") } });

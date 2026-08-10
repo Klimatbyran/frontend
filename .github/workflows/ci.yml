@@ -1,5 +1,9 @@
 name: Continuous Integration
 
+permissions:
+  contents: write
+  packages: write
+
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
