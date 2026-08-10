@@ -1,0 +1,527 @@
+From 762e66703a57b1876c8452783e8773189e183135 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Sat, 11 Jul 2026 09:56:48 +0000
+Subject: [PATCH 1/2] Add lightweight companies Paris overview endpoint
+
+Expose GET /api/companies/paris-overview with precomputed meetsParis
+status and latest-year emissions so the frontend overview chart can load
+a minimal payload instead of the full company list.
+---
+ src/api/routes/external/company.read.ts       |  34 +++-
+ src/api/schemas/response.ts                   |  13 ++
+ src/api/security/routePermissions.test.ts     |   3 +
+ src/api/security/routePermissions.ts          |   6 +
+ src/api/services/companyService.ts            |   7 +
+ .../companyMeetsParis.test.ts                 |  91 +++++++++
+ .../company-emissions/companyMeetsParis.ts    | 185 ++++++++++++++++++
+ 7 files changed, 338 insertions(+), 1 deletion(-)
+ create mode 100644 src/lib/company-emissions/companyMeetsParis.test.ts
+ create mode 100644 src/lib/company-emissions/companyMeetsParis.ts
+
+diff --git a/src/api/routes/external/company.read.ts b/src/api/routes/external/company.read.ts
+index 8486cff..ff263a6 100644
+--- a/src/api/routes/external/company.read.ts
++++ b/src/api/routes/external/company.read.ts
+@@ -12,6 +12,7 @@ import {
+ } from '../../services/reportingPeriodPublicRead'
+ import {
+   PartnerCompanyList,
++  CompanyParisOverviewList,
+   wikidataIdParamSchema,
+   PartnerCompanyDetails,
+   getErrorSchemas,
+@@ -101,7 +102,38 @@ export async function companyReadRoutes(app: FastifyInstance) {
+     }
+   )
+ 
+-  // Register before /:wikidataId so "search" is not captured as an id
++  // Register before /:wikidataId so static paths are not captured as ids
++  app.get(
++    '/paris-overview',
++    {
++      schema: {
++        summary: 'Get Paris overview data for companies',
++        description:
++          'Retrieve a lightweight list of companies with Paris Agreement status and latest-year emissions for the overview chart',
++        tags: getTags('Companies'),
++        response: {
++          200: CompanyParisOverviewList,
++        },
++      },
++    },
++    async (request, reply) => {
++      const databaseFingerprint = await getCompaniesDatabaseFingerprint()
++      const currentEtag = await getOrRefreshCompaniesEtag(databaseFingerprint)
++
++      const dataCacheKey = `companies:paris-overview:data:${databaseFingerprint}`
++
++      let companies = await redisCache.get(dataCacheKey)
++
++      if (!companies) {
++        companies = await companyService.getParisOverviewForPublicRead()
++        await redisCache.set(dataCacheKey, JSON.stringify(companies))
++      } else {
++        companies = JSON.parse(companies)
++      }
++
++      reply.header('ETag', `${currentEtag}`)
++      reply.send(companies)
++    }
++  )
++
+   app.get(
+     '/search',
+     {
+diff --git a/src/api/schemas/response.ts b/src/api/schemas/response.ts
+index 156763e..e9547c6 100644
+--- a/src/api/schemas/response.ts
++++ b/src/api/schemas/response.ts
+@@ -452,6 +452,19 @@ export const PartnerCompanyBase = CompanyBaseSchema.extend({
+ 
+ export const PartnerCompanyList = z.array(PartnerCompanyBase)
+ 
++export const CompanyParisOverviewItem = z.object({
++  id: companyIdSchema,
++  wikidataId: wikidataIdSchema.nullable(),
++  name: z.string(),
++  meetsParis: z.boolean().nullable(),
++  emissions: z.number().nullable(),
++  emissionsYear: z.number().int().nullable(),
++  sectorCode: z.string().nullable(),
++  tags: z.array(z.string()),
++})
++
++export const CompanyParisOverviewList = z.array(CompanyParisOverviewItem)
++
+ const PartnerCompanyFullBase = CompanyBaseSchema.extend({
+   description: z.string().optional().nullable(),
+   descriptions: z.array(ResponseDescriptionSchema).optional(),
+diff --git a/src/api/security/routePermissions.test.ts b/src/api/security/routePermissions.test.ts
+index aa1876c..1895693 100644
+--- a/src/api/security/routePermissions.test.ts
++++ b/src/api/security/routePermissions.test.ts
+@@ -31,6 +31,9 @@ describe('routePermissions registry', () => {
+     expect(resolveClientApiPermission('GET', '/api/companies/search')).toBe(
+       'api.companies.search'
+     )
++    expect(
++      resolveClientApiPermission('GET', '/api/companies/paris-overview')
++    ).toBe('api.companies.list')
+     expect(resolveClientApiPermission('GET', '/api/companies/Q123')).toBe(
+       'api.companies.read'
+     )
+diff --git a/src/api/security/routePermissions.ts b/src/api/security/routePermissions.ts
+index 6e8bcf0..ed4b9d0 100644
+--- a/src/api/security/routePermissions.ts
++++ b/src/api/security/routePermissions.ts
+@@ -63,6 +63,12 @@ export const clientApiRouteRules: Rule[] = [
+     path: '/api/companies/',
+     permission: 'api.companies.list',
+   },
++  {
++    method: 'GET',
++    type: 'exact',
++    path: '/api/companies/paris-overview',
++    permission: 'api.companies.list',
++  },
+   {
+     method: 'GET',
+     type: 'prefix',
+diff --git a/src/api/services/companyService.ts b/src/api/services/companyService.ts
+index 3017a6f..23c3a68 100644
+--- a/src/api/services/companyService.ts
++++ b/src/api/services/companyService.ts
+@@ -37,6 +37,7 @@ import {
+   getOrCreateServiceBotUser,
+ } from './serviceBotUser'
+ import type { ReportingPeriod } from '@/types'
++import { toCompanyParisOverviewItem } from '@/lib/company-emissions/companyMeetsParis'
+ 
+ const API_KEY = process.env.FIRECRAWL_API_KEY
+ 
+@@ -87,6 +88,12 @@ class CompanyService {
+     return this.enrichCompaniesWithMetadata(companies, true)
+   }
+ 
++  /** Public API: minimal payload for the companies overview Paris chart. */
++  async getParisOverviewForPublicRead() {
++    const companies = await this.getAllCompaniesForPublicRead()
++    return companies.map((company) => toCompanyParisOverviewItem(company))
++  }
++
+   async getAllCompaniesBySearchTerm(
+     searchTerm: string,
+     options?: { onePeriodPerDataYear?: boolean }
+diff --git a/src/lib/company-emissions/companyMeetsParis.test.ts b/src/lib/company-emissions/companyMeetsParis.test.ts
+new file mode 100644
+index 0000000..cff26e0
+--- /dev/null
++++ b/src/lib/company-emissions/companyMeetsParis.test.ts
+@@ -0,0 +1,91 @@
++import {
++  calculateCompanyMeetsParis,
++  toCompanyParisOverviewItem,
++} from './companyMeetsParis'
++
++describe('calculateCompanyMeetsParis', () => {
++  it('returns null when trend slope is unavailable', () => {
++    expect(
++      calculateCompanyMeetsParis({
++        reportingPeriods: [
++          {
++            endDate: '2024-12-31',
++            emissions: { calculatedTotalEmissions: 1000 },
++          },
++        ],
++        futureEmissionsTrendSlope: null,
++      })
++    ).toBeNull()
++  })
++
++  it('returns true when 2025 emissions are zero', () => {
++    expect(
++      calculateCompanyMeetsParis({
++        reportingPeriods: [
++          {
++            endDate: '2025-12-31',
++            emissions: { calculatedTotalEmissions: 0 },
++          },
++        ],
++        futureEmissionsTrendSlope: -50,
++      })
++    ).toBe(true)
++  })
++
++  it('returns false for strongly increasing emissions', () => {
++    expect(
++      calculateCompanyMeetsParis({
++        reportingPeriods: [
++          {
++            endDate: '2023-12-31',
++            emissions: { calculatedTotalEmissions: 1000 },
++          },
++          {
++            endDate: '2024-12-31',
++            emissions: { calculatedTotalEmissions: 1200 },
++          },
++        ],
++        futureEmissionsTrendSlope: 200,
++      })
++    ).toBe(false)
++  })
++})
++
++describe('toCompanyParisOverviewItem', () => {
++  it('maps only fields needed for the Paris overview chart', () => {
++    const item = toCompanyParisOverviewItem({
++      id: 'company-id',
++      wikidataId: 'Q123',
++      name: 'Example AB',
++      tags: ['sweden'],
++      industry: {
++        industryGics: {
++          sectorCode: '15',
++        },
++      },
++      reportingPeriods: [
++        {
++          endDate: '2024-12-31',
++          emissions: { calculatedTotalEmissions: 1000 },
++        },
++        {
++          endDate: '2023-12-31',
++          emissions: { calculatedTotalEmissions: 1100 },
++        },
++      ],
++      baseYear: { year: 2019 },
++      futureEmissionsTrendSlope: -20,
++    })
++
++    expect(item).toEqual({
++      id: 'company-id',
++      wikidataId: 'Q123',
++      name: 'Example AB',
++      meetsParis: expect.any(Boolean),
++      emissions: 1000,
++      emissionsYear: 2024,
++      sectorCode: '15',
++      tags: ['sweden'],
++    })
++  })
++})
+diff --git a/src/lib/company-emissions/companyMeetsParis.ts b/src/lib/company-emissions/companyMeetsParis.ts
+new file mode 100644
+index 0000000..e8d2e38
+--- /dev/null
++++ b/src/lib/company-emissions/companyMeetsParis.ts
+@@ -0,0 +1,185 @@
++const CARBON_LAW_REDUCTION_RATE = 0.1172
++
++export interface CompanyForParisCalculation {
++  reportingPeriods: Array<{
++    endDate: Date | string
++    emissions?: {
++      calculatedTotalEmissions?: number | null
++    } | null
++  }>
++  baseYear?: { year: number } | null
++  futureEmissionsTrendSlope: number | null
++}
++
++interface TrendCoefficients {
++  slope: number
++  intercept: number
++}
++
++function buildTrendCoefficients(
++  company: CompanyForParisCalculation
++): TrendCoefficients | null {
++  const slope = company.futureEmissionsTrendSlope
++  if (slope === null || slope === undefined || !Number.isFinite(slope)) {
++    return null
++  }
++
++  const data = company.reportingPeriods
++    .filter(
++      (period) =>
++        period.emissions?.calculatedTotalEmissions !== null &&
++        period.emissions?.calculatedTotalEmissions !== undefined
++    )
++    .map((period) => ({
++      year: new Date(period.endDate).getFullYear(),
++      total: period.emissions!.calculatedTotalEmissions!,
++    }))
++    .sort((a, b) => a.year - b.year)
++
++  if (data.length === 0) {
++    return null
++  }
++
++  const baseYear = company.baseYear?.year
++  const dataSinceBaseYear = baseYear
++    ? data.filter((point) => point.year >= baseYear)
++    : data
++
++  if (dataSinceBaseYear.length === 0) {
++    return null
++  }
++
++  const lastDataPoint = dataSinceBaseYear[dataSinceBaseYear.length - 1]
++  const intercept = lastDataPoint.total - slope * lastDataPoint.year
++
++  return { slope, intercept }
++}
++
++function get2025Emissions(
++  company: CompanyForParisCalculation,
++  coefficients: TrendCoefficients
++): number | null {
++  const actual2025Data = company.reportingPeriods.find(
++    (period) => new Date(period.endDate).getFullYear() === 2025
++  )
++
++  if (actual2025Data?.emissions?.calculatedTotalEmissions != null) {
++    return actual2025Data.emissions.calculatedTotalEmissions
++  }
++
++  return coefficients.slope * 2025 + coefficients.intercept
++}
++
++function calculateCumulativeEmissions(
++  startEmissions: number,
++  slope: number,
++  startYear: number,
++  endYear: number
++): number {
++  let cumulative = 0
++  for (let year = startYear; year <= endYear; year++) {
++    const emissions = slope * year + (startEmissions - slope * startYear)
++    cumulative += Math.max(0, emissions)
++  }
++  return cumulative
++}
++
++function calculateCarbonLawCumulativeEmissions(
++  startEmissions: number,
++  startYear: number,
++  endYear: number
++): number {
++  let cumulative = 0
++  let currentEmissions = startEmissions
++
++  for (let year = startYear; year <= endYear; year++) {
++    cumulative += currentEmissions
++    currentEmissions *= 1 - CARBON_LAW_REDUCTION_RATE
++  }
++  return cumulative
++}
++
++export function calculateCompanyMeetsParis(
++  company: CompanyForParisCalculation
++): boolean | null {
++  const coefficients = buildTrendCoefficients(company)
++  if (!coefficients) {
++    return null
++  }
++
++  const emissions2025 = get2025Emissions(company, coefficients)
++  if (emissions2025 === null || emissions2025 === undefined) {
++    return null
++  }
++
++  if (emissions2025 <= 0) {
++    return true
++  }
++
++  const companyCumulativeEmissions = calculateCumulativeEmissions(
++    emissions2025,
++    coefficients.slope,
++    2025,
++    2050
++  )
++
++  const carbonLawCumulativeEmissions = calculateCarbonLawCumulativeEmissions(
++    emissions2025,
++    2025,
++    2050
++  )
++
++  return companyCumulativeEmissions <= carbonLawCumulativeEmissions
++}
++
++export interface CompanyParisOverviewItem {
++  id: string
++  wikidataId: string | null
++  name: string
++  meetsParis: boolean | null
++  emissions: number | null
++  emissionsYear: number | null
++  sectorCode: string | null
++  tags: string[]
++}
++
++export function toCompanyParisOverviewItem(company: {
++  id: string
++  wikidataId?: string | null
++  name: string
++  tags?: string[]
++  industry?: {
++    industryGics?: {
++      sectorCode?: string | null
++    } | null
++  } | null
++  reportingPeriods: CompanyForParisCalculation['reportingPeriods']
++  baseYear?: { year: number } | null
++  futureEmissionsTrendSlope: number | null
++}): CompanyParisOverviewItem {
++  const latestPeriod = [...company.reportingPeriods].sort(
++    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
++  )[0]
++
++  const emissions =
++    latestPeriod?.emissions?.calculatedTotalEmissions ?? null
++  const emissionsYear = latestPeriod
++    ? new Date(latestPeriod.endDate).getFullYear()
++    : null
++
++  const meetsParis =
++    emissions == null || emissions <= 0
++      ? null
++      : calculateCompanyMeetsParis(company)
++
++  return {
++    id: company.id,
++    wikidataId: company.wikidataId ?? null,
++    name: company.name,
++    meetsParis,
++    emissions: emissions != null && emissions > 0 ? emissions : null,
++    emissionsYear,
++    sectorCode: company.industry?.industryGics?.sectorCode ?? null,
++    tags: company.tags ?? [],
++  }
++}
+-- 
+2.43.0
+
+
+From ae9d303ea268c8f2504fbf21220434581cdef13d Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Sat, 11 Jul 2026 12:34:34 +0000
+Subject: [PATCH 2/2] Harden Paris overview response mapping
+
+Normalize invalid wikidata IDs to null and coerce sector codes to
+strings so response serialization does not fail on edge-case data.
+---
+ .../company-emissions/companyMeetsParis.test.ts | 17 +++++++++++++++++
+ src/lib/company-emissions/companyMeetsParis.ts  | 16 ++++++++++++++--
+ 2 files changed, 31 insertions(+), 2 deletions(-)
+
+diff --git a/src/lib/company-emissions/companyMeetsParis.test.ts b/src/lib/company-emissions/companyMeetsParis.test.ts
+index cff26e0..357c87a 100644
+--- a/src/lib/company-emissions/companyMeetsParis.test.ts
++++ b/src/lib/company-emissions/companyMeetsParis.test.ts
+@@ -52,6 +52,23 @@ describe('calculateCompanyMeetsParis', () => {
+ })
+ 
+ describe('toCompanyParisOverviewItem', () => {
++  it('normalizes invalid wikidata ids to null', () => {
++    const item = toCompanyParisOverviewItem({
++      id: 'company-id',
++      wikidataId: '',
++      name: 'Example AB',
++      reportingPeriods: [
++        {
++          endDate: '2024-12-31',
++          emissions: { calculatedTotalEmissions: 1000 },
++        },
++      ],
++      futureEmissionsTrendSlope: -20,
++    })
++
++    expect(item.wikidataId).toBeNull()
++  })
++
+   it('maps only fields needed for the Paris overview chart', () => {
+     const item = toCompanyParisOverviewItem({
+       id: 'company-id',
+diff --git a/src/lib/company-emissions/companyMeetsParis.ts b/src/lib/company-emissions/companyMeetsParis.ts
+index e8d2e38..d769684 100644
+--- a/src/lib/company-emissions/companyMeetsParis.ts
++++ b/src/lib/company-emissions/companyMeetsParis.ts
+@@ -143,6 +143,15 @@ export interface CompanyParisOverviewItem {
+   tags: string[]
+ }
+ 
++function normalizeWikidataId(
++  wikidataId: string | null | undefined
++): string | null {
++  if (!wikidataId || !/^Q\d+$/.test(wikidataId)) {
++    return null
++  }
++  return wikidataId
++}
++
+ export function toCompanyParisOverviewItem(company: {
+   id: string
+   wikidataId?: string | null
+@@ -174,12 +183,15 @@ export function toCompanyParisOverviewItem(company: {
+ 
+   return {
+     id: company.id,
+-    wikidataId: company.wikidataId ?? null,
++    wikidataId: normalizeWikidataId(company.wikidataId),
+     name: company.name,
+     meetsParis,
+     emissions: emissions != null && emissions > 0 ? emissions : null,
+     emissionsYear,
+-    sectorCode: company.industry?.industryGics?.sectorCode ?? null,
++    sectorCode:
++      company.industry?.industryGics?.sectorCode != null
++        ? String(company.industry.industryGics.sectorCode)
++        : null,
+     tags: company.tags ?? [],
+   }
+ }
+-- 
+2.43.0
+

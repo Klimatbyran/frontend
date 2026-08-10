@@ -16,8 +16,18 @@ import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
 import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
 import {
+  getTopParisEmissionsCompanies,
+  getParisEmissionsBreakdown,
+} from "@/utils/insights/meetsParisChartData";
+import {
+  isMeetsParisKpi,
+  PARIS_STATUS_COLORS,
+} from "@/utils/insights/meetsParisKpi";
+import { MeetsParisEmissionsPieChart } from "@/components/companies/rankedList/visualizations/shared/MeetsParisEmissionsPieChart";
+import {
   DistributionBox,
   BooleanSummaryBox,
+  InsightsEmptyState,
 } from "../../ranked/InsightsPanelParts";
 
 type InsightsPanelSection = "stats" | "top" | "bottom" | "distribution";
@@ -32,7 +42,20 @@ interface InsightsPanelProps {
 
 const MIN_COMPANIES = 2;
 
-function InsightsEmptyState({ message }: { message: string }) {
+function hasEnoughInsightsData(
+  companyData: CompanyWithKPIs[],
+  selectedKPI: CompanyKPIValue,
+  validDataCount: number,
+): boolean {
+  if (isMeetsParisKpi(selectedKPI)) {
+    const { totalEmissions } = getParisEmissionsBreakdown(companyData);
+    return totalEmissions > 0;
+  }
+
+  return validDataCount >= MIN_COMPANIES;
+}
+
+function FramedInsightsEmptyState({ message }: { message: string }) {
   return (
     <div className="bg-white/5 backdrop-blur-sm rounded-level-2 p-8 h-full flex items-center justify-center">
       <p className="text-white text-lg">{message}</p>
@@ -108,9 +131,56 @@ function buildCompanyInsightsPanels(
     t,
   } = insightsData;
 
+  const isMeetsParisKpiSelected = isMeetsParisKpi(selectedKPI);
+
   const booleanSummary = (
     <BooleanSummaryBox distributionStats={statistics.distributionStats} />
   );
+
+  const renderParisEmissionsList = (meetsParis: boolean) => {
+    const { entities, unitScale } = getTopParisEmissionsCompanies(
+      companyData,
+      meetsParis,
+    );
+
+    if (entities.length === 0) {
+      return (
+        <InsightsEmptyState
+          message={t("companies.list.insights.noData.metric", {
+            metric: t(`companies.list.kpis.${kpiKey}.label`),
+          })}
+        />
+      );
+    }
+
+    return (
+      <InsightsList<CompanyWithKPIs & { rankedEmissions: number }>
+        key={
+          listKey
+            ? `${meetsParis ? "paris-yes" : "paris-no"}-${listKey}`
+            : undefined
+        }
+        title={t(
+          meetsParis
+            ? "companiesOverviewPage.visualizations.meetsParis.topEmittersMeetingGoal"
+            : "companiesOverviewPage.visualizations.meetsParis.topEmittersMissingGoal",
+          {
+            nrOfEntries: entities.length,
+          },
+        )}
+        entities={entities}
+        totalCount={entities.length}
+        dataPointKey="rankedEmissions"
+        unit={unitScale.unit}
+        entityType="companies"
+        nameKey="name"
+        showBars
+        colorItem={() =>
+          meetsParis ? PARIS_STATUS_COLORS.yes : PARIS_STATUS_COLORS.no
+        }
+      />
+    );
+  };
 
   return {
     stats: (
@@ -127,6 +197,7 @@ function buildCompanyInsightsPanels(
         bottomPerformer={bottomPerformer}
         chart={
           selectedKPI.isBoolean ? (
+            // Company-count pie: how many companies meet vs miss Paris.
             <KPIDistributionChart<CompanyWithKPIs>
               data={companyData}
               selectedKPI={selectedKPI}
@@ -139,7 +210,18 @@ function buildCompanyInsightsPanels(
         sourceLinks={sourceLinks}
       />
     ),
-    distribution: (
+    distribution: isMeetsParisKpiSelected ? (
+      <DistributionBox
+        entityType="companies"
+        title={t(
+          "companiesOverviewPage.visualizations.meetsParis.emissionsPieTitle",
+        )}
+        subtitle={t(
+          "companiesOverviewPage.visualizations.meetsParis.emissionsPieSubtitle",
+        )}
+        chart={<MeetsParisEmissionsPieChart companies={companyData} />}
+      />
+    ) : (
       <DistributionBox
         entityType="companies"
         chart={
@@ -153,7 +235,9 @@ function buildCompanyInsightsPanels(
         }
       />
     ),
-    top: !selectedKPI.isBoolean ? (
+    top: isMeetsParisKpiSelected ? (
+      renderParisEmissionsList(true)
+    ) : !selectedKPI.isBoolean ? (
       <InsightsList<CompanyWithKPIs>
         key={listKey ? `top-${listKey}` : undefined}
         title={t(
@@ -177,7 +261,9 @@ function buildCompanyInsightsPanels(
     ) : (
       booleanSummary
     ),
-    bottom: !selectedKPI.isBoolean ? (
+    bottom: isMeetsParisKpiSelected ? (
+      renderParisEmissionsList(false)
+    ) : !selectedKPI.isBoolean ? (
       <InsightsList<CompanyWithKPIs>
         key={listKey ? `bottom-${listKey}` : undefined}
         title={t("rankedInsights.titleWorst", {
@@ -211,7 +297,7 @@ function CompanyInsightsPanel({
 
   if (!companyData?.length) {
     return (
-      <InsightsEmptyState
+      <FramedInsightsEmptyState
         message={t("companies.list.insights.noData.company")}
       />
     );
@@ -219,9 +305,15 @@ function CompanyInsightsPanel({
 
   const insightsData = getCompanyInsightsData(companyData, selectedKPI, t);
 
-  if (insightsData.statistics.validData.length < MIN_COMPANIES) {
+  if (
+    !hasEnoughInsightsData(
+      companyData,
+      selectedKPI,
+      insightsData.statistics.validData.length,
+    )
+  ) {
     return (
-      <InsightsEmptyState
+      <FramedInsightsEmptyState
         message={t("companies.list.insights.noData.metric", {
           metric: t(`companies.list.kpis.${insightsData.kpiKey}.label`),
         })}

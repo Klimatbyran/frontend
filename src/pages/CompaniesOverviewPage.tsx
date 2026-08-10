@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useCompaniesOverviewSource } from "@/hooks/companies/useCompaniesOverviewSource";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
@@ -32,6 +32,7 @@ import {
   useCompaniesOverviewUrlState,
   useCompaniesWithKPIs,
 } from "./companiesOverviewPageUtils";
+import { isMeetsParisKpi } from "@/utils/insights/meetsParisKpi";
 
 const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
   meetsParis: <Leaf className="w-4 h-4" />,
@@ -115,7 +116,7 @@ function CompaniesOverviewMainGrid({
         </div>
       </div>
 
-      {!selectedKPI.isBoolean && (
+      {(isMeetsParisKpi(selectedKPI) || !selectedKPI.isBoolean) && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}
@@ -225,9 +226,22 @@ function CompaniesOverviewContent({
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { companies, companiesLoading, companiesError } = useCompanies();
+  const location = useLocation();
   const companyKPIs = useCompanyKPIs();
   const [filterOpen, setFilterOpen] = useState(false);
+
+  const [selectedKPI, setSelectedKPI] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    const kpiKey = params.get("kpi");
+    return (
+      companyKPIs.find((kpi) => kpi.key === kpiKey) ||
+      companyKPIs.find((kpi) => kpi.key === "emissionsChangeFromBaseYear") ||
+      companyKPIs[0]
+    );
+  });
+
+  const { companies, companiesLoading, companiesError } =
+    useCompaniesOverviewSource(selectedKPI);
 
   const availableSectors = useMemo(() => {
     if (!companies) return [];
@@ -245,7 +259,6 @@ export function CompaniesOverviewPage() {
   );
 
   const urlState = useCompaniesOverviewUrlState(companyKPIs, availableSectors);
-  const [selectedKPI, setSelectedKPI] = useState(urlState.getKPIFromURL());
   const selectedSector = urlState.getSectorFromURL();
   const selectedCountries = urlState.getCountriesFromURL();
   const viewMode = urlState.getViewModeFromURL();

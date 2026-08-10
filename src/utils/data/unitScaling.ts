@@ -32,39 +32,48 @@ const UNIT_LABELS: Record<
  * Determine the best unit for displaying values based on magnitude
  * @param maxAbsValue - The maximum absolute value in the dataset
  * @param unitSystem - Unit system to use: "tonnes" (Gt/Mt/kt/t) or "generic" (B/M/k)
+ * @param options.maxDivisor - Largest allowed divisor (e.g. 1_000_000 caps at Mt, not Gt)
  * @returns Unit scale configuration
  */
 export function getBestUnit(
   maxAbsValue: number,
   unitSystem: UnitSystem = "tonnes",
+  options?: { maxDivisor?: number },
 ): UnitScale {
   const absValue = Math.abs(maxAbsValue);
   const labels = UNIT_LABELS[unitSystem];
+  const thresholds = [1_000_000_000, 1_000_000, 1_000, 1].filter(
+    (threshold) => !options?.maxDivisor || threshold <= options.maxDivisor,
+  );
 
-  if (absValue >= 1_000_000_000) {
-    return {
-      unit: labels[1_000_000_000].unit,
-      divisor: 1_000_000_000,
-      label: labels[1_000_000_000].label,
-    };
-  } else if (absValue >= 1_000_000) {
-    return {
-      unit: labels[1_000_000].unit,
-      divisor: 1_000_000,
-      label: labels[1_000_000].label,
-    };
-  } else if (absValue >= 1_000) {
-    return {
-      unit: labels[1_000].unit,
-      divisor: 1_000,
-      label: labels[1_000].label,
-    };
+  for (const threshold of thresholds) {
+    if (absValue >= threshold) {
+      return {
+        unit: labels[threshold].unit,
+        divisor: threshold,
+        label: labels[threshold].label,
+      };
+    }
   }
+
+  const fallback = thresholds.at(-1) ?? 1;
   return {
-    unit: labels[1].unit,
-    divisor: 1,
-    label: labels[1].label,
+    unit: labels[fallback].unit,
+    divisor: fallback,
+    label: labels[fallback].label,
   };
+}
+
+/**
+ * Format a value with a pre-selected unit scale.
+ */
+export function formatWithScale(
+  value: number,
+  scale: UnitScale,
+  decimals: number = 1,
+): string {
+  const scaled = value / scale.divisor;
+  return `${scaled.toFixed(decimals)}${scale.unit}`;
 }
 
 /**
@@ -80,8 +89,8 @@ export function formatWithBestUnit(
   maxAbsValue: number,
   unitSystem: UnitSystem = "tonnes",
   decimals: number = 1,
+  options?: { maxDivisor?: number },
 ): string {
-  const scale = getBestUnit(maxAbsValue, unitSystem);
-  const scaled = value / scale.divisor;
-  return `${scaled.toFixed(decimals)}${scale.unit}`;
+  const scale = getBestUnit(maxAbsValue, unitSystem, options);
+  return formatWithScale(value, scale, decimals);
 }

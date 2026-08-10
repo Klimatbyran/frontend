@@ -86,3 +86,12 @@ export function BooleanSummaryBox({
     </div>
   );
 }
+
+/** Centered empty state used across insight panels and Paris visualizations. */
+export function InsightsEmptyState({ message }: { message: string }) {
+  return (
+    <div className="flex h-full min-h-[200px] items-center justify-center rounded-level-2 bg-black-2 p-8">
+      <p className="text-lg text-grey">{message}</p>
+    </div>
+  );
+}

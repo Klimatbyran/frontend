@@ -1,0 +1,432 @@
+import { useMemo, useState, useCallback, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { useChartMotion } from "@/hooks/useChartMotion";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { COLORS } from "@/lib/colors";
+import { cn } from "@/lib/utils";
+import { formatWithScale } from "@/utils/data/unitScaling";
+import {
+  buildParisBarChartGroups,
+  type CompanyParisEmissionsEntry,
+  type ParisBarChartSegment,
+} from "@/utils/insights/meetsParisChartData";
+
+const SEGMENT_RADIUS = 6;
+const BAR_MAX_WIDTH = 180;
+const Y_AXIS_WIDTH = 72;
+const CHART_MIN_HEIGHT = 260;
+const OUTER_MIN_HEIGHT = 320;
+const PLOT_INSET_TOP = 8;
+
+interface MeetsParisBarChartProps {
+  entries: CompanyParisEmissionsEntry[];
+  unitScale: { unit: string; divisor: number };
+  onCompanyClick?: (entry: CompanyParisEmissionsEntry) => void;
+}
+
+function buildYAxisTicks(maxValue: number, tickCount = 4): number[] {
+  if (maxValue <= 0) return [0];
+
+  const step = maxValue / tickCount;
+  return Array.from({ length: tickCount + 1 }, (_, index) =>
+    Number((index * step).toFixed(2)),
+  );
+}
+
+export function MeetsParisBarChart({
+  entries,
+  unitScale,
+  onCompanyClick,
+}: MeetsParisBarChartProps) {
+  const { t } = useTranslation();
+  const { reduceMotion, barDuration, fadeDuration, ease } = useChartMotion();
+  const { isMobile } = useScreenSize();
+  const [activeCompanyId, setActiveCompanyId] = useState<string | null>(null);
+  const [hoveredCompanyId, setHoveredCompanyId] = useState<string | null>(null);
+  const [tooltip, setTooltip] = useState<{
+    segment: ParisBarChartSegment;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  const falseLabel = t("companiesOverviewPage.visualizations.meetsParis.no");
+  const trueLabel = t("companiesOverviewPage.visualizations.meetsParis.yes");
+  const otherLabel = t(
+    "companiesOverviewPage.visualizations.meetsParis.otherSegment",
+  );
+
+  const { groups, maxBarTotal } = useMemo(
+    () =>
+      buildParisBarChartGroups(entries, {
+        no: falseLabel,
+        yes: trueLabel,
+      }),
+    [entries, falseLabel, trueLabel],
+  );
+
+  const validSegmentIds = useMemo(
+    () =>
+      new Set(
+        groups.flatMap((group) => group.segments.map((segment) => segment.id)),
+      ),
+    [groups],
+  );
+
+  const activeSegment = useMemo(() => {
+    if (!activeCompanyId) return null;
+    return (
+      groups
+        .flatMap((group) => group.segments)
+        .find((segment) => segment.id === activeCompanyId) ?? null
+    );
+  }, [activeCompanyId, groups]);
+
+  useEffect(() => {
+    if (activeCompanyId && !validSegmentIds.has(activeCompanyId)) {
+      setActiveCompanyId(null);
+    }
+  }, [activeCompanyId, validSegmentIds]);
+
+  const yAxisTicks = useMemo(
+    () => buildYAxisTicks(maxBarTotal / unitScale.divisor),
+    [maxBarTotal, unitScale.divisor],
+  );
+
+  const formatAxisTick = useCallback(
+    (value: number) => `${value.toFixed(1)}${unitScale.unit}`,
+    [unitScale.unit],
+  );
+
+  const highlightedCompanyId = hoveredCompanyId ?? activeCompanyId;
+  const yAxisWidth = isMobile ? 52 : Y_AXIS_WIDTH;
+  const chartMinHeight = isMobile ? 220 : CHART_MIN_HEIGHT;
+  const outerMinHeight = isMobile ? 280 : OUTER_MIN_HEIGHT;
+  const barTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: barDuration, ease };
+  const segmentTransition = reduceMotion
+    ? { duration: 0 }
+    : {
+        layout: { duration: barDuration, ease },
+        opacity: { duration: fadeDuration },
+        default: { duration: barDuration, ease },
+      };
+
+  const handleSegmentClick = useCallback(
+    (segment: ParisBarChartSegment) => {
+      if (isMobile) {
+        setActiveCompanyId((current) =>
+          current === segment.id ? null : segment.id,
+        );
+        return;
+      }
+
+      if (segment.entry) {
+        onCompanyClick?.(segment.entry);
+      }
+    },
+    [isMobile, onCompanyClick],
+  );
+
+  const handleSegmentPointerEnter = useCallback(
+    (event: React.MouseEvent, segment: ParisBarChartSegment) => {
+      setHoveredCompanyId(segment.id);
+      setTooltip({
+        segment,
+        x: event.clientX,
+        y: event.clientY,
+      });
+    },
+    [],
+  );
+
+  const handleSegmentPointerMove = useCallback(
+    (event: React.MouseEvent, segment: ParisBarChartSegment) => {
+      setTooltip({
+        segment,
+        x: event.clientX,
+        y: event.clientY,
+      });
+    },
+    [],
+  );
+
+  const handleSegmentPointerLeave = useCallback(() => {
+    setHoveredCompanyId(null);
+    setTooltip(null);
+  }, []);
+
+  return (
+    <div
+      className="relative flex h-full w-full min-w-0 flex-col"
+      style={{ minHeight: outerMinHeight }}
+    >
+      <div
+        className="relative min-w-0 flex-1 border-t border-b border-black-4"
+        style={{ minHeight: chartMinHeight }}
+      >
+        <div
+          className="absolute inset-0 flex min-w-0 items-end"
+          style={{ paddingTop: PLOT_INSET_TOP }}
+        >
+          <div
+            className={cn(
+              "relative h-full shrink-0",
+              isMobile ? "pl-2" : "pl-4",
+            )}
+            style={{ width: yAxisWidth }}
+          >
+            {yAxisTicks
+              .slice()
+              .reverse()
+              .map((tick, _index, ticks) => {
+                const maxTick = ticks[0];
+                const isTopTick = tick === maxTick;
+                const isBottomTick = tick === 0;
+
+                return (
+                  <motion.span
+                    key={tick}
+                    className={cn(
+                      "absolute whitespace-nowrap text-white/45",
+                      isMobile ? "left-1 text-[10px]" : "left-4 text-[11px]",
+                    )}
+                    initial={false}
+                    animate={
+                      isTopTick
+                        ? { top: 0 }
+                        : isBottomTick
+                          ? { bottom: 0 }
+                          : {
+                              bottom: `${
+                                maxBarTotal > 0
+                                  ? (tick / (maxBarTotal / unitScale.divisor)) *
+                                    100
+                                  : 0
+                              }%`,
+                            }
+                    }
+                    transition={barTransition}
+                    style={{
+                      transform:
+                        isTopTick || isBottomTick
+                          ? undefined
+                          : "translateY(50%)",
+                    }}
+                  >
+                    {formatAxisTick(tick)}
+                  </motion.span>
+                );
+              })}
+          </div>
+
+          <div
+            className={cn(
+              "flex h-full min-w-0 flex-1 items-end justify-center",
+              isMobile ? "gap-3 px-1" : "gap-[10%] px-2",
+            )}
+          >
+            {groups.map((group, groupIndex) => {
+              const barHeightPercent =
+                maxBarTotal > 0 ? (group.total / maxBarTotal) * 100 : 0;
+
+              return (
+                <div
+                  key={group.category}
+                  className={cn(
+                    "flex h-full flex-col items-center justify-end",
+                    isMobile ? "min-w-0 flex-1" : "",
+                  )}
+                  style={
+                    isMobile
+                      ? { maxWidth: "50%" }
+                      : { width: BAR_MAX_WIDTH, maxWidth: "48%" }
+                  }
+                >
+                  <motion.div
+                    className="flex w-full flex-col gap-px overflow-hidden rounded-md"
+                    initial={false}
+                    animate={{ height: `${barHeightPercent}%` }}
+                    transition={{
+                      ...barTransition,
+                      delay: reduceMotion ? 0 : groupIndex * 0.05,
+                    }}
+                    style={{ backgroundColor: COLORS.black2 }}
+                  >
+                    <AnimatePresence initial={false} mode="popLayout">
+                      {group.segments.map((segment) => {
+                        const isHighlighted =
+                          highlightedCompanyId === segment.id;
+                        const isDimmed =
+                          highlightedCompanyId != null &&
+                          highlightedCompanyId !== segment.id;
+
+                        return (
+                          <motion.button
+                            key={segment.id}
+                            type="button"
+                            layout={!reduceMotion}
+                            initial={reduceMotion ? false : { opacity: 0 }}
+                            animate={{ opacity: isDimmed ? 0.45 : 1 }}
+                            exit={reduceMotion ? undefined : { opacity: 0 }}
+                            transition={segmentTransition}
+                            className="w-full min-h-[1px] border-0 p-0 cursor-pointer"
+                            style={{
+                              flex: `${segment.emissions} 1 0`,
+                              backgroundColor: group.color,
+                              borderRadius: SEGMENT_RADIUS,
+                              boxShadow: isHighlighted
+                                ? "inset 0 0 0 2px rgba(255,255,255,0.9)"
+                                : undefined,
+                            }}
+                            aria-label={
+                              segment.entry?.company.name ??
+                              t(
+                                "companiesOverviewPage.visualizations.meetsParis.otherSegmentAria",
+                                { count: segment.aggregateCount ?? 0 },
+                              )
+                            }
+                            onClick={() => handleSegmentClick(segment)}
+                            onMouseEnter={(event) =>
+                              handleSegmentPointerEnter(event, segment)
+                            }
+                            onMouseMove={(event) =>
+                              handleSegmentPointerMove(event, segment)
+                            }
+                            onMouseLeave={handleSegmentPointerLeave}
+                          />
+                        );
+                      })}
+                    </AnimatePresence>
+                  </motion.div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex min-w-0 shrink-0 pt-2">
+        <div className="shrink-0" style={{ width: yAxisWidth }} />
+        <div
+          className={cn(
+            "flex min-w-0 flex-1 justify-center",
+            isMobile ? "gap-3 px-1" : "gap-[10%] px-2",
+          )}
+        >
+          {groups.map((group) => (
+            <span
+              key={group.category}
+              className={cn(
+                "text-center text-white/75",
+                isMobile ? "min-w-0 flex-1 text-[12px]" : "text-[13px]",
+              )}
+              style={
+                isMobile
+                  ? { maxWidth: "50%" }
+                  : { width: BAR_MAX_WIDTH, maxWidth: "48%" }
+              }
+            >
+              {group.category}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {tooltip && !isMobile && (
+        <div
+          className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-full rounded-2xl bg-black/40 p-4 text-white backdrop-blur-sm"
+          style={{
+            left: tooltip.x,
+            top: tooltip.y - 12,
+          }}
+        >
+          {tooltip.segment.entry ? (
+            <>
+              <p className="text-xl font-medium">
+                {tooltip.segment.entry.company.name}
+              </p>
+              <div className="mt-2 space-y-1">
+                <p className="text-white/70">
+                  <span className="text-orange-2">
+                    {formatWithScale(tooltip.segment.emissions, unitScale)}
+                  </span>
+                </p>
+                <p className="text-sm text-white/50">
+                  {tooltip.segment.entry.meetsParis
+                    ? t("companies.list.kpis.meetsParis.booleanLabels.true")
+                    : t("companies.list.kpis.meetsParis.booleanLabels.false")}
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-xl font-medium">{otherLabel}</p>
+              <div className="mt-2 space-y-1">
+                <p className="text-white/70">
+                  <span className="text-orange-2">
+                    {formatWithScale(tooltip.segment.emissions, unitScale)}
+                  </span>
+                </p>
+                <p className="text-sm text-white/50">
+                  {t(
+                    "companiesOverviewPage.visualizations.meetsParis.otherSegmentCount",
+                    { count: tooltip.segment.aggregateCount ?? 0 },
+                  )}
+                </p>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      <div className="mt-4 flex items-center justify-center gap-6">
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block h-3 w-3 shrink-0 rounded-sm"
+            style={{ backgroundColor: COLORS.pink3 }}
+          />
+          <span className="text-xs text-white/40">{falseLabel}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block h-3 w-3 shrink-0 rounded-sm"
+            style={{ backgroundColor: COLORS.blue3 }}
+          />
+          <span className="text-xs text-white/40">{trueLabel}</span>
+        </div>
+      </div>
+
+      {isMobile &&
+        activeSegment &&
+        (activeSegment.entry ? (
+          <button
+            type="button"
+            className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white transition-colors hover:bg-white/5"
+            onClick={() => onCompanyClick?.(activeSegment.entry!)}
+          >
+            <span className="font-medium">
+              {activeSegment.entry.company.name}
+            </span>
+            <span className="mt-1 block text-orange-2">
+              {formatWithScale(activeSegment.emissions, unitScale)}
+            </span>
+          </button>
+        ) : (
+          <div className="mt-3 w-full rounded-level-2 bg-black-1 px-4 py-3 text-left text-sm text-white">
+            <span className="font-medium">{otherLabel}</span>
+            <span className="mt-1 block text-orange-2">
+              {formatWithScale(activeSegment.emissions, unitScale)}
+            </span>
+            <span className="mt-1 block text-xs text-white/50">
+              {t(
+                "companiesOverviewPage.visualizations.meetsParis.otherSegmentCount",
+                { count: activeSegment.aggregateCount ?? 0 },
+              )}
+            </span>
+          </div>
+        ))}
+    </div>
+  );
+}
