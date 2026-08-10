@@ -14,7 +14,7 @@ export const CompanySearchInput = memo(function CompanySearchInput({
 }) {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState("");
-  const [searchQuery, setSearchQuery] = useState("Arla");
+  const [searchQuery, setSearchQuery] = useState("Volvo Cars");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { searchResults, isSearching, isDebouncing } =
     useCompanySearch(searchQuery);
@@ -23,15 +23,15 @@ export const CompanySearchInput = memo(function CompanySearchInput({
     onBusyChange?.(isDebouncing || isSearching);
   }, [isDebouncing, isSearching, onBusyChange]);
 
-  // On mount, set input and searchQuery to Arla
+  // On mount, set input and searchQuery to Volvo Cars
   useEffect(() => {
-    setInputValue("Arla");
-    setSearchQuery("Arla");
+    setInputValue("Volvo Cars");
+    setSearchQuery("Volvo Cars");
   }, []);
 
-  // Auto-select Arla on mount before paint to avoid chart placeholder flash
+  // Auto-select Volvo Cars on mount before paint to avoid chart placeholder flash
   useLayoutEffect(() => {
-    if (searchQuery.trim() === "Arla" && searchResults.length > 0) {
+    if (searchQuery.trim() === "Volvo Cars" && searchResults.length > 0) {
       onSelect(searchResults[0] as RankedCompany);
     }
   }, [searchResults, searchQuery, onSelect]);
