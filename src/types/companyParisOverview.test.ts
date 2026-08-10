@@ -62,4 +62,24 @@ describe("mapParisOverviewToCompanyWithKPIs", () => {
       ],
     });
   });
+
+  it("keeps emissions when the overview year is missing", () => {
+    const company = mapParisOverviewToCompanyWithKPIs({
+      id: "company-id",
+      wikidataId: "Q123",
+      name: "Example AB",
+      meetsParis: false,
+      emissions: 2500,
+      emissionsYear: null,
+      sectorCode: "15",
+      tags: ["sweden"],
+    });
+
+    expect(company.reportingPeriods).toEqual([
+      {
+        endDate: "",
+        emissions: { calculatedTotalEmissions: 2500 },
+      },
+    ]);
+  });
 });

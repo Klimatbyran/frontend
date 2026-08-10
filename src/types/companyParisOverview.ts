@@ -64,10 +64,13 @@ export function mapParisOverviewToCompanyWithKPIs(
       ? { industryGics: { sectorCode: item.sectorCode } }
       : null,
     reportingPeriods:
-      item.emissions != null && item.emissionsYear != null
+      item.emissions != null && item.emissions > 0
         ? [
             {
-              endDate: `${item.emissionsYear}-12-31`,
+              endDate:
+                item.emissionsYear != null
+                  ? `${item.emissionsYear}-12-31`
+                  : "",
               emissions: { calculatedTotalEmissions: item.emissions },
             },
           ]
