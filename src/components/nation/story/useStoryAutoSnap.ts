@@ -14,12 +14,10 @@ const GLIDE_GRACE_MS = 1200;
 const WHEEL_TRIGGER_PX = 40;
 /** Wheel events further apart than this start a new gesture. */
 const WHEEL_GESTURE_GAP_MS = 250;
-/** Desktop trackpad: balance single-beat commits vs momentum double-advance. */
-const FINE_POINTER_WHEEL_TRIGGER_PX = 65;
-const FINE_POINTER_WHEEL_GESTURE_GAP_MS = 320;
-/** After a glide, ignore same-gesture momentum tails (not the full glide grace). */
-const FINE_POINTER_WHEEL_COOLING_MS = 380;
-const COARSE_WHEEL_COOLING_MS = 250;
+/** Desktop trackpad: higher threshold reduces accidental commits. */
+const FINE_POINTER_WHEEL_TRIGGER_PX = 90;
+/** Wheel events further apart than this start a new gesture (trackpad). */
+const FINE_POINTER_WHEEL_GESTURE_GAP_MS = 400;
 /** Touch drag distance (px) that commits a beat advance. */
 const TOUCH_TRIGGER_PX = 24;
 /**
@@ -254,8 +252,8 @@ export function useStoryAutoSnap() {
     let wheelAccum = 0;
     let lastWheelAt = 0;
     let wheelStartScrollY = 0;
-    /** Swallow trailing momentum events after a glide has been triggered. */
-    let wheelCooling = false;
+    /** One beat per wheel gesture – cleared when a new gesture starts. */
+    let wheelTriggered = false;
 
     const finePointerQuery = window.matchMedia(
       "(hover: hover) and (pointer: fine)",
@@ -268,10 +266,6 @@ export function useStoryAutoSnap() {
       finePointerQuery.matches
         ? FINE_POINTER_WHEEL_GESTURE_GAP_MS
         : WHEEL_GESTURE_GAP_MS;
-    const wheelCoolingMs = () =>
-      finePointerQuery.matches
-        ? FINE_POINTER_WHEEL_COOLING_MS
-        : COARSE_WHEEL_COOLING_MS;
 
     // Touch gesture tracking
     let touchStartClientY: number | null = null;
@@ -371,7 +365,6 @@ export function useStoryAutoSnap() {
     const onScroll = () => {
       if (state.gliding && Math.abs(window.scrollY - state.glideTarget) <= 2) {
         state.gliding = false;
-        wheelCooling = false;
       }
       // While a finger is down the page may pause without the gesture being
       // over – never let a settle fire (and snap) mid-touch. If no touch
@@ -394,6 +387,7 @@ export function useStoryAutoSnap() {
       if (freshGesture) {
         wheelAccum = 0;
         wheelStartScrollY = window.scrollY;
+        wheelTriggered = false;
       }
 
       // Gestures that started deep in the end zone stay native. If momentum
@@ -428,17 +422,14 @@ export function useStoryAutoSnap() {
 
       if (state.gliding) {
         event.preventDefault();
-        wheelCooling = true;
         return;
       }
 
-      if (wheelCooling) {
-        const sinceGlide = Date.now() - state.lastGlideAt;
-        if (sinceGlide < wheelCoolingMs()) {
-          event.preventDefault();
-          return;
-        }
-        wheelCooling = false;
+      // Same physical swipe can emit momentum long after the glide lands –
+      // never advance twice within one gesture (mirrors touchTriggered).
+      if (wheelTriggered) {
+        event.preventDefault();
+        return;
       }
 
       event.preventDefault();
@@ -450,7 +441,7 @@ export function useStoryAutoSnap() {
         const direction = wheelAccum > 0 ? 1 : -1;
         wheelAccum = 0;
         if (advanceStoryBeat(direction)) {
-          wheelCooling = true;
+          wheelTriggered = true;
         } else {
           // Stale anchor – re-seat instead of swallowing wheel with no movement.
           state.anchor = null;
