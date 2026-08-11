@@ -14,9 +14,12 @@ const GLIDE_GRACE_MS = 1200;
 const WHEEL_TRIGGER_PX = 40;
 /** Wheel events further apart than this start a new gesture. */
 const WHEEL_GESTURE_GAP_MS = 250;
-/** Desktop trackpad: higher threshold and longer gap reduce double-advance. */
-const FINE_POINTER_WHEEL_TRIGGER_PX = 100;
-const FINE_POINTER_WHEEL_GESTURE_GAP_MS = 450;
+/** Desktop trackpad: balance single-beat commits vs momentum double-advance. */
+const FINE_POINTER_WHEEL_TRIGGER_PX = 65;
+const FINE_POINTER_WHEEL_GESTURE_GAP_MS = 320;
+/** After a glide, ignore same-gesture momentum tails (not the full glide grace). */
+const FINE_POINTER_WHEEL_COOLING_MS = 380;
+const COARSE_WHEEL_COOLING_MS = 250;
 /** Touch drag distance (px) that commits a beat advance. */
 const TOUCH_TRIGGER_PX = 24;
 /**
@@ -143,11 +146,11 @@ export function isStoryGliding() {
  * Also used by the scroll-hint chevron so a click always matches what a
  * scroll gesture would do.
  */
-export function advanceStoryBeat(direction: 1 | -1) {
+export function advanceStoryBeat(direction: 1 | -1): boolean {
   const viewport = window.innerHeight;
   const y = window.scrollY;
   const beats = collectBeats(viewport);
-  if (beats.length === 0) return;
+  if (beats.length === 0) return false;
 
   const last = beats.length - 1;
   state.freeZoneStart = beats[last];
@@ -186,8 +189,9 @@ export function advanceStoryBeat(direction: 1 | -1) {
     }
   }
 
-  if (Math.abs(top - y) <= SEATED_PX) return;
+  if (Math.abs(top - y) <= SEATED_PX) return false;
   startGlide(top);
+  return true;
 }
 
 /** Glide to a specific beat index (Home / End). */
@@ -264,6 +268,10 @@ export function useStoryAutoSnap() {
       finePointerQuery.matches
         ? FINE_POINTER_WHEEL_GESTURE_GAP_MS
         : WHEEL_GESTURE_GAP_MS;
+    const wheelCoolingMs = () =>
+      finePointerQuery.matches
+        ? FINE_POINTER_WHEEL_COOLING_MS
+        : COARSE_WHEEL_COOLING_MS;
 
     // Touch gesture tracking
     let touchStartClientY: number | null = null;
@@ -363,6 +371,7 @@ export function useStoryAutoSnap() {
     const onScroll = () => {
       if (state.gliding && Math.abs(window.scrollY - state.glideTarget) <= 2) {
         state.gliding = false;
+        wheelCooling = false;
       }
       // While a finger is down the page may pause without the gesture being
       // over – never let a settle fire (and snap) mid-touch. If no touch
@@ -406,19 +415,6 @@ export function useStoryAutoSnap() {
         return;
       }
 
-      event.preventDefault();
-
-      if (state.gliding) {
-        wheelCooling = true;
-        return;
-      }
-      if (wheelCooling) {
-        const recentGlide = Date.now() - state.lastGlideAt < GLIDE_GRACE_MS;
-        if (recentGlide || state.gliding) return;
-        if (!freshGesture) return;
-        wheelCooling = false;
-      }
-
       const trigger = startedSeatedAtLast(wheelStartScrollY)
         ? FREE_ZONE_EXIT_WHEEL_PX
         : wheelTriggerPx();
@@ -429,16 +425,37 @@ export function useStoryAutoSnap() {
           : event.deltaMode === 2
             ? event.deltaY * window.innerHeight
             : event.deltaY;
+
+      if (state.gliding) {
+        event.preventDefault();
+        wheelCooling = true;
+        return;
+      }
+
+      if (wheelCooling) {
+        const sinceGlide = Date.now() - state.lastGlideAt;
+        if (sinceGlide < wheelCoolingMs()) {
+          event.preventDefault();
+          return;
+        }
+        wheelCooling = false;
+      }
+
+      event.preventDefault();
+
       if (Math.abs(delta) < 2 && Math.abs(wheelAccum) < trigger) return;
       wheelAccum += delta;
-
-      // Backing out of the end zone takes a deliberate gesture.
 
       if (Math.abs(wheelAccum) >= trigger) {
         const direction = wheelAccum > 0 ? 1 : -1;
         wheelAccum = 0;
-        wheelCooling = true;
-        advanceStoryBeat(direction);
+        if (advanceStoryBeat(direction)) {
+          wheelCooling = true;
+        } else {
+          // Stale anchor – re-seat instead of swallowing wheel with no movement.
+          state.anchor = null;
+          scheduleSettle();
+        }
       }
     };
 
