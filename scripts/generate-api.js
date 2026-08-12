@@ -17,11 +17,9 @@ if (!allowedSchemaUrls.has(schemaUrl)) {
 
 try {
   console.log(`Fetching OpenAPI schema from: ${schemaUrl}`);
-  execFileSync(
-    "npx",
-    ["openapi-typescript", schemaUrl, "-o", outputPath],
-    { stdio: "inherit" },
-  );
+  execFileSync("npx", ["openapi-typescript", schemaUrl, "-o", outputPath], {
+    stdio: "inherit",
+  });
 } catch (error) {
   console.error(
     "Failed to generate API types:",
