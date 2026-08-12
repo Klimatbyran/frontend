@@ -20,8 +20,12 @@ export function Header() {
   const { headerTitle, showTitle, setShowTitle } = useHeaderTitle();
   const isStaging = stagingFeatureFlagEnabled();
 
-  const filteredNavLinks = useMemo(
-    () => getFilteredNavLinks(NAV_LINKS, isStaging),
+  const desktopNavLinks = useMemo(
+    () => getFilteredNavLinks(NAV_LINKS, isStaging, "desktop"),
+    [isStaging],
+  );
+  const mobileNavLinks = useMemo(
+    () => getFilteredNavLinks(NAV_LINKS, isStaging, "mobile"),
     [isStaging],
   );
 
@@ -73,14 +77,14 @@ export function Header() {
         </LocalizedLink>
 
         <HeaderDesktopNav
-          navLinks={filteredNavLinks}
+          navLinks={desktopNavLinks}
           user={user}
           isSignUpOpen={isSignUpOpen}
           onSignUpOpenChange={setIsSignUpOpen}
         />
 
         <HeaderMobileMenu
-          navLinks={filteredNavLinks}
+          navLinks={mobileNavLinks}
           menuOpen={menuOpen}
           showTitle={showTitle}
           headerTitle={headerTitle}

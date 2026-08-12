@@ -411,6 +411,7 @@ export function NationBathtub({ data }: NationBathtubProps) {
     <section
       ref={ref}
       data-story-section
+      data-story-chapter="bathtub"
       data-story-step={displayedIndex}
       data-story-steps={milestones.length}
       data-story-snap="round"
@@ -420,19 +421,19 @@ export function NationBathtub({ data }: NationBathtubProps) {
       style={{ height: `${sectionVh}vh` }}
     >
       <div
-        className="h-[100svh] flex items-center px-4 md:px-8 pt-14 pb-6 md:pt-16 md:pb-16"
+        className="h-[100svh] min-h-0 flex flex-col justify-center px-4 md:px-8 pt-[var(--story-stage-pad-top)] pb-[var(--story-stage-pad-bottom)] md:pt-10 md:pb-10 lg:pt-8 lg:pb-8 overflow-hidden"
         style={stageStyle}
       >
         <div
-          className="w-full max-w-3xl mx-auto space-y-6 md:space-y-5"
+          className="mx-auto flex w-full max-w-3xl shrink-0 flex-col gap-2 max-md:gap-1.5 story-short:gap-1 md:gap-2.5 lg:gap-3"
           style={{
             opacity: enterOpacity,
             transform: `translateY(${(1 - enterT) * 24}px) scale(${0.94 + 0.06 * enterT})`,
-            transformOrigin: "50% 40%",
+            transformOrigin: "50% 50%",
           }}
         >
           {/* Copy above the tub on all breakpoints */}
-          <div className="max-w-2xl mx-auto text-center space-y-3.5 md:space-y-4">
+          <div className="max-w-2xl mx-auto shrink-0 text-center space-y-1 max-md:space-y-0.5 story-short:space-y-0.5 md:space-y-2 lg:space-y-2.5">
             <motion.h2
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -462,17 +463,19 @@ export function NationBathtub({ data }: NationBathtubProps) {
             </motion.p>
           </div>
 
-          <TubGraphic
-            idPrefix={idPrefix}
-            waterTop={waterTop}
-            caption={tubCaption}
-            compact={isMobile}
-            className="w-full max-w-sm md:max-w-xl mx-auto h-auto max-h-[32svh] md:max-h-[30svh]"
-          />
+          <div className="flex max-md:flex-none md:flex-none md:py-0">
+            <TubGraphic
+              idPrefix={idPrefix}
+              waterTop={waterTop}
+              caption={tubCaption}
+              compact={isMobile}
+              className="w-full max-w-[18rem] story-short:max-w-[15rem] md:max-w-md mx-auto h-auto max-h-[22svh] story-short:max-h-[18svh] md:max-h-[24svh] lg:max-h-[26svh]"
+            />
+          </div>
 
           {/* Milestone captions below the tub: the year and this decade's addition.
               The accumulated total lives inside the tub water. */}
-          <div className="text-center space-y-0.5 md:space-y-1 min-h-[3.5rem] md:min-h-[4.5rem]">
+          <div className="shrink-0 text-center space-y-0 max-md:space-y-0 min-h-0 md:min-h-0">
             <p className="sr-only">
               {`${tubCaption.prefix} ${tubCaption.value}`}
             </p>

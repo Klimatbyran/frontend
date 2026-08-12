@@ -14,6 +14,13 @@ const GLIDE_GRACE_MS = 1200;
 const WHEEL_TRIGGER_PX = 40;
 /** Wheel events further apart than this start a new gesture. */
 const WHEEL_GESTURE_GAP_MS = 250;
+/** Desktop trackpad: higher threshold reduces accidental commits. */
+const FINE_POINTER_WHEEL_TRIGGER_PX = 90;
+/** Wheel events further apart than this start a new gesture (trackpad). */
+const FINE_POINTER_WHEEL_GESTURE_GAP_MS = 400;
+/** Fixed window after a beat commit – swallows same-swipe momentum without extending when the reader retries early. */
+const FINE_POINTER_WHEEL_MOMENTUM_MS = 520;
+const COARSE_WHEEL_MOMENTUM_MS = 280;
 /** Touch drag distance (px) that commits a beat advance. */
 const TOUCH_TRIGGER_PX = 24;
 /**
@@ -23,6 +30,20 @@ const TOUCH_TRIGGER_PX = 24;
  */
 const FREE_ZONE_EXIT_WHEEL_PX = 150;
 const FREE_ZONE_EXIT_TOUCH_PX = 90;
+/**
+ * Finger noise while holding still on the conclusion (esp. Android panels)
+ * often reports 1–8px of movement. Claiming hijack on that fights the
+ * browser and flickers the page – wait for a real direction claim first.
+ */
+const FREE_ZONE_TOUCH_DEADZONE_PX = 10;
+/**
+ * After a no-commit hold/release near the conclusion top, tolerate this
+ * much scroll drift without a corrective glide (avoids post-hold yank).
+ */
+const SOFT_SEATED_PX = 24;
+/** Lost-touchend fallback – long enough that a reading hold + URL-bar
+ * resize cannot expire the mid-touch settle guard. */
+const TOUCH_STALE_MS = 2000;
 
 /**
  * Collect the scroll positions of every story beat, derived from the
@@ -119,15 +140,51 @@ const state = {
   freeZoneStart: null as number | null,
 };
 
+/** Softer beat landing than the browser's default smooth scroll curve. */
+const GLIDE_DURATION_MS = 680;
+let glideFrame: number | null = null;
+
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
 function startGlide(top: number) {
+  if (glideFrame !== null) {
+    window.cancelAnimationFrame(glideFrame);
+    glideFrame = null;
+  }
+
   state.gliding = true;
   state.glideTarget = top;
   state.lastGlideAt = Date.now();
-  // Beat glides own the scroll position – cancel any scene exit ride that
-  // would otherwise fight the browser smooth scroll through the same zone.
   window.dispatchEvent(new CustomEvent("story-glide-start"));
+
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
+  if (reduced) {
+    window.scrollTo({ top, behavior: "auto" });
+    state.gliding = false;
+    return;
+  }
+
+  const from = window.scrollY;
+  const distance = top - from;
+  if (Math.abs(distance) <= SEATED_PX) {
+    state.gliding = false;
+    return;
+  }
+
+  const start = performance.now();
+  const tick = (now: number) => {
+    const progress = Math.min((now - start) / GLIDE_DURATION_MS, 1);
+    window.scrollTo(0, from + distance * easeOutCubic(progress));
+    if (progress < 1) {
+      glideFrame = window.requestAnimationFrame(tick);
+      return;
+    }
+    glideFrame = null;
+    state.gliding = false;
+  };
+  glideFrame = window.requestAnimationFrame(tick);
 }
 
 /** Whether a beat glide is in flight (used by pinned scenes to avoid competing scroll rides). */
@@ -140,11 +197,11 @@ export function isStoryGliding() {
  * Also used by the scroll-hint chevron so a click always matches what a
  * scroll gesture would do.
  */
-export function advanceStoryBeat(direction: 1 | -1) {
+export function advanceStoryBeat(direction: 1 | -1): boolean {
   const viewport = window.innerHeight;
   const y = window.scrollY;
   const beats = collectBeats(viewport);
-  if (beats.length === 0) return;
+  if (beats.length === 0) return false;
 
   const last = beats.length - 1;
   state.freeZoneStart = beats[last];
@@ -183,8 +240,55 @@ export function advanceStoryBeat(direction: 1 | -1) {
     }
   }
 
-  if (Math.abs(top - y) <= SEATED_PX) return;
+  if (Math.abs(top - y) <= SEATED_PX) return false;
   startGlide(top);
+  return true;
+}
+
+/** Glide to a specific beat index (Home / End). */
+export function glideToStoryBeat(index: number) {
+  const viewport = window.innerHeight;
+  const beats = collectBeats(viewport);
+  if (beats.length === 0) return;
+
+  const last = beats.length - 1;
+  const target = Math.min(Math.max(index, 0), last);
+  state.anchor = target;
+  state.freeZoneStart = beats[last];
+  const top = beats[target];
+  if (Math.abs(top - window.scrollY) <= SEATED_PX) return;
+  startGlide(top);
+}
+
+/** Jump to the first beat of the next story chapter (skip pinned steps). */
+export function skipToNextStoryChapter() {
+  const viewport = window.innerHeight;
+  const beats = collectBeats(viewport);
+  if (beats.length === 0) return;
+
+  const sections = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-story-section]"),
+  );
+  if (sections.length === 0) return;
+
+  const probeY = viewport * 0.45;
+  let active = 0;
+  sections.forEach((section, index) => {
+    if (section.getBoundingClientRect().top <= probeY) active = index;
+  });
+  if (active >= sections.length - 1) return;
+
+  const nextTop =
+    window.scrollY + sections[active + 1].getBoundingClientRect().top;
+  let targetBeat = nearestBeatIndex(beats, nextTop);
+  for (let i = 0; i < beats.length; i++) {
+    if (beats[i] >= nextTop - SEATED_PX) {
+      targetBeat = i;
+      break;
+    }
+  }
+
+  glideToStoryBeat(targetBeat);
 }
 
 /** How a single gesture is handled – decided once, then sticky. */
@@ -207,8 +311,9 @@ type GestureMode = "hijack" | "native";
  * - started deep in the zone: fully native; if momentum flings the reader
  *   out above the zone, the settle pass returns them to the conclusion top
  *
- * Scrollbar drags and keyboard scrolling stay native; a settle pass seats
- * the page on the nearest beat once that movement stops. Disabled under
+ * Scrollbar drags stay native; a settle pass seats the page on the nearest
+ * beat once that movement stops. Keyboard beat keys (PgUp/PgDn, arrows,
+ * Space, Home, End) advance one beat at a time. Disabled under
  * `prefers-reduced-motion` (the chevron still works, jumping instantly).
  */
 export function useStoryAutoSnap() {
@@ -221,18 +326,39 @@ export function useStoryAutoSnap() {
     }
 
     let settleTimer: number | null = null;
-    let touchActive = false;
+    /** Active touch contacts – blocks settle while a finger is down. */
+    let touchDownCount = 0;
     /** Last touch input – lets a lost touchend (iOS system gestures, JS
-     * alerts) expire instead of blocking the settle pass forever. */
+     * alerts) expire a stuck touchDownCount instead of blocking settle forever. */
     let lastTouchAt = 0;
-    const TOUCH_STALE_MS = 600;
 
     // Wheel gesture tracking
     let wheelAccum = 0;
     let lastWheelAt = 0;
     let wheelStartScrollY = 0;
-    /** Swallow trailing momentum events after a glide has been triggered. */
-    let wheelCooling = false;
+    /** When a beat was last committed from wheel input (0 = none yet). */
+    let wheelBeatAt = 0;
+
+    const finePointerQuery = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    );
+    const coarseTouchQuery = window.matchMedia(
+      "(hover: none) and (pointer: coarse)",
+    );
+    const wheelTriggerPx = () =>
+      finePointerQuery.matches
+        ? FINE_POINTER_WHEEL_TRIGGER_PX
+        : WHEEL_TRIGGER_PX;
+    const wheelGestureGapMs = () =>
+      finePointerQuery.matches
+        ? FINE_POINTER_WHEEL_GESTURE_GAP_MS
+        : WHEEL_GESTURE_GAP_MS;
+    const wheelMomentumMs = () =>
+      finePointerQuery.matches
+        ? FINE_POINTER_WHEEL_MOMENTUM_MS
+        : COARSE_WHEEL_MOMENTUM_MS;
+    const touchTriggerPx = () =>
+      coarseTouchQuery.matches ? 20 : TOUCH_TRIGGER_PX;
 
     // Touch gesture tracking
     let touchStartClientY: number | null = null;
@@ -336,9 +462,9 @@ export function useStoryAutoSnap() {
       // While a finger is down the page may pause without the gesture being
       // over – never let a settle fire (and snap) mid-touch. If no touch
       // input has arrived for a while, assume the touchend was lost.
-      if (touchActive) {
+      if (touchDownCount > 0) {
         if (performance.now() - lastTouchAt < TOUCH_STALE_MS) return;
-        touchActive = false;
+        touchDownCount = 0;
       }
       scheduleSettle();
     };
@@ -349,8 +475,8 @@ export function useStoryAutoSnap() {
       if (isInsideOverlay(event.target)) return;
 
       const now = performance.now();
-      const freshGesture = now - lastWheelAt > WHEEL_GESTURE_GAP_MS;
-      lastWheelAt = now;
+      const freshGesture =
+        lastWheelAt === 0 || now - lastWheelAt > wheelGestureGapMs();
       if (freshGesture) {
         wheelAccum = 0;
         wheelStartScrollY = window.scrollY;
@@ -375,41 +501,62 @@ export function useStoryAutoSnap() {
         return;
       }
 
-      event.preventDefault();
-
-      if (state.gliding) {
-        wheelCooling = true;
-        return;
-      }
-      if (wheelCooling) {
-        if (!freshGesture) return;
-        wheelCooling = false;
-      }
-
-      const delta = event.deltaMode === 1 ? event.deltaY * 33 : event.deltaY;
-      wheelAccum += delta;
-
-      // Backing out of the end zone takes a deliberate gesture.
       const trigger = startedSeatedAtLast(wheelStartScrollY)
         ? FREE_ZONE_EXIT_WHEEL_PX
-        : WHEEL_TRIGGER_PX;
+        : wheelTriggerPx();
+
+      const delta =
+        event.deltaMode === 1
+          ? event.deltaY * 33
+          : event.deltaMode === 2
+            ? event.deltaY * window.innerHeight
+            : event.deltaY;
+
+      if (state.gliding) {
+        event.preventDefault();
+        return;
+      }
+
+      // Same-swipe momentum tail: fixed window from the beat commit. Swallowed
+      // events must not touch lastWheelAt – otherwise a retry before the window
+      // expires keeps resetting the gesture gap and the reader gets stuck.
+      if (wheelBeatAt > 0 && now - wheelBeatAt < wheelMomentumMs()) {
+        event.preventDefault();
+        return;
+      }
+
+      lastWheelAt = now;
+
+      event.preventDefault();
+
+      if (Math.abs(delta) < 2 && Math.abs(wheelAccum) < trigger) return;
+      wheelAccum += delta;
 
       if (Math.abs(wheelAccum) >= trigger) {
         const direction = wheelAccum > 0 ? 1 : -1;
         wheelAccum = 0;
-        wheelCooling = true;
-        advanceStoryBeat(direction);
+        if (advanceStoryBeat(direction)) {
+          wheelBeatAt = now;
+        } else {
+          // Stale anchor – re-seat instead of swallowing wheel with no movement.
+          state.anchor = null;
+          scheduleSettle();
+        }
       }
     };
 
     const onTouchStart = (event: TouchEvent) => {
-      touchActive = true;
+      touchDownCount += event.changedTouches.length;
       lastTouchAt = performance.now();
       if (event.touches.length === 1) {
         touchStartClientY = event.touches[0].clientY;
         touchStartScrollY = window.scrollY;
         touchMode = null;
         touchTriggered = false;
+        // Deep in the conclusion free zone: native scroll only.
+        if (startedDeepInZone(touchStartScrollY)) {
+          touchMode = "native";
+        }
       } else {
         // Multi-touch (pinch zoom) stays native for the whole gesture.
         touchMode = "native";
@@ -422,18 +569,17 @@ export function useStoryAutoSnap() {
       if (isInsideOverlay(event.target)) return;
       const delta = touchStartClientY - event.touches[0].clientY;
 
-      // Decide the gesture's fate once, on its very first movement, based
-      // on where it STARTED. iOS ignores preventDefault after an unprevented
-      // first touchmove, so hijacked gestures must be prevented immediately.
+      // Decide the gesture's fate once, on its first *meaningful* movement,
+      // based on where it STARTED. iOS ignores preventDefault after an
+      // unprevented first touchmove, so hijacked gestures must be prevented
+      // immediately once claimed – but hold micro-jitter must not claim.
       if (touchMode === null) {
         if (startedDeepInZone(touchStartScrollY)) {
           touchMode = "native";
         } else if (startedSeatedAtLast(touchStartScrollY)) {
-          // Direction decides: down reads into the zone natively, up is a
-          // deliberate exit. Only zero-delta moves need preventDefault to
-          // stop iOS claiming the gesture before direction is known.
-          if (delta === 0) {
-            event.preventDefault();
+          if (Math.abs(delta) < FREE_ZONE_TOUCH_DEADZONE_PX) {
+            // Stationary hold / finger noise while reading – leave native
+            // scrolling alone until a real direction appears.
             return;
           }
           touchMode = delta > 0 ? "native" : "hijack";
@@ -451,7 +597,7 @@ export function useStoryAutoSnap() {
       // Backing out of the end zone takes a deliberate drag.
       const trigger = startedSeatedAtLast(touchStartScrollY)
         ? FREE_ZONE_EXIT_TOUCH_PX
-        : TOUCH_TRIGGER_PX;
+        : touchTriggerPx();
 
       if (Math.abs(delta) >= trigger) {
         touchTriggered = true;
@@ -459,19 +605,84 @@ export function useStoryAutoSnap() {
       }
     };
 
-    const onTouchEnd = () => {
-      touchActive = false;
-      touchStartClientY = null;
-      touchMode = null;
+    const releaseTouches = (event: TouchEvent) => {
+      touchDownCount = Math.max(
+        0,
+        touchDownCount - event.changedTouches.length,
+      );
+      const wasTriggered = touchTriggered;
+      const startedAt = touchStartScrollY;
+      if (event.touches.length === 0) {
+        touchStartClientY = null;
+        touchMode = null;
+        touchTriggered = false;
+      }
+      // No-commit hold/release at the conclusion: tolerate small scroll
+      // drift without a corrective glide (post-hold yank on Android).
+      if (
+        !wasTriggered &&
+        startedSeatedAtLast(startedAt) &&
+        state.freeZoneStart !== null &&
+        Math.abs(window.scrollY - state.freeZoneStart) <= SOFT_SEATED_PX
+      ) {
+        const beats = collectBeats(window.innerHeight);
+        if (beats.length) state.anchor = beats.length - 1;
+        return;
+      }
       scheduleSettle();
+    };
+
+    const onTouchEnd = (event: TouchEvent) => {
+      releaseTouches(event);
     };
 
     // Rotation/resize changes the beat list (overflowing sections gain or
     // lose beats), so the anchor index no longer matches. Re-anchor from
     // scratch and re-seat on the nearest beat in the new geometry.
     const onResize = () => {
+      if (touchDownCount > 0) return;
       state.anchor = null;
       scheduleSettle();
+    };
+
+    // Tab backgrounded / system UI can drop touchend; clear the hold guard
+    // so settle isn't blocked forever without waiting for TOUCH_STALE_MS.
+    const onVisibilityChange = () => {
+      if (document.visibilityState !== "hidden") return;
+      touchDownCount = 0;
+      touchStartClientY = null;
+      touchMode = null;
+      touchTriggered = false;
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (isInsideOverlay(event.target)) return;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+      if (event.key === "Home") {
+        event.preventDefault();
+        glideToStoryBeat(0);
+        return;
+      }
+      if (event.key === "End") {
+        event.preventDefault();
+        const beats = collectBeats(window.innerHeight);
+        if (beats.length) glideToStoryBeat(beats.length - 1);
+        return;
+      }
+
+      let direction: 1 | -1 | null = null;
+      if (event.key === "PageDown" || event.key === "ArrowDown") {
+        direction = 1;
+      } else if (event.key === "PageUp" || event.key === "ArrowUp") {
+        direction = -1;
+      } else if (event.key === " ") {
+        direction = event.shiftKey ? -1 : 1;
+      }
+      if (direction === null) return;
+
+      event.preventDefault();
+      advanceStoryBeat(direction);
     };
 
     // Anchor to the current beat right away so the first gesture advances
@@ -480,20 +691,28 @@ export function useStoryAutoSnap() {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", onKeyDown);
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("touchcancel", onTouchEnd, { passive: true });
     window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       if (settleTimer !== null) window.clearTimeout(settleTimer);
+      if (glideFrame !== null) {
+        window.cancelAnimationFrame(glideFrame);
+        glideFrame = null;
+      }
     };
   }, []);
 }

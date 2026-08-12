@@ -16,6 +16,12 @@ export default {
       },
     },
     extend: {
+      /** Short phones (e.g. iPhone SE) – must live under extend.screens for variants */
+      screens: {
+        "story-short": {
+          raw: "(max-width: 767px) and (max-height: 700px)",
+        },
+      },
       fontFamily: {
         sans: ["DM Sans", "system-ui", "-apple-system", "sans-serif"],
       },

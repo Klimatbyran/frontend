@@ -827,7 +827,7 @@
     },
     "nation": {
       "nationDataOverview": {
-        "title": "Nationell data översikt",
+        "title": "Territoriellt utsläppsperspektiv",
         "description": "Vilken data vi samlar in och presenterar om Sveriges nationella utsläpp",
         "paragraph1": "Klimatkollen visar utsläppsdata för Sverige på nationell nivå, med SMHI:s Nationella emissionsdatabas som främsta källa. För att vår nationella, läns-, kommun- och företagsdata ska vara jämförbar visas sedan augusti 2025 utsläpp av alla växthusgaser (CO₂e), inte enbart koldioxid.",
         "paragraph2": "Den genomsnittliga årliga utsläppsförändringen för Sverige beräknas med hjälp av sammansatt årlig tillväxttakt (CAGR, compound annual growth rate).",
@@ -840,7 +840,7 @@
         }
       },
       "nationEmissionsLayers": {
-        "title": "Nationell data detaljer",
+        "title": "Fler utsläppsperspektiv",
         "description": "Hur Klimatkollen bygger en bredare bild av Sveriges växthusgasutsläpp utifrån rådighet, 1990–2025.",
         "intro": {
           "title": "Varför en bredare bild",
@@ -858,7 +858,7 @@
         },
         "territorial": {
           "title": "Territoriella utsläpp",
-          "paragraph1": "Nationell total från Naturvårdsverket, 1990–2024. Det är den officiella territoriella växthusgasserien som ofta används när man talar om “Sveriges utsläpp”.",
+          "paragraph1": "Nationell total från Naturvårdsverket, 1990–2025. Det är den officiella territoriella växthusgasserien som ofta används när man talar om “Sveriges utsläpp”.",
           "paragraph2": "Internationellt kan metan från energisektorn vara underrapporterat i vissa inventeringar. Arbete pågår för att förbättra rapporteringen; här följer vi den officiella svenska serien.",
           "sources": {
             "nv": "Naturvårdsverket – Sveriges utsläpp och upptag av växthusgaser"
@@ -1630,8 +1630,26 @@
       },
       "scrollHint": {
         "scroll": "Scrolla",
+        "scrollDesktop": "Scrolla · PgUp/PgDn",
         "swipe": "Svep",
         "label": "Scrolla nedåt till nästa del av berättelsen"
+      },
+      "chapters": {
+        "intro": "Intro",
+        "journey": "Utslagen",
+        "bathtub": "Badkaret",
+        "interlude": "Perspektiv",
+        "stacked": "Historik",
+        "conclusion": "Slutsats"
+      },
+      "nav": {
+        "skipChapter": "Hoppa till nästa del",
+        "keyboardHint": "↑↓ eller PgUp/PgDn för att byta scen",
+        "freeScrollCue": "Scrolla fritt här nere",
+        "previousSection": "Föregående del",
+        "onboardingDesktop": "Scrolla för att gå vidare i berättelsen, ett steg i taget.",
+        "onboardingMobile": "Svep för att gå vidare i berättelsen, ett steg i taget.",
+        "dismiss": "Okej"
       },
       "journey": {
         "dataYear": "Siffran avser CO₂e och {{year}}.",
@@ -1676,7 +1694,8 @@
       },
       "interlude": {
         "title": "Vi diskuterar bara en del av Sveriges utsläpp",
-        "body": "Den vanliga siffran vi hör om ger en överdrivet positiv bild. Om vi räknar in även andra utsläpp som Sverige kan påverka får vi en mer heltäckande bild – som berättar en annan historia."
+        "body": "Den vanliga siffran vi hör om ger en överdrivet positiv bild. Om vi räknar in även andra utsläpp som Sverige kan påverka får vi en mer heltäckande bild – som berättar en annan historia.",
+        "stat": "Den fulla bilden är {{ratio}}× större: {{combined}} mot {{territorial}} territoriellt"
       },
       "stacked": {
         "layerCounter": "Lager {{current}} av {{total}}",

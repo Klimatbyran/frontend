@@ -15,7 +15,9 @@ export function useStoryEndReached(
     const update = () => {
       const el = endRef.current;
       if (!el) return;
-      setReached(el.getBoundingClientRect().top <= window.innerHeight * 0.6);
+      // Slightly later than mid-viewport so short phones keep chapter chrome
+      // visible while the conclusion heading is still the main read.
+      setReached(el.getBoundingClientRect().top <= window.innerHeight * 0.45);
     };
 
     update();

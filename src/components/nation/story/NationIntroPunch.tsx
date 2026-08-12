@@ -1,6 +1,6 @@
-import { useId } from "react";
+import { useId, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import {
   formatMton,
   type NationStoryMetrics,
@@ -60,24 +60,41 @@ function StatCallout({
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.5, delay }}
-      className={`text-center md:text-left ${className ?? ""}`}
+      className={`min-w-0 ${className ?? ""}`}
     >
-      <p
-        className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary} mb-1`}
-      >
-        {label}
-      </p>
-      <p className={`${NATION_STORY_TYPE.display} ${colorClass}`}>
-        {value}{" "}
-        {/* Unit below the number on mobile (symmetric columns, same format
-            as the onion total), inline written-out on desktop */}
-        <span
-          className={`block mt-1 md:mt-0 md:inline ${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary} font-normal align-baseline`}
+      {/* Mobile: big number on top so both columns share a baseline */}
+      <div className="md:hidden flex flex-col items-center text-center px-0.5">
+        <p className={`${NATION_STORY_TYPE.display} ${colorClass}`}>{value}</p>
+        <p
+          className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary} mt-1 story-short:mt-0.5`}
         >
-          <span className="md:hidden whitespace-nowrap">{unitShort}</span>
-          <span className="hidden md:inline whitespace-nowrap">{unitLong}</span>
-        </span>
-      </p>
+          {unitShort}
+        </p>
+        <p
+          className={`${NATION_STORY_TYPE.meta} leading-snug ${NATION_STORY_TEXT.secondary} mt-2 story-short:mt-1 max-w-[9.25rem]`}
+        >
+          {label}
+        </p>
+      </div>
+
+      {/* Desktop: centered under the page title; mobile stays compact */}
+      <div className="hidden md:block text-center">
+        <p
+          className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary} mb-1`}
+        >
+          {label}
+        </p>
+        <p
+          className={`${NATION_STORY_TYPE.display} leading-none ${colorClass}`}
+        >
+          {value}{" "}
+          <span
+            className={`${NATION_STORY_TYPE.meta} ${NATION_STORY_TEXT.secondary} font-normal align-baseline whitespace-nowrap`}
+          >
+            {unitLong}
+          </span>
+        </p>
+      </div>
     </motion.div>
   );
 }
@@ -95,6 +112,8 @@ export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
   const { currentLanguage } = useLanguage();
   const reducedMotion = useReducedMotion();
   const clipId = `sweden-fill-clip-${useId().replace(/:/g, "")}`;
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInView = useInView(mapRef, { once: true, amount: 0.15 });
 
   const reportedValue = metrics.territorialLatestMton;
   const fullValue = Math.max(metrics.combinedLatestMton, reportedValue);
@@ -102,18 +121,24 @@ export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
   const full = formatMton(fullValue, currentLanguage, 0);
   const fillRatio = reportedValue / fullValue;
   const fillTop = OUTLINE_BOTTOM - fillRatio * OUTLINE_HEIGHT;
+  const fillHeight = OUTLINE_BOTTOM - fillTop + 6;
   const unitShort = t("nation.story.unit.mtonCo2e");
   const unitLong = t("nation.story.unit.millionTco2e");
+
+  const fillShown = reducedMotion || mapInView;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
+      viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.45 }}
-      className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10 lg:gap-14"
+      className="mx-auto flex w-fit max-w-full flex-col items-center justify-center gap-2 max-md:gap-1.5 story-short:gap-1 md:flex-row md:items-center md:gap-10 lg:gap-14"
     >
-      <div className="relative h-[clamp(220px,41svh,400px)] md:h-[clamp(260px,44svh,460px)] aspect-[100/220]">
+      <div
+        ref={mapRef}
+        className="relative h-[clamp(130px,24svh,280px)] story-short:h-[clamp(110px,20svh,200px)] md:h-[clamp(260px,44svh,460px)] aspect-[100/220]"
+      >
         <svg
           viewBox={SWEDEN_OUTLINE_VIEWBOX}
           className="h-full w-auto max-w-full mx-auto"
@@ -143,14 +168,14 @@ export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
               fill={NATION_STORY_COLORS.territorial}
               initial={
                 reducedMotion
-                  ? { y: fillTop, height: OUTLINE_BOTTOM - fillTop + 6 }
+                  ? { y: fillTop, height: fillHeight }
                   : { y: OUTLINE_BOTTOM, height: 0 }
               }
-              whileInView={{
-                y: fillTop,
-                height: OUTLINE_BOTTOM - fillTop + 6,
-              }}
-              viewport={{ once: true, amount: 0.35 }}
+              animate={
+                fillShown
+                  ? { y: fillTop, height: fillHeight }
+                  : { y: OUTLINE_BOTTOM, height: 0 }
+              }
               transition={
                 reducedMotion
                   ? { duration: 0 }
@@ -168,8 +193,11 @@ export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
                   ? { y1: fillTop, y2: fillTop, opacity: 1 }
                   : { y1: OUTLINE_BOTTOM, y2: OUTLINE_BOTTOM, opacity: 0 }
               }
-              whileInView={{ y1: fillTop, y2: fillTop, opacity: 1 }}
-              viewport={{ once: true, amount: 0.35 }}
+              animate={
+                fillShown
+                  ? { y1: fillTop, y2: fillTop, opacity: 1 }
+                  : { y1: OUTLINE_BOTTOM, y2: OUTLINE_BOTTOM, opacity: 0 }
+              }
               transition={
                 reducedMotion
                   ? { duration: 0 }
@@ -180,8 +208,8 @@ export function NationIntroPunch({ metrics }: NationIntroPunchProps) {
         </svg>
       </div>
 
-      {/* Full/pink callout beside the upper region, reported/orange beside the fill */}
-      <div className="flex flex-row md:flex-col items-center md:items-start justify-center gap-8 md:gap-10">
+      {/* Desktop: map + callouts centered as one unit; mobile: two-column grid */}
+      <div className="grid grid-cols-2 gap-x-3 md:flex md:w-auto md:flex-col md:items-center md:gap-10 w-full max-w-[20rem] md:max-w-none mx-auto">
         <StatCallout
           label={t("nation.story.intro.fullLabel")}
           value={full}

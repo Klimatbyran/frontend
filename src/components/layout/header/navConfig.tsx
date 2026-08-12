@@ -21,6 +21,7 @@ export const NAV_LINKS: NavLink[] = [
         label: "header.valet2026",
         path: `/valet-2026`,
         onlyShowOnStaging: true,
+        mobileOnly: true,
       },
       {
         label: "header.territories",
@@ -53,6 +54,12 @@ export const NAV_LINKS: NavLink[] = [
         ],
       },
     ],
+  },
+  {
+    label: "header.valet2026",
+    path: `/valet-2026`,
+    onlyShowOnStaging: true,
+    desktopOnly: true,
   },
   {
     path: `/articles`,

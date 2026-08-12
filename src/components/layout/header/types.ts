@@ -5,6 +5,8 @@ export interface NavSubLink {
   path: string;
   shortcut?: string;
   onlyShowOnStaging?: boolean;
+  /** Shown in mobile menu only (e.g. duplicate of a desktop-only top-level link). */
+  mobileOnly?: boolean;
 }
 
 export interface NavSubGroup {
@@ -21,6 +23,8 @@ export interface NavLink {
   path: string;
   sublinks?: NavSubItem[];
   onlyShowOnStaging?: boolean;
+  /** Shown in desktop header only (not the mobile hamburger menu). */
+  desktopOnly?: boolean;
 }
 
 export function isNavSubGroup(item: NavSubItem): item is NavSubGroup {

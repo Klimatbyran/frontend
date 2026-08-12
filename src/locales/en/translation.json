@@ -776,7 +776,7 @@
     },
     "nation": {
       "nationDataOverview": {
-        "title": "Nation Data Overview",
+        "title": "Territorial emissions perspective",
         "description": "What data we collect and present about Sweden's national emissions",
         "paragraph1": "Klimatkollen shows emissions data for Sweden at the national level, with SMHI's National Emissions Database as our primary source. To make our national, regional, municipal and company data comparable, emissions of all greenhouse gases (CO₂e) are shown since August 2025, not just CO₂.",
         "paragraph2": "The annual average emissions change for Sweden is calculated using the Compound Annual Growth Rate (CAGR).",
@@ -789,7 +789,7 @@
         }
       },
       "nationEmissionsLayers": {
-        "title": "Nation Data Details",
+        "title": "More emission perspectives",
         "description": "How Klimatkollen builds a fuller picture of Sweden’s greenhouse gas emissions based on influence (rådighet), 1990–2025.",
         "intro": {
           "title": "Why a fuller picture",
@@ -807,7 +807,7 @@
         },
         "territorial": {
           "title": "Territorial emissions",
-          "paragraph1": "National total from the Swedish Environmental Protection Agency (Naturvårdsverket), 1990–2024. This is the official territorial greenhouse gas series commonly used when people say “Sweden’s emissions”.",
+          "paragraph1": "National total from the Swedish Environmental Protection Agency (Naturvårdsverket), 1990–2025. This is the official territorial greenhouse gas series commonly used when people say “Sweden’s emissions”.",
           "paragraph2": "Internationally, methane from the energy sector may be under-reported in some inventories. Work is ongoing to improve reporting; we follow the official Swedish series here.",
           "sources": {
             "nv": "Naturvårdsverket – Sweden’s greenhouse gas emissions and removals"
@@ -1580,8 +1580,26 @@
       },
       "scrollHint": {
         "scroll": "Scroll",
+        "scrollDesktop": "Scroll · PgUp/PgDn",
         "swipe": "Swipe",
         "label": "Scroll down to the next part of the story"
+      },
+      "chapters": {
+        "intro": "Intro",
+        "journey": "Stripped away",
+        "bathtub": "The bathtub",
+        "interlude": "Perspective",
+        "stacked": "History",
+        "conclusion": "Conclusion"
+      },
+      "nav": {
+        "skipChapter": "Skip to next part",
+        "keyboardHint": "↑↓ or PgUp/PgDn to change scene",
+        "freeScrollCue": "Scroll freely down here",
+        "previousSection": "Previous part",
+        "onboardingDesktop": "Scroll to move through the story, one step at a time.",
+        "onboardingMobile": "Swipe to move through the story, one step at a time.",
+        "dismiss": "Got it"
       },
       "journey": {
         "dataYear": "The figure refers to CO₂e and {{year}}.",
@@ -1626,7 +1644,8 @@
       },
       "interlude": {
         "title": "We only discuss part of Sweden's emissions",
-        "body": "The usual figure we hear about gives an overly positive picture. When we also include other emissions that Sweden can influence, we get a more complete picture – one that tells a different story."
+        "body": "The usual figure we hear about gives an overly positive picture. When we also include other emissions that Sweden can influence, we get a more complete picture – one that tells a different story.",
+        "stat": "The full picture is {{ratio}}× larger: {{combined}} vs {{territorial}} territorial"
       },
       "stacked": {
         "layerCounter": "Layer {{current}} of {{total}}",

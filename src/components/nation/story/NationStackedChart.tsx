@@ -8,7 +8,7 @@ import {
   YAxis,
 } from "recharts";
 import { useTranslation } from "react-i18next";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   formatMton,
   NATION_BASELINE_YEAR,
@@ -24,6 +24,7 @@ import {
   NATION_STORY_TYPE,
 } from "@/components/nation/story/nationStoryColors";
 import { usePinnedSteps } from "@/components/nation/story/usePinnedSteps";
+import { useStoryShortViewport } from "@/components/nation/story/useStoryShortViewport";
 
 /**
  * Mobile runs the plot edge-to-edge so it lines up with the heading and copy
@@ -81,6 +82,8 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
+  const isStoryShort = useStoryShortViewport();
+  const reducedMotion = useReducedMotion();
   const latestYear = data.at(-1)?.year ?? NATION_BASELINE_YEAR;
   // Mobile skips 2020: it sits so close to the latest year that recharts
   // drops one of the colliding labels, leaving uneven spacing.
@@ -95,7 +98,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
     LAYERS.length,
     STACKED_STEP_VH,
   );
-  const visibleLayers = step + 1;
+  const visibleLayers = reducedMotion ? LAYERS.length : step + 1;
 
   // Mobile has no floating tooltip (it covers the chart); instead the legend
   // becomes a readout while the reader scrubs a finger across the chart,
@@ -126,9 +129,13 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
     [],
   );
 
-  // Height caps at 32svh so short phones (~570-670px tall) still fit the
-  // title, caption, chart and legend inside the pinned stage.
-  const chartHeight = isMobile ? "min(240px, 32svh)" : 330;
+  // Height caps so phones with browser chrome still fit the title, caption,
+  // chart and legend inside the pinned stage (tighter on iPhone SE).
+  const chartHeight = !isMobile
+    ? 330
+    : isStoryShort
+      ? "min(160px, 20svh)"
+      : "min(200px, 24svh)";
   const activeLayer = LAYERS[visibleLayers - 1];
 
   // Full-bleed mobile plot: the edge ticks anchor inward so "1990" and the
@@ -192,6 +199,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
     <section
       ref={ref}
       data-story-section
+      data-story-chapter="stacked"
       data-story-step={step}
       data-story-steps={LAYERS.length}
       data-story-step-vh={STACKED_STEP_VH}
@@ -199,7 +207,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
       style={{ height: `${sectionVh}vh` }}
     >
       <div
-        className="h-[100svh] flex items-center px-4 md:px-8 pt-14 pb-6 md:py-0 overflow-hidden"
+        className="h-[100svh] min-h-0 flex flex-col px-4 md:px-8 pt-[var(--story-stage-pad-top)] pb-[var(--story-stage-pad-bottom)] md:py-0 overflow-hidden"
         style={stageStyle}
       >
         {/* Same depth backdrop as the hero and journey chapters */}
@@ -207,7 +215,9 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
           aria-hidden
           className="absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_45%,var(--black-2)_0%,var(--black-3)_78%)]"
         />
-        <div className={`relative w-full max-w-4xl mx-auto ${className ?? ""}`}>
+        <div
+          className={`relative flex min-h-0 flex-1 flex-col justify-center w-full max-w-4xl mx-auto ${className ?? ""}`}
+        >
           {/* Mobile relies on the step dots for progress instead */}
           <p
             className={`hidden md:block ${NATION_STORY_TYPE.eyebrow} ${NATION_STORY_TEXT.eyebrow} mb-2 md:mb-3`}
@@ -217,7 +227,9 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               total: LAYERS.length,
             })}
           </p>
-          <h2 className={`${NATION_STORY_TYPE.title} text-white mb-2 md:mb-4`}>
+          <h2
+            className={`${NATION_STORY_TYPE.title} text-white mb-2 story-short:mb-1 md:mb-4`}
+          >
             {t("nation.story.stacked.title")}
           </h2>
 
@@ -226,7 +238,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               step-header emphasis style reads too heavy), dot on line one */}
           {/* Sized for the longest caption (3 lines mobile) so the chart
               below doesn't shift vertically as the step captions swap */}
-          <div className="min-h-[3.75rem] md:min-h-[2.5rem] mb-2 md:mb-4">
+          <div className="min-h-[3.75rem] story-short:min-h-[2.5rem] md:min-h-[2.5rem] mb-2 story-short:mb-0.5 md:mb-4">
             <motion.p
               key={visibleLayers}
               initial={{ opacity: 0, y: 6 }}
@@ -251,7 +263,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             </p>
           )}
           <div
-            className="relative"
+            className="relative touch-pan-x"
             style={{ width: "100%", height: chartHeight }}
           >
             {/* Soft glow behind the chart in the active layer's color – the
@@ -370,12 +382,12 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
               mobile, scrubbing the chart turns it into a readout showing the
               scrubbed year's stacking arithmetic with a summed total. Desktop
               keeps the hover tooltip for values. */}
-          <div className="mt-3 md:mt-5 border-t border-white/10 pt-2.5 md:pt-3 space-y-1.5 md:space-y-2">
+          <div className="mt-3 story-short:mt-1.5 md:mt-5 border-t border-white/10 pt-2.5 story-short:pt-1.5 md:pt-3 space-y-1.5 story-short:space-y-1 md:space-y-2">
             {/* Same slot: an invitation to scrub at rest, the scrubbed year
                 while the finger is on the chart */}
             {isMobile &&
               (scrubbing ? (
-                <p className={`${NATION_STORY_TYPE.meta}`}>
+                <p className={NATION_STORY_TYPE.meta}>
                   <span className="text-white tabular-nums font-medium">
                     {readoutYear}
                   </span>
@@ -387,7 +399,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                   {t("nation.story.stacked.scrubHint")}
                 </p>
               ))}
-            <div className="flex flex-col gap-y-1.5 md:flex-row md:flex-wrap md:items-center md:gap-x-8">
+            <div className="flex flex-col gap-y-1.5 story-short:gap-y-1 md:flex-row md:flex-wrap md:items-center md:gap-x-8">
               {LAYERS.slice(0, visibleLayers).map((layer, index) => (
                 <motion.span
                   key={layer.dataKey}

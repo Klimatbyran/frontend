@@ -15,6 +15,7 @@ import {
   NATION_STORY_TEXT,
   NATION_STORY_TYPE,
 } from "@/components/nation/story/nationStoryColors";
+import { StoryPreviousSectionButton } from "@/components/nation/story/StoryNavChrome";
 
 type NationConclusionProps = {
   metrics: NationStoryMetrics;
@@ -105,26 +106,24 @@ function ConclusionStat({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}
       transition={{ duration: 0.5, delay }}
-      className="px-4 sm:px-8 md:px-12"
+      className="px-4 sm:px-6 md:px-8"
     >
       <p
-        className={`${NATION_STORY_TYPE.eyebrow} ${NATION_STORY_TEXT.secondary} mb-3 md:mb-4`}
+        className={`${NATION_STORY_TYPE.eyebrow} ${NATION_STORY_TEXT.secondary} mb-2 story-short:mb-1 md:mb-2.5`}
       >
         {t(labelKey)}
       </p>
-      <p
-        className={`text-6xl md:text-display font-light tabular-nums leading-none ${colorClass}`}
-      >
+      <p className={`${NATION_STORY_TYPE.display} ${colorClass}`}>
         <CountUpMton value={value} />
       </p>
       <p
-        className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body} mt-2 md:mt-3`}
+        className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body} mt-1.5 story-short:mt-1 md:mt-2`}
       >
         {t("nation.story.unit.millionTco2e")}
       </p>
 
       {/* Proportional scale bar – same fill metaphor as the hero and bathtub */}
-      <div className="mt-5 md:mt-6 h-1.5 w-full max-w-56 mx-auto rounded-full bg-white/10 overflow-hidden">
+      <div className="mt-3 story-short:mt-2 md:mt-4 h-1.5 w-full max-w-48 mx-auto rounded-full bg-white/10 overflow-hidden">
         <motion.div
           className="h-full rounded-full"
           style={{ backgroundColor: barColor }}
@@ -140,7 +139,7 @@ function ConclusionStat({
       </div>
 
       <p
-        className={`mt-4 md:mt-5 ${NATION_STORY_TYPE.emphasis} ${colorClass} tabular-nums`}
+        className={`mt-3 md:mt-3.5 ${NATION_STORY_TYPE.emphasis} ${colorClass} tabular-nums`}
       >
         {formatPercentChange(changePercent, currentLanguage)}{" "}
         <span
@@ -158,7 +157,10 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
   const { getLocalizedPath } = useLanguage();
 
   return (
-    <div className="max-w-3xl mx-auto text-center space-y-5 md:space-y-8">
+    <div className="max-w-3xl mx-auto text-center space-y-4 story-short:space-y-2.5 md:space-y-5">
+      <div className="md:hidden">
+        <StoryPreviousSectionButton className="mx-auto mb-1 story-short:mb-0.5" />
+      </div>
       <motion.h2
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -169,9 +171,8 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
         {t("nation.story.conclusion.title")}
       </motion.h2>
 
-      {/* Open two-column finale: stats stand directly on the backdrop,
-          separated by a hairline on desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-0 sm:divide-x sm:divide-white/10 py-4 md:py-6">
+      {/* Two-column from md up so sm tablets aren't cramped with huge stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 story-short:gap-3 md:gap-0 md:divide-x md:divide-white/10 py-1 story-short:py-0 md:py-2">
         <ConclusionStat
           labelKey="nation.story.conclusion.usualLabel"
           value={metrics.territorialLatestMton}
@@ -213,12 +214,9 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.45, delay: 0.25 }}
-        className="pt-4 md:pt-6 space-y-4 md:space-y-5"
+        className="pt-1 md:pt-2 space-y-3 md:space-y-3"
       >
-        <p className={`${NATION_STORY_TYPE.body} ${NATION_STORY_TEXT.body}`}>
-          {t("nation.story.conclusion.ctaLead")}
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-3">
           <StoryCtaButton to="/nation">
             {t("nation.story.conclusion.ctaNation")}
           </StoryCtaButton>

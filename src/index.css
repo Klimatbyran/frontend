@@ -58,6 +58,75 @@
   --blue-3-muted: color-mix(in srgb, var(--blue-3) 20%, transparent);
   --orange-3-muted: color-mix(in srgb, var(--orange-3) 20%, transparent);
   --pink-3-muted: color-mix(in srgb, var(--pink-3) 20%, transparent);
+
+  /*
+   * Valet 2026 story – safe-area-aware chrome.
+   * The scroll chevron uses env(safe-area-inset-bottom): it sits low on
+   * phones without a home indicator (SE, DevTools) and lifts on notched
+   * devices. Section padding is derived from the hint position so copy
+   * clears the chevron on any device – no fixed browser-chrome guess.
+   */
+  --story-site-header: 3rem;
+  /** Chevron + “Svep”/“Scroll” label height */
+  --story-scroll-hint: 2.75rem;
+  --story-safe-top: env(safe-area-inset-top, 0px);
+  --story-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --story-safe-right: env(safe-area-inset-right, 0px);
+}
+
+:root {
+  /** Space for the mobile step counter below the site header */
+  --story-chapter-band: 1.5rem;
+  --story-rail-inset: calc(1.125rem + var(--story-safe-right));
+  --story-scroll-hint-bottom: calc(0.75rem + var(--story-safe-bottom));
+  --story-bottom-reserve: calc(
+    var(--story-scroll-hint-bottom) + var(--story-scroll-hint) + 0.5rem
+  );
+  --story-top-reserve: calc(var(--story-site-header) + var(--story-safe-top));
+  --story-hero-pad-top: calc(
+    var(--story-top-reserve) + var(--story-chapter-band) +
+      clamp(0.5rem, 3svh, 1.75rem)
+  );
+  --story-hero-pad-bottom: var(--story-bottom-reserve);
+  --story-stage-pad-top: calc(
+    var(--story-top-reserve) + var(--story-chapter-band) + 0.375rem
+  );
+  --story-stage-pad-bottom: var(--story-bottom-reserve);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --story-chapter-band: 0px;
+    --story-rail-inset: calc(1.125rem + var(--story-safe-right));
+    --story-stage-pad-top: calc(var(--story-top-reserve) + 0.25rem);
+  }
+}
+
+@media (max-height: 32rem) and (orientation: landscape) {
+  :root {
+    --story-hero-pad-top: calc(
+      var(--story-top-reserve) + var(--story-chapter-band) + 0.125rem
+    );
+    --story-hero-pad-bottom: calc(var(--story-bottom-reserve) - 0.125rem);
+    --story-stage-pad-top: calc(
+      var(--story-top-reserve) + var(--story-chapter-band) + 0.125rem
+    );
+    --story-stage-pad-bottom: calc(var(--story-bottom-reserve) - 0.125rem);
+  }
+}
+
+/* iPhone SE / story-short: reclaim a little vertical room for pinned stages */
+@media (max-width: 767px) and (max-height: 700px) {
+  :root {
+    --story-hero-pad-top: calc(
+      var(--story-top-reserve) + var(--story-chapter-band) + 0.25rem
+    );
+    --story-hero-pad-bottom: calc(var(--story-bottom-reserve) - 0.25rem);
+    --story-stage-pad-top: calc(
+      var(--story-top-reserve) + var(--story-chapter-band) + 0.125rem
+    );
+    --story-stage-pad-bottom: calc(var(--story-bottom-reserve) - 0.25rem);
+  }
 }
 
 @layer base {
