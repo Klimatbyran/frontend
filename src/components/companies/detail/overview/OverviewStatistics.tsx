@@ -13,6 +13,7 @@ interface OverviewStatisticProps {
   selectedPeriod: ReportingPeriod;
   currentLanguage: "sv" | "en";
   sectorName: string;
+  industryGroupName: string;
   formattedEmployeeCount: string;
   turnoverAIGenerated: boolean;
   employeesAIGenerated: boolean;
@@ -23,6 +24,7 @@ export function OverviewStatistics({
   selectedPeriod,
   currentLanguage,
   sectorName,
+  industryGroupName,
   formattedEmployeeCount,
   turnoverAIGenerated,
   employeesAIGenerated,
@@ -41,6 +43,10 @@ export function OverviewStatistics({
     <SupplementalDataPanel className={className}>
       <SupplementalDataField label={t("companies.overview.sector")}>
         <Text>{sectorName}</Text>
+      </SupplementalDataField>
+
+      <SupplementalDataField label={t("companies.overview.industryGroup")}>
+        <Text>{industryGroupName}</Text>
       </SupplementalDataField>
 
       <SupplementalDataField label={t("companies.overview.turnover")}>

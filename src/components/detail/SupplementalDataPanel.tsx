@@ -12,12 +12,13 @@ export function SupplementalDataPanel({
   className,
 }: SupplementalDataPanelProps) {
   return (
-    <div className={cn("@container mt-3 md:mt-0", className)}>
-      <div className="mt-8 @md:mt-12 bg-black-1 rounded-level-2 p-6">
-        <div className="grid grid-cols-1 @md:grid-cols-2 @lg:grid-flow-col @lg:grid-cols-none @lg:auto-cols-fr gap-4 @md:gap-8">
-          {children}
-        </div>
-      </div>
+    <div
+      className={cn(
+        "mt-11 md:mt-12 bg-black-1 rounded-level-2 p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-flow-col lg:grid-cols-none lg:auto-cols-fr gap-4 md:gap-8",
+        className,
+      )}
+    >
+      {children}
     </div>
   );
 }
@@ -25,14 +26,16 @@ export function SupplementalDataPanel({
 interface SupplementalDataFieldProps {
   label: ReactNode;
   children: ReactNode;
+  className?: string;
 }
 
 export function SupplementalDataField({
   label,
   children,
+  className,
 }: SupplementalDataFieldProps) {
   return (
-    <div>
+    <div className={cn("min-w-0", className)}>
       <Text className="md:mb-2 font-bold">{label}</Text>
       {children}
     </div>

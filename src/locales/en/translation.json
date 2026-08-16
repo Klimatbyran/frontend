@@ -1151,47 +1151,94 @@
   "sector": {
     "energy": {
       "name": "Energy",
-      "title": "Energy Sector"
+      "title": "Energy Sector",
+      "industryGroups": {
+        "energy": "Energy"
+      }
     },
     "materials": {
       "name": "Materials",
-      "title": "Materials Sector"
+      "title": "Materials Sector",
+      "industryGroups": {
+        "materials": "Materials"
+      }
     },
     "industrials": {
       "name": "Industrials",
-      "title": "Industrials Sector"
+      "title": "Industrials Sector",
+      "industryGroups": {
+        "capitalGoods": "Capital Goods",
+        "commercialProfessionalServices": "Commercial & Professional Services",
+        "transportation": "Transportation"
+      }
     },
     "consumerDiscretionary": {
       "name": "Consumer Discretionary",
-      "title": "Consumer Discretionary Sector"
+      "title": "Consumer Discretionary Sector",
+      "industryGroups": {
+        "automobilesComponents": "Automobiles & Components",
+        "consumerDurablesApparel": "Consumer Durables & Apparel",
+        "consumerServices": "Consumer Services",
+        "consumerDiscretionaryDistributionRetail": "Distribution & Retail"
+      }
     },
     "consumerStaples": {
       "name": "Consumer Staples",
-      "title": "Consumer Staples Sector"
+      "title": "Consumer Staples Sector",
+      "industryGroups": {
+        "consumerStaplesDistributionRetail": "Distribution & Retail",
+        "foodBeverageTobacco": "Food, Beverage & Tobacco",
+        "personalCareProducts": "Personal Care Products"
+      }
     },
     "healthCare": {
       "name": "Healthcare",
-      "title": "Healthcare Sector"
+      "title": "Healthcare Sector",
+      "industryGroups": {
+        "healthCareEquipmentServices": "Equipment & Services",
+        "pharmaceuticalsBiotechnologyLifeSciences": "Pharmaceuticals, Biotechnology & Life Sciences"
+      }
     },
     "financials": {
       "name": "Financials",
-      "title": "Financials Sector"
+      "title": "Financials Sector",
+      "industryGroups": {
+        "banks": "Banks",
+        "financialServices": "Financial Services",
+        "insurance": "Insurance"
+      }
     },
     "informationTechnology": {
       "name": "Information Technology",
-      "title": "Information Technology Sector"
+      "title": "Information Technology Sector",
+      "industryGroups": {
+        "softwareServices": "Software & Services",
+        "technologyHardwareEquipment": "Hardware & Equipment",
+        "semiconductorsSemiconductorEquipment": "Semiconductors & Semiconductor Equipment"
+      }
     },
     "communicationServices": {
       "name": "Communication Services",
-      "title": "Communication Services Sector"
+      "title": "Communication Services Sector",
+      "industryGroups": {
+        "telecommunicationServices": "Telecommunication Services",
+        "mediaEntertainment": "Media & Entertainment"
+      }
     },
     "utilities": {
       "name": "Utilities",
-      "title": "Utilities Sector"
+      "title": "Utilities Sector",
+      "industryGroups": {
+        "utilities": "Utilities"
+      }
     },
     "realEstate": {
       "name": "Real Estate",
-      "title": "Real Estate Sector"
+      "title": "Real Estate Sector",
+      "industryGroups": {
+        "equityRealEstateInvestmentTrustsReits": "Equity Real Estate Investment Trusts (REITs)",
+        "realEstateManagementDevelopment": "Real Estate Management & Development"
+      }
     }
   },
   "scope": {
@@ -1494,7 +1541,9 @@
     },
     "overview": {
       "unknownSector": "Unknown Sector",
+      "unknownIndustryGroup": "Unknown Industry Group",
       "sector": "Sector",
+      "industryGroup": "Industry Group",
       "selectYear": "Select Year",
       "latestYear": "Latest Year",
       "totalEmissions": "Reported Emissions",

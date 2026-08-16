@@ -1202,47 +1202,94 @@
   "sector": {
     "energy": {
       "name": "Energi",
-      "title": "Energi\u00ADbranschen"
+      "title": "Energi\u00ADbranschen",
+      "industryGroups": {
+        "energy": "Energi"
+      }
     },
     "materials": {
       "name": "Material",
-      "title": "Material\u00ADbranschen"
+      "title": "Material\u00ADbranschen",
+      "industryGroups": {
+        "materials": "Material"
+      }
     },
     "industrials": {
       "name": "Industri",
-      "title": "Industri\u00ADbranschen"
+      "title": "Industri\u00ADbranschen",
+      "industryGroups": {
+        "capitalGoods": "Kapitalvaror",
+        "commercialProfessionalServices": "Kommersiella och professionella tjänster",
+        "transportation": "Transport"
+      }
     },
     "consumerDiscretionary": {
       "name": "Sällanköpsvaror",
-      "title": "Sällanköpsvaru\u00ADbranschen"
+      "title": "Sällanköpsvaru\u00ADbranschen",
+      "industryGroups": {
+        "automobilesComponents": "Bilar & komponenter",
+        "consumerDurablesApparel": "Sällanköpsvaror & kläder",
+        "consumerServices": "Konsumenttjänster",
+        "consumerDiscretionaryDistributionRetail": "Distribution och detaljhandel"
+      }
     },
     "consumerStaples": {
       "name": "Dagligvaror",
-      "title": "Dagligvaru\u00ADbranschen"
+      "title": "Dagligvaru\u00ADbranschen",
+      "industryGroups": {
+        "consumerStaplesDistributionRetail": "Distribution & detaljhandel",
+        "foodBeverageTobacco": "Livsmedel, dryck och tobak",
+        "personalCareProducts": "Produkter för personlig vård"
+      }
     },
     "healthCare": {
       "name": "Hälsovård",
-      "title": "Hälsovårds\u00ADbranschen"
+      "title": "Hälsovårds\u00ADbranschen",
+      "industryGroups": {
+        "healthCareEquipmentServices": "Utrustning och tjänster",
+        "pharmaceuticalsBiotechnologyLifeSciences": "Läkemedel, bioteknik och biovetenskap"
+      }
     },
     "financials": {
       "name": "Finans",
-      "title": "Finans\u00ADbranschen"
+      "title": "Finans\u00ADbranschen",
+      "industryGroups": {
+        "banks": "Banker",
+        "financialServices": "Finansiella tjänster",
+        "insurance": "Försäkring"
+      }
     },
     "informationTechnology": {
       "name": "IT",
-      "title": "IT-branschen"
+      "title": "IT-branschen",
+      "industryGroups": {
+        "softwareServices": "Programvara och tjänster",
+        "technologyHardwareEquipment": "Hårdvara och utrustning",
+        "semiconductorsSemiconductorEquipment": "Halvledare och halvledarutrustning"
+      }
     },
     "communicationServices": {
       "name": "Kommunikation",
-      "title": "Kommunikations\u00ADbranschen"
+      "title": "Kommunikations\u00ADbranschen",
+      "industryGroups": {
+        "telecommunicationServices": "Telekommunikationstjänster",
+        "mediaEntertainment": "Media och underhållning"
+      }
     },
     "utilities": {
       "name": "Kraftförsörjning",
-      "title": "Kraftförsörjnings\u00ADbranschen"
+      "title": "Kraftförsörjnings\u00ADbranschen",
+      "industryGroups": {
+        "utilities": "Kraftförsörjning"
+      }
     },
     "realEstate": {
       "name": "Fastigheter",
-      "title": "Fastighets\u00ADbranschen"
+      "title": "Fastighets\u00ADbranschen",
+      "industryGroups": {
+        "equityRealEstateInvestmentTrustsReits": "Fastighetsinnehav i REIT-form",
+        "realEstateManagementDevelopment": "Fastighetsförvaltning och fastighetsutveckling"
+      }
     }
   },
   "scope": {
@@ -1544,7 +1591,9 @@
     },
     "overview": {
       "unknownSector": "Okänd bransch",
-      "sector": "Bransch",
+      "unknownIndustryGroup": "Okänd industrigrupp",
+      "sector": "Sektor",
+      "industryGroup": "Branschgrupp",
       "selectYear": "Välj år",
       "latestYear": "Senaste året",
       "totalEmissions": "Rapporterade utsläpp",

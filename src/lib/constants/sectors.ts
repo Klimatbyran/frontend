@@ -14,6 +14,36 @@ export const SECTOR_NAMES = {
 
 export type SectorCode = keyof typeof SECTOR_NAMES;
 
+export const INDUSTRY_GROUP_CODES = [
+  "1010",
+  "1510",
+  "2010",
+  "2020",
+  "2030",
+  "2510",
+  "2520",
+  "2530",
+  "2550",
+  "3010",
+  "3020",
+  "3030",
+  "3510",
+  "3520",
+  "4010",
+  "4020",
+  "4030",
+  "4510",
+  "4520",
+  "4530",
+  "5010",
+  "5020",
+  "5510",
+  "6010",
+  "6020",
+] as const;
+
+export type IndustryGroupCode = (typeof INDUSTRY_GROUP_CODES)[number];
+
 export const SECTOR_ORDER: SectorCode[] = [
   "10",
   "15",

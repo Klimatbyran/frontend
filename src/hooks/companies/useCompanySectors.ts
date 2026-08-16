@@ -1,5 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { SECTOR_ORDER } from "@/lib/constants/sectors";
+import {
+  IndustryGroupCode,
+  SECTOR_ORDER,
+  SectorCode,
+} from "@/lib/constants/sectors";
 
 export const useSectorNames = () => {
   const { t } = useTranslation();
@@ -34,6 +38,67 @@ export const useSectorTitles = () => {
     "50": t("sector.communicationServices.title"),
     "55": t("sector.utilities.title"),
     "60": t("sector.realEstate.title"),
+  };
+};
+
+export const useIndustryGroupNames = (): Record<IndustryGroupCode, string> => {
+  const { t } = useTranslation();
+
+  return {
+    "1010": t("sector.energy.industryGroups.energy"),
+    "1510": t("sector.materials.industryGroups.materials"),
+    "2010": t("sector.industrials.industryGroups.capitalGoods"),
+    "2020": t("sector.industrials.industryGroups.commercialProfessionalServices"),
+    "2030": t("sector.industrials.industryGroups.transportation"),
+    "2510": t("sector.consumerDiscretionary.industryGroups.automobilesComponents"),
+    "2520": t("sector.consumerDiscretionary.industryGroups.consumerDurablesApparel"),
+    "2530": t("sector.consumerDiscretionary.industryGroups.consumerServices"),
+    "2550": t(
+      "sector.consumerDiscretionary.industryGroups.consumerDiscretionaryDistributionRetail",
+    ),
+    "3010": t(
+      "sector.consumerStaples.industryGroups.consumerStaplesDistributionRetail",
+    ),
+    "3020": t("sector.consumerStaples.industryGroups.foodBeverageTobacco"),
+    "3030": t("sector.consumerStaples.industryGroups.personalCareProducts"),
+    "3510": t("sector.healthCare.industryGroups.healthCareEquipmentServices"),
+    "3520": t(
+      "sector.healthCare.industryGroups.pharmaceuticalsBiotechnologyLifeSciences",
+    ),
+    "4010": t("sector.financials.industryGroups.banks"),
+    "4020": t("sector.financials.industryGroups.financialServices"),
+    "4030": t("sector.financials.industryGroups.insurance"),
+    "4510": t("sector.informationTechnology.industryGroups.softwareServices"),
+    "4520": t(
+      "sector.informationTechnology.industryGroups.technologyHardwareEquipment",
+    ),
+    "4530": t(
+      "sector.informationTechnology.industryGroups.semiconductorsSemiconductorEquipment",
+    ),
+    "5010": t("sector.communicationServices.industryGroups.telecommunicationServices"),
+    "5020": t("sector.communicationServices.industryGroups.mediaEntertainment"),
+    "5510": t("sector.utilities.industryGroups.utilities"),
+    "6010": t("sector.realEstate.industryGroups.equityRealEstateInvestmentTrustsReits"),
+    "6020": t("sector.realEstate.industryGroups.realEstateManagementDevelopment"),
+  };
+};
+
+export const useIndustryGroupsBySector = (): Record<
+  SectorCode,
+  IndustryGroupCode[]
+> => {
+  return {
+    "10": ["1010"],
+    "15": ["1510"],
+    "20": ["2010", "2020", "2030"],
+    "25": ["2510", "2520", "2530", "2550"],
+    "30": ["3010", "3020", "3030"],
+    "35": ["3510", "3520"],
+    "40": ["4010", "4020", "4030"],
+    "45": ["4510", "4520", "4530"],
+    "50": ["5010", "5020"],
+    "55": ["5510"],
+    "60": ["6010", "6020"],
   };
 };
 

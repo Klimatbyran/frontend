@@ -1,8 +1,8 @@
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
-import { useSectorNames } from "@/hooks/companies/useCompanySectors";
-import { getCompanySectorName } from "@/utils/data/industryGrouping";
+import { useIndustryGroupNames, useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { getCompanyIndustryGroupName, getCompanySectorName } from "@/utils/data/industryGrouping";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmployeeCount } from "@/utils/formatting/localization";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
@@ -36,6 +36,7 @@ export function CompanyOverview({
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
+  const industryGroupNames = useIndustryGroupNames();
   const { currentLanguage } = useLanguage();
   const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
@@ -48,6 +49,7 @@ export function CompanyOverview({
   const employeesAIGenerated = isAIGenerated(selectedPeriod.economy?.employees);
   const sectorCode = company.industry?.industryGics?.sectorCode;
   const sectorName = getCompanySectorName(company, sectorNames);
+  const industryGroupName = getCompanyIndustryGroupName(company, industryGroupNames);
   const description = getCompanyDescription(company, currentLanguage);
   const sortedPeriods = [...company.reportingPeriods].sort(
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
@@ -103,10 +105,11 @@ export function CompanyOverview({
         selectedPeriod={selectedPeriod}
         currentLanguage={currentLanguage}
         sectorName={sectorName}
+        industryGroupName={industryGroupName}
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}
-        className="mt-3 md:mt-0"
+        className="lg:flex lg:justify-between"
       />
     </SectionWithHelp>
   );
