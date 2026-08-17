@@ -2400,12 +2400,14 @@
         "name": "Name"
       },
       "sector": "Sector",
+      "industryGroup": "Industry Group",
       "searchPlaceholder": "Search companies (separate w/ commas)",
       "noCompaniesFound": "No companies found",
       "tryDifferentCriteria": "Try adjusting your search criteria.",
       "sorting": "Sorting:",
       "filtering": "Filter:",
       "allSectors": "All sectors",
+      "allIndustryGroups": "All industry groups",
       "sectionTitle": "Companies",
       "noCompaniesInSection": "No companies in this section"
     }

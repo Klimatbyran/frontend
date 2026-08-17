@@ -23,13 +23,19 @@ export type FilterOption = {
   label: string;
 };
 
+export type FilterOptionGroup = {
+  title?: string;
+  options: FilterOption[];
+};
+
 export type FilterGroup = {
   heading: string;
-  options: FilterOption[];
+  options?: FilterOption[];
+  optionGroups?: FilterOptionGroup[];
   selectedValues: string[];
   onSelect: (value: string) => void;
   selectMultiple: boolean;
-};
+} & ({ options: FilterOption[] } | { optionGroups: FilterOptionGroup[] });
 
 interface FilterPopoverProps {
   filterOpen: boolean;
@@ -54,22 +60,34 @@ export function FilterPopover({
     }
   }, [groups, search]);
 
-  const filteredGroups = useMemo(
-    () =>
-      search.trim().length > 0
-        ? groups
-            .map((group) => ({
-              ...group,
-              options: group.options.filter((option) =>
-                option.label
-                  .toLowerCase()
-                  .includes(search.trim().toLowerCase()),
-              ),
-            }))
-            .filter((group) => group.options.length > 0)
-        : groups,
-    [groups, search],
-  );
+  const filteredGroups = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    return normalizedSearch.length > 0
+      ? groups
+          .map((group) => ({
+            ...group,
+            options: group.options?.filter((option) =>
+              option.label.toLowerCase().includes(normalizedSearch),
+            ),
+            optionGroups: group.optionGroups
+              ?.map((optionGroup) => ({
+                title: optionGroup.title,
+                options: optionGroup.options.filter(
+                  (option) =>
+                    option.label.toLowerCase().includes(normalizedSearch) ||
+                    optionGroup.title?.toLowerCase().includes(normalizedSearch),
+                ),
+              }))
+              .filter((optionGroup) => optionGroup.options.length > 0),
+          }))
+          .filter(
+            (group) =>
+              (group.options && group.options.length > 0) ||
+              (group.optionGroups && group.optionGroups.length > 0),
+          )
+      : groups;
+  }, [groups, search]);
 
   const toggleGroup = (index: number) => {
     setExpandedGroups((prev) => {
@@ -103,7 +121,7 @@ export function FilterPopover({
             className="border-b border-black-1"
           />
           <CommandList className="max-h-[300px]">
-            {filteredGroups.every((g) => g.options.length === 0) && (
+            {filteredGroups.every((g) => g.optionGroups?.length === 0) && (
               <CommandEmpty>{t("filterPopover.noFiltersFound")}</CommandEmpty>
             )}
             {filteredGroups.map((group, i) => {
@@ -128,18 +146,36 @@ export function FilterPopover({
                     }
                   >
                     {expandedGroups[i] &&
-                      group.options.map((option) => (
-                        <CommandItem
-                          key={option.value}
-                          onSelect={() => group.onSelect(option.value)}
-                          className="flex items-center justify-between cursor-pointer"
-                        >
-                          <span>{option.label}</span>
-                          {group.selectedValues.includes(option.value) && (
-                            <Check className="h-4 w-4 text-blue-2" />
-                          )}
-                        </CommandItem>
-                      ))}
+                      (
+                        group.optionGroups ?? [
+                          { title: undefined, options: group.options },
+                        ]
+                      ).map(
+                        (optionGroup, j) =>
+                          optionGroup.options && (
+                            <Fragment key={`${group.heading}-${i}-${j}`}>
+                              {optionGroup.title && (
+                                <div className="text-xs text-muted-foreground font-medium italic px-2 pt-1">
+                                  {optionGroup.title}
+                                </div>
+                              )}
+                              {optionGroup.options.map((option) => (
+                                <CommandItem
+                                  key={option.value}
+                                  onSelect={() => group.onSelect(option.value)}
+                                  className="flex items-center justify-between cursor-pointer"
+                                >
+                                  <span>{option.label}</span>
+                                  {group.selectedValues.includes(
+                                    option.value,
+                                  ) && (
+                                    <Check className="h-4 w-4 text-blue-2" />
+                                  )}
+                                </CommandItem>
+                              ))}
+                            </Fragment>
+                          ),
+                      )}
                   </CommandGroup>
 
                   {i < filteredGroups.length - 1 && (

@@ -2449,13 +2449,15 @@
         "meetsParis": "Klarar Parisavtalet",
         "name": "Namn"
       },
-      "sector": "Bransch",
+      "sector": "Sektor",
+      "industryGroup": "Branschgrupp",
       "searchPlaceholder": "Sök företag (separera med komma)",
       "noCompaniesFound": "Inga företag hittades",
       "tryDifferentCriteria": "Försök med andra sökkriterier",
       "sorting": "Sorterar:",
       "filtering": "Filter:",
-      "allSectors": "Alla branscher",
+      "allSectors": "Alla sektorer",
+      "allIndustryGroups": "Alla branchgrupper",
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"
     }

@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
 import {
+  INDUSTRY_GROUP_CODES_BY_SECTOR,
   IndustryGroupCode,
   SECTOR_ORDER,
   SectorCode,
 } from "@/lib/constants/sectors";
+import { FilterOptionGroup } from "@/components/explore/FilterPopover";
 
 export const useSectorNames = () => {
   const { t } = useTranslation();
@@ -48,10 +50,16 @@ export const useIndustryGroupNames = (): Record<IndustryGroupCode, string> => {
     "1010": t("sector.energy.industryGroups.energy"),
     "1510": t("sector.materials.industryGroups.materials"),
     "2010": t("sector.industrials.industryGroups.capitalGoods"),
-    "2020": t("sector.industrials.industryGroups.commercialProfessionalServices"),
+    "2020": t(
+      "sector.industrials.industryGroups.commercialProfessionalServices",
+    ),
     "2030": t("sector.industrials.industryGroups.transportation"),
-    "2510": t("sector.consumerDiscretionary.industryGroups.automobilesComponents"),
-    "2520": t("sector.consumerDiscretionary.industryGroups.consumerDurablesApparel"),
+    "2510": t(
+      "sector.consumerDiscretionary.industryGroups.automobilesComponents",
+    ),
+    "2520": t(
+      "sector.consumerDiscretionary.industryGroups.consumerDurablesApparel",
+    ),
     "2530": t("sector.consumerDiscretionary.industryGroups.consumerServices"),
     "2550": t(
       "sector.consumerDiscretionary.industryGroups.consumerDiscretionaryDistributionRetail",
@@ -75,30 +83,17 @@ export const useIndustryGroupNames = (): Record<IndustryGroupCode, string> => {
     "4530": t(
       "sector.informationTechnology.industryGroups.semiconductorsSemiconductorEquipment",
     ),
-    "5010": t("sector.communicationServices.industryGroups.telecommunicationServices"),
+    "5010": t(
+      "sector.communicationServices.industryGroups.telecommunicationServices",
+    ),
     "5020": t("sector.communicationServices.industryGroups.mediaEntertainment"),
     "5510": t("sector.utilities.industryGroups.utilities"),
-    "6010": t("sector.realEstate.industryGroups.equityRealEstateInvestmentTrustsReits"),
-    "6020": t("sector.realEstate.industryGroups.realEstateManagementDevelopment"),
-  };
-};
-
-export const useIndustryGroupsBySector = (): Record<
-  SectorCode,
-  IndustryGroupCode[]
-> => {
-  return {
-    "10": ["1010"],
-    "15": ["1510"],
-    "20": ["2010", "2020", "2030"],
-    "25": ["2510", "2520", "2530", "2550"],
-    "30": ["3010", "3020", "3030"],
-    "35": ["3510", "3520"],
-    "40": ["4010", "4020", "4030"],
-    "45": ["4510", "4520", "4530"],
-    "50": ["5010", "5020"],
-    "55": ["5510"],
-    "60": ["6010", "6020"],
+    "6010": t(
+      "sector.realEstate.industryGroups.equityRealEstateInvestmentTrustsReits",
+    ),
+    "6020": t(
+      "sector.realEstate.industryGroups.realEstateManagementDevelopment",
+    ),
   };
 };
 
@@ -119,4 +114,29 @@ export const useSectors = () => {
   }));
 
   return [allSectorsOption, ...filteredOptions];
+};
+
+// Hook to get industry group options for dropdowns (with translated labels)
+export const useIndustryGroupFilterOptionGroups = (): FilterOptionGroup[] => {
+  const { t } = useTranslation();
+  const industryGroupNames = useIndustryGroupNames();
+  const sectorNames = useSectorNames();
+
+  return [
+    {
+      options: [
+        {
+          value: "all" as const,
+          label: t("explorePage.companies.allIndustryGroups"),
+        },
+      ],
+    },
+    ...Object.entries(INDUSTRY_GROUP_CODES_BY_SECTOR).map((g) => ({
+      title: sectorNames[g[0] as SectorCode],
+      options: g[1].map((o) => ({
+        value: o,
+        label: industryGroupNames[o],
+      })),
+    })),
+  ];
 };
