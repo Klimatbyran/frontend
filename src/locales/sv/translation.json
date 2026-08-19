@@ -1227,27 +1227,27 @@
       "name": "Sällanköpsvaror",
       "title": "Sällanköpsvaru\u00ADbranschen",
       "industryGroups": {
-        "automobilesComponents": "Bilar & komponenter",
-        "consumerDurablesApparel": "Sällanköpsvaror & kläder",
+        "automobilesComponents": "Bilar och komponenter",
+        "consumerDurablesApparel": "Konsumentvaror och kläder",
         "consumerServices": "Konsumenttjänster",
-        "consumerDiscretionaryDistributionRetail": "Distribution och detaljhandel"
+        "consumerDiscretionaryDistributionRetail": "Distribution och detaljhandel för sällanköpsvaror"
       }
     },
     "consumerStaples": {
       "name": "Dagligvaror",
       "title": "Dagligvaru\u00ADbranschen",
       "industryGroups": {
-        "consumerStaplesDistributionRetail": "Distribution & detaljhandel",
-        "foodBeverageTobacco": "Livsmedel, dryck och tobak",
-        "personalCareProducts": "Produkter för personlig vård"
+        "consumerStaplesDistributionRetail": "Distribution och detaljhandel för dagligvaror",
+        "foodBeverageTobacco": "Livsmedel, drycker och tobak",
+        "personalCareProducts": "Personvårdsprodukter"
       }
     },
     "healthCare": {
       "name": "Hälsovård",
       "title": "Hälsovårds\u00ADbranschen",
       "industryGroups": {
-        "healthCareEquipmentServices": "Utrustning och tjänster",
-        "pharmaceuticalsBiotechnologyLifeSciences": "Läkemedel, bioteknik och biovetenskap"
+        "healthCareEquipmentServices": "Medicinteknisk utrustning och vårdtjänster",
+        "pharmaceuticalsBiotechnologyLifeSciences": "Läkemedel, bioteknik och life sciences"
       }
     },
     "financials": {
@@ -1256,7 +1256,7 @@
       "industryGroups": {
         "banks": "Banker",
         "financialServices": "Finansiella tjänster",
-        "insurance": "Försäkring"
+        "insurance": "Försäkringar"
       }
     },
     "informationTechnology": {
@@ -1264,7 +1264,7 @@
       "title": "IT-branschen",
       "industryGroups": {
         "softwareServices": "Programvara och tjänster",
-        "technologyHardwareEquipment": "Hårdvara och utrustning",
+        "technologyHardwareEquipment": "Teknisk hårdvara och utrustning",
         "semiconductorsSemiconductorEquipment": "Halvledare och halvledarutrustning"
       }
     },
@@ -1287,7 +1287,7 @@
       "name": "Fastigheter",
       "title": "Fastighets\u00ADbranschen",
       "industryGroups": {
-        "equityRealEstateInvestmentTrustsReits": "Fastighetsinnehav i REIT-form",
+        "equityRealEstateInvestmentTrustsReits": "Equity Real Estate Investment Trusts (REITs)",
         "realEstateManagementDevelopment": "Fastighetsförvaltning och fastighetsutveckling"
       }
     }

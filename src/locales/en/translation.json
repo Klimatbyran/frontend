@@ -1179,14 +1179,14 @@
         "automobilesComponents": "Automobiles & Components",
         "consumerDurablesApparel": "Consumer Durables & Apparel",
         "consumerServices": "Consumer Services",
-        "consumerDiscretionaryDistributionRetail": "Distribution & Retail"
+        "consumerDiscretionaryDistributionRetail": "Consumer Discretionary Distribution & Retail"
       }
     },
     "consumerStaples": {
       "name": "Consumer Staples",
       "title": "Consumer Staples Sector",
       "industryGroups": {
-        "consumerStaplesDistributionRetail": "Distribution & Retail",
+        "consumerStaplesDistributionRetail": "Consumer Staples Distribution & Retail",
         "foodBeverageTobacco": "Food, Beverage & Tobacco",
         "personalCareProducts": "Personal Care Products"
       }
@@ -1195,7 +1195,7 @@
       "name": "Healthcare",
       "title": "Healthcare Sector",
       "industryGroups": {
-        "healthCareEquipmentServices": "Equipment & Services",
+        "healthCareEquipmentServices": "Health Care Equipment & Services",
         "pharmaceuticalsBiotechnologyLifeSciences": "Pharmaceuticals, Biotechnology & Life Sciences"
       }
     },
@@ -1213,7 +1213,7 @@
       "title": "Information Technology Sector",
       "industryGroups": {
         "softwareServices": "Software & Services",
-        "technologyHardwareEquipment": "Hardware & Equipment",
+        "technologyHardwareEquipment": "Technology Hardware & Equipment",
         "semiconductorsSemiconductorEquipment": "Semiconductors & Semiconductor Equipment"
       }
     },

@@ -155,7 +155,7 @@ export function FilterPopover({
                           optionGroup.options && (
                             <Fragment key={`${group.heading}-${i}-${j}`}>
                               {optionGroup.title && (
-                                <div className="text-xs text-muted-foreground font-medium italic px-2 pt-1">
+                                <div className="text-xs text-muted-foreground font-medium italic px-2 pt-1 mt-1">
                                   {optionGroup.title}
                                 </div>
                               )}
