@@ -1,8 +1,14 @@
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
-import { useIndustryGroupNames, useSectorNames } from "@/hooks/companies/useCompanySectors";
-import { getCompanyIndustryGroupName, getCompanySectorName } from "@/utils/data/industryGrouping";
+import {
+  useIndustryGroupNames,
+  useSectorNames,
+} from "@/hooks/companies/useCompanySectors";
+import {
+  getCompanyIndustryGroupName,
+  getCompanySectorName,
+} from "@/utils/data/industryGrouping";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmployeeCount } from "@/utils/formatting/localization";
 import { useVerificationStatus } from "@/hooks/useVerificationStatus";
@@ -49,7 +55,10 @@ export function CompanyOverview({
   const employeesAIGenerated = isAIGenerated(selectedPeriod.economy?.employees);
   const sectorCode = company.industry?.industryGics?.sectorCode;
   const sectorName = getCompanySectorName(company, sectorNames);
-  const industryGroupName = getCompanyIndustryGroupName(company, industryGroupNames);
+  const industryGroupName = getCompanyIndustryGroupName(
+    company,
+    industryGroupNames,
+  );
   const description = getCompanyDescription(company, currentLanguage);
   const sortedPeriods = [...company.reportingPeriods].sort(
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),

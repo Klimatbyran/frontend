@@ -96,19 +96,21 @@ export function transformCompanyToListCard(
   const latestPeriod = reportingPeriods?.[0];
   const previousPeriod = reportingPeriods?.[1];
   const sectorName = getCompanySectorName(company, sectorNames);
-  const industryGroupName = getCompanyIndustryGroupName(company, industryGroupNames);
+  const industryGroupName = getCompanyIndustryGroupName(
+    company,
+    industryGroupNames,
+  );
 
   return {
     name,
-    description:
-      industry
-        ? createElement(
-            Fragment,
-            null,
-            createElement("span", { className: "font-semibold" }, sectorName),
-            createElement("span", null, ` • ${industryGroupName}`),
-          )
-        : createElement("span", { className: "font-semibold" }, sectorName),
+    description: industry
+      ? createElement(
+          Fragment,
+          null,
+          createElement("span", { className: "font-semibold" }, sectorName),
+          createElement("span", null, ` • ${industryGroupName}`),
+        )
+      : createElement("span", { className: "font-semibold" }, sectorName),
     logoUrl: company.logoUrl,
     variant: "company" as const,
     baseYear: company?.baseYear?.year || null,
