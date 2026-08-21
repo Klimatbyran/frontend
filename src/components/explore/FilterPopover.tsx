@@ -126,7 +126,7 @@ export function FilterPopover({
             )}
             {filteredGroups.map((group, i) => {
               return (
-                <Fragment key={`${group.heading}-${i}`}>
+                <Fragment key={i}>
                   <CommandGroup
                     className="[&_[cmdk-group-heading]]:p-0"
                     heading={
@@ -153,7 +153,7 @@ export function FilterPopover({
                       ).map(
                         (optionGroup, j) =>
                           optionGroup.options && (
-                            <Fragment key={`${group.heading}-${i}-${j}`}>
+                            <Fragment key={`${i}-${j}`}>
                               {optionGroup.title && (
                                 <div className="text-xs text-muted-foreground font-medium italic px-2 pt-1 mt-1">
                                   {optionGroup.title}
@@ -161,7 +161,7 @@ export function FilterPopover({
                               )}
                               {optionGroup.options.map((option) => (
                                 <CommandItem
-                                  key={option.value}
+                                  key={`${i}-${j}-${option.value}`}
                                   onSelect={() => group.onSelect(option.value)}
                                   className="flex items-center justify-between cursor-pointer"
                                 >

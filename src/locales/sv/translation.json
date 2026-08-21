@@ -10,7 +10,7 @@
     "data": "Data",
     "companies": "Företag",
     "allCompanies": "Alla företag",
-    "sectors": "Branscher",
+    "sectors": "Sektorer",
     "explore": "Utforska",
     "territories": "Platser",
     "municipalities": "Kommuner",
@@ -318,9 +318,9 @@
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "mapPlaceholder": "Kartvisualisering kommer snart",
-    "filterByIndustry": "Filtrera efter bransch",
+    "filterByIndustry": "Filtrera efter sektor",
     "clearFilters": "Rensa alla",
-    "selectIndustry": "Välj bransch",
+    "selectIndustry": "Välj sektor",
     "selectCountry": "Välj land",
     "viewToggle": {
       "showGraph": "Graf",
@@ -384,14 +384,14 @@
       "pie": "Cirkeldiagram",
       "stackedTotal": "Stapeldiagram",
       "back": "Tillbaka",
-      "sectorTotal": "Totala utsläpp i branschen",
+      "sectorTotal": "Totala utsläpp i sektorn",
       "total": "Totala utsläpp",
       "emissionsUnit": "ton CO₂e",
       "noDataAvailablePieChart": "Det finns inga data för detta år",
       "yearTotal": "Årlig total",
       "unknownCompany": "Okänt företag",
       "pieLegendCompany": "Visa företagsdetaljer",
-      "pieLegendSector": "Visa branschdetaljer",
+      "pieLegendSector": "Visa sektordetaljer",
       "emissionsSourcesAnalysis": "Analys av utsläppskällor",
       "ghgProtocolScopes": "(Scopes i GHG-protokollet)",
       "totalEmissions": "Totala utsläpp",
@@ -409,7 +409,7 @@
       "companies": "företag",
       "shareOfTotal": "Andel av total",
       "companiesReporting": "Företag som rapporterar",
-      "ofSector": "av bransch",
+      "ofSector": "av sektor",
       "ofTotal": "av total",
       "valueChainOverview": "Värdekedja",
       "upstream": "Uppströms",
@@ -445,8 +445,8 @@
     }
   },
   "sectorsOverviewPage": {
-    "title": "Branschöversikt",
-    "description": "Översikt över utsläpp och omställning på branschnivå",
+    "title": "Sektoröversikt",
+    "description": "Översikt över utsläpp och omställning på sektornivå",
     "overview": "Översikt",
     "errorTitle": "Det gick inte att hämta företagsinformation",
     "errorDescription": "Försök igen senare",
@@ -459,27 +459,27 @@
       "meetsParisUnknown": "Okänt"
     },
     "insights": {
-      "largestSector": "Största branschen",
+      "largestSector": "Största sektorn",
       "largestSectorDescription": "{{name}} står för {{share}} av totala utsläpp",
-      "topThreeSectors": "Topp 3 branscher",
-      "topThreeSectorsDescription": "De tre största branscherna står för {{share}} av utsläppen",
+      "topThreeSectors": "Topp 3 sektorer",
+      "topThreeSectorsDescription": "De tre största sektorerna står för {{share}} av utsläppen",
       "reportingCompanies": "Rapporterande företag",
       "reportingCompaniesDescription": "{{count}} företag rapporterade utsläpp för {{year}}",
       "largestCompany": "Största utsläpparen",
-      "largestCompanyDescription": "{{name}} står för {{share}} av branschens utsläpp",
-      "companiesInSector": "Företag i branschen",
+      "largestCompanyDescription": "{{name}} står för {{share}} av sektorns utsläpp",
+      "companiesInSector": "Företag i sektorn",
       "companiesInSectorDescription": "{{count}} företag rapporterade utsläpp",
       "reducingEmissions": "Minskar utsläppen",
       "reducingEmissionsDescription": "{{count}} av {{total}} företag har minskat utsläppen sedan basår",
       "increasingEmissions": "Ökar utsläppen",
       "increasingEmissionsDescription": "{{count}} av {{total}} företag har ökat utsläppen sedan basår",
-      "noComparableTrendData": "Inte tillräckligt med jämförbar trenddata för företag i branschen",
+      "noComparableTrendData": "Inte tillräckligt med jämförbar trenddata för företag i sektorn",
       "emissionsAmount": "{{amount}} {{unit}}",
       "ofTotalEmissions": "av totala utsläpp",
       "forReportingYear": "för {{year}}",
       "reportingCompaniesAvg": "Genomsnitt {{amount}} {{unit}} per rapporterande företag",
       "companiesReportingLabel": "rapporterande företag",
-      "topEmittersInSectorDescription": "Andel av branschens utsläpp bland de största företagen",
+      "topEmittersInSectorDescription": "Andel av sektorns utsläpp bland de största företagen",
       "sinceBaseYear": "minskar sedan basår",
       "increasingSinceBaseYear": "ökar sedan basår",
       "topReducersDescription": "Företag med störst minskning sedan basår",
@@ -737,7 +737,7 @@
         "companiesIncluded": {
           "title": "Inkluderade företag",
           "paragraph1": "Vår databas omfattar alla företag på Stockholmsbörsen (OMX Large Cap, Mid Cap och Small Cap), de 24 största statliga företagen, de fem största ekonomiska föreningarna, de olistade företagen IKEA och ICA Gruppen samt företag noterade på Nasdaq Baltic (samt ett par olistade balttiska företag).",
-          "paragraph2": "Företagen kategoriseras efter bransch enligt Global Industry Classification Standard (GICS).",
+          "paragraph2": "Företagen kategoriseras efter sektor enligt Global Industry Classification Standard (GICS).",
           "link": {
             "title": "GICS",
             "text": "Läs mer om Global Industry Classification Standard (GICS)"
@@ -1202,21 +1202,21 @@
   "sector": {
     "energy": {
       "name": "Energi",
-      "title": "Energi\u00ADbranschen",
+      "title": "Energi\u00ADsektorn",
       "industryGroups": {
         "energy": "Energi"
       }
     },
     "materials": {
       "name": "Material",
-      "title": "Material\u00ADbranschen",
+      "title": "Material\u00ADsektorn",
       "industryGroups": {
         "materials": "Material"
       }
     },
     "industrials": {
       "name": "Industri",
-      "title": "Industri\u00ADbranschen",
+      "title": "Industri\u00ADsektorn",
       "industryGroups": {
         "capitalGoods": "Kapitalvaror",
         "commercialProfessionalServices": "Kommersiella och professionella tjänster",
@@ -1225,7 +1225,7 @@
     },
     "consumerDiscretionary": {
       "name": "Sällanköpsvaror",
-      "title": "Sällanköpsvaru\u00ADbranschen",
+      "title": "Sällanköpsvaru\u00ADsektorn",
       "industryGroups": {
         "automobilesComponents": "Bilar och komponenter",
         "consumerDurablesApparel": "Konsumentvaror och kläder",
@@ -1235,7 +1235,7 @@
     },
     "consumerStaples": {
       "name": "Dagligvaror",
-      "title": "Dagligvaru\u00ADbranschen",
+      "title": "Dagligvaru\u00ADsektorn",
       "industryGroups": {
         "consumerStaplesDistributionRetail": "Distribution och detaljhandel för dagligvaror",
         "foodBeverageTobacco": "Livsmedel, drycker och tobak",
@@ -1244,7 +1244,7 @@
     },
     "healthCare": {
       "name": "Hälsovård",
-      "title": "Hälsovårds\u00ADbranschen",
+      "title": "Hälsovårds\u00ADsektorn",
       "industryGroups": {
         "healthCareEquipmentServices": "Medicinteknisk utrustning och vårdtjänster",
         "pharmaceuticalsBiotechnologyLifeSciences": "Läkemedel, bioteknik och life sciences"
@@ -1252,7 +1252,7 @@
     },
     "financials": {
       "name": "Finans",
-      "title": "Finans\u00ADbranschen",
+      "title": "Finans\u00ADsektorn",
       "industryGroups": {
         "banks": "Banker",
         "financialServices": "Finansiella tjänster",
@@ -1261,7 +1261,7 @@
     },
     "informationTechnology": {
       "name": "IT",
-      "title": "IT-branschen",
+      "title": "IT-sektorn",
       "industryGroups": {
         "softwareServices": "Programvara och tjänster",
         "technologyHardwareEquipment": "Teknisk hårdvara och utrustning",
@@ -1270,7 +1270,7 @@
     },
     "communicationServices": {
       "name": "Kommunikation",
-      "title": "Kommunikations\u00ADbranschen",
+      "title": "Kommunikations\u00ADsektorn",
       "industryGroups": {
         "telecommunicationServices": "Telekommunikationstjänster",
         "mediaEntertainment": "Media och underhållning"
@@ -1278,14 +1278,14 @@
     },
     "utilities": {
       "name": "Kraftförsörjning",
-      "title": "Kraftförsörjnings\u00ADbranschen",
+      "title": "Kraftförsörjnings\u00ADsektorn",
       "industryGroups": {
         "utilities": "Kraftförsörjning"
       }
     },
     "realEstate": {
       "name": "Fastigheter",
-      "title": "Fastighets\u00ADbranschen",
+      "title": "Fastighets\u00ADsektorn",
       "industryGroups": {
         "equityRealEstateInvestmentTrustsReits": "Equity Real Estate Investment Trusts (REITs)",
         "realEstateManagementDevelopment": "Fastighetsförvaltning och fastighetsutveckling"
@@ -1441,7 +1441,7 @@
     },
     "card": {
       "noData": "Ingen data",
-      "unknownSector": "Okänd bransch",
+      "unknownSector": "Okänd sektor",
       "emissions": "Utsläpp",
       "emissionsChangeRate": "Förändringstakt",
       "emissionsChangeRateInfo": "Förändringstakt för utsläpp jämfört med föregående rapporteringsperiod.",
@@ -1590,8 +1590,8 @@
       }
     },
     "overview": {
-      "unknownSector": "Okänd bransch",
-      "unknownIndustryGroup": "Okänd industrigrupp",
+      "unknownSector": "Okänd sektor",
+      "unknownIndustryGroup": "Okänd branschgrupp",
       "sector": "Sektor",
       "industryGroup": "Branschgrupp",
       "selectYear": "Välj år",
@@ -1637,7 +1637,7 @@
       "category": "Kategori"
     },
     "sectorComparison": {
-      "sectorUnknown": "Okänd bransch",
+      "sectorUnknown": "Okänd sektor",
       "emissionsReduction": "Utsläppsminskning",
       "reportingYears": "Rapporterade år",
       "reportedCategories": "Rapporterade scope 3-kategorier",
