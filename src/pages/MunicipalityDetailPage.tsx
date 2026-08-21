@@ -229,8 +229,7 @@ export function MunicipalityDetailPage() {
 
   return (
     <>
-      {/* Only render SEO when data is available, otherwise Layout will use route-level SEO */}
-      {municipality && <Seo meta={seoMeta} />}
+      <Seo meta={seoMeta} />
 
       <DetailWrapper>
         <DetailHeader

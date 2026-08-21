@@ -4,12 +4,6 @@ import { fetchDynamicRoutes } from "./sitemap/dynamic-routes";
 import { createStaticRoutes } from "./sitemap/static-routes";
 import { buildSitemapXml } from "./sitemap/xml-builder";
 
-// Set NODE_TLS_REJECT_UNAUTHORIZED to allow self-signed certificates during development
-// This is only used during sitemap generation in Node.js environment
-if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-}
-
 export async function generateSitemap(outputPath: string): Promise<void> {
   try {
     const currentDate = new Date().toISOString().split("T")[0];

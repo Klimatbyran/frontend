@@ -1,4 +1,4 @@
-import { execSync } from "child_process";
+import { execFileSync } from "child_process";
 import path from "path";
 import {
   OPENAPI_SCHEMA_URL,
@@ -7,10 +7,17 @@ import {
 
 const schemaUrl = process.argv[2] ?? OPENAPI_SCHEMA_URL;
 const outputPath = path.resolve("src/lib/api-types.ts");
+const allowedSchemaUrls = new Set(Object.values(OPENAPI_SCHEMA_URLS));
+
+if (!allowedSchemaUrls.has(schemaUrl)) {
+  console.error(`Invalid schema URL: ${schemaUrl}`);
+  console.error("Allowed URLs:", [...allowedSchemaUrls].join(", "));
+  process.exit(1);
+}
 
 try {
   console.log(`Fetching OpenAPI schema from: ${schemaUrl}`);
-  execSync(`npx openapi-typescript "${schemaUrl}" -o "${outputPath}"`, {
+  execFileSync("npx", ["openapi-typescript", schemaUrl, "-o", outputPath], {
     stdio: "inherit",
   });
 } catch (error) {
