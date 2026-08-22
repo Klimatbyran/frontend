@@ -3,10 +3,14 @@ import type { RankedCompany } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
-import { getCompanySectorName } from "@/utils/data/industryGrouping";
+import {
+  getCompanyIndustryGroupName,
+  getCompanySectorName,
+} from "@/utils/data/industryGrouping";
 import {
   CompanySector,
   INDUSTRY_GROUP_OPTIONS,
+  IndustryGroupCode,
   IndustryGroupOption,
   SECTORS,
 } from "@/lib/constants/sectors";
@@ -36,6 +40,7 @@ type CompanyFilterParams = {
   sortBy: CompanySortBy;
   sortDirection: SortDirection;
   sectorNames: Record<string, string>;
+  industryGroupNames: Record<string, string>;
 };
 
 function matchesSector(
@@ -51,12 +56,14 @@ function matchesSector(
 
 function matchesIndustryGroup(
   company: RankedCompany,
-  sectors: CompanySector[],
+  industryGroups: IndustryGroupOption[],
 ): boolean {
   return (
-    sectors.includes("all") ||
+    industryGroups.includes("all") ||
     (company.industry?.industryGics?.groupCode != null &&
-      sectors.includes(company.industry?.industryGics?.groupCode ?? ""))
+      industryGroups.includes(
+        company.industry.industryGics.groupCode as IndustryGroupCode,
+      ))
   );
 }
 
@@ -64,6 +71,7 @@ function matchesSearch(
   company: RankedCompany,
   searchQuery: string,
   sectorNames: Record<string, string>,
+  industryGroupNames: Record<string, string>,
 ): boolean {
   const searchTerms = getSearchTerms(searchQuery);
   if (searchTerms.length === 0) {
@@ -72,12 +80,19 @@ function matchesSearch(
 
   const companyName = company.name.toLowerCase();
   const sectorName = getCompanySectorName(company, sectorNames).toLowerCase();
+  const industryGroupName = getCompanyIndustryGroupName(
+    company,
+    industryGroupNames,
+  ).toLocaleLowerCase();
 
   return searchTerms.some((term) => {
     const companyNamePattern = new RegExp(`\\b${term}`, "i");
     const sectorNamePattern = new RegExp(`\\b${term}`, "i");
+    const industryGroupNamePattern = new RegExp(`\\b${term}`, "i");
     return (
-      companyNamePattern.test(companyName) || sectorNamePattern.test(sectorName)
+      companyNamePattern.test(companyName) ||
+      sectorNamePattern.test(sectorName) ||
+      industryGroupNamePattern.test(industryGroupName)
     );
   });
 }
@@ -205,6 +220,7 @@ export function filterAndSortCompanies(
     sortBy,
     sortDirection,
     sectorNames,
+    industryGroupNames,
   } = params;
 
   return companies
@@ -212,7 +228,7 @@ export function filterAndSortCompanies(
       (company) =>
         matchesSector(company, sectors) &&
         matchesIndustryGroup(company, industryGroups) &&
-        matchesSearch(company, searchQuery, sectorNames) &&
+        matchesSearch(company, searchQuery, sectorNames, industryGroupNames) &&
         matchesMeetsParis(company, meetsParisFilter) &&
         companyMatchesCountries(company, selectedCountries),
     )

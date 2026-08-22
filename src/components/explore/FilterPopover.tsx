@@ -50,15 +50,13 @@ export function FilterPopover({
 }: FilterPopoverProps) {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
-  const [expandedGroups, setExpandedGroups] = useState<boolean[]>(
+  const [expandedGroups, setExpandedGroups] = useState<boolean[]>(() =>
     groups.map(() => true),
   );
 
   useEffect(() => {
-    if (search.trim().length > 0) {
-      setExpandedGroups(groups.map(() => true));
-    }
-  }, [groups, search]);
+    setExpandedGroups(groups.map(() => true));
+  }, [groups.length]);
 
   const filteredGroups = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -97,6 +95,8 @@ export function FilterPopover({
     });
   };
 
+  const isSearching = search.trim().length > 0;
+
   return (
     <Popover open={filterOpen} onOpenChange={setFilterOpen}>
       <PopoverTrigger asChild>
@@ -121,10 +121,12 @@ export function FilterPopover({
             className="border-b border-black-1"
           />
           <CommandList className="max-h-[300px]">
-            {filteredGroups.every((g) => g.optionGroups?.length === 0) && (
+            {filteredGroups.length === 0 && (
               <CommandEmpty>{t("filterPopover.noFiltersFound")}</CommandEmpty>
             )}
             {filteredGroups.map((group, i) => {
+              const isExpanded = expandedGroups[i] ?? true;
+
               return (
                 <Fragment key={i}>
                   <CommandGroup
@@ -132,20 +134,28 @@ export function FilterPopover({
                     heading={
                       <button
                         type="button"
-                        className="flex w-full px-2 py-1.5 items-center justify-between cursor-pointer hover:text-white"
+                        className={cn(
+                          "flex w-full px-2 py-1.5 items-center justify-between",
+                          isSearching
+                            ? "cursor-text select-text"
+                            : "cursor-pointer hover:text-white",
+                        )}
                         onClick={() => toggleGroup(i)}
+                        disabled={isSearching}
                       >
                         <span>{group.heading}</span>
-                        <ChevronDown
-                          className={cn(
-                            "h-4 w-4 transition-transform duration-150",
-                            expandedGroups[i] ? "rotate-180" : "rotate-0",
-                          )}
-                        />
+                        {!isSearching && (
+                          <ChevronDown
+                            className={cn(
+                              "h-4 w-4 transition-transform duration-150",
+                              isExpanded ? "rotate-180" : "rotate-0",
+                            )}
+                          />
+                        )}
                       </button>
                     }
                   >
-                    {expandedGroups[i] &&
+                    {(isExpanded || isSearching) &&
                       (
                         group.optionGroups ?? [
                           { title: undefined, options: group.options },

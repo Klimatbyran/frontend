@@ -95,6 +95,7 @@ function useFilteredCompanies(
       typeof useExploreFilters<CompanySortBy>
     >["sortDirection"];
     sectorNames: Record<string, string>;
+    industryGroupNames: Record<string, string>;
   },
 ) {
   return useMemo(
@@ -219,7 +220,7 @@ function useCompanyFilterUiState(
     setMeetsParisFilter: (value: string) => void;
   },
 ) {
-  const { exploreFilters, sectorNames } = options;
+  const { exploreFilters, sectorNames, industryGroupNames } = options;
   const {
     sectors,
     industryGroups,
@@ -238,6 +239,7 @@ function useCompanyFilterUiState(
     sortBy: exploreFilters.sortBy,
     sortDirection: exploreFilters.sortDirection,
     sectorNames,
+    industryGroupNames,
   });
 
   return {
