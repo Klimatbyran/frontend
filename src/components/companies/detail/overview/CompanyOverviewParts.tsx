@@ -89,7 +89,7 @@ export function CompanyOverviewMainStats({
   const meetsParisDisplay = getMeetsParisDisplay(meetsParis, t);
 
   return (
-    <div className="mb-2 md:mb-4 space-y-4 md:space-y-6">
+    <div className="mb-10 md:mb-16 space-y-4 md:space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:gap-16 md:items-center">
         <OverviewStat
           label={

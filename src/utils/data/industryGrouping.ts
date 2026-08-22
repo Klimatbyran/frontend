@@ -17,6 +17,21 @@ export function getCompanyIndustryFromData(
 }
 
 /**
+ * Extract industry group name directly from company data (no translations)
+ * @param company - Company object with industry information
+ * @returns Industry name or undefined
+ */
+export function getCompanyIndustryGroupFromData(
+  company: CompanyWithIndustryGics,
+): string | undefined {
+  const industryGics = company?.industry?.industryGics;
+  if (!industryGics) return undefined;
+
+  // Prefer English, fallback to Swedish
+  return industryGics.en?.groupName || industryGics.sv?.groupName;
+}
+
+/**
  * Get the sector name for a company, using translated names when available
  *
  * @param company - Company object with industry information (accepts any company-like object with optional industry GICS)
@@ -37,6 +52,30 @@ export function getCompanySectorName(
   return (
     getCompanyIndustryFromData(company) ||
     t("companies.overview.unknownSector", "Unknown Sector")
+  );
+}
+
+/**
+ * Get the industry group name for a company, using translated names when available
+ *
+ * @param company - Company object with industry information (accepts any company-like object with optional industry GICS)
+ * @param industryGroupsNames - Map of sector codes to translated names (from useSectorNames hook)
+ * @returns Sector name string
+ */
+export function getCompanyIndustryGroupName(
+  company: CompanyWithIndustryGics,
+  industryGroupNames: Record<string, string>,
+): string {
+  const industryGroupCode = company?.industry?.industryGics?.groupCode;
+
+  if (industryGroupCode && industryGroupCode in industryGroupNames) {
+    return industryGroupNames[industryGroupCode];
+  }
+
+  // Fallback to direct extraction from company data
+  return (
+    getCompanyIndustryGroupFromData(company) ||
+    t("companies.overview.unknownIndustryGroup")
   );
 }
 

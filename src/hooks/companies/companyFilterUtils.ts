@@ -3,9 +3,21 @@ import type { RankedCompany } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
-import { getCompanySectorName } from "@/utils/data/industryGrouping";
-import { CompanySector, SECTORS } from "@/lib/constants/sectors";
-import type { FilterGroup } from "@/components/explore/FilterPopover";
+import {
+  getCompanyIndustryGroupName,
+  getCompanySectorName,
+} from "@/utils/data/industryGrouping";
+import {
+  CompanySector,
+  INDUSTRY_GROUP_OPTIONS,
+  IndustryGroupCode,
+  IndustryGroupOption,
+  SECTORS,
+} from "@/lib/constants/sectors";
+import type {
+  FilterGroup,
+  FilterOptionGroup,
+} from "@/components/explore/FilterPopover";
 import type { CompanySortBy } from "./useCompanySorting";
 import type { SortDirection } from "@/components/explore/SortPopover";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
@@ -21,12 +33,14 @@ type MeetsParisFilter = "all" | "yes" | "no" | "unknown";
 
 type CompanyFilterParams = {
   sectors: CompanySector[];
+  industryGroups: IndustryGroupOption[];
   selectedCountries: CompanyCountryTagSlug[];
   searchQuery: string;
   meetsParisFilter: MeetsParisFilter;
   sortBy: CompanySortBy;
   sortDirection: SortDirection;
   sectorNames: Record<string, string>;
+  industryGroupNames: Record<string, string>;
 };
 
 function matchesSector(
@@ -40,10 +54,24 @@ function matchesSector(
   );
 }
 
+function matchesIndustryGroup(
+  company: RankedCompany,
+  industryGroups: IndustryGroupOption[],
+): boolean {
+  return (
+    industryGroups.includes("all") ||
+    (company.industry?.industryGics?.groupCode != null &&
+      industryGroups.includes(
+        company.industry.industryGics.groupCode as IndustryGroupCode,
+      ))
+  );
+}
+
 function matchesSearch(
   company: RankedCompany,
   searchQuery: string,
   sectorNames: Record<string, string>,
+  industryGroupNames: Record<string, string>,
 ): boolean {
   const searchTerms = getSearchTerms(searchQuery);
   if (searchTerms.length === 0) {
@@ -52,12 +80,19 @@ function matchesSearch(
 
   const companyName = company.name.toLowerCase();
   const sectorName = getCompanySectorName(company, sectorNames).toLowerCase();
+  const industryGroupName = getCompanyIndustryGroupName(
+    company,
+    industryGroupNames,
+  ).toLocaleLowerCase();
 
   return searchTerms.some((term) => {
     const companyNamePattern = new RegExp(`\\b${term}`, "i");
     const sectorNamePattern = new RegExp(`\\b${term}`, "i");
+    const industryGroupNamePattern = new RegExp(`\\b${term}`, "i");
     return (
-      companyNamePattern.test(companyName) || sectorNamePattern.test(sectorName)
+      companyNamePattern.test(companyName) ||
+      sectorNamePattern.test(sectorName) ||
+      industryGroupNamePattern.test(industryGroupName)
     );
   });
 }
@@ -178,19 +213,22 @@ export function filterAndSortCompanies(
 ): RankedCompany[] {
   const {
     sectors,
+    industryGroups,
     selectedCountries,
     searchQuery,
     meetsParisFilter,
     sortBy,
     sortDirection,
     sectorNames,
+    industryGroupNames,
   } = params;
 
   return companies
     .filter(
       (company) =>
         matchesSector(company, sectors) &&
-        matchesSearch(company, searchQuery, sectorNames) &&
+        matchesIndustryGroup(company, industryGroups) &&
+        matchesSearch(company, searchQuery, sectorNames, industryGroupNames) &&
         matchesMeetsParis(company, meetsParisFilter) &&
         companyMatchesCountries(company, selectedCountries),
     )
@@ -219,6 +257,31 @@ function buildSectorFilterGroup(
         setSectors(sectors.filter((s) => s !== value));
       } else {
         setSectors([...sectors, value as CompanySector]);
+      }
+    },
+    selectMultiple: true,
+  };
+}
+
+function buildIndustryGroupFilterGroup(
+  t: TFunction,
+  industryGroupFilterOptionGroups: FilterOptionGroup[],
+  industryGroups: IndustryGroupOption[],
+  setIndustryGroups: (sectors: IndustryGroupOption[]) => void,
+): FilterGroup {
+  return {
+    heading: t("explorePage.companies.industryGroup"),
+    optionGroups: industryGroupFilterOptionGroups,
+    selectedValues: industryGroups,
+    onSelect: (value: string) => {
+      if (value === "all") {
+        setIndustryGroups(["all"]);
+      } else if (industryGroups.includes("all")) {
+        setIndustryGroups([value as IndustryGroupOption]);
+      } else if (industryGroups.includes(value as IndustryGroupOption)) {
+        setIndustryGroups(industryGroups.filter((s) => s !== value));
+      } else {
+        setIndustryGroups([...industryGroups, value as IndustryGroupOption]);
       }
     },
     selectMultiple: true,
@@ -270,24 +333,32 @@ function buildCompanyActiveFilters(
   t: TFunction,
   options: {
     includeSectorFilter: boolean;
+    includeIndustryGroupFilter: boolean;
     sectors: CompanySector[];
+    industryGroups: IndustryGroupOption[];
     selectedCountries: CompanyCountryTagSlug[];
     meetsParisFilter: MeetsParisFilter;
     sectorNames: Record<string, string>;
+    industryGroupNames: Record<string, string>;
     countryNames: Record<CompanyCountryTagSlug, string>;
     setSectors: (sectors: CompanySector[]) => void;
+    setIndustryGroups: (industryGroups: IndustryGroupOption[]) => void;
     setSelectedCountries: (countries: CompanyCountryTagSlug[]) => void;
     setMeetsParisFilter: (value: MeetsParisFilter) => void;
   },
 ): FilterBadge[] {
   const {
     includeSectorFilter,
+    includeIndustryGroupFilter,
     sectors,
+    industryGroups,
     selectedCountries,
     meetsParisFilter,
     sectorNames,
+    industryGroupNames,
     countryNames,
     setSectors,
+    setIndustryGroups,
     setSelectedCountries,
     setMeetsParisFilter,
   } = options;
@@ -298,6 +369,18 @@ function buildCompanyActiveFilters(
           type: "filter" as const,
           label: sectorNames[sector as keyof typeof sectorNames] || sector,
           onRemove: () => setSectors(sectors.filter((s) => s !== sector)),
+        }))
+      : []),
+    ...(includeIndustryGroupFilter && !industryGroups.includes("all")
+      ? industryGroups.map((industryGroup) => ({
+          type: "filter" as const,
+          label:
+            industryGroupNames[industryGroup as keyof typeof sectorNames] ||
+            industryGroup,
+          onRemove: () =>
+            setIndustryGroups(
+              industryGroups.filter((s) => s !== industryGroup),
+            ),
         }))
       : []),
     ...buildCountryActiveFilters({
@@ -336,18 +419,39 @@ export function parseCompanySectors(
   ]) as CompanySector[];
 }
 
+export function parseIndustryGroups(
+  searchParams: URLSearchParams,
+  includeIndustryGroupFilter: boolean,
+): IndustryGroupOption[] {
+  if (!includeIndustryGroupFilter) {
+    return ["all"];
+  }
+
+  return (searchParams
+    .get("industryGroups")
+    ?.split(",")
+    .filter((s) => INDUSTRY_GROUP_OPTIONS.some((g) => g === s)) ?? [
+    "all",
+  ]) as IndustryGroupOption[];
+}
+
 export function buildCompanyFilterUi(
   t: TFunction,
   options: {
     includeSectorFilter: boolean;
+    includeIndustryGroupFilter: boolean;
     sectorOptions: { value: string; label: string }[];
     sectors: CompanySector[];
+    industryGroupFilterOptionGroups: FilterOptionGroup[];
+    industryGroups: IndustryGroupOption[];
     selectedCountries: CompanyCountryTagSlug[];
     availableCountries: CompanyCountryTagSlug[];
     meetsParisFilter: MeetsParisFilter;
     sectorNames: Record<string, string>;
+    industryGroupNames: Record<string, string>;
     countryNames: Record<CompanyCountryTagSlug, string>;
     setSectors: (value: CompanySector[]) => void;
+    setIndustryGroups: (value: IndustryGroupOption[]) => void;
     setSelectedCountries: (countries: CompanyCountryTagSlug[]) => void;
     onCountrySelect: (value: string) => void;
     setMeetsParisFilter: (value: MeetsParisFilter) => void;
@@ -355,14 +459,19 @@ export function buildCompanyFilterUi(
 ) {
   const {
     includeSectorFilter,
+    includeIndustryGroupFilter,
     sectorOptions,
     sectors,
+    industryGroupFilterOptionGroups,
+    industryGroups,
     selectedCountries,
     availableCountries,
     meetsParisFilter,
     sectorNames,
+    industryGroupNames,
     countryNames,
     setSectors,
+    setIndustryGroups,
     setSelectedCountries,
     onCountrySelect,
     setMeetsParisFilter,
@@ -380,18 +489,32 @@ export function buildCompanyFilterUi(
     ...(includeSectorFilter
       ? [buildSectorFilterGroup(t, sectorOptions, sectors, setSectors)]
       : []),
+    ...(includeIndustryGroupFilter
+      ? [
+          buildIndustryGroupFilterGroup(
+            t,
+            industryGroupFilterOptionGroups,
+            industryGroups,
+            setIndustryGroups,
+          ),
+        ]
+      : []),
     ...(countryFilterGroup ? [countryFilterGroup] : []),
     buildCompanyMeetsParisFilterGroup(t, meetsParisFilter, setMeetsParisFilter),
   ];
 
   const activeFilters = buildCompanyActiveFilters(t, {
     includeSectorFilter,
+    includeIndustryGroupFilter,
     sectors,
+    industryGroups,
     selectedCountries,
     meetsParisFilter,
     sectorNames,
+    industryGroupNames,
     countryNames,
     setSectors,
+    setIndustryGroups,
     setSelectedCountries,
     setMeetsParisFilter,
   });

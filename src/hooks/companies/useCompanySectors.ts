@@ -1,5 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { SECTOR_ORDER } from "@/lib/constants/sectors";
+import {
+  INDUSTRY_GROUP_CODES_BY_SECTOR,
+  IndustryGroupCode,
+  SECTOR_ORDER,
+  SectorCode,
+} from "@/lib/constants/sectors";
+import { FilterOptionGroup } from "@/components/explore/FilterPopover";
 
 export const useSectorNames = () => {
   const { t } = useTranslation();
@@ -37,6 +43,60 @@ export const useSectorTitles = () => {
   };
 };
 
+export const useIndustryGroupNames = (): Record<IndustryGroupCode, string> => {
+  const { t } = useTranslation();
+
+  return {
+    "1010": t("sector.energy.industryGroups.energy"),
+    "1510": t("sector.materials.industryGroups.materials"),
+    "2010": t("sector.industrials.industryGroups.capitalGoods"),
+    "2020": t(
+      "sector.industrials.industryGroups.commercialProfessionalServices",
+    ),
+    "2030": t("sector.industrials.industryGroups.transportation"),
+    "2510": t(
+      "sector.consumerDiscretionary.industryGroups.automobilesComponents",
+    ),
+    "2520": t(
+      "sector.consumerDiscretionary.industryGroups.consumerDurablesApparel",
+    ),
+    "2530": t("sector.consumerDiscretionary.industryGroups.consumerServices"),
+    "2550": t(
+      "sector.consumerDiscretionary.industryGroups.consumerDiscretionaryDistributionRetail",
+    ),
+    "3010": t(
+      "sector.consumerStaples.industryGroups.consumerStaplesDistributionRetail",
+    ),
+    "3020": t("sector.consumerStaples.industryGroups.foodBeverageTobacco"),
+    "3030": t("sector.consumerStaples.industryGroups.personalCareProducts"),
+    "3510": t("sector.healthCare.industryGroups.healthCareEquipmentServices"),
+    "3520": t(
+      "sector.healthCare.industryGroups.pharmaceuticalsBiotechnologyLifeSciences",
+    ),
+    "4010": t("sector.financials.industryGroups.banks"),
+    "4020": t("sector.financials.industryGroups.financialServices"),
+    "4030": t("sector.financials.industryGroups.insurance"),
+    "4510": t("sector.informationTechnology.industryGroups.softwareServices"),
+    "4520": t(
+      "sector.informationTechnology.industryGroups.technologyHardwareEquipment",
+    ),
+    "4530": t(
+      "sector.informationTechnology.industryGroups.semiconductorsSemiconductorEquipment",
+    ),
+    "5010": t(
+      "sector.communicationServices.industryGroups.telecommunicationServices",
+    ),
+    "5020": t("sector.communicationServices.industryGroups.mediaEntertainment"),
+    "5510": t("sector.utilities.industryGroups.utilities"),
+    "6010": t(
+      "sector.realEstate.industryGroups.equityRealEstateInvestmentTrustsReits",
+    ),
+    "6020": t(
+      "sector.realEstate.industryGroups.realEstateManagementDevelopment",
+    ),
+  };
+};
+
 // Hook to get sector options for dropdowns (with translated labels)
 export const useSectors = () => {
   const { t } = useTranslation();
@@ -54,4 +114,29 @@ export const useSectors = () => {
   }));
 
   return [allSectorsOption, ...filteredOptions];
+};
+
+// Hook to get industry group options for dropdowns (with translated labels)
+export const useIndustryGroupFilterOptionGroups = (): FilterOptionGroup[] => {
+  const { t } = useTranslation();
+  const industryGroupNames = useIndustryGroupNames();
+  const sectorNames = useSectorNames();
+
+  return [
+    {
+      options: [
+        {
+          value: "all" as const,
+          label: t("explorePage.companies.allIndustryGroups"),
+        },
+      ],
+    },
+    ...Object.entries(INDUSTRY_GROUP_CODES_BY_SECTOR).map((g) => ({
+      title: sectorNames[g[0] as SectorCode],
+      options: g[1].map((o) => ({
+        value: o,
+        label: industryGroupNames[o],
+      })),
+    })),
+  ];
 };

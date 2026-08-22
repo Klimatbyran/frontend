@@ -1,19 +1,25 @@
 import type { TFunction } from "i18next";
+import { createElement, Fragment } from "react";
 import type { RankedCompany } from "@/types/company";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import { getCompanySectorName } from "@/utils/data/industryGrouping";
+import {
+  getCompanyIndustryGroupName,
+  getCompanySectorName,
+} from "@/utils/data/industryGrouping";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
-  type SupportedLanguage,
 } from "@/utils/formatting/localization";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
+import { IndustryGroupCode } from "@/lib/constants/sectors";
+import { SupportedLanguage } from "@/lib/languageDetection";
 
 type TransformCompanyOptions = {
   sectorNames: Record<string, string>;
+  industryGroupNames: Record<IndustryGroupCode, string>;
   isEmissionsAIGenerated: (
     period: RankedCompany["reportingPeriods"][number],
   ) => boolean;
@@ -85,14 +91,26 @@ export function transformCompanyToListCard(
   company: RankedCompany,
   options: TransformCompanyOptions,
 ): ListCardProps {
-  const { sectorNames } = options;
+  const { sectorNames, industryGroupNames } = options;
   const { name, industry, reportingPeriods } = company;
   const latestPeriod = reportingPeriods?.[0];
   const previousPeriod = reportingPeriods?.[1];
+  const sectorName = getCompanySectorName(company, sectorNames);
+  const industryGroupName = getCompanyIndustryGroupName(
+    company,
+    industryGroupNames,
+  );
 
   return {
     name,
-    description: getCompanySectorName(company, sectorNames),
+    description: industry
+      ? createElement(
+          Fragment,
+          null,
+          createElement("span", { className: "font-semibold" }, sectorName),
+          createElement("span", null, ` • ${industryGroupName}`),
+        )
+      : createElement("span", { className: "font-semibold" }, sectorName),
     logoUrl: company.logoUrl,
     variant: "company" as const,
     baseYear: company?.baseYear?.year || null,

@@ -14,6 +14,53 @@ export const SECTOR_NAMES = {
 
 export type SectorCode = keyof typeof SECTOR_NAMES;
 
+export const INDUSTRY_GROUP_CODES = [
+  "1010",
+  "1510",
+  "2010",
+  "2020",
+  "2030",
+  "2510",
+  "2520",
+  "2530",
+  "2550",
+  "3010",
+  "3020",
+  "3030",
+  "3510",
+  "3520",
+  "4010",
+  "4020",
+  "4030",
+  "4510",
+  "4520",
+  "4530",
+  "5010",
+  "5020",
+  "5510",
+  "6010",
+  "6020",
+] as const;
+
+export type IndustryGroupCode = (typeof INDUSTRY_GROUP_CODES)[number];
+
+export const INDUSTRY_GROUP_CODES_BY_SECTOR: Record<
+  SectorCode,
+  IndustryGroupCode[]
+> = {
+  "10": ["1010"],
+  "15": ["1510"],
+  "20": ["2010", "2020", "2030"],
+  "25": ["2510", "2520", "2530", "2550"],
+  "30": ["3010", "3020", "3030"],
+  "35": ["3510", "3520"],
+  "40": ["4010", "4020", "4030"],
+  "45": ["4510", "4520", "4530"],
+  "50": ["5010", "5020"],
+  "55": ["5510"],
+  "60": ["6010", "6020"],
+} as const;
+
 export const SECTOR_ORDER: SectorCode[] = [
   "10",
   "15",
@@ -37,3 +84,7 @@ export const SECTORS = [
 ] as const;
 
 export type CompanySector = (typeof SECTORS)[number]["value"];
+
+export const INDUSTRY_GROUP_OPTIONS = ["all", ...INDUSTRY_GROUP_CODES] as const;
+
+export type IndustryGroupOption = (typeof INDUSTRY_GROUP_OPTIONS)[number];

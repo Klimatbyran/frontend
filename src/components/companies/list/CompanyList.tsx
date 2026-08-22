@@ -13,7 +13,10 @@ interface CompanyListProps {
 export function CompanyList({ companies }: CompanyListProps) {
   const { t } = useTranslation();
 
-  const companyFilters = useCompanyFilters(companies);
+  const companyFilters = useCompanyFilters(companies, {
+    includeSectorFilter: false,
+    includeIndustryGroupFilter: true,
+  });
   const { filteredCompanies } = companyFilters;
   const sortOptions = useSortOptions();
 

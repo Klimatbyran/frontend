@@ -1,9 +1,10 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { useListCardHeader } from "@/hooks/useListCardHeader";
 
 export interface ListCardHeaderProps {
   name: string;
-  description: string;
+  description: ReactNode;
   meetsParis: boolean | null;
   meetsParisTranslationKey: string;
   logoUrl?: string | null;
@@ -34,7 +35,14 @@ export function ListCardHeader({
       <div className="flex justify-between gap-1 items-start">
         <div className="min-w-0 flex-1">
           <h2 className="text-3xl font-light">{name}</h2>
-          <p className="text-grey text-sm line-clamp-2 min-h-[40px]">
+          <p
+            className={cn(
+              "text-grey text-sm line-clamp-2",
+              !isMunicipality && !isRegion
+                ? "min-h-[45px] md:min-h-[40px]"
+                : "min-h-[40px]",
+            )}
+          >
             {description}
           </p>
           <div className="flex items-center gap-2 text-grey text-lg">

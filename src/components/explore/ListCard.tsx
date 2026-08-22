@@ -6,7 +6,7 @@ import { ListCardBody } from "./ListCardBody";
 
 export interface ListCardProps {
   name: string;
-  description: string;
+  description: React.ReactNode;
   linkTo: string;
   logoUrl?: string | null;
   meetsParis: boolean | null;
