@@ -165,8 +165,17 @@ function ContentRoutes({ basePath }: { basePath: string }) {
         element={<DataDownloadPage />}
       />
       <Route
-        path={`${basePath}/data-download/database-download-2025`}
+        path={`${basePath}/data-download/database-download-2024`}
         element={<DownloadsPage />}
+      />
+      <Route
+        path={`${basePath}/data-download/database-download-2025`}
+        element={
+          <Navigate
+            to={`${basePath}/data-download/database-download-2024`}
+            replace
+          />
+        }
       />
     </>
   );

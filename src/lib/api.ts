@@ -205,6 +205,20 @@ export async function downloadMunicipalities(
   return data;
 }
 
+export async function downloadRegions(
+  format: "csv" | "json" | "xlsx" = "json",
+) {
+  const { data, error } = await client.GET("/regions/export", {
+    params: {
+      query: { type: format },
+    },
+    parseAs: "blob",
+  });
+
+  if (error) throw error;
+  return data;
+}
+
 let reportingYearsCache: string[] | null = null;
 
 export async function getReportingYears(): Promise<string[]> {

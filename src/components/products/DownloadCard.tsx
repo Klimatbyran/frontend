@@ -2,16 +2,22 @@ import { LucideIcon, Download } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/contexts/ToastContext";
-import { downloadCompanies, downloadMunicipalities } from "@/lib/api";
+import {
+  downloadCompanies,
+  downloadMunicipalities,
+  downloadRegions,
+} from "@/lib/api";
+import type { DownloadDataType } from "@/components/products/DownloadControls";
+
+/** Matches API free database download year (export always returns this year). */
+const FREE_DATABASE_DOWNLOAD_YEAR = "2024";
 
 interface DownloadCardProps {
   icon: LucideIcon;
   title: string;
   description: string;
   format: "csv" | "json" | "xlsx";
-  selectedType: "companies" | "municipalities";
-  selectedYear: string;
-  years: string[];
+  selectedType: DownloadDataType;
 }
 
 export function DownloadCard({
@@ -20,7 +26,6 @@ export function DownloadCard({
   description,
   format,
   selectedType,
-  selectedYear,
 }: DownloadCardProps) {
   const { t } = useTranslation();
   const { showToast } = useToast();
@@ -32,8 +37,10 @@ export function DownloadCard({
 
       const response =
         selectedType === "companies"
-          ? await downloadCompanies(format, selectedYear || undefined)
-          : await downloadMunicipalities(format);
+          ? await downloadCompanies(format, FREE_DATABASE_DOWNLOAD_YEAR)
+          : selectedType === "municipalities"
+            ? await downloadMunicipalities(format)
+            : await downloadRegions(format);
 
       if (!(response instanceof Blob)) {
         throw new Error("Expected Blob response");
@@ -47,7 +54,6 @@ export function DownloadCard({
         });
         downloadBlob(blob, format);
       } else {
-        // For CSV and XLSX, use the blob directly from the API
         downloadBlob(response, format);
       }
     } catch (error) {
@@ -58,12 +64,11 @@ export function DownloadCard({
     }
   };
 
-  // Helper function to handle the actual download
   const downloadBlob = (blob: Blob, format: string) => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${selectedType}_${selectedYear || "all"}.${format}`;
+    a.download = `${selectedType}_${FREE_DATABASE_DOWNLOAD_YEAR}.${format}`;
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);

@@ -212,9 +212,9 @@
     },
     "freeAccess": {
       "title": "Free Database Access",
-      "description": "Access our comprehensive climate database through bi-yearly data dumps, perfect for research and analysis.",
-      "export": "Database exports are updated Feb 1 & Aug 1 each year",
-      "data": "Corporate and municipality climate data",
+      "description": "Access our climate database through a free download, perfect for research and analysis.",
+      "export": "Static extract of 2024 climate data",
+      "data": "Corporate, municipality, and regional climate data",
       "license": "Free to use for both commercial and non-commercial purposes",
       "requestAccess": "Get Data"
     },
@@ -252,7 +252,7 @@
   },
   "downloadsPage": {
     "title": "Download Database",
-    "description": "Access our climate database. Download emissions data for companies or municipalities in your preferred format.",
+    "description": "Download Klimatkollen's free climate database for companies, municipalities, or regions in your preferred format.",
     "csvFormat": "CSV Format",
     "csvDescription": "Download the database as a CSV file, ideal for use in Python, R, Excel, or Google Sheets. All fields are comma-separated.",
     "excelFormat": "Excel Format",
@@ -262,8 +262,7 @@
     "selectType": "Select Data Type",
     "companies": "Companies",
     "municipalities": "Municipalities",
-    "selectYear": "Select Year",
-    "allYears": "All Years",
+    "regions": "Regions",
     "download": "Download",
     "downloadError": "Failed to download file. Please try again.",
     "downloadInformation": "Download Information",
@@ -279,7 +278,8 @@
     "usageLicenseDescription": "The downloaded data is licenced under the Creative Commons Attribution 4.0 International Licence (CC BY 4.0). You are free to use, modify, and share the data for both commercial and non-commercial purposes, as long as you credit Klimatkollen and include a link to the licence.",
     "loading": "Loading...",
     "downloadCompanies": "Download Company Data",
-    "downloadMunicipalities": "Download Municipality Data"
+    "downloadMunicipalities": "Download Municipality Data",
+    "downloadRegions": "Download Region Data"
   },
   "insightsPage": {
     "title": "Articles",

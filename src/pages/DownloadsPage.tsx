@@ -1,11 +1,13 @@
 import { FileSpreadsheet, FileText } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, useCallback, type ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DownloadCard } from "@/components/products/DownloadCard";
 import { DownloadInfoSection } from "@/components/products/DownloadInfoSection";
-import { DownloadControls } from "@/components/products/DownloadControls";
-import { getReportingYears } from "@/lib/api";
+import {
+  DownloadControls,
+  type DownloadDataType,
+} from "@/components/products/DownloadControls";
 
 interface InfoItem {
   title: string;
@@ -14,23 +16,12 @@ interface InfoItem {
 
 function DownloadsPage() {
   const { t } = useTranslation();
-  const [selectedType, setSelectedType] = useState<
-    "companies" | "municipalities"
-  >("companies");
-  const [selectedYear, setSelectedYear] = useState<string>("");
-  const [years, setYears] = useState<string[]>([]);
+  const [selectedType, setSelectedType] =
+    useState<DownloadDataType>("companies");
 
-  useEffect(() => {
-    getReportingYears().then(setYears);
-  }, []);
-
-  const handleSelectionChange = (
-    type: "companies" | "municipalities",
-    year: string | null,
-  ) => {
+  const handleSelectionChange = useCallback((type: DownloadDataType) => {
     setSelectedType(type);
-    setSelectedYear(year || "");
-  };
+  }, []);
 
   const infoItems: InfoItem[] = [
     {
@@ -61,10 +52,7 @@ function DownloadsPage() {
       />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <DownloadControls
-          onSelectionChange={handleSelectionChange}
-          years={years}
-        />
+        <DownloadControls onSelectionChange={handleSelectionChange} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <DownloadCard
@@ -73,8 +61,6 @@ function DownloadsPage() {
             description={t("downloadsPage.csvDescription")}
             format="csv"
             selectedType={selectedType}
-            selectedYear={selectedYear}
-            years={years}
           />
 
           <DownloadCard
@@ -83,8 +69,6 @@ function DownloadsPage() {
             description={t("downloadsPage.excelDescription")}
             format="xlsx"
             selectedType={selectedType}
-            selectedYear={selectedYear}
-            years={years}
           />
 
           <DownloadCard
@@ -93,8 +77,6 @@ function DownloadsPage() {
             description={t("downloadsPage.jsonDescription")}
             format="json"
             selectedType={selectedType}
-            selectedYear={selectedYear}
-            years={years}
           />
         </div>
 

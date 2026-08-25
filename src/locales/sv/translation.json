@@ -212,9 +212,9 @@
     },
     "freeAccess": {
       "title": "Gratis databasåtkomst",
-      "description": "Få tillgång till vår kompletta klimatdatabas genom bi-årliga datadumpningar, perfekt för forskning och analys.",
-      "export": "Databas dumpas var Feb 1 & Aug 1 varje år",
-      "data": "Företag och kommuners klimatdata",
+      "description": "Få tillgång till vår klimatdatabas genom en gratis nedladdning, perfekt för forskning och analys.",
+      "export": "Statiskt utdrag med klimatdata för 2024",
+      "data": "Klimatdata för företag, kommuner och regioner",
       "license": "Gratis att använda för både kommersiellt och icke-kommersiellt bruk",
       "requestAccess": "Hämta data"
     },
@@ -252,7 +252,7 @@
   },
   "downloadsPage": {
     "title": "Ladda ner databasen",
-    "description": "Få tillgång till vår klimatdatabas. Ladda ner utsläppsdata för företag eller kommuner i det format du föredrar.",
+    "description": "Ladda ner Klimatkollens gratis klimatdatabas för företag, kommuner eller regioner i det format du föredrar.",
     "csvFormat": "CSV-format",
     "csvDescription": "Ladda ner databasen som en CSV-fil, perfekt för användning i Python, R, Excel eller Google Kalkylark. Alla fält är kommaseparerade.",
     "excelFormat": "Excel-format",
@@ -262,13 +262,12 @@
     "selectType": "Välj datatyp",
     "companies": "Företag",
     "municipalities": "Kommuner",
-    "selectYear": "Välj år",
-    "allYears": "Alla år",
+    "regions": "Regioner",
     "download": "Ladda ner",
     "downloadError": "Kunde inte ladda ner filen. Vänligen försök igen.",
     "downloadInformation": "Nedladdningsinformation",
     "dataStructure": "Datastruktur",
-    "dataStructureDescription": "Alla nedladdningsformat innehåller samma databasstruktur med konsekventa fältnamn och datatyper. Varje format inkluderar en datadictionary som förklarar fält och deras betydelse.",
+    "dataStructureDescription": "Alla nedladdningsformat innehåller samma databasstruktur med konsekventa fältnamn och datatyper. För detaljer om enskilda fält, se vår API-dokumentation.",
     "fileSizeAndFormat": "Filstorlek och format",
     "fileSizeAndFormatDescription": {
       "csv": "CSV: UTF-8-kodad med kommaseparerade värden. Det här är det minsta formatet och öppnas snabbt i de flesta kalkylprogram. Perfekt för generell analys och kompatibelt med Excel, Google Kalkylark, Python och R.",
@@ -279,7 +278,8 @@
     "usageLicenseDescription": "Den nedladdade datan är licensierad under Creative Commons Erkännande 4.0 Internationell (CC BY 4.0). Du får använda, ändra och dela datan för både kommersiella och icke-kommersiella syften, så länge du anger Klimatkollen som källa och länkar till licensen.",
     "loading": "Laddar...",
     "downloadCompanies": "Ladda ner företagsdata",
-    "downloadMunicipalities": "Ladda ner kommundata"
+    "downloadMunicipalities": "Ladda ner kommundata",
+    "downloadRegions": "Ladda ner regionsdata"
   },
   "insightsPage": {
     "title": "Artiklar",
