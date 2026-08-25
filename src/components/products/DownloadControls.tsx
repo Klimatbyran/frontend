@@ -10,7 +10,8 @@ interface DownloadControlsProps {
 
 export function DownloadControls({ onSelectionChange }: DownloadControlsProps) {
   const { t } = useTranslation();
-  const [selectedType, setSelectedType] = useState<DownloadDataType>("companies");
+  const [selectedType, setSelectedType] =
+    useState<DownloadDataType>("companies");
 
   useEffect(() => {
     onSelectionChange(selectedType);
