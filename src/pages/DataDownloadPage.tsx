@@ -87,27 +87,26 @@ function DataDownloadPage() {
     useState<DownloadDataType>("companies");
 
   const highlightIcons = EXTRACT_HIGHLIGHT_ICONS[selectedType];
-  const infoItems: Array<{ title: string; description: string | ReactNode }> =
-    [
-      {
-        title: t("downloadsPage.dataStructure"),
-        description: t("downloadsPage.dataStructureDescription"),
-      },
-      {
-        title: t("downloadsPage.fileSizeAndFormat"),
-        description: (
-          <div className="space-y-3">
-            <p>{t("downloadsPage.fileSizeAndFormatDescription.csv")}</p>
-            <p>{t("downloadsPage.fileSizeAndFormatDescription.excel")}</p>
-            <p>{t("downloadsPage.fileSizeAndFormatDescription.json")}</p>
-          </div>
-        ),
-      },
-      {
-        title: t("downloadsPage.usageLicense"),
-        description: t("downloadsPage.usageLicenseDescription"),
-      },
-    ];
+  const infoItems: Array<{ title: string; description: string | ReactNode }> = [
+    {
+      title: t("downloadsPage.dataStructure"),
+      description: t("downloadsPage.dataStructureDescription"),
+    },
+    {
+      title: t("downloadsPage.fileSizeAndFormat"),
+      description: (
+        <div className="space-y-3">
+          <p>{t("downloadsPage.fileSizeAndFormatDescription.csv")}</p>
+          <p>{t("downloadsPage.fileSizeAndFormatDescription.excel")}</p>
+          <p>{t("downloadsPage.fileSizeAndFormatDescription.json")}</p>
+        </div>
+      ),
+    },
+    {
+      title: t("downloadsPage.usageLicense"),
+      description: t("downloadsPage.usageLicenseDescription"),
+    },
+  ];
 
   const pageTitle = `${t("dataDownloadPage.title")} - Klimatkollen`;
   const pageDescription = t("dataDownloadPage.description");
