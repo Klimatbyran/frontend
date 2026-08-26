@@ -11,7 +11,6 @@ import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
 import { MunicipalityAndRegionDataOverviewContent } from "./content/MunicipalityAndRegionDataOverview";
 import { MunicipalityKPIsContent } from "./content/MunicipalityKPIsContent";
-import { NationDataOverviewContent } from "./content/NationDataOverview";
 import { NationEmissionsLayersContent } from "./content/NationEmissionsLayersContent";
 import { ParisAlignmentMethodContent } from "./content/OnTrackForParisContent";
 import { TrendlineContent } from "./content/TrendLineMethodContent";
@@ -33,7 +32,6 @@ const METHOD_CONTENT_COMPONENTS: Record<string, ComponentType> = {
   calculations: CalculationsContent,
   companyDataCollection: DataCollectionProcessContent,
   relatableNumbers: RelatableNumbersContent,
-  nationDataOverview: NationDataOverviewContent,
   nationEmissionsLayers: NationEmissionsLayersContent,
 };
 

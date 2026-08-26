@@ -32,20 +32,28 @@ import {
   STORY_Y_AXIS_WIDTH,
   StoryChartYAxisUnit,
 } from "@/components/nation/story/storyChartAxis";
-import type { SupportedLanguage } from "@/lib/languageDetection";
+import type { TooltipProps } from "recharts";
 
-/** E-commerce estimate shown in the onion legend only – not a chart layer. */
-const E_COMMERCE_MTON = 0.326;
-
-function formatDeltaMton(delta: number, language: SupportedLanguage): string {
-  if (delta < 1) {
-    const rounded = Math.round(delta * 10) / 10;
-    return new Intl.NumberFormat(language === "sv" ? "sv-SE" : "en-GB", {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    }).format(rounded);
-  }
-  return formatMton(delta, language, 0);
+function NationStoryChartTooltip({
+  active,
+  payload,
+  label,
+  unit,
+  customFormatter,
+}: TooltipProps<number, string> & {
+  unit: string;
+  customFormatter: (value: number) => string;
+}) {
+  const reversedPayload = payload ? [...payload].reverse() : undefined;
+  return (
+    <ChartTooltip
+      active={active}
+      payload={reversedPayload}
+      label={label}
+      unit={unit}
+      customFormatter={customFormatter}
+    />
+  );
 }
 
 const LAYERS = [
@@ -79,30 +87,11 @@ const LAYERS = [
 const STACKED_STEP_VH = 70;
 
 const LAYER_COUNT = LAYERS.length;
-/** One extra scroll step after all layers: legend values + total, no caption. */
+/** One extra scroll step after all layers: names-only legend, no caption. */
 const STEP_COUNT = LAYER_COUNT + 1;
 
-type LegendEntry =
-  | { kind: "layer"; layer: (typeof LAYERS)[number] }
-  | { kind: "eCommerce" };
-
-function buildLegendEntries(
-  visibleLayers: number,
-  includeECommerce: boolean,
-): LegendEntry[] {
-  const entries: LegendEntry[] = LAYERS.slice(0, visibleLayers).map(
-    (layer) => ({ kind: "layer", layer }),
-  );
-  if (!includeECommerce) return entries;
-
-  const consumptionIdx = entries.findIndex(
-    (entry) =>
-      entry.kind === "layer" && entry.layer.dataKey === "consumptionAbroad",
-  );
-  if (consumptionIdx >= 0) {
-    entries.splice(consumptionIdx + 1, 0, { kind: "eCommerce" });
-  }
-  return entries;
+function buildLegendEntries(visibleLayers: number) {
+  return LAYERS.slice(0, visibleLayers);
 }
 
 interface NationStackedChartProps {
@@ -134,28 +123,20 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
     STEP_COUNT,
     STACKED_STEP_VH,
   );
-  const isSummaryStep = reducedMotion || step >= LAYER_COUNT;
   const visibleLayers = reducedMotion
     ? LAYER_COUNT
     : Math.min(step + 1, LAYER_COUNT);
   const showCaption = !reducedMotion && step < LAYER_COUNT;
 
-  // Mobile has no floating tooltip (it covers the chart); instead the legend
-  // becomes a readout while the reader scrubs a finger across the chart,
-  // showing that year's stacking arithmetic (47, +4, +60, +48 = total). It
-  // lingers briefly after the finger lifts, then returns to names-only.
+  // Mobile: legend becomes a KPI readout while scrubbing the chart.
   const [scrubYear, setScrubYear] = useState<number | null>(null);
   const scrubClearRef = useRef<number | null>(null);
   const latestPoint = data.at(-1);
   const scrubbing = isMobile && scrubYear !== null;
-  const showLegendValues = scrubbing || isSummaryStep;
+  const showLegendValues = scrubbing;
   const readoutYear = scrubYear ?? latestYear;
   const readoutPoint =
     data.find((point) => point.year === readoutYear) ?? latestPoint;
-  const readoutTotal = LAYERS.slice(0, visibleLayers).reduce(
-    (sum, layer) => sum + (readoutPoint?.[layer.dataKey] ?? 0),
-    0,
-  );
   const handleScrub = ({ activeLabel }: { activeLabel?: string | number }) => {
     const year = Number(activeLabel);
     if (!Number.isFinite(year)) return;
@@ -171,7 +152,6 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   );
 
   // Height caps so phones with browser chrome still fit the title, caption,
-  // chart and legend inside the pinned stage (tighter on iPhone SE).
   const chartHeight = isMobile
     ? isStoryShort
       ? "min(160px, 20svh)"
@@ -220,11 +200,13 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
   );
   const unitLabel = t("nation.story.unit.mtonCo2e");
   const legendEntries = useMemo(
-    () => buildLegendEntries(visibleLayers, isSummaryStep),
-    [visibleLayers, isSummaryStep],
+    () => buildLegendEntries(visibleLayers),
+    [visibleLayers],
   );
-  const eCommerceLabel = t("nation.story.journey.step4.label");
-  const eCommerceDelta = formatDeltaMton(E_COMMERCE_MTON, currentLanguage);
+  const readoutLegendEntries = useMemo(
+    () => [...legendEntries].reverse(),
+    [legendEntries],
+  );
 
   return (
     <section
@@ -331,14 +313,13 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                   // assumes centered labels and drops the edge-anchored 1990
                   interval={0}
                 />
-                {/* Mobile keeps the vertical cursor line for scrub feedback but
-                    renders no tooltip box – the legend below is the readout. */}
+                {/* Mobile hides the tooltip box so the chart stays readable. */}
                 <Tooltip
                   content={
                     isMobile ? (
                       () => null
                     ) : (
-                      <ChartTooltip
+                      <NationStoryChartTooltip
                         unit={t("nation.story.unit.mton")}
                         customFormatter={(value) =>
                           formatMton(value, currentLanguage, 1)
@@ -397,7 +378,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
             </ResponsiveContainer>
           </div>
 
-          {/* Legend: compact names-only view, crossfading to a readout on summary/scrub. */}
+          {/* Legend: names-only key; mobile scrub shows KPI readout (stack-top-first). */}
           <div className="mt-3 story-short:mt-1.5 md:mt-5 border-t border-white/10 pt-2.5 story-short:pt-1.5 md:pt-3">
             <AnimatePresence mode="wait" initial={false}>
               {showLegendValues ? (
@@ -418,45 +399,24 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                     </span>
                   </p>
                   <div className="flex flex-col gap-y-1.5 story-short:gap-y-1">
-                    {legendEntries.map((entry) => {
-                      if (entry.kind === "eCommerce") {
-                        return (
-                          <span
-                            key="e-commerce"
-                            className={`flex items-center gap-2 md:gap-2.5 w-full ${NATION_STORY_TYPE.meta}`}
-                          >
-                            <span
-                              className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full shrink-0 border border-white/20"
-                              style={{
-                                backgroundColor: NATION_STORY_COLORS.eCommerce,
-                              }}
-                            />
-                            <span className={NATION_STORY_TEXT.secondary}>
-                              {eCommerceLabel}
-                            </span>
-                            <span className="ml-auto text-white tabular-nums">
-                              +{eCommerceDelta}
-                            </span>
-                          </span>
-                        );
-                      }
-                      const layerIndex = LAYERS.indexOf(entry.layer);
+                    {readoutLegendEntries.map((layer) => {
+                      const layerIndex = LAYERS.indexOf(layer);
                       return (
                         <span
-                          key={entry.layer.dataKey}
+                          key={layer.dataKey}
                           className={`flex items-center gap-2 md:gap-2.5 w-full ${NATION_STORY_TYPE.meta}`}
                         >
                           <span
                             className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full shrink-0"
-                            style={{ backgroundColor: entry.layer.color }}
+                            style={{ backgroundColor: layer.color }}
                           />
                           <span className={NATION_STORY_TEXT.secondary}>
-                            {t(entry.layer.translationKey)}
+                            {t(layer.translationKey)}
                           </span>
                           <span className="ml-auto text-white tabular-nums">
                             {layerIndex === 0 ? "" : "+"}
                             {formatMton(
-                              readoutPoint?.[entry.layer.dataKey] ?? 0,
+                              readoutPoint?.[layer.dataKey] ?? 0,
                               currentLanguage,
                               0,
                             )}
@@ -465,16 +425,6 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                       );
                     })}
                   </div>
-                  {visibleLayers > 1 && (
-                    <p
-                      className={`flex items-center justify-between border-t border-white/10 pt-1.5 ${NATION_STORY_TYPE.meta} text-white font-medium`}
-                    >
-                      <span>{t("nation.story.journey.totalLabel")}</span>
-                      <span className="tabular-nums">
-                        {formatMton(readoutTotal, currentLanguage, 0)}
-                      </span>
-                    </p>
-                  )}
                 </motion.div>
               ) : (
                 <motion.div
@@ -496,7 +446,7 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                     </p>
                   )}
                   <div className="flex flex-col gap-y-1.5 story-short:gap-y-1 md:flex-row md:flex-wrap md:items-center md:gap-x-8">
-                    {LAYERS.slice(0, visibleLayers).map((layer) => (
+                    {readoutLegendEntries.map((layer) => (
                       <span
                         key={layer.dataKey}
                         className={`flex items-center gap-2 md:gap-2.5 ${NATION_STORY_TYPE.meta}`}

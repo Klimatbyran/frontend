@@ -22,7 +22,6 @@ import {
   NATION_BASELINE_YEAR,
   type NationStoryMetrics,
 } from "@/utils/data/nationStoryMetrics";
-import type { SupportedLanguage } from "@/lib/languageDetection";
 import {
   Dialog,
   DialogContent,
@@ -55,20 +54,6 @@ const CHART_LAYERS = [
     translationKey: "nation.story.graph.biogenic",
   },
 ];
-
-function formatRecapDeltaMton(
-  delta: number,
-  language: SupportedLanguage,
-): string {
-  if (delta < 1) {
-    const rounded = Math.round(delta * 10) / 10;
-    return new Intl.NumberFormat(language === "sv" ? "sv-SE" : "en-GB", {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    }).format(rounded);
-  }
-  return formatMton(delta, language, 0);
-}
 
 const RECAP_LEGEND_CLASS = `w-full border-t border-white/10 pt-3 mt-1 space-y-1.5 ${NATION_STORY_TYPE.meta}`;
 const RECAP_DIALOG_LEGEND_CLASS = `w-full shrink-0 border-t border-white/10 pt-2 space-y-1 ${NATION_STORY_TYPE.meta}`;
@@ -118,128 +103,68 @@ function RecapLegendRow({
   );
 }
 
-function OnionRecapLegend({
-  metrics,
-  compact = false,
-}: {
-  metrics: NationStoryMetrics;
-  compact?: boolean;
-}) {
+function OnionRecapLegend({ compact = false }: { compact?: boolean }) {
   const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
 
-  const { rows, total } = useMemo(() => {
-    const territorial = metrics.territorialLatestMton;
-    const production = metrics.productionLatestMton;
-    const consumption = metrics.consumptionLatestMton;
-    const biogenic = metrics.biogenicLatestMton;
-
-    const steps = [
-      {
-        labelKey: "nation.story.journey.step1.label",
-        color: NATION_STORY_COLORS.territorial,
-        delta: territorial,
-      },
-      {
-        labelKey: "nation.story.journey.step2.label",
-        color: NATION_STORY_COLORS.production,
-        delta: production - territorial,
-      },
-      {
-        labelKey: "nation.story.journey.step3.label",
-        color: NATION_STORY_COLORS.consumption,
-        delta: consumption,
-      },
-      {
-        labelKey: "nation.story.journey.step4.label",
-        color: NATION_STORY_COLORS.eCommerce,
-        delta: E_COMMERCE_MTON,
-        borderedDot: true,
-      },
-      {
-        labelKey: "nation.story.journey.step5.label",
-        color: NATION_STORY_COLORS.biogenic,
-        delta: biogenic,
-      },
-    ];
-
-    return {
-      rows: steps,
-      total: production + consumption + E_COMMERCE_MTON + biogenic,
-    };
-  }, [metrics]);
+  const rows = [
+    {
+      key: "step1",
+      labelKey: "nation.story.journey.step1.label",
+      color: NATION_STORY_COLORS.territorial,
+    },
+    {
+      key: "step2",
+      labelKey: "nation.story.journey.step2.label",
+      color: NATION_STORY_COLORS.production,
+    },
+    {
+      key: "step3",
+      labelKey: "nation.story.journey.step3.label",
+      color: NATION_STORY_COLORS.consumption,
+    },
+    {
+      key: "step4",
+      labelKey: "nation.story.journey.step4.label",
+      color: NATION_STORY_COLORS.eCommerce,
+      borderedDot: true,
+    },
+    {
+      key: "step5",
+      labelKey: "nation.story.journey.step5.label",
+      color: NATION_STORY_COLORS.biogenic,
+    },
+  ];
 
   return (
     <div className={compact ? RECAP_DIALOG_LEGEND_CLASS : RECAP_LEGEND_CLASS}>
-      <p className="text-white tabular-nums font-medium">
-        {metrics.latestYear}
-      </p>
       <div className={cn("flex flex-col", compact ? "gap-y-1" : "gap-y-1.5")}>
-        {rows.map((row, index) => (
+        {[...rows].reverse().map((row) => (
           <RecapLegendRow
-            key={row.labelKey}
+            key={row.key}
             color={row.color}
             borderedDot={row.borderedDot}
             label={t(row.labelKey)}
-            value={`${index === 0 ? "" : "+"}${formatRecapDeltaMton(row.delta, currentLanguage)}`}
           />
         ))}
       </div>
-      <RecapLegendRow
-        total
-        label={t("nation.story.journey.totalLabel")}
-        value={formatMton(total, currentLanguage, 0)}
-      />
     </div>
   );
 }
 
 function ChartRecapLegend({ compact = false }: { compact?: boolean }) {
   const { t } = useTranslation();
-  const eCommerceLabel = t("nation.story.journey.step4.label");
 
-  const layersBeforeBiogenic = CHART_LAYERS.filter(
-    (layer) => layer.dataKey !== "biogenic",
-  );
-  const biogenicLayer = CHART_LAYERS.find(
-    (layer) => layer.dataKey === "biogenic",
-  );
-
-  const legendRows = [
-    ...layersBeforeBiogenic.map((layer) => ({
-      key: layer.dataKey,
-      color: layer.color,
-      label: t(layer.translationKey),
-      borderedDot: false,
-    })),
-    {
-      key: "e-commerce",
-      color: NATION_STORY_COLORS.eCommerce,
-      label: eCommerceLabel,
-      borderedDot: true,
-    },
-    ...(biogenicLayer
-      ? [
-          {
-            key: biogenicLayer.dataKey,
-            color: biogenicLayer.color,
-            label: t(biogenicLayer.translationKey),
-            borderedDot: false,
-          },
-        ]
-      : []),
-  ];
+  const legendRows = [...CHART_LAYERS].reverse().map((layer) => ({
+    key: layer.dataKey,
+    color: layer.color,
+    label: t(layer.translationKey),
+  }));
 
   return (
     <div className={compact ? RECAP_DIALOG_LEGEND_CLASS : RECAP_LEGEND_CLASS}>
       <div className={cn("flex flex-col", compact ? "gap-y-1" : "gap-y-1.5")}>
         {legendRows.map((row) => (
-          <RecapLegendRow
-            key={row.key}
-            color={row.color}
-            borderedDot={row.borderedDot}
-            label={row.label}
-          />
+          <RecapLegendRow key={row.key} color={row.color} label={row.label} />
         ))}
       </div>
     </div>
@@ -678,12 +603,10 @@ function BathtubRecapSnapshot({
 function RecapPanel({
   item,
   layout,
-  metrics,
   onExpand,
 }: {
   item: RecapItem;
   layout: "mobile" | "desktop";
-  metrics: NationStoryMetrics;
   onExpand: () => void;
 }) {
   const { t } = useTranslation();
@@ -722,7 +645,7 @@ function RecapPanel({
           {item.renderVisual(false)}
         </RecapVisualFrame>
         {showMobileLegend && item.key === "onion" && (
-          <OnionRecapLegend metrics={metrics} compact />
+          <OnionRecapLegend compact />
         )}
         {showMobileLegend && item.key === "chart" && (
           <ChartRecapLegend compact />
@@ -812,7 +735,6 @@ export function ConclusionStoryRecap({ metrics }: ConclusionStoryRecapProps) {
             key={item.key}
             item={item}
             layout="mobile"
-            metrics={metrics}
             onExpand={() => setExpandedKey(item.key)}
           />
         ))}
@@ -829,7 +751,6 @@ export function ConclusionStoryRecap({ metrics }: ConclusionStoryRecapProps) {
             key={item.key}
             item={item}
             layout="desktop"
-            metrics={metrics}
             onExpand={() => setExpandedKey(item.key)}
           />
         ))}
@@ -871,9 +792,7 @@ export function ConclusionStoryRecap({ metrics }: ConclusionStoryRecapProps) {
                 >
                   {expandedItem.renderVisual(true)}
                 </RecapVisualFrame>
-                {expandedItem.key === "onion" && (
-                  <OnionRecapLegend metrics={metrics} compact />
-                )}
+                {expandedItem.key === "onion" && <OnionRecapLegend compact />}
                 {expandedItem.key === "chart" && <ChartRecapLegend compact />}
               </div>
             </>

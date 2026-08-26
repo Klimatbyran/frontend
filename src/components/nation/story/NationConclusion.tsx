@@ -5,6 +5,7 @@ import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
 import { NATION_STORY_TYPE } from "@/components/nation/story/nationStoryColors";
 import { StoryPreviousSectionButton } from "@/components/nation/story/StoryNavChrome";
+import { StoryShareLinks } from "@/components/nation/story/StoryShareLinks";
 import { ConclusionStoryRecap } from "@/components/nation/story/ConclusionStoryRecap";
 
 type NationConclusionProps = {
@@ -45,6 +46,16 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
       >
         {t("nation.story.conclusion.shareCta")}
       </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.4, delay: 0.24 }}
+        className="mt-5 story-short:mt-4 md:mt-6"
+      >
+        <StoryShareLinks />
+      </motion.div>
 
       <div className="max-w-3xl mx-auto text-center space-y-4 story-short:space-y-2.5 md:space-y-5 border-t border-white/10 mt-8 md:mt-10 lg:mt-12 pt-8 md:pt-9 lg:pt-10">
         <motion.p
