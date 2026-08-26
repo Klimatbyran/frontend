@@ -1,9 +1,4 @@
-import {
-  Building2,
-  FileSpreadsheet,
-  FileText,
-  MapPin,
-} from "lucide-react";
+import { Building2, FileSpreadsheet, FileText, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState, useCallback, type ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
