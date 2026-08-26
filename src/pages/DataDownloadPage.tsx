@@ -1,90 +1,74 @@
-import {
-  Database,
-  Lock,
-  FileText,
-  Building2,
-  MapPin,
-  Server,
-} from "lucide-react";
+import { Building2, FileSpreadsheet, FileText, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useCallback, type ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { ProductCard } from "@/components/products/ProductCard";
-import { RequestAccessModal } from "@/components/products/RequestAccessModal";
+import { DownloadCard } from "@/components/products/DownloadCard";
+import { DownloadInfoSection } from "@/components/products/DownloadInfoSection";
+import {
+  DownloadControls,
+  type DownloadDataType,
+} from "@/components/products/DownloadControls";
+import { UnearthCta } from "@/components/products/UnearthCta";
 import { PageSEO } from "@/components/SEO/PageSEO";
+import { useLanguage } from "@/components/LanguageProvider";
+
+interface InfoItem {
+  title: string;
+  description: string | ReactNode;
+}
 
 interface DataCategoryProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  isFirst?: boolean;
-  isLast?: boolean;
 }
 
-const DataCategory = ({
-  icon,
-  title,
-  description,
-  isFirst = false,
-  isLast = false,
-}: DataCategoryProps) => (
-  <div
-    className={`bg-black-2 p-6 border border-black-2 hover:border-black-1 transition-colors ${
-      isFirst
-        ? "first:rounded-t-lg last:rounded-b-lg md:first:rounded-l-lg md:first:rounded-tr-none md:last:rounded-r-lg md:last:rounded-bl-none"
-        : ""
-    } ${
-      isLast
-        ? "first:rounded-t-lg last:rounded-b-lg md:first:rounded-l-lg md:first:rounded-tr-none md:last:rounded-r-lg md:last:rounded-bl-none"
-        : ""
-    }`}
-  >
-    <div className="flex items-center gap-3 mb-3 text-white">
-      {icon}
-      <h3 className="text-lg font-light">{title}</h3>
+function DataCategory({ icon, title, description }: DataCategoryProps) {
+  return (
+    <div className="border border-black-2 bg-black-2 p-6 transition-colors hover:border-black-1 first:rounded-t-lg last:rounded-b-lg md:first:rounded-l-lg md:first:rounded-tr-none md:last:rounded-r-lg md:last:rounded-bl-none">
+      <div className="mb-3 flex items-center gap-3 text-white">
+        {icon}
+        <h3 className="text-lg font-light">{title}</h3>
+      </div>
+      <p className="text-grey">{description}</p>
     </div>
-    <p className="text-grey">{description}</p>
-  </div>
-);
+  );
+}
 
 function DataDownloadPage() {
   const { t } = useTranslation();
-  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+  const { currentLanguage } = useLanguage();
+  const [selectedType, setSelectedType] =
+    useState<DownloadDataType>("companies");
 
-  const freeFeatures = [
+  const handleSelectionChange = useCallback((type: DownloadDataType) => {
+    setSelectedType(type);
+  }, []);
+
+  const infoItems: InfoItem[] = [
     {
-      icon: <Server className="h-5 w-5 text-blue-4" />,
-      text: t("dataDownloadPage.freeAccess.export"),
+      title: t("downloadsPage.dataStructure"),
+      description: t("downloadsPage.dataStructureDescription"),
     },
     {
-      icon: <Building2 className="h-5 w-5 text-blue-4" />,
-      text: t("dataDownloadPage.freeAccess.data"),
+      title: t("downloadsPage.fileSizeAndFormat"),
+      description: (
+        <div className="space-y-4">
+          <p>{t("downloadsPage.fileSizeAndFormatDescription.csv")}</p>
+          <p>{t("downloadsPage.fileSizeAndFormatDescription.excel")}</p>
+          <p>{t("downloadsPage.fileSizeAndFormatDescription.json")}</p>
+        </div>
+      ),
     },
     {
-      icon: <Lock className="h-5 w-5 text-blue-4" />,
-      text: t("dataDownloadPage.freeAccess.license"),
+      title: t("downloadsPage.usageLicense"),
+      description: t("downloadsPage.usageLicenseDescription"),
     },
   ];
 
-  const freeActions = (
-    <>
-      <button
-        onClick={() => setIsRequestModalOpen(true)}
-        className="inline-flex items-center justify-center rounded-md bg-blue-4 px-6 py-3 text-base font-medium text-white shadow-lg hover:bg-blue-3 w-full transition-all"
-      >
-        {t("dataDownloadPage.freeAccess.requestAccess")}
-      </button>
-      <RequestAccessModal
-        isOpen={isRequestModalOpen}
-        onClose={() => setIsRequestModalOpen(false)}
-      />
-    </>
-  );
-
-  // Prepare SEO data
-  const canonicalUrl = "https://klimatkollen.se/products";
   const pageTitle = `${t("dataDownloadPage.title")} - Klimatkollen`;
   const pageDescription = t("dataDownloadPage.description");
+  const canonicalUrl = `https://klimatkollen.se/${currentLanguage}/data-download`;
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -103,42 +87,50 @@ function DataDownloadPage() {
         structuredData={structuredData}
       />
 
-      <div className="max-w-[1200px] mx-auto">
+      <div className="mx-auto max-w-[1200px]">
         <PageHeader
           title={t("dataDownloadPage.title")}
           description={t("dataDownloadPage.description")}
         />
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1">
-            {/* Free Version */}
-            <ProductCard
-              title={t("dataDownloadPage.freeAccess.title")}
-              description={t("dataDownloadPage.freeAccess.description")}
-              icon={<Database className="h-6 w-6 text-blue-5" />}
-              features={freeFeatures}
-              actions={freeActions}
-              bgColor="bg-blue-1"
-              borderColor="border-blue-4"
-              hoverBorderColor="border-blue-5"
-              textColor="text-blue-5"
-              iconBgColor="bg-blue-2"
+          <DownloadControls onSelectionChange={handleSelectionChange} />
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <DownloadCard
+              icon={FileText}
+              title={t("downloadsPage.csvFormat")}
+              description={t("downloadsPage.csvDescription")}
+              format="csv"
+              selectedType={selectedType}
+            />
+            <DownloadCard
+              icon={FileSpreadsheet}
+              title={t("downloadsPage.excelFormat")}
+              description={t("downloadsPage.excelDescription")}
+              format="xlsx"
+              selectedType={selectedType}
+            />
+            <DownloadCard
+              icon={FileText}
+              title={t("downloadsPage.jsonFormat")}
+              description={t("downloadsPage.jsonDescription")}
+              format="json"
+              selectedType={selectedType}
             />
           </div>
 
-          {/* Data Overview Section */}
-          <div className="mx-auto max-w-7xl mt-16 mb-16">
-            <h2 className="text-2xl font-light text-white text-center mb-8">
+          <div className="mx-auto mb-8 mt-16 max-w-7xl">
+            <h2 className="mb-8 text-center text-2xl font-light text-white">
               {t("dataDownloadPage.dataOverview.title")}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+            <div className="grid grid-cols-1 gap-0 md:grid-cols-3">
               <DataCategory
                 icon={<Building2 className="h-5 w-5 text-grey" />}
                 title={t("dataDownloadPage.dataOverview.corporate.title")}
                 description={t(
                   "dataDownloadPage.dataOverview.corporate.description",
                 )}
-                isFirst
               />
               <DataCategory
                 icon={<FileText className="h-5 w-5 text-grey" />}
@@ -153,10 +145,16 @@ function DataDownloadPage() {
                 description={t(
                   "dataDownloadPage.dataOverview.municipality.description",
                 )}
-                isLast
               />
             </div>
           </div>
+
+          <UnearthCta />
+
+          <DownloadInfoSection
+            title={t("downloadsPage.downloadInformation")}
+            items={infoItems}
+          />
         </div>
       </div>
     </>

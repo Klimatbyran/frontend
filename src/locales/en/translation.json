@@ -198,67 +198,39 @@
     }
   },
   "dataDownloadPage": {
-    "title": "Access Climate Impact Data",
-    "description": "Get access to Klimatkollen's climate database, featuring corporate emissions data, sustainability reports, and municipal environmental metrics.",
-    "viewDocumentation": "View API Documentation →",
-    "apiAccess": {
-      "title": "Direct API Access",
-      "description": "Real-time access to our climate database through our documented REST API with comprehensive endpoints.",
-      "realtime": "Real-time data access",
-      "documentation": "Full API documentation",
-      "support": "Priority support",
-      "contactPricing": "Contact for Pricing",
-      "viewDocs": "View API Documentation"
-    },
-    "freeAccess": {
-      "title": "Free Database Access",
-      "description": "Access a portion of our climate database through a free download, perfect for research and analysis.",
-      "export": "Static extract of 2024 climate data",
-      "data": "Corporate, municipality, and regional climate data",
-      "license": "Free to use for both commercial and non-commercial purposes",
-      "requestAccess": "Get Data"
-    },
+    "title": "Download Database Extract",
+    "description": "Download a free extract of Klimatkollen's climate data for companies, municipalities, or regions in your preferred format.",
     "dataOverview": {
-      "title": "Available Data",
+      "title": "What's in the extract",
       "corporate": {
         "title": "Corporate Emissions Data",
-        "description": "Access to detailed emissions data from Swedish companies, including scope 1, 2, and 3 emissions, as well as supply chain data."
+        "description": "Emissions data from companies, including scope 1, 2, and 3 where available."
       },
       "reports": {
         "title": "Sustainability Reports",
-        "description": "Access to sustainability reports from Swedish companies, including annual reports and sustainability reports."
+        "description": "Links to sustainability and annual reports connected to the company data."
       },
       "municipality": {
-        "title": "Municipality Climate Data",
-        "description": "Access to climate data from Swedish municipalities, including emissions data, climate plans, and climate actions."
+        "title": "Municipality & Region Climate Data",
+        "description": "Climate data for Swedish municipalities and regions, including emissions and climate plans."
       }
     },
-    "requestAccess": {
-      "title": "Request Access",
-      "description": "Request access to the Klimatkollen API to get real-time access to our climate database through our documented REST API with comprehensive endpoints.",
-      "emailLabel": "Email",
-      "reasonLabel": "Reason for data access",
-      "submit": "Request Access",
-      "cancel": "Cancel",
-      "successMessage": "Access request sent successfully",
-      "errorMessage": "Failed to send access request",
-      "reasonWork": "Work",
-      "reasonHobby": "Hobby",
-      "reasonCuriosity": "Curiosity",
-      "errorGeneric": "An error occurred. Please try again later.",
-      "errorEmptyEmail": "Please enter a valid email address.",
-      "errorInvalidEmail": "Please enter a valid email address."
+    "unearthCta": {
+      "title": "Need more data points or API access?",
+      "body": "Unearth offers an expanded climate data universe beyond this free extract — more companies and years, international coverage, dataset analysis for the climate transition, and API access for integration into your own tools and reports.",
+      "action": "Contact Unearth",
+      "emailSubject": "Unearth – Klimatkollen data download"
     }
   },
   "downloadsPage": {
-    "title": "Download Database",
+    "title": "Download Database Extract",
     "description": "Download a free extract of Klimatkollen's climate data for companies, municipalities, or regions in your preferred format.",
     "csvFormat": "CSV Format",
-    "csvDescription": "Download the database as a CSV file, ideal for use in Python, R, Excel, or Google Sheets. All fields are comma-separated.",
+    "csvDescription": "Download the database extract as a CSV file, ideal for use in Python, R, Excel, or Google Sheets. All fields are comma-separated.",
     "excelFormat": "Excel Format",
-    "excelDescription": "Download the database in Excel (XLSX) format, perfect for analysis in Microsoft Excel or Google Sheets. All fields are preserved in spreadsheet structure.",
+    "excelDescription": "Download the database extract in Excel (XLSX) format, perfect for analysis in Microsoft Excel or Google Sheets. All fields are preserved in spreadsheet structure.",
     "jsonFormat": "JSON Format",
-    "jsonDescription": "Download the database in JSON format, ideal for developers and data analysis in tools like Python or R. Structured for easy parsing and programmatic access.",
+    "jsonDescription": "Download the database extract in JSON format, ideal for developers and data analysis in tools like Python or R. Structured for easy parsing and programmatic access.",
     "selectType": "Select Data Type",
     "companies": "Companies",
     "municipalities": "Municipalities",

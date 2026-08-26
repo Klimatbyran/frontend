@@ -198,67 +198,39 @@
     }
   },
   "dataDownloadPage": {
-    "title": "Få tillgång till klimatdata",
-    "description": "Få tillgång till Klimatkollens klimatdatabas, innehållande företagens utsläpp, hållbarhetsrapporter och kommunens klimatdata.",
-    "viewDocumentation": "Visa API-dokumentation →",
-    "apiAccess": {
-      "title": "Direkt API-åtkomst",
-      "description": "Direktåtkomst i realtid till vår klimatdatabas via vårt dokumenterade REST API och endpoints.",
-      "realtime": "Realtidsdataåtkomst",
-      "documentation": "Fullständig API-dokumentation",
-      "support": "Prioriterat stöd",
-      "contactPricing": "Kontakta för priser",
-      "viewDocs": "Visa API-dokumentation"
-    },
-    "freeAccess": {
-      "title": "Gratis databasåtkomst",
-      "description": "Få tillgång till en del av vår klimatdatabas genom en gratis nedladdning, perfekt för forskning och analys.",
-      "export": "Statiskt utdrag med klimatdata för 2024",
-      "data": "Klimatdata för företag, kommuner och regioner",
-      "license": "Gratis att använda för både kommersiellt och icke-kommersiellt bruk",
-      "requestAccess": "Hämta data"
-    },
+    "title": "Ladda ner databasutdraget",
+    "description": "Ladda ner ett gratis utdrag av Klimatkollens klimatdata för företag, kommuner eller regioner i det format du föredrar.",
     "dataOverview": {
-      "title": "Tillgänglig data",
+      "title": "Vad ingår i utdraget",
       "corporate": {
         "title": "Företagens klimatdata",
-        "description": "Tillgång till detaljerad utsläppdata från svenska företag, inklusive scope 1, 2 och 3 utsläpp, samt värdekedjauppgifter."
+        "description": "Utsläppsdata från företag, inklusive scope 1, 2 och 3 där det finns tillgängligt."
       },
       "reports": {
         "title": "Hållbarhetsrapporter",
-        "description": "Tillgång till hållbarhetsrapporter från svenska företag, inklusive årsredovisningar och hållbarhetsrapporter."
+        "description": "Länkar till hållbarhets- och årsredovisningar kopplade till företagsdatan."
       },
       "municipality": {
-        "title": "Kommunens klimatdata",
-        "description": "Tillgång till klimatdata från svenska kommuner, inklusive emissionsdata, klimatplaner och klimatåtgärder."
+        "title": "Kommun- och regionklimatdata",
+        "description": "Klimatdata för svenska kommuner och regioner, inklusive utsläpp och klimatplaner."
       }
     },
-    "requestAccess": {
-      "title": "Begär åtkomst",
-      "description": "Begär åtkomst till Klimatkollens API för att få realtidsåtkomst till vår klimatdatabas via vår dokumenterade REST API och endpoints.",
-      "emailLabel": "E-post",
-      "reasonLabel": "Anledning till datatillgång",
-      "submit": "Begär åtkomst",
-      "cancel": "Avbryt",
-      "successMessage": "Begäran skickades",
-      "errorMessage": "Kunde inte skicka begäran",
-      "reasonWork": "Arbete",
-      "reasonHobby": "Hobby",
-      "reasonCuriosity": "Nyfikenhet",
-      "errorGeneric": "Ett fel uppstod. Vänligen försök igen senare.",
-      "errorEmptyEmail": "Vänligen fyll i en giltig e-postadress.",
-      "errorInvalidEmail": "Vänligen fyll i en giltig e-postadress."
+    "unearthCta": {
+      "title": "Behöver du fler datapunkter eller API-åtkomst?",
+      "body": "Unearth erbjuder ett utökat klimatdatauniversum utöver det här gratisutdraget — fler bolag och år, internationell täckning, analys av dataset med fokus på klimatomställningen, samt API-åtkomst för integration i era egna verktyg och rapporter.",
+      "action": "Kontakta Unearth",
+      "emailSubject": "Unearth – Klimatkollens datanedladdning"
     }
   },
   "downloadsPage": {
-    "title": "Ladda ner databasen",
+    "title": "Ladda ner databasutdraget",
     "description": "Ladda ner ett gratis utdrag av Klimatkollens klimatdata för företag, kommuner eller regioner i det format du föredrar.",
     "csvFormat": "CSV-format",
-    "csvDescription": "Ladda ner databasen som en CSV-fil, perfekt för användning i Python, R, Excel eller Google Kalkylark. Alla fält är kommaseparerade.",
+    "csvDescription": "Ladda ner databasutdraget som en CSV-fil, perfekt för användning i Python, R, Excel eller Google Kalkylark. Alla fält är kommaseparerade.",
     "excelFormat": "Excel-format",
-    "excelDescription": "Ladda ner databasen i Excel-format (XLSX), perfekt för analys i Microsoft Excel eller Google Kalkylark. Alla fält behåller sin kalkylbladsstruktur.",
+    "excelDescription": "Ladda ner databasutdraget i Excel-format (XLSX), perfekt för analys i Microsoft Excel eller Google Kalkylark. Alla fält behåller sin kalkylbladsstruktur.",
     "jsonFormat": "JSON-format",
-    "jsonDescription": "Ladda ner databasen i JSON-format, perfekt för utvecklare och dataanalys i verktyg som Python eller R. Strukturerad för enkel tolkning och programmatisk åtkomst.",
+    "jsonDescription": "Ladda ner databasutdraget i JSON-format, perfekt för utvecklare och dataanalys i verktyg som Python eller R. Strukturerad för enkel tolkning och programmatisk åtkomst.",
     "selectType": "Välj datatyp",
     "companies": "Företag",
     "municipalities": "Kommuner",
