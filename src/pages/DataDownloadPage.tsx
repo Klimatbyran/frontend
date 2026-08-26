@@ -1,4 +1,12 @@
-import { Building2, FileSpreadsheet, FileText, MapPin } from "lucide-react";
+import {
+  Building2,
+  Database,
+  FileSpreadsheet,
+  FileText,
+  Lock,
+  MapPin,
+  Server,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState, useCallback, type ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -8,6 +16,7 @@ import {
   DownloadControls,
   type DownloadDataType,
 } from "@/components/products/DownloadControls";
+import { ProductCard } from "@/components/products/ProductCard";
 import { UnearthCta } from "@/components/products/UnearthCta";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -44,6 +53,21 @@ function DataDownloadPage() {
   const handleSelectionChange = useCallback((type: DownloadDataType) => {
     setSelectedType(type);
   }, []);
+
+  const freeFeatures = [
+    {
+      icon: <Server className="h-5 w-5 text-blue-4" />,
+      text: t("dataDownloadPage.freeAccess.export"),
+    },
+    {
+      icon: <Building2 className="h-5 w-5 text-blue-4" />,
+      text: t("dataDownloadPage.freeAccess.data"),
+    },
+    {
+      icon: <Lock className="h-5 w-5 text-blue-4" />,
+      text: t("dataDownloadPage.freeAccess.license"),
+    },
+  ];
 
   const infoItems: InfoItem[] = [
     {
@@ -94,31 +118,43 @@ function DataDownloadPage() {
         />
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <DownloadControls onSelectionChange={handleSelectionChange} />
+          <ProductCard
+            title={t("dataDownloadPage.freeAccess.title")}
+            description={t("dataDownloadPage.freeAccess.description")}
+            icon={<Database className="h-6 w-6 text-blue-5" />}
+            features={freeFeatures}
+            bgColor="bg-blue-1"
+            borderColor="border-blue-4"
+            hoverBorderColor="border-blue-5"
+            textColor="text-blue-5"
+            iconBgColor="bg-blue-2"
+          >
+            <DownloadControls onSelectionChange={handleSelectionChange} />
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <DownloadCard
-              icon={FileText}
-              title={t("downloadsPage.csvFormat")}
-              description={t("downloadsPage.csvDescription")}
-              format="csv"
-              selectedType={selectedType}
-            />
-            <DownloadCard
-              icon={FileSpreadsheet}
-              title={t("downloadsPage.excelFormat")}
-              description={t("downloadsPage.excelDescription")}
-              format="xlsx"
-              selectedType={selectedType}
-            />
-            <DownloadCard
-              icon={FileText}
-              title={t("downloadsPage.jsonFormat")}
-              description={t("downloadsPage.jsonDescription")}
-              format="json"
-              selectedType={selectedType}
-            />
-          </div>
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+              <DownloadCard
+                icon={FileText}
+                title={t("downloadsPage.csvFormat")}
+                description={t("downloadsPage.csvDescription")}
+                format="csv"
+                selectedType={selectedType}
+              />
+              <DownloadCard
+                icon={FileSpreadsheet}
+                title={t("downloadsPage.excelFormat")}
+                description={t("downloadsPage.excelDescription")}
+                format="xlsx"
+                selectedType={selectedType}
+              />
+              <DownloadCard
+                icon={FileText}
+                title={t("downloadsPage.jsonFormat")}
+                description={t("downloadsPage.jsonDescription")}
+                format="json"
+                selectedType={selectedType}
+              />
+            </div>
+          </ProductCard>
 
           <div className="mx-auto mb-8 mt-16 max-w-7xl">
             <h2 className="mb-8 text-center text-2xl font-light text-white">

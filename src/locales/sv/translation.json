@@ -200,6 +200,13 @@
   "dataDownloadPage": {
     "title": "Ladda ner databasutdraget",
     "description": "Ladda ner ett gratis utdrag av Klimatkollens klimatdata för företag, kommuner eller regioner i det format du föredrar.",
+    "freeAccess": {
+      "title": "Gratis databasutdrag",
+      "description": "Få tillgång till en del av vår klimatdatabas genom en gratis nedladdning, perfekt för forskning och analys.",
+      "export": "Statiskt utdrag med klimatdata för 2024",
+      "data": "Klimatdata för företag, kommuner och regioner",
+      "license": "Gratis att använda för både kommersiellt och icke-kommersiellt bruk"
+    },
     "dataOverview": {
       "title": "Vad ingår i utdraget",
       "corporate": {

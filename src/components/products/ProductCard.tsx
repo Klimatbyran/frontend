@@ -21,7 +21,8 @@ export interface ProductCardProps {
     icon: React.ReactNode;
     text: string;
   }>;
-  actions: React.ReactNode;
+  actions?: React.ReactNode;
+  children?: React.ReactNode;
   bgColor: string;
   borderColor: string;
   hoverBorderColor: string;
@@ -35,6 +36,7 @@ export const ProductCard = ({
   icon,
   features,
   actions,
+  children,
   bgColor,
   borderColor,
   hoverBorderColor,
@@ -61,6 +63,7 @@ export const ProductCard = ({
         />
       ))}
     </ul>
-    <div className="mt-8 space-y-4">{actions}</div>
+    {children && <div className="mt-8">{children}</div>}
+    {actions && <div className="mt-8 space-y-4">{actions}</div>}
   </div>
 );

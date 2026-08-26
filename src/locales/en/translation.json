@@ -200,6 +200,13 @@
   "dataDownloadPage": {
     "title": "Download Database Extract",
     "description": "Download a free extract of Klimatkollen's climate data for companies, municipalities, or regions in your preferred format.",
+    "freeAccess": {
+      "title": "Free Database Extract",
+      "description": "Access a portion of our climate database through a free download, perfect for research and analysis.",
+      "export": "Static extract of 2024 climate data",
+      "data": "Corporate, municipality, and regional climate data",
+      "license": "Free to use for both commercial and non-commercial purposes"
+    },
     "dataOverview": {
       "title": "What's in the extract",
       "corporate": {
