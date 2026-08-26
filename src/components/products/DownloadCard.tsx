@@ -86,7 +86,7 @@ export function DownloadCard({
   };
 
   return (
-    <div className="flex h-full flex-col space-y-6 rounded-level-2 bg-black-1 p-6 transition-all duration-300 hover:bg-[#1a1a1a] hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] md:p-8">
+    <div className="flex h-full flex-col space-y-6 rounded-level-2 bg-black-1 p-6 md:p-8">
       <div className="flex items-center gap-3">
         <div className="rounded-full bg-black-2 p-3">
           <Icon className="h-5 w-5 text-blue-2" />
