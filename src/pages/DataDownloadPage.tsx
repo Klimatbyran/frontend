@@ -110,10 +110,7 @@ function DataDownloadPage() {
           </ul>
 
           <div className="mb-8 max-w-md border-t border-black-1 pt-8">
-            <DownloadControls
-              value={selectedType}
-              onChange={setSelectedType}
-            />
+            <DownloadControls value={selectedType} onChange={setSelectedType} />
           </div>
 
           <div className="mb-8">
