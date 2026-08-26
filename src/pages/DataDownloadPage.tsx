@@ -2,9 +2,7 @@ import {
   Building2,
   FileSpreadsheet,
   FileText,
-  Lock,
   MapPin,
-  Server,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState, useCallback, type ReactNode } from "react";
@@ -24,26 +22,6 @@ interface InfoItem {
   description: string | ReactNode;
 }
 
-interface DataCategoryProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-function DataCategory({ icon, title, description }: DataCategoryProps) {
-  return (
-    <div className="rounded-level-1 bg-black-2 p-6">
-      <div className="mb-3 flex items-start gap-3">
-        <div className="rounded-full bg-black-1 p-3">{icon}</div>
-        <div>
-          <h3 className="mb-2 text-lg font-medium text-white">{title}</h3>
-          <p className="text-grey">{description}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function DataDownloadPage() {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -54,20 +32,23 @@ function DataDownloadPage() {
     setSelectedType(type);
   }, []);
 
-  const freeFeatures = [
+  const extractHighlights = [
     {
-      icon: <Server className="h-4 w-4 text-blue-3" />,
-      text: t("dataDownloadPage.freeAccess.export"),
+      icon: <Building2 className="h-5 w-5 text-blue-3" />,
+      title: t("dataDownloadPage.dataOverview.corporate.title"),
+      description: t("dataDownloadPage.dataOverview.corporate.description"),
     },
     {
-      icon: <Building2 className="h-4 w-4 text-blue-3" />,
-      text: t("dataDownloadPage.freeAccess.data"),
+      icon: <FileText className="h-5 w-5 text-blue-3" />,
+      title: t("dataDownloadPage.dataOverview.reports.title"),
+      description: t("dataDownloadPage.dataOverview.reports.description"),
     },
     {
-      icon: <Lock className="h-4 w-4 text-blue-3" />,
-      text: t("dataDownloadPage.freeAccess.license"),
+      icon: <MapPin className="h-5 w-5 text-blue-3" />,
+      title: t("dataDownloadPage.dataOverview.municipality.title"),
+      description: t("dataDownloadPage.dataOverview.municipality.description"),
     },
-  ];
+  ] as const;
 
   const infoItems: InfoItem[] = [
     {
@@ -117,25 +98,38 @@ function DataDownloadPage() {
           description={t("dataDownloadPage.description")}
         />
 
-        <div className="mt-2 mb-10 rounded-level-1 bg-black-2 p-6 md:p-8">
+        <section className="mb-12 rounded-level-1 bg-black-2 p-6 md:p-8">
           <h2 className="mb-2 text-xl font-medium text-white">
             {t("dataDownloadPage.freeAccess.title")}
           </h2>
-          <p className="mb-6 max-w-3xl text-grey">
+          <p className="mb-4 max-w-3xl text-grey">
             {t("dataDownloadPage.freeAccess.description")}
           </p>
-          <ul className="grid gap-3 sm:grid-cols-3">
-            {freeFeatures.map((feature) => (
-              <li
-                key={feature.text}
-                className="flex items-start gap-3 rounded-lg bg-black-1/60 px-4 py-3 text-sm text-grey"
-              >
-                <span className="mt-0.5 shrink-0">{feature.icon}</span>
-                <span>{feature.text}</span>
-              </li>
-            ))}
+          <ul className="mb-8 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
+            <li className="flex items-center gap-2 text-sm text-grey">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-3" />
+              {t("dataDownloadPage.freeAccess.export")}
+            </li>
+            <li className="flex items-center gap-2 text-sm text-grey">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-3" />
+              {t("dataDownloadPage.freeAccess.license")}
+            </li>
           </ul>
-        </div>
+
+          <div className="grid grid-cols-1 gap-6 border-t border-black-1 pt-8 md:grid-cols-3">
+            {extractHighlights.map((item) => (
+              <div key={item.title} className="flex items-start gap-3">
+                <div className="rounded-full bg-black-1 p-3">{item.icon}</div>
+                <div>
+                  <h3 className="mb-1 text-base font-medium text-white">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-grey">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         <section className="mb-16">
           <DownloadControls onSelectionChange={handleSelectionChange} />
@@ -160,35 +154,6 @@ function DataDownloadPage() {
               description={t("downloadsPage.jsonDescription")}
               format="json"
               selectedType={selectedType}
-            />
-          </div>
-        </section>
-
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-light text-white">
-            {t("dataDownloadPage.dataOverview.title")}
-          </h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <DataCategory
-              icon={<Building2 className="h-5 w-5 text-blue-3" />}
-              title={t("dataDownloadPage.dataOverview.corporate.title")}
-              description={t(
-                "dataDownloadPage.dataOverview.corporate.description",
-              )}
-            />
-            <DataCategory
-              icon={<FileText className="h-5 w-5 text-blue-3" />}
-              title={t("dataDownloadPage.dataOverview.reports.title")}
-              description={t(
-                "dataDownloadPage.dataOverview.reports.description",
-              )}
-            />
-            <DataCategory
-              icon={<MapPin className="h-5 w-5 text-blue-3" />}
-              title={t("dataDownloadPage.dataOverview.municipality.title")}
-              description={t(
-                "dataDownloadPage.dataOverview.municipality.description",
-              )}
             />
           </div>
         </section>

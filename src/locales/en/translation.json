@@ -202,24 +202,22 @@
     "description": "Download a free extract of Klimatkollen's climate data for companies, municipalities, or regions in your preferred format.",
     "freeAccess": {
       "title": "Free Database Extract",
-      "description": "Access a portion of our climate database through a free download, perfect for research and analysis.",
-      "export": "Static extract of 2024 climate data",
-      "data": "Corporate, municipality, and regional climate data",
-      "license": "Free to use for both commercial and non-commercial purposes"
+      "description": "A portion of Klimatkollen's climate database for research and analysis — companies, municipalities, and regions.",
+      "export": "Static 2024 data",
+      "license": "Free for commercial and non-commercial use"
     },
     "dataOverview": {
-      "title": "What's in the extract",
       "corporate": {
-        "title": "Corporate Emissions Data",
-        "description": "Emissions data from companies, including scope 1, 2, and 3 where available."
+        "title": "Corporate emissions",
+        "description": "Scope 1, 2, and 3 where available."
       },
       "reports": {
-        "title": "Sustainability Reports",
-        "description": "Links to sustainability and annual reports connected to the company data."
+        "title": "Sustainability reports",
+        "description": "Links to annual and sustainability reports."
       },
       "municipality": {
-        "title": "Municipality & Region Climate Data",
-        "description": "Climate data for Swedish municipalities and regions, including emissions and climate plans."
+        "title": "Municipalities & regions",
+        "description": "Emissions data and climate plans."
       }
     },
     "unearthCta": {

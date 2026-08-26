@@ -202,24 +202,22 @@
     "description": "Ladda ner ett gratis utdrag av Klimatkollens klimatdata för företag, kommuner eller regioner i det format du föredrar.",
     "freeAccess": {
       "title": "Gratis databasutdrag",
-      "description": "Få tillgång till en del av vår klimatdatabas genom en gratis nedladdning, perfekt för forskning och analys.",
-      "export": "Statiskt utdrag med klimatdata för 2024",
-      "data": "Klimatdata för företag, kommuner och regioner",
-      "license": "Gratis att använda för både kommersiellt och icke-kommersiellt bruk"
+      "description": "En del av Klimatkollens klimatdatabas för forskning och analys — företag, kommuner och regioner.",
+      "export": "Statisk data för 2024",
+      "license": "Gratis för kommersiellt och icke-kommersiellt bruk"
     },
     "dataOverview": {
-      "title": "Vad ingår i utdraget",
       "corporate": {
-        "title": "Företagens klimatdata",
-        "description": "Utsläppsdata från företag, inklusive scope 1, 2 och 3 där det finns tillgängligt."
+        "title": "Företagsutsläpp",
+        "description": "Scope 1, 2 och 3 där det finns tillgängligt."
       },
       "reports": {
         "title": "Hållbarhetsrapporter",
-        "description": "Länkar till hållbarhets- och årsredovisningar kopplade till företagsdatan."
+        "description": "Länkar till års- och hållbarhetsredovisningar."
       },
       "municipality": {
-        "title": "Kommun- och regionklimatdata",
-        "description": "Klimatdata för svenska kommuner och regioner, inklusive utsläpp och klimatplaner."
+        "title": "Kommuner och regioner",
+        "description": "Utsläppsdata och klimatplaner."
       }
     },
     "unearthCta": {
