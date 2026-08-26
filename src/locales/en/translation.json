@@ -202,22 +202,56 @@
     "description": "Download a free extract of Klimatkollen's climate data for companies, municipalities, or regions in your preferred format.",
     "freeAccess": {
       "title": "Free Database Extract",
-      "description": "A portion of Klimatkollen's climate database for research and analysis — companies, municipalities, and regions.",
+      "description": "A portion of Klimatkollen's climate database for research and analysis.",
       "export": "Static 2024 data",
       "license": "Free for commercial and non-commercial use"
     },
-    "dataOverview": {
-      "corporate": {
-        "title": "Corporate emissions",
-        "description": "Scope 1, 2, and 3 where available."
+    "chooseFormat": "Choose a format",
+    "included": {
+      "companies": {
+        "summary": "Company files include identity and industry codes, reporting period dates, report links, and emissions totals with units.",
+        "one": {
+          "title": "Emissions totals",
+          "description": "Scope 1, 2 (market/location/unknown), scope 3 stated total, and category breakdowns where available."
+        },
+        "two": {
+          "title": "Company & industry",
+          "description": "Name, Wikidata ID, and GICS sector/group/industry codes."
+        },
+        "three": {
+          "title": "Reporting context",
+          "description": "Period start/end dates and a link to the source sustainability report when available."
+        }
       },
-      "reports": {
-        "title": "Sustainability reports",
-        "description": "Links to annual and sustainability reports."
+      "municipalities": {
+        "summary": "Municipality files include name, region, 2024 emissions, sector breakdowns, and climate plan details.",
+        "one": {
+          "title": "Emissions 2024",
+          "description": "Total municipal emissions for the extract year."
+        },
+        "two": {
+          "title": "Sectors",
+          "description": "Breakdown of emissions by sector where available."
+        },
+        "three": {
+          "title": "Climate plans",
+          "description": "Link and year for the municipality's climate plan when available."
+        }
       },
-      "municipality": {
-        "title": "Municipalities & regions",
-        "description": "Emissions data and climate plans."
+      "regions": {
+        "summary": "Region files include the region name, 2024 emissions, sector breakdowns, and the list of municipalities in the region.",
+        "one": {
+          "title": "Emissions 2024",
+          "description": "Total regional emissions for the extract year."
+        },
+        "two": {
+          "title": "Sectors",
+          "description": "Breakdown of emissions by sector where available."
+        },
+        "three": {
+          "title": "Municipalities",
+          "description": "The municipalities that belong to the region."
+        }
       }
     },
     "unearthCta": {

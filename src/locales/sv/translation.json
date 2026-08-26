@@ -202,22 +202,56 @@
     "description": "Ladda ner ett gratis utdrag av Klimatkollens klimatdata för företag, kommuner eller regioner i det format du föredrar.",
     "freeAccess": {
       "title": "Gratis databasutdrag",
-      "description": "En del av Klimatkollens klimatdatabas för forskning och analys — företag, kommuner och regioner.",
+      "description": "En del av Klimatkollens klimatdatabas för forskning och analys.",
       "export": "Statisk data för 2024",
       "license": "Gratis för kommersiellt och icke-kommersiellt bruk"
     },
-    "dataOverview": {
-      "corporate": {
-        "title": "Företagsutsläpp",
-        "description": "Scope 1, 2 och 3 där det finns tillgängligt."
+    "chooseFormat": "Välj format",
+    "included": {
+      "companies": {
+        "summary": "Företagsfilerna innehåller identitet och branschkoder, rapporteringsperiod, rapportlänkar samt utsläppstotaler med enheter.",
+        "one": {
+          "title": "Utsläppstotaler",
+          "description": "Scope 1, 2 (marknad/plats/okänt), angiven scope 3-total och kategorinedbrytningar där det finns."
+        },
+        "two": {
+          "title": "Företag och bransch",
+          "description": "Namn, Wikidata-ID och GICS-sektors-/grupps-/branschkoder."
+        },
+        "three": {
+          "title": "Rapporteringskontext",
+          "description": "Periodens start- och slutdatum samt länk till hållbarhetsrapporten när den finns."
+        }
       },
-      "reports": {
-        "title": "Hållbarhetsrapporter",
-        "description": "Länkar till års- och hållbarhetsredovisningar."
+      "municipalities": {
+        "summary": "Kommunfilerna innehåller namn, region, utsläpp 2024, sektorsnedbrytningar och uppgifter om klimatplan.",
+        "one": {
+          "title": "Utsläpp 2024",
+          "description": "Kommunens totala utsläpp för utdragsåret."
+        },
+        "two": {
+          "title": "Sektorer",
+          "description": "Nedbrytning av utsläpp per sektor där det finns tillgängligt."
+        },
+        "three": {
+          "title": "Klimatplaner",
+          "description": "Länk och år för kommunens klimatplan när det finns tillgängligt."
+        }
       },
-      "municipality": {
-        "title": "Kommuner och regioner",
-        "description": "Utsläppsdata och klimatplaner."
+      "regions": {
+        "summary": "Regionsfilerna innehåller regionnamn, utsläpp 2024, sektorsnedbrytningar och listan över kommuner i regionen.",
+        "one": {
+          "title": "Utsläpp 2024",
+          "description": "Regionens totala utsläpp för utdragsåret."
+        },
+        "two": {
+          "title": "Sektorer",
+          "description": "Nedbrytning av utsläpp per sektor där det finns tillgängligt."
+        },
+        "three": {
+          "title": "Kommuner",
+          "description": "Kommunerna som ingår i regionen."
+        }
       }
     },
     "unearthCta": {

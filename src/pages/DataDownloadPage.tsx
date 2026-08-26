@@ -1,6 +1,6 @@
 import { Building2, FileSpreadsheet, FileText, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useState, useCallback, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DownloadCard } from "@/components/products/DownloadCard";
 import { DownloadInfoSection } from "@/components/products/DownloadInfoSection";
@@ -17,33 +17,31 @@ interface InfoItem {
   description: string | ReactNode;
 }
 
+const EXTRACT_HIGHLIGHT_ICONS = {
+  companies: [Building2, FileText, FileSpreadsheet] as const,
+  municipalities: [MapPin, FileText, Building2] as const,
+  regions: [MapPin, Building2, FileText] as const,
+};
+
 function DataDownloadPage() {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const [selectedType, setSelectedType] =
     useState<DownloadDataType>("companies");
 
-  const handleSelectionChange = useCallback((type: DownloadDataType) => {
-    setSelectedType(type);
-  }, []);
-
-  const extractHighlights = [
-    {
-      icon: <Building2 className="h-5 w-5 text-blue-3" />,
-      title: t("dataDownloadPage.dataOverview.corporate.title"),
-      description: t("dataDownloadPage.dataOverview.corporate.description"),
-    },
-    {
-      icon: <FileText className="h-5 w-5 text-blue-3" />,
-      title: t("dataDownloadPage.dataOverview.reports.title"),
-      description: t("dataDownloadPage.dataOverview.reports.description"),
-    },
-    {
-      icon: <MapPin className="h-5 w-5 text-blue-3" />,
-      title: t("dataDownloadPage.dataOverview.municipality.title"),
-      description: t("dataDownloadPage.dataOverview.municipality.description"),
-    },
-  ] as const;
+  const highlightKeys = ["one", "two", "three"] as const;
+  const highlightIcons = EXTRACT_HIGHLIGHT_ICONS[selectedType];
+  const extractHighlights = highlightKeys.map((key, index) => {
+    const Icon = highlightIcons[index];
+    return {
+      key: `${selectedType}-${key}`,
+      icon: <Icon className="h-5 w-5 text-blue-3" />,
+      title: t(`dataDownloadPage.included.${selectedType}.${key}.title`),
+      description: t(
+        `dataDownloadPage.included.${selectedType}.${key}.description`,
+      ),
+    };
+  });
 
   const infoItems: InfoItem[] = [
     {
@@ -93,7 +91,7 @@ function DataDownloadPage() {
           description={t("dataDownloadPage.description")}
         />
 
-        <section className="mb-12 rounded-level-1 bg-black-2 p-6 md:p-8">
+        <section className="mb-16 rounded-level-1 bg-black-2 p-6 md:p-8">
           <h2 className="mb-2 text-xl font-medium text-white">
             {t("dataDownloadPage.freeAccess.title")}
           </h2>
@@ -111,45 +109,59 @@ function DataDownloadPage() {
             </li>
           </ul>
 
-          <div className="grid grid-cols-1 gap-6 border-t border-black-1 pt-8 md:grid-cols-3">
-            {extractHighlights.map((item) => (
-              <div key={item.title} className="flex items-start gap-3">
-                <div className="rounded-full bg-black-1 p-3">{item.icon}</div>
-                <div>
-                  <h3 className="mb-1 text-base font-medium text-white">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-grey">{item.description}</p>
-                </div>
-              </div>
-            ))}
+          <div className="mb-8 max-w-md border-t border-black-1 pt-8">
+            <DownloadControls
+              value={selectedType}
+              onChange={setSelectedType}
+            />
           </div>
-        </section>
 
-        <section className="mb-16">
-          <DownloadControls onSelectionChange={handleSelectionChange} />
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <DownloadCard
-              icon={FileText}
-              title={t("downloadsPage.csvFormat")}
-              description={t("downloadsPage.csvDescription")}
-              format="csv"
-              selectedType={selectedType}
-            />
-            <DownloadCard
-              icon={FileSpreadsheet}
-              title={t("downloadsPage.excelFormat")}
-              description={t("downloadsPage.excelDescription")}
-              format="xlsx"
-              selectedType={selectedType}
-            />
-            <DownloadCard
-              icon={FileText}
-              title={t("downloadsPage.jsonFormat")}
-              description={t("downloadsPage.jsonDescription")}
-              format="json"
-              selectedType={selectedType}
-            />
+          <div className="mb-8">
+            <p className="mb-4 text-sm text-grey">
+              {t(`dataDownloadPage.included.${selectedType}.summary`)}
+            </p>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {extractHighlights.map((item) => (
+                <div key={item.key} className="flex items-start gap-3">
+                  <div className="rounded-full bg-black-1 p-3">{item.icon}</div>
+                  <div>
+                    <h3 className="mb-1 text-base font-medium text-white">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-grey">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border-t border-black-1 pt-8">
+            <h3 className="mb-6 text-lg font-medium text-white">
+              {t("dataDownloadPage.chooseFormat")}
+            </h3>
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+              <DownloadCard
+                icon={FileText}
+                title={t("downloadsPage.csvFormat")}
+                description={t("downloadsPage.csvDescription")}
+                format="csv"
+                selectedType={selectedType}
+              />
+              <DownloadCard
+                icon={FileSpreadsheet}
+                title={t("downloadsPage.excelFormat")}
+                description={t("downloadsPage.excelDescription")}
+                format="xlsx"
+                selectedType={selectedType}
+              />
+              <DownloadCard
+                icon={FileText}
+                title={t("downloadsPage.jsonFormat")}
+                description={t("downloadsPage.jsonDescription")}
+                format="json"
+                selectedType={selectedType}
+              />
+            </div>
           </div>
         </section>
 
