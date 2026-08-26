@@ -199,10 +199,10 @@
   },
   "dataDownloadPage": {
     "title": "Download Database Extract",
-    "description": "Download a free extract of Klimatkollen's climate data for companies, municipalities, or regions in your preferred format.",
+    "description": "Download free Swedish climate data from Klimatkollen for companies, municipalities, or regions in your preferred format.",
     "freeAccess": {
       "title": "Free Database Extract",
-      "description": "A portion of Klimatkollen's climate database for research and analysis.",
+      "description": "Swedish climate data from Klimatkollen for research and analysis.",
       "export": "Static 2024 data",
       "license": "Free for commercial and non-commercial use"
     },
