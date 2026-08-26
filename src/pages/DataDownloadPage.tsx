@@ -1,8 +1,17 @@
-import { Building2, FileSpreadsheet, FileText, MapPin } from "lucide-react";
+import {
+  Building2,
+  FileSpreadsheet,
+  FileText,
+  MapPin,
+  type LucideIcon,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState, type ReactNode } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { DownloadCard } from "@/components/products/DownloadCard";
+import {
+  DownloadCard,
+  type DownloadFormat,
+} from "@/components/products/DownloadCard";
 import { DownloadInfoSection } from "@/components/products/DownloadInfoSection";
 import {
   DownloadControls,
@@ -12,16 +21,64 @@ import { UnearthCta } from "@/components/products/UnearthCta";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { useLanguage } from "@/components/LanguageProvider";
 
-interface InfoItem {
-  title: string;
-  description: string | ReactNode;
-}
+const HIGHLIGHT_KEYS = ["one", "two", "three"] as const;
 
-const EXTRACT_HIGHLIGHT_ICONS = {
-  companies: [Building2, FileText, FileSpreadsheet] as const,
-  municipalities: [MapPin, FileText, Building2] as const,
-  regions: [MapPin, Building2, FileText] as const,
+const EXTRACT_HIGHLIGHT_ICONS: Record<
+  DownloadDataType,
+  readonly [LucideIcon, LucideIcon, LucideIcon]
+> = {
+  companies: [Building2, FileText, FileSpreadsheet],
+  municipalities: [MapPin, FileText, Building2],
+  regions: [MapPin, Building2, FileText],
 };
+
+const DOWNLOAD_FORMATS: {
+  format: DownloadFormat;
+  icon: LucideIcon;
+  titleKey: string;
+  descriptionKey: string;
+}[] = [
+  {
+    format: "csv",
+    icon: FileText,
+    titleKey: "downloadsPage.csvFormat",
+    descriptionKey: "downloadsPage.csvDescription",
+  },
+  {
+    format: "xlsx",
+    icon: FileSpreadsheet,
+    titleKey: "downloadsPage.excelFormat",
+    descriptionKey: "downloadsPage.excelDescription",
+  },
+  {
+    format: "json",
+    icon: FileText,
+    titleKey: "downloadsPage.jsonFormat",
+    descriptionKey: "downloadsPage.jsonDescription",
+  },
+];
+
+function ExtractHighlight({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <div className="rounded-full bg-black-1 p-3">
+        <Icon className="h-5 w-5 text-blue-3" />
+      </div>
+      <div>
+        <h3 className="mb-1 text-base font-medium text-white">{title}</h3>
+        <p className="text-sm text-grey">{description}</p>
+      </div>
+    </div>
+  );
+}
 
 function DataDownloadPage() {
   const { t } = useTranslation();
@@ -29,52 +86,32 @@ function DataDownloadPage() {
   const [selectedType, setSelectedType] =
     useState<DownloadDataType>("companies");
 
-  const highlightKeys = ["one", "two", "three"] as const;
   const highlightIcons = EXTRACT_HIGHLIGHT_ICONS[selectedType];
-  const extractHighlights = highlightKeys.map((key, index) => {
-    const Icon = highlightIcons[index];
-    return {
-      key: `${selectedType}-${key}`,
-      icon: <Icon className="h-5 w-5 text-blue-3" />,
-      title: t(`dataDownloadPage.included.${selectedType}.${key}.title`),
-      description: t(
-        `dataDownloadPage.included.${selectedType}.${key}.description`,
-      ),
-    };
-  });
-
-  const infoItems: InfoItem[] = [
-    {
-      title: t("downloadsPage.dataStructure"),
-      description: t("downloadsPage.dataStructureDescription"),
-    },
-    {
-      title: t("downloadsPage.fileSizeAndFormat"),
-      description: (
-        <div className="space-y-3">
-          <p>{t("downloadsPage.fileSizeAndFormatDescription.csv")}</p>
-          <p>{t("downloadsPage.fileSizeAndFormatDescription.excel")}</p>
-          <p>{t("downloadsPage.fileSizeAndFormatDescription.json")}</p>
-        </div>
-      ),
-    },
-    {
-      title: t("downloadsPage.usageLicense"),
-      description: t("downloadsPage.usageLicenseDescription"),
-    },
-  ];
+  const infoItems: Array<{ title: string; description: string | ReactNode }> =
+    [
+      {
+        title: t("downloadsPage.dataStructure"),
+        description: t("downloadsPage.dataStructureDescription"),
+      },
+      {
+        title: t("downloadsPage.fileSizeAndFormat"),
+        description: (
+          <div className="space-y-3">
+            <p>{t("downloadsPage.fileSizeAndFormatDescription.csv")}</p>
+            <p>{t("downloadsPage.fileSizeAndFormatDescription.excel")}</p>
+            <p>{t("downloadsPage.fileSizeAndFormatDescription.json")}</p>
+          </div>
+        ),
+      },
+      {
+        title: t("downloadsPage.usageLicense"),
+        description: t("downloadsPage.usageLicenseDescription"),
+      },
+    ];
 
   const pageTitle = `${t("dataDownloadPage.title")} - Klimatkollen`;
   const pageDescription = t("dataDownloadPage.description");
   const canonicalUrl = `https://klimatkollen.se/${currentLanguage}/data-download`;
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: t("dataDownloadPage.title"),
-    description: pageDescription,
-    url: canonicalUrl,
-  };
 
   return (
     <>
@@ -82,7 +119,13 @@ function DataDownloadPage() {
         title={pageTitle}
         description={pageDescription}
         canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: t("dataDownloadPage.title"),
+          description: pageDescription,
+          url: canonicalUrl,
+        }}
       />
 
       <div className="mx-auto max-w-[1200px] px-4 text-white md:px-6">
@@ -118,16 +161,17 @@ function DataDownloadPage() {
               {t(`dataDownloadPage.included.${selectedType}.summary`)}
             </p>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              {extractHighlights.map((item) => (
-                <div key={item.key} className="flex items-start gap-3">
-                  <div className="rounded-full bg-black-1 p-3">{item.icon}</div>
-                  <div>
-                    <h3 className="mb-1 text-base font-medium text-white">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-grey">{item.description}</p>
-                  </div>
-                </div>
+              {HIGHLIGHT_KEYS.map((key, index) => (
+                <ExtractHighlight
+                  key={`${selectedType}-${key}`}
+                  icon={highlightIcons[index]}
+                  title={t(
+                    `dataDownloadPage.included.${selectedType}.${key}.title`,
+                  )}
+                  description={t(
+                    `dataDownloadPage.included.${selectedType}.${key}.description`,
+                  )}
+                />
               ))}
             </div>
           </div>
@@ -137,27 +181,16 @@ function DataDownloadPage() {
               {t("dataDownloadPage.chooseFormat")}
             </h3>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <DownloadCard
-                icon={FileText}
-                title={t("downloadsPage.csvFormat")}
-                description={t("downloadsPage.csvDescription")}
-                format="csv"
-                selectedType={selectedType}
-              />
-              <DownloadCard
-                icon={FileSpreadsheet}
-                title={t("downloadsPage.excelFormat")}
-                description={t("downloadsPage.excelDescription")}
-                format="xlsx"
-                selectedType={selectedType}
-              />
-              <DownloadCard
-                icon={FileText}
-                title={t("downloadsPage.jsonFormat")}
-                description={t("downloadsPage.jsonDescription")}
-                format="json"
-                selectedType={selectedType}
-              />
+              {DOWNLOAD_FORMATS.map((option) => (
+                <DownloadCard
+                  key={option.format}
+                  icon={option.icon}
+                  title={t(option.titleKey)}
+                  description={t(option.descriptionKey)}
+                  format={option.format}
+                  selectedType={selectedType}
+                />
+              ))}
             </div>
           </div>
         </section>

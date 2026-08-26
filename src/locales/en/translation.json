@@ -262,8 +262,6 @@
     }
   },
   "downloadsPage": {
-    "title": "Download Database Extract",
-    "description": "Download a free extract of Klimatkollen's climate data for companies, municipalities, or regions in your preferred format.",
     "csvFormat": "CSV Format",
     "csvDescription": "Download the database extract as a CSV file, ideal for use in Python, R, Excel, or Google Sheets. All fields are comma-separated.",
     "excelFormat": "Excel Format",
@@ -286,11 +284,7 @@
       "json": "JSON: UTF-8 encoded structured data. Tends to be the largest file due to detailed key-value formatting. Best for developers or analysts working with code, APIs, or automation in tools like Python or JavaScript."
     },
     "usageLicense": "Usage Licence",
-    "usageLicenseDescription": "The downloaded data is licenced under the Creative Commons Attribution 4.0 International Licence (CC BY 4.0). You are free to use, modify, and share the data for both commercial and non-commercial purposes, as long as you credit Klimatkollen and include a link to the licence.",
-    "loading": "Loading...",
-    "downloadCompanies": "Download Company Data",
-    "downloadMunicipalities": "Download Municipality Data",
-    "downloadRegions": "Download Region Data"
+    "usageLicenseDescription": "The downloaded data is licenced under the Creative Commons Attribution 4.0 International Licence (CC BY 4.0). You are free to use, modify, and share the data for both commercial and non-commercial purposes, as long as you credit Klimatkollen and include a link to the licence."
   },
   "insightsPage": {
     "title": "Articles",

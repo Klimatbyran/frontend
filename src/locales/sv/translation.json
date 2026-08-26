@@ -262,8 +262,6 @@
     }
   },
   "downloadsPage": {
-    "title": "Ladda ner databasutdraget",
-    "description": "Ladda ner ett gratis utdrag av Klimatkollens klimatdata för företag, kommuner eller regioner i det format du föredrar.",
     "csvFormat": "CSV-format",
     "csvDescription": "Ladda ner databasutdraget som en CSV-fil, perfekt för användning i Python, R, Excel eller Google Kalkylark. Alla fält är kommaseparerade.",
     "excelFormat": "Excel-format",
@@ -286,11 +284,7 @@
       "json": "JSON: UTF-8-kodad strukturerad data. Brukar vara det största formatet eftersom det innehåller detaljerad nyckel-värde-struktur. Bäst lämpat för utvecklare eller analytiker som arbetar med kod, API:er eller automatisering i till exempel Python eller JavaScript."
     },
     "usageLicense": "Användningslicens",
-    "usageLicenseDescription": "Den nedladdade datan är licensierad under Creative Commons Erkännande 4.0 Internationell (CC BY 4.0). Du får använda, ändra och dela datan för både kommersiella och icke-kommersiella syften, så länge du anger Klimatkollen som källa och länkar till licensen.",
-    "loading": "Laddar...",
-    "downloadCompanies": "Ladda ner företagsdata",
-    "downloadMunicipalities": "Ladda ner kommundata",
-    "downloadRegions": "Ladda ner regionsdata"
+    "usageLicenseDescription": "Den nedladdade datan är licensierad under Creative Commons Erkännande 4.0 Internationell (CC BY 4.0). Du får använda, ändra och dela datan för både kommersiella och icke-kommersiella syften, så länge du anger Klimatkollen som källa och länkar till licensen."
   },
   "insightsPage": {
     "title": "Artiklar",
