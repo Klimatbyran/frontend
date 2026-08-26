@@ -76,20 +76,20 @@ export function DownloadCard({
   };
 
   return (
-    <div className="block bg-black-2 rounded-level-2 p-8 space-y-8 transition-all duration-300 hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] hover:bg-[#1a1a1a] flex flex-col h-full">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="rounded-lg bg-black-2 p-3 border border-black-1">
-          <Icon className="h-6 w-6 text-white" />
+    <div className="flex h-full flex-col space-y-6 rounded-level-2 bg-black-2 p-6 transition-all duration-300 hover:bg-[#1a1a1a] hover:shadow-[0_0_10px_rgba(153,207,255,0.15)] md:p-8">
+      <div className="flex items-center gap-3">
+        <div className="rounded-full bg-black-1 p-3">
+          <Icon className="h-5 w-5 text-blue-2" />
         </div>
-        <h3 className="text-xl font-light text-white">{title}</h3>
+        <h3 className="text-xl font-medium text-white">{title}</h3>
       </div>
-      <p className="text-grey mb-8 min-h-[96px] md:min-h-[120px] flex-grow">
+      <p className="min-h-[72px] flex-grow text-grey md:min-h-[96px]">
         {description}
       </p>
       <button
         onClick={handleDownload}
         disabled={isLoading}
-        className="inline-flex items-center justify-center gap-2 rounded-md bg-black-2 px-6 py-3 text-base font-medium text-blue-2 shadow-lg hover:bg-black-1 w-full transition-all border border-black-1 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-5 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-blue-4 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Download className="h-5 w-5" />
         {isLoading ? t("common.loading") : t(`downloadsPage.download`)}

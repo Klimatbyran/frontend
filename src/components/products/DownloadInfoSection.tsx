@@ -13,18 +13,19 @@ export function DownloadInfoSection({
   items,
 }: DownloadInfoSectionProps) {
   return (
-    <div className="mx-auto max-w-4xl mt-24 mb-16">
-      <h2 className="text-3xl font-light text-center mb-12 text-white">
-        {title}
-      </h2>
-      <div className="space-y-8">
-        {items.map((item, index) => (
-          <div key={index}>
-            <h3 className="text-lg font-light text-white">{item.title}</h3>
+    <section className="mb-16 mt-4">
+      <h2 className="mb-6 text-2xl font-light text-white">{title}</h2>
+      <div className="space-y-4 rounded-level-1 bg-black-2 p-6 md:p-8">
+        {items.map((item) => (
+          <div
+            key={item.title}
+            className="border-b border-black-1 pb-6 last:border-b-0 last:pb-0"
+          >
+            <h3 className="text-lg font-medium text-white">{item.title}</h3>
             <div className="mt-2 text-grey">{item.description}</div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

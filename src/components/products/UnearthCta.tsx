@@ -10,8 +10,8 @@ export function UnearthCta() {
   )}`;
 
   return (
-    <section className="mt-16 mb-16 rounded-level-2 border border-black-1 bg-black-2 p-6 md:p-8">
-      <div className="flex flex-col gap-6 md:flex-row md:items-stretch md:justify-between md:gap-10">
+    <section className="mb-16 rounded-level-1 bg-black-2 p-6 md:p-8">
+      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-10">
         <div className="min-w-0">
           <img
             src="/logos/unearth-white.png"
@@ -20,17 +20,17 @@ export function UnearthCta() {
             height={28}
             className="mb-5 h-4 w-auto"
           />
-          <h2 className="text-xl font-light leading-tight text-white sm:text-2xl">
+          <h2 className="text-xl font-medium leading-tight text-white sm:text-2xl">
             {t("dataDownloadPage.unearthCta.title")}
           </h2>
           <p className="mt-4 max-w-3xl text-grey">
             {t("dataDownloadPage.unearthCta.body")}
           </p>
         </div>
-        <div className="flex shrink-0 md:items-end md:justify-end">
+        <div className="flex shrink-0">
           <a
             href={mailtoUrl}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-5 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-4 md:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-5 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-4 md:w-auto"
           >
             {t("dataDownloadPage.unearthCta.action")}
             <Mail className="h-4 w-4" aria-hidden="true" />
