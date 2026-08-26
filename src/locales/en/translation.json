@@ -212,7 +212,7 @@
     },
     "freeAccess": {
       "title": "Free Database Access",
-      "description": "Access our climate database through a free download, perfect for research and analysis.",
+      "description": "Access a portion of our climate database through a free download, perfect for research and analysis.",
       "export": "Static extract of 2024 climate data",
       "data": "Corporate, municipality, and regional climate data",
       "license": "Free to use for both commercial and non-commercial purposes",
@@ -252,7 +252,7 @@
   },
   "downloadsPage": {
     "title": "Download Database",
-    "description": "Download Klimatkollen's free climate database for companies, municipalities, or regions in your preferred format.",
+    "description": "Download a free extract of Klimatkollen's climate data for companies, municipalities, or regions in your preferred format.",
     "csvFormat": "CSV Format",
     "csvDescription": "Download the database as a CSV file, ideal for use in Python, R, Excel, or Google Sheets. All fields are comma-separated.",
     "excelFormat": "Excel Format",
