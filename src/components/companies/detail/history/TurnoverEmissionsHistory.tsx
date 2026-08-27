@@ -27,9 +27,14 @@ export function TurnoverEmissionsHistory({
       isEmissionsAIGenerated,
     );
 
-    return getTurnoverEmissionsSection(chartData, companyBaseYear);
+    return getTurnoverEmissionsSection(
+      chartData,
+      companyBaseYear,
+      company.decoupling,
+    );
   }, [
     company.reportingPeriods,
+    company.decoupling,
     companyBaseYear,
     isAIGenerated,
     isEmissionsAIGenerated,

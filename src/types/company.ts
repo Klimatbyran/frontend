@@ -1,10 +1,27 @@
 import type { paths } from "@/lib/api-types";
 import type { KPIValue } from "./rankings";
 
+export type DecouplingVerdict = "yes" | "no-red" | "no-yellow";
+
+export interface DecouplingComparison {
+  startYear: number;
+  endYear: number;
+  turnoverChangePercent: number;
+  emissionsChangePercent: number;
+  startIntensity: number;
+  endIntensity: number;
+  intensityChangePercent: number;
+  verdict: DecouplingVerdict;
+  usedBaseYear: boolean;
+}
+
 // Base company type from API
 export type CompanyDetails = NonNullable<
   paths["/companies/{wikidataId}"]["get"]["responses"][200]["content"]["application/json"]
->;
+> & {
+  // Present after Unearth API decoupling field lands; optional until types are regenerated.
+  decoupling?: DecouplingComparison | null;
+};
 
 // Type for reporting periods from the list endpoint (/companies/)
 export type ReportingPeriodFromList = NonNullable<

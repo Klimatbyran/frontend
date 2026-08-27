@@ -139,6 +139,29 @@ describe("turnoverChartData", () => {
     });
   });
 
+  it("uses API decoupling when provided", () => {
+    const apiComparison = {
+      startYear: 2019,
+      endYear: 2020,
+      turnoverChangePercent: 10,
+      emissionsChangePercent: -5,
+      startIntensity: 1,
+      endIntensity: 0.8,
+      intensityChangePercent: -20,
+      verdict: "yes" as const,
+      usedBaseYear: true,
+    };
+
+    expect(
+      getTurnoverEmissionsSection(completeSeries, 2019, apiComparison)
+        ?.comparison,
+    ).toEqual(apiComparison);
+  });
+
+  it("hides the section when the API reports no decoupling", () => {
+    expect(getTurnoverEmissionsSection(completeSeries, 2019, null)).toBeNull();
+  });
+
   it("hides base year reference when base year lacks complete data", () => {
     expect(
       getBaseYearChartSettings(

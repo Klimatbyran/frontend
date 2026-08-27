@@ -1,24 +1,13 @@
 import type { ChartData } from "@/types/emissions";
 import { filterValidTotalData } from "@/components/charts/historicEmissions/utils/chartData";
+import type { DecouplingComparison, DecouplingVerdict } from "@/types/company";
+
+export type { DecouplingComparison, DecouplingVerdict };
 
 export const MIN_COMPLETE_DATA_POINTS = 2;
 export const INTENSITY_STABLE_THRESHOLD = 3;
 
 const INTENSITY_PER_MILLION = 1_000_000;
-
-export type DecouplingVerdict = "yes" | "no-red" | "no-yellow";
-
-export interface DecouplingComparison {
-  startYear: number;
-  endYear: number;
-  turnoverChangePercent: number;
-  emissionsChangePercent: number;
-  startIntensity: number;
-  endIntensity: number;
-  intensityChangePercent: number;
-  verdict: DecouplingVerdict;
-  usedBaseYear: boolean;
-}
 
 export interface TurnoverEmissionsSection {
   displayData: ChartData[];
@@ -122,6 +111,7 @@ export function buildDecouplingComparison(
   displayData: ChartData[],
   baseYear?: number,
 ): DecouplingComparison | null {
+  // Fallback used when company.decoupling is not yet present on the API response.
   if (displayData.length < MIN_COMPLETE_DATA_POINTS) return null;
 
   const start = displayData[0];
@@ -160,11 +150,17 @@ export function buildDecouplingComparison(
 export function getTurnoverEmissionsSection(
   data: ChartData[],
   baseYear?: number,
+  apiDecoupling?: DecouplingComparison | null,
 ): TurnoverEmissionsSection | null {
   const displayData = getDisplayData(data, baseYear);
   if (!hasConsistentTurnoverCurrency(displayData)) return null;
+  if (displayData.length < MIN_COMPLETE_DATA_POINTS) return null;
 
-  const comparison = buildDecouplingComparison(displayData, baseYear);
+  // Prefer API-computed comparison; fall back until the Unearth field is deployed.
+  const comparison =
+    apiDecoupling !== undefined
+      ? apiDecoupling
+      : buildDecouplingComparison(displayData, baseYear);
 
   if (!comparison) return null;
 
