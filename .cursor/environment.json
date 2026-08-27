@@ -1,0 +1,11 @@
+{
+  "name": "Klimatkollen Frontend",
+  "install": "cp -n .env.example .env.development 2>/dev/null || true; npm install",
+  "terminals": [
+    {
+      "name": "vite-dev",
+      "command": "npm run dev -- --host 0.0.0.0"
+    }
+  ],
+  "ports": [5173]
+}
