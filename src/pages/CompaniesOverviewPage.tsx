@@ -1,10 +1,15 @@
 import { useState, useEffect, useMemo } from "react";
-import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Leaf, ArrowDownCircle, BarChart2, List, Sparkles } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { cn } from "@/lib/utils";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { PageHeader } from "@/components/layout/PageHeader";
+import SectorOverview from "@/components/companies/sectors/SectorOverview";
+import type { RankedCompany } from "@/types/company";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
@@ -19,6 +24,7 @@ import { CompanyKPIVisualization } from "@/components/companies/rankedList/Compa
 import { FilterPopover } from "@/components/explore/FilterPopover";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
 import { getAvailableCountryOptions } from "@/hooks/companies/companyCountryFilterUtils";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
 import {
   useCompanyKPIs,
@@ -37,6 +43,87 @@ const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
   meetsParis: <Leaf className="w-4 h-4" />,
   emissionsChangeFromBaseYear: <ArrowDownCircle className="w-4 h-4" />,
 };
+
+type CompaniesPageTab = "companies" | "sectors";
+
+function useCompaniesPageTab(): [CompaniesPageTab, (tab: CompaniesPageTab) => void] {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab: CompaniesPageTab =
+    searchParams.get("tab") === "sectors" ? "sectors" : "companies";
+
+  const setTab = (tab: CompaniesPageTab) => {
+    const params = new URLSearchParams(searchParams);
+    if (tab === "sectors") params.set("tab", "sectors");
+    else params.delete("tab");
+    setSearchParams(params, { replace: true });
+  };
+
+  return [activeTab, setTab];
+}
+
+function CompaniesPageTabs({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: CompaniesPageTab;
+  onTabChange: (tab: CompaniesPageTab) => void;
+}) {
+  const { t } = useTranslation();
+  const showStoryCta = stagingFeatureFlagEnabled();
+
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
+      <div
+        role="tablist"
+        className="inline-flex items-center rounded-full bg-black-2 p-1"
+      >
+        {(["companies", "sectors"] as const).map((tab) => (
+          <button
+            key={tab}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab}
+            onClick={() => onTabChange(tab)}
+            className={cn(
+              "rounded-full px-4 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40",
+              activeTab === tab
+                ? "bg-black-1 text-white"
+                : "text-grey hover:text-white",
+            )}
+          >
+            {t(`companiesOverviewPage.tabs.${tab}`)}
+          </button>
+        ))}
+      </div>
+
+      {showStoryCta && (
+        <LocalizedLink
+          to="/companies/story"
+          className="inline-flex items-center gap-2 rounded-full border border-black-1 bg-black-2 px-4 py-1.5 text-sm text-white transition-colors hover:bg-black-1"
+        >
+          <Sparkles className="w-4 h-4 text-orange-3" aria-hidden />
+          {t("companiesOverviewPage.storyCta")}
+        </LocalizedLink>
+      )}
+    </div>
+  );
+}
+
+function SectorsTab({ companies }: { companies: RankedCompany[] }) {
+  const { filteredCompanies, filterGroups, activeFilters } = useCompanyFilters(
+    companies,
+    { includeSectorFilter: false },
+  );
+
+  return (
+    <SectorOverview
+      companies={filteredCompanies}
+      filterGroups={filterGroups}
+      activeFilters={activeFilters}
+      isSectorView={false}
+    />
+  );
+}
 
 function CompaniesOverviewMainGrid({
   companiesWithKPIs,
@@ -184,11 +271,6 @@ function CompaniesOverviewContent({
 
   return (
     <>
-      <PageHeader
-        variant="title-only"
-        title={t("companiesOverviewPage.title")}
-      />
-
       <KPIChipSelector<CompanyWithKPIs>
         selectedKPI={selectedKPI}
         kpis={companyKPIs}
@@ -228,6 +310,7 @@ export function CompaniesOverviewPage() {
   const { companies, companiesLoading, companiesError } = useCompanies();
   const companyKPIs = useCompanyKPIs();
   const [filterOpen, setFilterOpen] = useState(false);
+  const [activeTab, setActiveTab] = useCompaniesPageTab();
 
   const availableSectors = useMemo(() => {
     if (!companies) return [];
@@ -284,26 +367,39 @@ export function CompaniesOverviewPage() {
   }
 
   return (
-    <CompaniesOverviewContent
-      companiesWithKPIs={companiesWithKPIs}
-      selectedKPI={selectedKPI}
-      availableSectors={availableSectors}
-      selectedSector={selectedSector}
-      selectedCountries={selectedCountries}
-      availableCountries={availableCountries}
-      viewMode={viewMode}
-      filterOpen={filterOpen}
-      setFilterOpen={setFilterOpen}
-      onKPIChange={(kpi) => {
-        setSelectedKPI(kpi);
-        urlState.setKPIInURL(String(kpi.key));
-      }}
-      onSectorChange={(sector) => {
-        urlState.setSectorInURL(sector === "all" ? null : sector);
-      }}
-      onCountriesChange={urlState.setCountriesInURL}
-      onViewModeChange={urlState.setViewModeInURL}
-      onCompanyClick={(company) => navigate(getCompanyDetailPath(company))}
-    />
+    <>
+      <PageHeader
+        variant="title-only"
+        title={t("companiesOverviewPage.title")}
+      />
+
+      <CompaniesPageTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {activeTab === "sectors" ? (
+        <SectorsTab companies={companies} />
+      ) : (
+        <CompaniesOverviewContent
+          companiesWithKPIs={companiesWithKPIs}
+          selectedKPI={selectedKPI}
+          availableSectors={availableSectors}
+          selectedSector={selectedSector}
+          selectedCountries={selectedCountries}
+          availableCountries={availableCountries}
+          viewMode={viewMode}
+          filterOpen={filterOpen}
+          setFilterOpen={setFilterOpen}
+          onKPIChange={(kpi) => {
+            setSelectedKPI(kpi);
+            urlState.setKPIInURL(String(kpi.key));
+          }}
+          onSectorChange={(sector) => {
+            urlState.setSectorInURL(sector === "all" ? null : sector);
+          }}
+          onCountriesChange={urlState.setCountriesInURL}
+          onViewModeChange={urlState.setViewModeInURL}
+          onCompanyClick={(company) => navigate(getCompanyDetailPath(company))}
+        />
+      )}
+    </>
   );
 }

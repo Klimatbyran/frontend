@@ -99,13 +99,16 @@ type StoryChapter = {
   isActive: boolean;
 };
 
-function useStoryChapters(sectionState: StorySectionState): StoryChapter[] {
+function useStoryChapters(
+  sectionState: StorySectionState,
+  chapterLabelPrefix: string,
+): StoryChapter[] {
   const { t } = useTranslation();
 
   return sectionState.sections.map((section, index) => ({
     index,
     chapter: section.chapter,
-    label: t(`nation.story.chapters.${section.chapter}`),
+    label: t(`${chapterLabelPrefix}.${section.chapter}`),
     step: section.step,
     steps: section.steps,
     isActive: index === sectionState.active,
@@ -125,12 +128,14 @@ function chapterNavLabel(
 function StoryDesktopChapterNav({
   sectionState,
   showStepCounter,
+  chapterLabelPrefix,
 }: {
   sectionState: StorySectionState;
   showStepCounter: boolean;
+  chapterLabelPrefix: string;
 }) {
   const { t } = useTranslation();
-  const chapters = useStoryChapters(sectionState);
+  const chapters = useStoryChapters(sectionState, chapterLabelPrefix);
 
   if (chapters.length === 0) return null;
 
@@ -172,9 +177,11 @@ function StoryDesktopChapterNav({
 function StoryProgressBar({
   sectionState,
   showStepCounter,
+  chapterLabelPrefix,
 }: {
   sectionState: StorySectionState;
   showStepCounter: boolean;
+  chapterLabelPrefix: string;
 }) {
   const { scrollYProgress } = useScroll();
 
@@ -188,6 +195,7 @@ function StoryProgressBar({
       <StoryDesktopChapterNav
         sectionState={sectionState}
         showStepCounter={showStepCounter}
+        chapterLabelPrefix={chapterLabelPrefix}
       />
     </div>
   );
@@ -195,11 +203,13 @@ function StoryProgressBar({
 
 function StoryMobileChapterMenu({
   sectionState,
+  chapterLabelPrefix,
 }: {
   sectionState: StorySectionState;
+  chapterLabelPrefix: string;
 }) {
   const { t } = useTranslation();
-  const chapters = useStoryChapters(sectionState);
+  const chapters = useStoryChapters(sectionState, chapterLabelPrefix);
   const activeChapter = chapters.find((chapter) => chapter.isActive);
 
   if (!activeChapter) return null;
@@ -298,8 +308,11 @@ function StoryPreviousSectionNav({
 
 export function StoryNavChrome({
   endRef,
+  chapterLabelPrefix = "nation.story.chapters",
 }: {
   endRef: RefObject<HTMLElement | null>;
+  /** Translation key prefix for chapter labels, e.g. "companies.story.chapters" */
+  chapterLabelPrefix?: string;
 }) {
   const endReached = useStoryEndReached(endRef);
   const sectionState = useStorySectionState();
@@ -312,8 +325,12 @@ export function StoryNavChrome({
       <StoryProgressBar
         sectionState={sectionState}
         showStepCounter={showStepCounter}
+        chapterLabelPrefix={chapterLabelPrefix}
       />
-      <StoryMobileChapterMenu sectionState={sectionState} />
+      <StoryMobileChapterMenu
+        sectionState={sectionState}
+        chapterLabelPrefix={chapterLabelPrefix}
+      />
       <StoryPreviousSectionNav
         endReached={endReached}
         sectionState={sectionState}

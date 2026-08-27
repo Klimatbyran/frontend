@@ -38,7 +38,17 @@ function buildShareUrls(pageUrl: string, shareText: string) {
 const shareButtonClass =
   "group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/30 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40";
 
-export function StoryShareLinks({ className }: { className?: string }) {
+export function StoryShareLinks({
+  className,
+  shareTextKey = "nation.story.conclusion.shareText",
+  shareTitleKey = "valet2026Page.title",
+}: {
+  className?: string;
+  /** Translation key for the pre-filled share message */
+  shareTextKey?: string;
+  /** Translation key for the native share dialog title */
+  shareTitleKey?: string;
+}) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const [canNativeShare, setCanNativeShare] = useState(false);
@@ -51,7 +61,7 @@ export function StoryShareLinks({ className }: { className?: string }) {
     typeof window !== "undefined"
       ? window.location.href
       : "https://klimatkollen.se";
-  const shareText = t("nation.story.conclusion.shareText");
+  const shareText = t(shareTextKey);
   const urls = buildShareUrls(pageUrl, shareText);
 
   const channels: ShareChannel[] = [
@@ -111,7 +121,7 @@ export function StoryShareLinks({ className }: { className?: string }) {
     if (!navigator.share) return;
     try {
       await navigator.share({
-        title: t("valet2026Page.title"),
+        title: t(shareTitleKey),
         text: shareText,
         url: pageUrl,
       });

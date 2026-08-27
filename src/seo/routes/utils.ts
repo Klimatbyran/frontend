@@ -38,6 +38,9 @@ function parseCompanyRoute(
   if (segments[0] !== "companies" || !segments[1]) {
     return null;
   }
+  if (segments[1] === "story" && !segments[2]) {
+    return { pattern: "/companies/story", params: {} };
+  }
   if (segments[2] === "edit") {
     return { pattern: "/companies/:id/edit", params: {} };
   }

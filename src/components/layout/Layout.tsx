@@ -16,9 +16,11 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const params = useParams();
   const isLandingPage = /^\/(sv|en)\/?$/.test(location.pathname);
-  // The Valet 2026 story pins full-screen scenes with captions near the bottom
+  // Story pages pin full-screen scenes with captions near the bottom
   // edge; on mobile the floating corner buttons cover them, so hide them there.
-  const isStoryPage = /^\/(sv|en)\/nation\/?$/.test(location.pathname);
+  const isStoryPage = /^\/(sv|en)\/(nation|companies\/story)\/?$/.test(
+    location.pathname,
+  );
 
   const isStagingHost =
     typeof window !== "undefined" && window.location.hostname.includes("stage");
