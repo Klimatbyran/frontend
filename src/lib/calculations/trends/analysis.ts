@@ -5,7 +5,7 @@ type TrendDataPoint = { year: number; value: number };
 function buildTrendDataPoints(
   company: CompanyForTrendAnalysis,
 ): TrendDataPoint[] {
-  const data = company.reportingPeriods
+  const data = (company.reportingPeriods ?? [])
     .filter(
       (period) =>
         period.emissions &&
@@ -59,8 +59,9 @@ function getTrendDirection(
 }
 
 /**
- * Calculates trendline analysis using API-provided slope when available
- * Returns null if API slope is not available (backend determined insufficient data)
+ * Calculates trendline analysis using API-provided slope when available.
+ * Returns null if the API slope is missing, or if there are no usable
+ * reporting-period emissions (empty, all null, or all before baseYear).
  */
 export const calculateTrendline = (
   company: CompanyForTrendAnalysis,
@@ -73,8 +74,12 @@ export const calculateTrendline = (
   }
 
   const dataPoints = buildTrendDataPoints(company);
-  const apiSlope = company.futureEmissionsTrendSlope;
   const lastDataPoint = dataPoints[dataPoints.length - 1];
+  if (!lastDataPoint) {
+    return null;
+  }
+
+  const apiSlope = company.futureEmissionsTrendSlope;
   const intercept = lastDataPoint.value - apiSlope * lastDataPoint.year;
   const yearlyPercentageChange = calculateYearlyPercentageChange(
     apiSlope,
