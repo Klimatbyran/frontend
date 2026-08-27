@@ -51,7 +51,7 @@ Companies are keyed by internal UUID (`Company.id`) in the database. The fronten
 |----------|------------|
 | Public URLs (`/companies/...`) | `wikidataId` if set, else first 8 hex chars of `id` |
 | Partner read (`getCompanyDetails`) | URL param as-is — API resolves Q-id, full UUID, or 8-char prefix |
-| Staff mutations (edit pages) | Always full internal `company.id` |
+| Staff create (`createCompany`) | Always full internal `company.id` in response |
 
 Helpers live in `src/utils/companyRouting.ts` (`getCompanyUrlSegment`, `getCompanyDetailPath`).
 

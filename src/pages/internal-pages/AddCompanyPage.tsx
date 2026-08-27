@@ -11,7 +11,7 @@ import {
 } from "@/lib/company/createCompanyBody";
 import { useToast } from "@/contexts/ToastContext";
 import { AddCompanySection } from "./AddCompanySection";
-import { LogoDevDialog } from "@/components/companies/edit/LogoDevDialog";
+import { LogoDevDialog } from "@/components/companies/LogoDevDialog";
 
 const FIELD_WRAPPER = "flex flex-col gap-1";
 const LABEL_CLASS = "block text-foreground";
@@ -324,7 +324,7 @@ function useAddCompanyForm() {
       };
       const result = await createCompany(buildCreateCompanyBody(form));
       showToast(
-        t("companyEditPage.successDetails.title"),
+        t("addCompanyPage.success.title"),
         t("addCompanyPage.success.description"),
       );
       setCreatedCompanyId(
@@ -335,8 +335,8 @@ function useAddCompanyForm() {
         err instanceof Error ? err.message : "Failed to create company";
       setError(message);
       showToast(
-        t("companyEditPage.error.couldNotSave"),
-        t("companyEditPage.error.tryAgainLater"),
+        t("addCompanyPage.error.title"),
+        message,
       );
     } finally {
       setIsSubmitting(false);
@@ -397,10 +397,10 @@ export function AddCompanyPage() {
             {t("addCompanyPage.success.description")}
           </span>
           <LocalizedLink
-            to={`/companies/${createdCompanyId}/edit`}
+            to={`/companies/${createdCompanyId}`}
             className="inline-flex items-center justify-center text-sm font-medium h-10 px-6 rounded-lg bg-blue-5 text-white hover:bg-blue-4"
           >
-            {t("addCompanyPage.success.goToEdit")}
+            {t("addCompanyPage.success.viewCompany")}
           </LocalizedLink>
         </div>
       )}

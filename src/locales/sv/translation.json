@@ -1958,105 +1958,17 @@
     "title": "Åtkomst Nekad",
     "errorMessage": "Du har inte den nödvändiga behörigheten för att visa denna sida"
   },
-  "companyEditPage": {
-    "tabs": {
-      "companyDetails": "Företagsuppgifter",
-      "emissionsData": "Utsläppsdata"
-    },
-    "emissionsDataSelectYear": "Välj minst ett år ovan för att redigera utsläppsdata.",
-    "noReportingPeriodsYet": "Inga rapporteringsperioder än.",
-    "error": {
-      "couldNotFetch": "Kunde inte hämta företagsdata",
-      "couldNotSave": "Kunde inte spara ändringar",
-      "tryAgainLater": "Vänligen försök igen senare",
-      "couldNotFind": "Företaget kunde inte hittas",
-      "checkId": "Kontrollera att företags-ID:t är korrekt"
-    },
-    "fields": {
-      "name": "Namn",
-      "descriptionEn": "Beskrivning (EN)",
-      "descriptionSv": "Beskrivning (SV)",
-      "logoUrl": "Logotyp-URL",
-      "lei": "LEI",
-      "tags": "Taggar",
-      "gicsSubIndustry": "GICS subbransch",
-      "baseYear": "Basår"
-    },
-    "loadingIndustry": "Laddar…",
-    "placeholders": {
-      "comment": "Kommentar",
-      "sourceUrl": "Käll-URL",
-      "lei": "Legal Entity Identifier",
-      "tags": "Taggar separerade med komma",
-      "selectIndustry": "Välj bransch…"
-    },
-    "aria": {
-      "undoName": "Ångra namnändring",
-      "undoDescriptionEn": "Ångra beskrivning (EN)-ändring",
-      "undoDescriptionSv": "Ångra beskrivning (SV)-ändring",
-      "undoLogoUrl": "Åndra logotyp-URL-ändring",
-      "undoLei": "Ångra LEI-ändring",
-      "undoTags": "Ångra taggändring",
-      "undoIndustry": "Ångra branschändring",
-      "undoBaseYear": "Ångra basårsändring"
-    },
-    "rowName": {
-      "reportingTimespan": "Rapporteringsperiod",
-      "reportingStart": "Start",
-      "reportingEnd": "Slut",
-      "reportURL": "Rapport URL",
-      "marketBased": "Marknadsbaserad",
-      "locationBased": "Platsbaserad",
-      "unknown": "Okänd",
-      "turnover": "Omsättning",
-      "currency": "Valuta",
-      "employees": "Anställda",
-      "unit": "Enhet",
-      "statedTotalEmissions": "Angivna totala utsläpp",
-      "scope1And2Combined": "Omfattning 1 & 2 kombinerat"
-    },
-    "sections": {
-      "reportingPeriod": "Rapporteringsperiod",
-      "emissions": "Utsläpp",
-      "economy": "Ekonomi",
-      "industryAndBaseYear": "Bransch & basår"
-    },
-    "save": "Spara",
-    "saveCompanyDetails": "Spara företagsuppgifter",
-    "saveIndustryAndBaseYear": "Spara bransch & basår",
-    "success": {
-      "title": "Ändringarna har sparats!",
-      "description": "Ändringar i rapporteringsperioden har gjorts framgångsrikt"
-    },
-    "successDetails": {
-      "title": "Ändringarna har sparats!",
-      "description": "Ändringar i basår och/eller bransch har gjorts framgångsrikt"
-    },
-    "successCompanyDetails": {
-      "description": "Företagsuppgifterna har sparats"
-    },
-    "addReportPeriod": {
-      "button": "Lägg till ny rapporteringsperiod",
-      "title": "Lägg till ny rapporteringsperiod",
-      "yearLabel": "År",
-      "add": "Lägg till"
-    },
-    "unsavedChanges": {
-      "title": "Osparade ändringar",
-      "description": "Du har osparade ändringar. Är du säker på att du vill lämna?",
-      "cancel": "Avbryt",
-      "discard": "Kasta ändringar"
-    },
-    "authExpired": {
+  "auth": {
+    "expired": {
       "title": "Sessionen har gått ut",
-      "message": "Din session har gått ut. Logga in igen för att fortsätta redigera.",
+      "message": "Din session har gått ut. Logga in igen för att fortsätta.",
       "cancel": "Avbryt",
       "login": "Logga in"
     }
   },
   "addCompanyPage": {
     "title": "Lägg till företag",
-    "subtitle": "Skapa ett nytt företag genom att ange ett Wikidata-ID och namn. Valfria fält kan fyllas i nu eller redigeras senare.",
+    "subtitle": "Skapa ett nytt företag genom att ange ett Wikidata-ID och namn. Valfria fält kan fyllas i vid skapandet.",
     "sections": {
       "required": "Obligatoriskt",
       "descriptions": "Beskrivningar",
@@ -2094,8 +2006,8 @@
     "submitting": "Skapar…",
     "success": {
       "title": "Företag skapat",
-      "description": "Företaget har skapats. Du kan nu lägga till bransch, basår och utsläppsdata.",
-      "goToEdit": "Gå till företagets redigeringssida"
+      "description": "Företaget har skapats.",
+      "viewCompany": "Visa företagssida"
     },
     "error": {
       "title": "Kunde inte skapa företag"

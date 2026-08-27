@@ -8,7 +8,6 @@ import {
   BlogDetailPage,
   CompaniesOverviewPage,
   CompanyDetailPage,
-  CompanyEditPage,
   DataDownloadPage,
   ErrorPage,
   ExplorePage,
@@ -86,10 +85,6 @@ function CompanyRoutes({ basePath }: { basePath: string }) {
         element={<CompaniesOverviewPage />}
       />
       <Route element={<ProtectedRoute />}>
-        <Route
-          path={`${basePath}/companies/:id/edit`}
-          element={<CompanyEditPage />}
-        />
         <Route
           path={`${basePath}/internal-pages/validation-dashboard`}
           element={<ValidationDashboard />}

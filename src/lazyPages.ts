@@ -6,11 +6,6 @@ export const AboutPage = lazy(() =>
 export const BlogDetailPage = lazy(() =>
   import("./pages/BlogDetailPage").then((m) => ({ default: m.BlogDetailPage })),
 );
-export const CompanyEditPage = lazy(() =>
-  import("./pages/CompanyEditPage").then((m) => ({
-    default: m.CompanyEditPage,
-  })),
-);
 export const CompanyDetailPage = lazy(() =>
   import("./pages/CompanyDetailPage").then((m) => ({
     default: m.CompanyDetailPage,

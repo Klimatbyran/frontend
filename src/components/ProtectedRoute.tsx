@@ -1,16 +1,13 @@
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { AuthExpiredModal } from "@/components/companies/edit/AuthExpiredModal";
+import { AuthExpiredModal } from "@/components/AuthExpiredModal";
 
 const ProtectedRoute = () => {
   const { token, login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleCancel = () => {
-    // Remove '/edit' from the current path
-    const newPath = location.pathname.replace(/\/edit$/, "");
-    navigate(newPath, { replace: true });
+    navigate("/", { replace: true });
   };
 
   if (!token) {

@@ -183,7 +183,7 @@ export const ValidationDashboard = () => {
         {unverifiedCompanies.length > 0 ? (
           unverifiedCompanies.map(({ company, period }) => (
             <div key={company.id} className="grid grid-cols-subgrid col-span-4">
-              <a target="_blank" href={`${getCompanyDetailPath(company)}/edit`}>
+              <a target="_blank" href={getCompanyDetailPath(company)}>
                 {company.name}
               </a>
               {period.reportURL ? (

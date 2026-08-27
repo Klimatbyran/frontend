@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { CompanyLogo } from "../CompanyLogo";
+import { CompanyLogo } from "./CompanyLogo";
 import { t } from "i18next";
 
 interface LogoDevDialogProps {

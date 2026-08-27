@@ -106,18 +106,6 @@ export async function createCompany(body: UpdateCompanyDetailsBody) {
   return data as CreateCompanyResponse;
 }
 
-export async function updateCompanyDetails(
-  companyId: string,
-  body: UpdateCompanyDetailsBody,
-) {
-  const { data, error } = await client.POST("/companies/{id}", {
-    params: { path: { id: companyId } },
-    body,
-  });
-  if (error) throw error;
-  return data;
-}
-
 // Municipalities API
 export async function getMunicipalities() {
   try {
@@ -152,23 +140,6 @@ export async function getMunicipalityDetails(name: string) {
       path: { name },
     },
   });
-  if (error) throw error;
-  return data;
-}
-
-export async function updateReportingPeriods(
-  companyId: string,
-  body: paths["/companies/{id}/reporting-periods"]["post"]["requestBody"]["content"]["application/json"],
-) {
-  const { data, error } = await client.POST(
-    "/companies/{id}/reporting-periods",
-    {
-      params: {
-        path: { id: companyId },
-      },
-      body,
-    },
-  );
   if (error) throw error;
   return data;
 }
@@ -255,41 +226,6 @@ export async function assessEmissions(
     throw new Error(error.message || "Failed to assess emissions");
   }
 
-  return data;
-}
-
-export async function updateCompanyIndustry(
-  companyId: string,
-  subIndustryCode: string,
-  metadata?: { source?: string; comment?: string },
-  verified?: boolean,
-) {
-  const { data, error } = await client.POST("/companies/{id}/industry", {
-    params: { path: { id: companyId } },
-    body: { industry: { subIndustryCode }, metadata, verified },
-  });
-  if (error) throw error;
-  return data;
-}
-
-export async function updateCompanyBaseYear(
-  companyId: string,
-  baseYear: number,
-  metadata?: { source?: string; comment?: string },
-  verified?: boolean,
-) {
-  const { data, error } = await client.POST("/companies/{id}/base-year", {
-    params: { path: { id: companyId } },
-    body: { baseYear, metadata, verified },
-  });
-  if (error) throw error;
-  return data;
-}
-
-// GICS Industry API
-export async function getIndustryGics() {
-  const { data, error } = await client.GET("/industry-gics/", {});
-  if (error) throw error;
   return data;
 }
 

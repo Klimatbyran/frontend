@@ -167,7 +167,6 @@ const SIMPLE_SEO_ROUTES: Record<
 };
 
 const NOINDEX_PATTERNS = new Set([
-  "/companies/:id/edit",
   "/internal-pages",
   "/error/:code",
   "/403",
