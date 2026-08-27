@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
+import { Leaf, BarChart2, List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
@@ -35,7 +35,6 @@ import {
 
 const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
   meetsParis: <Leaf className="w-4 h-4" />,
-  emissionsChangeFromBaseYear: <ArrowDownCircle className="w-4 h-4" />,
 };
 
 function CompaniesOverviewMainGrid({
@@ -258,7 +257,6 @@ export function CompaniesOverviewPage() {
     companies,
     selectedSector,
     selectedCountries,
-    selectedKPI,
   );
 
   if (companiesLoading) {

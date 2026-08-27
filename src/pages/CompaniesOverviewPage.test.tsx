@@ -51,14 +51,15 @@ const mockCompanies = [
 const { mockKpiDefinitions, capturedTopLists } = vi.hoisted(() => ({
   mockKpiDefinitions: [
     {
-      key: "emissionsChangeFromBaseYear",
-      label: "emissionsChangeFromBaseYear",
-      unit: "%",
+      key: "meetsParis",
+      label: "meetsParis",
+      unit: "",
       source: "",
       sourceUrls: [],
       description: "",
       detailedDescription: "",
-      higherIsBetter: false,
+      higherIsBetter: true,
+      isBoolean: true,
       nullValues: "No data",
     },
   ],
@@ -77,7 +78,6 @@ vi.mock("@/hooks/companies/useCompanyKPIs", () => ({
   useCompanyKPIs: () => mockKpiDefinitions,
   enrichCompanyWithKPIs: (company: RankedCompany) => ({
     ...company,
-    emissionsChangeFromBaseYear: -50,
     meetsParis: true,
   }),
 }));

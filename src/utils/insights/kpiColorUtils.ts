@@ -1,10 +1,7 @@
 import type { CompanyWithKPIs } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateCarbonBudgetTonnes } from "@/utils/calculations/carbonBudget";
-import {
-  createFixedRangeGradient,
-  createSymmetricRangeGradient,
-} from "@/utils/ui/colorGradients";
+import { createFixedRangeGradient } from "@/utils/ui/colorGradients";
 import type { ColorFunction } from "@/types/visualizations";
 import { DEFAULT_NULL_DATA_COLOR } from "../ui/colors";
 
@@ -59,25 +56,6 @@ export function createBudgetColorFunction(
 ): ColorFunction {
   const absMax = Math.max(Math.abs(minRaw), Math.abs(maxRaw));
   return (value: number) => createFixedRangeGradient(-absMax, absMax, value);
-}
-
-export function createSymmetricKPIColorGetter<T>(
-  entities: T[],
-  kpiKey: keyof T,
-) {
-  const values = entities
-    .filter((entity) => typeof entity[kpiKey] === "number")
-    .map((entity) => entity[kpiKey] as number);
-
-  const min = values.length ? Math.min(...values) : 0;
-  const max = values.length ? Math.max(...values) : 0;
-
-  return (entitiy: T) => {
-    const value = entitiy[kpiKey];
-    return value === null || value === undefined
-      ? DEFAULT_NULL_DATA_COLOR
-      : createSymmetricRangeGradient(min, max, value as number);
-  };
 }
 
 export function createBudgetKPIColorGetter(companies: CompanyWithKPIs[]) {

@@ -7,11 +7,7 @@ import {
 } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
-import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
-import {
-  createBudgetKPIColorGetter,
-  createSymmetricKPIColorGetter,
-} from "@/utils/insights/kpiColorUtils";
+import { createBudgetKPIColorGetter } from "@/utils/insights/kpiColorUtils";
 
 // Re-export types for convenience
 export type { CompanyWithKPIs, CompanyKPIValue } from "@/types/company";
@@ -30,28 +26,6 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
 
   return useMemo<CompanyKPIValue[]>(() => {
     return [
-      {
-        label: t("companies.list.kpis.emissionsChangeFromBaseYear.label"),
-        key: "emissionsChangeFromBaseYear",
-        unit: "%",
-        source: "companies.list.kpis.emissionsChangeFromBaseYear.source",
-        sourceUrls: [],
-        description: t(
-          "companies.list.kpis.emissionsChangeFromBaseYear.description",
-        ),
-        detailedDescription: t(
-          "companies.list.kpis.emissionsChangeFromBaseYear.detailedDescription",
-        ),
-        nullValues: t(
-          "companies.list.kpis.emissionsChangeFromBaseYear.nullValues",
-        ),
-        higherIsBetter: false,
-        createKPIColorGetter: (companies: CompanyWithKPIs[]) =>
-          createSymmetricKPIColorGetter(
-            companies,
-            "emissionsChangeFromBaseYear",
-          ),
-      },
       {
         label: t("companies.list.kpis.meetsParis.label"),
         key: "meetsParis",
@@ -85,12 +59,8 @@ export const enrichCompanyWithKPIs = (
     ? calculateMeetsParis(company, trendAnalysis)
     : null;
 
-  const emissionsChangeFromBaseYear =
-    calculateEmissionsChangeFromBaseYear(company);
-
   return {
     ...company,
     meetsParis,
-    emissionsChangeFromBaseYear,
   };
 };

@@ -141,7 +141,7 @@ function DistributionPanelSkeleton() {
 /** Skeleton that mirrors the overview page layout while data loads. */
 export function OverviewPageSkeleton({
   variant = "municipalities",
-  chipCount = variant === "regions" ? 2 : variant === "companies" ? 2 : 7,
+  chipCount = variant === "regions" ? 2 : variant === "companies" ? 1 : 7,
 }: OverviewPageSkeletonProps) {
   return (
     <>

@@ -3,7 +3,6 @@ import {
   CompanyWithKPIs,
   CompanyKPIValue,
 } from "@/hooks/companies/useCompanyKPIs";
-import { EmissionsChangeVisualization } from "@/components/companies/rankedList/visualizations/EmissionsChangeVisualization";
 import { MeetsParisVisualization } from "./visualizations/MeetsParisVisualization";
 
 interface CompanyKPIVisualizationProps {
@@ -24,13 +23,6 @@ export function CompanyKPIVisualization({
     case "meetsParis":
       return (
         <MeetsParisVisualization
-          companies={companies}
-          onCompanyClick={onCompanyClick}
-        />
-      );
-    case "emissionsChangeFromBaseYear":
-      return (
-        <EmissionsChangeVisualization
           companies={companies}
           onCompanyClick={onCompanyClick}
         />

@@ -6,15 +6,6 @@
  * TODO: review if we want to keep all of these or pick 1 method to use for the rankings gradients
  */
 
-/**
- * Create a blue-to-pink gradient color based on a value within a symmetric range around 0
- * Used for: trend slope, emissions change (where negative = good, positive = bad)
- *
- * @param min - Minimum value in the dataset
- * @param max - Maximum value in the dataset
- * @param value - The value to get color for
- * @returns CSS color-mix string
- */
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
 const buildBluePinkGradient = (normalized: number): string => {
@@ -48,22 +39,6 @@ const buildBluePinkGradient = (normalized: number): string => {
   const t = (normalized - 0.8) / 0.2;
   return `color-mix(in srgb, var(--pink-4) ${(1 - t) * 100}%, var(--pink-5) ${t * 100}%)`;
 };
-
-export function createSymmetricRangeGradient(
-  min: number,
-  max: number,
-  value: number,
-): string {
-  // Determine the symmetric range around 0 for color mapping
-  const absMax = Math.max(Math.abs(min), Math.abs(max));
-  const capped = Math.max(-absMax, Math.min(absMax, value));
-
-  const normalized = absMax > 0 ? (capped + absMax) / (2 * absMax) : 0.5;
-
-  // Map to blue-to-pink gradient: blue-4 to pink-5
-  // At 0 (normalized 0.5), we want a purple mix
-  return buildBluePinkGradient(clamp01(normalized));
-}
 
 /**
  * Create a blue-to-pink gradient color based on a value within a fixed range

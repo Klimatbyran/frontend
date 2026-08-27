@@ -129,7 +129,6 @@ export interface CompanyEditComponentProps {
 // Extended Company type with KPI values
 export interface CompanyWithKPIs extends RankedCompany {
   meetsParis?: boolean | null;
-  emissionsChangeFromBaseYear?: number | null;
   [key: string]: unknown;
 }
 

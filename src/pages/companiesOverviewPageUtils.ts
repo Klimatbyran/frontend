@@ -31,11 +31,7 @@ export function useCompaniesOverviewUrlState(
   const getKPIFromURL = useCallback(() => {
     const params = new URLSearchParams(location.search);
     const kpiKey = params.get("kpi");
-    return (
-      companyKPIs.find((kpi) => kpi.key === kpiKey) ||
-      companyKPIs.find((kpi) => kpi.key === "emissionsChangeFromBaseYear") ||
-      companyKPIs[0]
-    );
+    return companyKPIs.find((kpi) => kpi.key === kpiKey) || companyKPIs[0];
   }, [location.search, companyKPIs]);
 
   const setKPIInURL = (kpiKey: string) => {
@@ -105,7 +101,6 @@ export function useCompaniesWithKPIs(
   companies: RankedCompany[] | undefined,
   selectedSector: string | null,
   selectedCountries: CompanyCountryTagSlug[],
-  selectedKPI: CompanyKPIValue,
 ) {
   const selectedCountriesKey = [...selectedCountries].sort().join(",");
 
@@ -118,17 +113,11 @@ export function useCompaniesWithKPIs(
         const sectorCode = company.industry?.industryGics?.sectorCode;
         if (sectorCode !== selectedSector) return false;
       }
-      if (
-        selectedKPI.key === "emissionsChangeFromBaseYear" &&
-        !company.baseYear?.year
-      ) {
-        return false;
-      }
       return true;
     });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedCountriesKey, selectedSector, selectedKPI.key]);
+  }, [companies, selectedCountriesKey, selectedSector]);
 }
 
 export function asCompanyDataPoint(
