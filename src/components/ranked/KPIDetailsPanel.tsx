@@ -7,6 +7,10 @@ interface DistributionStat {
   count: number;
   colorClass: string;
   label: string;
+  /** When set, shown instead of the raw count (e.g. formatted emissions). */
+  displayValue?: string;
+  /** Optional secondary line (e.g. company count for Paris emissions breakdown). */
+  secondaryDisplayValue?: string;
 }
 
 interface SourceLink {
@@ -125,7 +129,7 @@ function DistributionSection({
                 backgroundColor: bg,
                 transition: "width 0.8s ease-out",
               }}
-              title={`${stat.label}: ${stat.count}`}
+              title={`${stat.label}: ${stat.displayValue ?? stat.count}`}
             />
           );
         })}
@@ -153,12 +157,19 @@ function DistributionSection({
                 </span>
               </div>
               <span
-                className={`font-bold text-base md:text-xl shrink-0 ${stat.colorClass}`}
+                className={`font-bold text-base md:text-xl shrink-0 text-right ${stat.colorClass}`}
               >
-                {stat.count}{" "}
-                <span className="text-white/40 font-normal text-sm">
-                  ({pct}%)
+                <span className="block">
+                  {stat.displayValue ?? stat.count}{" "}
+                  <span className="text-white/40 font-normal text-sm">
+                    ({pct}%)
+                  </span>
                 </span>
+                {stat.secondaryDisplayValue && (
+                  <span className="block text-white/40 font-normal text-sm">
+                    {stat.secondaryDisplayValue}
+                  </span>
+                )}
               </span>
             </div>
           );

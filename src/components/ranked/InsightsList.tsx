@@ -36,6 +36,8 @@ interface InsightsListProps<T> {
   entityType: string;
   nameKey: keyof T;
   showBars?: boolean;
+  /** Shared max for bar widths when lists should be visually comparable */
+  barMax?: number;
   colorItem: (item: T) => string;
 }
 
@@ -50,14 +52,15 @@ function InsightsList<T>({
   entityType,
   nameKey,
   showBars = false,
+  barMax,
   colorItem,
 }: InsightsListProps<T>) {
   const numericValues = entities
     .map((e) => e[dataPointKey])
     .filter((v): v is number => typeof v === "number" && !isNaN(v));
-  const absMax = numericValues.length
-    ? Math.max(...numericValues.map(Math.abs))
-    : 1;
+  const absMax =
+    barMax ??
+    (numericValues.length ? Math.max(...numericValues.map(Math.abs)) : 1);
 
   return (
     <div className="flex flex-col bg-black-2 border border-white/10 rounded-level-2 py-6">
