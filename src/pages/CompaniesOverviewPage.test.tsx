@@ -48,7 +48,7 @@ const mockCompanies = [
   createCompany("6", "Health Three", HEALTHCARE_SECTOR),
 ];
 
-const { mockKpiDefinitions, capturedTopLists } = vi.hoisted(() => ({
+const { mockKpiDefinitions, capturedCompanyLists } = vi.hoisted(() => ({
   mockKpiDefinitions: [
     {
       key: "meetsParis",
@@ -63,7 +63,7 @@ const { mockKpiDefinitions, capturedTopLists } = vi.hoisted(() => ({
       nullValues: "No data",
     },
   ],
-  capturedTopLists: [] as string[][],
+  capturedCompanyLists: [] as string[][],
 }));
 
 vi.mock("@/hooks/companies/useCompanies", () => ({
@@ -160,8 +160,8 @@ vi.mock("@/components/companies/rankedList/CompanyInsightsPanel", () => ({
     }>;
     section?: string;
   }) => {
-    if (section === "top") {
-      capturedTopLists.push(companyData.map((company) => company.name));
+    if (section === "stats") {
+      capturedCompanyLists.push(companyData.map((company) => company.name));
     }
 
     return <div data-testid={`insights-${section}`} />;
@@ -181,7 +181,7 @@ function LocationDisplay() {
 
 describe("CompaniesOverviewPage", () => {
   beforeEach(() => {
-    capturedTopLists.length = 0;
+    capturedCompanyLists.length = 0;
   });
 
   it("shows all companies by default when no sector filter is set", async () => {
@@ -202,7 +202,7 @@ describe("CompaniesOverviewPage", () => {
     );
 
     await waitFor(() => {
-      expect(capturedTopLists.at(-1)).toEqual([
+      expect(capturedCompanyLists.at(-1)).toEqual([
         "Duni AB",
         "Materials Two",
         "Materials Three",
@@ -217,7 +217,7 @@ describe("CompaniesOverviewPage", () => {
     );
   });
 
-  it("keeps the top insights list scoped to the selected sector when switching", async () => {
+  it("keeps the company list scoped to the selected sector when switching", async () => {
     render(
       <MemoryRouter initialEntries={["/en/companies?sector=15"]}>
         <Routes>
@@ -235,7 +235,7 @@ describe("CompaniesOverviewPage", () => {
     );
 
     await waitFor(() => {
-      expect(capturedTopLists.at(-1)).toEqual([
+      expect(capturedCompanyLists.at(-1)).toEqual([
         "Duni AB",
         "Materials Two",
         "Materials Three",
@@ -251,14 +251,14 @@ describe("CompaniesOverviewPage", () => {
     });
 
     await waitFor(() => {
-      expect(capturedTopLists.at(-1)).toEqual([
+      expect(capturedCompanyLists.at(-1)).toEqual([
         "Health One",
         "Health Two",
         "Health Three",
       ]);
     });
 
-    expect(capturedTopLists.at(-1)).not.toContain("Duni AB");
+    expect(capturedCompanyLists.at(-1)).not.toContain("Duni AB");
   });
 
   it("preserves the sector from the URL after company data loads", async () => {
