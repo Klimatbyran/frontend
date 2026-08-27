@@ -334,10 +334,7 @@ function useAddCompanyForm() {
       const message =
         err instanceof Error ? err.message : "Failed to create company";
       setError(message);
-      showToast(
-        t("addCompanyPage.error.title"),
-        message,
-      );
+      showToast(t("addCompanyPage.error.title"), message);
     } finally {
       setIsSubmitting(false);
     }
