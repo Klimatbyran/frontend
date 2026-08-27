@@ -143,8 +143,7 @@ export function computeCompanyStoryMetrics(
     // Tiny sectors make percentages jumpy and the race unfair to read.
     .filter((lane) => lane.companyCount >= 3)
     .sort(
-      (a, b) =>
-        b.alignedShare - a.alignedShare || b.totalMton - a.totalMton,
+      (a, b) => b.alignedShare - a.alignedShare || b.totalMton - a.totalMton,
     );
 
   const keepFactor = 1 - PARIS_ANNUAL_REDUCTION_PERCENT / 100;

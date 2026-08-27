@@ -46,7 +46,10 @@ const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
 
 type CompaniesPageTab = "companies" | "sectors";
 
-function useCompaniesPageTab(): [CompaniesPageTab, (tab: CompaniesPageTab) => void] {
+function useCompaniesPageTab(): [
+  CompaniesPageTab,
+  (tab: CompaniesPageTab) => void,
+] {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab: CompaniesPageTab =
     searchParams.get("tab") === "sectors" ? "sectors" : "companies";

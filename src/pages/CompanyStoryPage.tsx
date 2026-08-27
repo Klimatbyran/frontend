@@ -10,8 +10,7 @@ export function CompanyStoryPage() {
   const { companies, companiesLoading, companiesError } = useCompanies();
 
   const metrics = useMemo(
-    () =>
-      companies.length > 0 ? computeCompanyStoryMetrics(companies) : null,
+    () => (companies.length > 0 ? computeCompanyStoryMetrics(companies) : null),
     [companies],
   );
 

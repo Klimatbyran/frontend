@@ -38,7 +38,9 @@ function useRaceLanes(metrics: CompanyStoryMetrics): RaceLane[] {
       .slice(0, MAX_LANES);
 
     return biggest
-      .sort((a, b) => b.alignedShare - a.alignedShare || b.totalMton - a.totalMton)
+      .sort(
+        (a, b) => b.alignedShare - a.alignedShare || b.totalMton - a.totalMton,
+      )
       .map((lane) => ({
         ...lane,
         name:
@@ -147,14 +149,17 @@ export function CompanySectorChapter({ metrics }: CompanySectorChapterProps) {
             </p>
 
             {lanes.map((lane, index) => {
-              const dimmed = highlightIndex !== null && index !== highlightIndex;
+              const dimmed =
+                highlightIndex !== null && index !== highlightIndex;
               const highlighted = highlightIndex === index;
 
               return (
                 <motion.div
                   key={lane.sectorCode}
                   initial={false}
-                  animate={{ opacity: sectionStarted ? (dimmed ? 0.35 : 1) : 0 }}
+                  animate={{
+                    opacity: sectionStarted ? (dimmed ? 0.35 : 1) : 0,
+                  }}
                   transition={captionTransition}
                 >
                   <div
