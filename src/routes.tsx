@@ -1,6 +1,7 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
+import StagingProtectedRoute from "./components/StagingProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
 import {
   AboutPage,
@@ -9,6 +10,7 @@ import {
   CompaniesOverviewPage,
   CompanyDetailPage,
   CompanyEditPage,
+  CompanyStoryPage,
   DataDownloadPage,
   ErrorPage,
   ExplorePage,
@@ -30,7 +32,6 @@ import {
   ReportLandingPage,
   ReportsPage,
   RequestsDashboard,
-  SectorsOverviewPage,
   SectorDetailPage,
   SupportPage,
   TrendAnalysisDashboard,
@@ -76,7 +77,11 @@ function ComparisonRoutes({ basePath }: { basePath: string }) {
 function CompanyRoutes({ basePath }: { basePath: string }) {
   return (
     <>
-      <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
+      {/* The old sector overview now lives as a tab on the combined companies page */}
+      <Route
+        path={`${basePath}/sectors`}
+        element={<Navigate to={`${basePath}/companies?tab=sectors`} replace />}
+      />
       <Route
         path={`${basePath}/sectors/:code`}
         element={<SectorDetailPage />}
@@ -85,6 +90,13 @@ function CompanyRoutes({ basePath }: { basePath: string }) {
         path={`${basePath}/companies`}
         element={<CompaniesOverviewPage />}
       />
+      {/* Staged until the story is ready for production */}
+      <Route element={<StagingProtectedRoute />}>
+        <Route
+          path={`${basePath}/companies/story`}
+          element={<CompanyStoryPage />}
+        />
+      </Route>
       <Route element={<ProtectedRoute />}>
         <Route
           path={`${basePath}/companies/:id/edit`}

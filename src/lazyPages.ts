@@ -16,11 +16,6 @@ export const CompanyDetailPage = lazy(() =>
     default: m.CompanyDetailPage,
   })),
 );
-export const SectorsOverviewPage = lazy(() =>
-  import("./pages/SectorsOverviewPage").then((m) => ({
-    default: m.SectorsOverviewPage,
-  })),
-);
 export const SectorDetailPage = lazy(() =>
   import("./pages/SectorDetailPage").then((m) => ({
     default: m.SectorDetailPage,
@@ -136,6 +131,11 @@ export const Valet2026Page = lazy(() =>
 export const CompaniesOverviewPage = lazy(() =>
   import("./pages/CompaniesOverviewPage").then((m) => ({
     default: m.CompaniesOverviewPage,
+  })),
+);
+export const CompanyStoryPage = lazy(() =>
+  import("./pages/CompanyStoryPage").then((m) => ({
+    default: m.CompanyStoryPage,
   })),
 );
 export const ExplorePage = lazy(() =>

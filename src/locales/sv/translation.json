@@ -9,6 +9,7 @@
   "header": {
     "data": "Data",
     "companies": "Företag",
+    "companiesStory": "Klarar företagen Parisavtalet?",
     "allCompanies": "Alla företag",
     "sectors": "Branscher",
     "explore": "Utforska",
@@ -320,6 +321,11 @@
   "companiesOverviewPage": {
     "title": "Företagsöversikt",
     "description": "Jämför företag baserat på viktiga klimatindikatorer",
+    "tabs": {
+      "companies": "Företag",
+      "sectors": "Branscher"
+    },
+    "storyCta": "Klarar företagen Parisavtalet?",
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "mapPlaceholder": "Kartvisualisering kommer snart",
@@ -1323,6 +1329,80 @@
     "biogenicEmissions": "Biogena utsläpp"
   },
   "companies": {
+    "story": {
+      "seoTitle": "Klarar företagen Parisavtalet?",
+      "seoDescription": "En berättelse om hur de nordiska storföretagen i Klimatkollens databas ligger till mot Parisavtalets takt – vilka som håller tempot, vilka som inte gör det och hur branscherna står sig.",
+      "chapters": {
+        "intro": "Intro",
+        "pace": "Takten",
+        "verdict": "Domen",
+        "sectors": "Branschloppet",
+        "conclusion": "Slutsats"
+      },
+      "intro": {
+        "title": "Klarar företagen Parisavtalet?",
+        "paragraph1": "Varje punkt är ett nordiskt storföretag i Klimatkollens databas – ju större punkt, desto större utsläpp. Tillsammans rapporterar de många gånger mer växthusgaser än hela Sveriges territoriella utsläpp. Men minskar de i den takt som Parisavtalet kräver? Låt oss ta reda på det.",
+        "companiesLabel": "granskade nordiska företag",
+        "emissionsLabel": "Mton CO₂e senast rapporterat",
+        "swarmAria": "Ett fält av {{companyCount}} punkter – ett per granskat företag"
+      },
+      "pace": {
+        "title": "Takten som krävs",
+        "body": "För att vara i linje med Parisavtalet behöver utsläppen minska med cirka {{reduction}} procent per år – en halvering ungefär vart {{halving}}:e år. Det är den takt vi bedömer varje företags utsläppstrend mot.",
+        "todayLabel": "Dagens nivå",
+        "zeroLabel": "Nära noll 2050",
+        "annotation": "−{{drop}} % till {{year}}",
+        "chartAria": "Kurva som visar hur utsläppen behöver minska med cirka 12 procent per år fram till 2050",
+        "body2": "Kurvan ser brant ut – och det är den.",
+        "body2Question": "Hur många företag håller den takten?"
+      },
+      "verdict": {
+        "stepCounter": "Steg {{current}} av {{total}}",
+        "swarmAria": "Punktdiagram där {{aligned}} av {{companyCount}} företag håller Parisavtalets takt",
+        "alignedLabel": "Håller takten ({{alignedCount}})",
+        "notAlignedLabel": "Gör det inte ({{notAlignedCount}})",
+        "step1": {
+          "text": "Här är hela startfältet: {{companyCount}} företag vars utsläppstrender vi har kunnat bedöma mot Parisavtalets takt."
+        },
+        "step2": {
+          "text": "{{aligned}} av {{companyCount}} företag – {{alignedShare}} procent – minskar sina utsläpp i linje med Parisavtalet."
+        },
+        "step3": {
+          "text": "Övriga {{notAligned}} företag håller inte takten. Deras utsläpp minskar för långsamt – eller ökar."
+        },
+        "step4": {
+          "text": "Men företag är olika stora. När punkterna skalas efter utsläpp blir bilden tydligare: bara {{emissionsShare}} procent av de {{totalMton}} miljoner ton som företagen rapporterar ligger i linje med Paristakten."
+        }
+      },
+      "sectors": {
+        "title": "Branschloppet",
+        "stepCounter": "Steg {{current}} av {{total}}",
+        "finishLabel": "Mållinje: alla företag håller takten",
+        "laneValue": "{{aligned}} av {{companyCount}}",
+        "step1": {
+          "text": "Så här ligger branscherna till: andelen företag i varje bransch som minskar utsläppen i Parisavtalets takt."
+        },
+        "step2": {
+          "text": "{{name}} leder loppet – {{aligned}} av {{companyCount}} företag håller takten."
+        },
+        "step3": {
+          "text": "{{name}} ligger sist – bara {{aligned}} av {{companyCount}} företag håller takten."
+        },
+        "dataNote": "Andel företag per bransch som håller Paristakten. Branscher med minst tre bedömda företag."
+      },
+      "conclusion": {
+        "title": "De flesta företag håller inte Parisavtalets takt – och utsläppen som ligger fel är störst",
+        "alignedLabel": "företag minskar utsläppen i linje med Parisavtalet",
+        "companyShareLabel": "av företagen håller takten",
+        "emissionsShareLabel": "av de rapporterade utsläppen ligger inte i linje med Paristakten",
+        "body": "Bedömningen bygger på företagens egna rapporterade utsläpp och deras trend framåt, jämförd med en årlig minskning på cirka 12 procent (Carbon Law). Företag utan tillräcklig data ingår inte.",
+        "ctaCompanies": "Se vilka företag som klarar takten",
+        "ctaSectors": "Jämför branscherna",
+        "shareCta": "Dela gärna vidare i dina sociala kanaler",
+        "shareText": "Klarar företagen Parisavtalet? En berättelse om vilka som håller takten – och vilka som inte gör det.",
+        "methodologyLink": "Läs mer om hur vi bedömer företagen mot Parisavtalet"
+      }
+    },
     "categories": {
       "1": {
         "name": "Inköpta varor och tjänster",

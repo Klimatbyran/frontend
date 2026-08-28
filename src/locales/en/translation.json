@@ -9,6 +9,7 @@
   "header": {
     "data": "Data",
     "companies": "Companies",
+    "companiesStory": "Are companies keeping the Paris pace?",
     "allCompanies": "All companies",
     "sectors": "Sectors",
     "explore": "Explore",
@@ -320,6 +321,11 @@
   "companiesOverviewPage": {
     "title": "Companies Overview",
     "description": "Compare companies based on key climate indicators",
+    "tabs": {
+      "companies": "Companies",
+      "sectors": "Sectors"
+    },
+    "storyCta": "Are companies keeping the Paris pace?",
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
     "mapPlaceholder": "Map visualization coming soon",
@@ -1272,6 +1278,80 @@
     "biogenicEmissions": "Biogenic Emissions"
   },
   "companies": {
+    "story": {
+      "seoTitle": "Are companies keeping the Paris pace?",
+      "seoDescription": "A story about how the large Nordic companies in Klimatkollen's database measure up against the Paris Agreement – who is keeping the pace, who is not, and how the sectors compare.",
+      "chapters": {
+        "intro": "Intro",
+        "pace": "The pace",
+        "verdict": "The verdict",
+        "sectors": "The sector race",
+        "conclusion": "Conclusion"
+      },
+      "intro": {
+        "title": "Are companies keeping the Paris pace?",
+        "paragraph1": "Every dot is a large Nordic company in Klimatkollen's database – the bigger the dot, the bigger the emissions. Together they report many times more greenhouse gases than Sweden's entire territorial emissions. But are they cutting emissions at the pace the Paris Agreement requires? Let's find out.",
+        "companiesLabel": "Nordic companies assessed",
+        "emissionsLabel": "Mton CO₂e latest reported",
+        "swarmAria": "A field of {{companyCount}} dots – one per assessed company"
+      },
+      "pace": {
+        "title": "The pace required",
+        "body": "To be in line with the Paris Agreement, emissions need to fall by roughly {{reduction}} percent per year – halving about every {{halving}} years. That is the pace we assess every company's emissions trend against.",
+        "todayLabel": "Today's level",
+        "zeroLabel": "Near zero by 2050",
+        "annotation": "−{{drop}} % by {{year}}",
+        "chartAria": "Curve showing how emissions need to fall by roughly 12 percent per year until 2050",
+        "body2": "The curve looks steep – because it is.",
+        "body2Question": "How many companies keep that pace?"
+      },
+      "verdict": {
+        "stepCounter": "Step {{current}} of {{total}}",
+        "swarmAria": "Dot chart where {{aligned}} of {{companyCount}} companies keep the Paris pace",
+        "alignedLabel": "Keeping the pace ({{alignedCount}})",
+        "notAlignedLabel": "Not keeping it ({{notAlignedCount}})",
+        "step1": {
+          "text": "Here is the whole starting field: {{companyCount}} companies whose emission trends we could assess against the Paris pace."
+        },
+        "step2": {
+          "text": "{{aligned}} of {{companyCount}} companies – {{alignedShare}} percent – are cutting emissions in line with the Paris Agreement."
+        },
+        "step3": {
+          "text": "The remaining {{notAligned}} companies are not keeping the pace. Their emissions are falling too slowly – or rising."
+        },
+        "step4": {
+          "text": "But companies differ in size. Scaling the dots by emissions sharpens the picture: only {{emissionsShare}} percent of the {{totalMton}} million tonnes the companies report is on the Paris pace."
+        }
+      },
+      "sectors": {
+        "title": "The sector race",
+        "stepCounter": "Step {{current}} of {{total}}",
+        "finishLabel": "Finish line: every company keeping the pace",
+        "laneValue": "{{aligned}} of {{companyCount}}",
+        "step1": {
+          "text": "This is how the sectors line up: the share of companies in each sector cutting emissions at the Paris pace."
+        },
+        "step2": {
+          "text": "{{name}} leads the race – {{aligned}} of {{companyCount}} companies keep the pace."
+        },
+        "step3": {
+          "text": "{{name}} trails the field – only {{aligned}} of {{companyCount}} companies keep the pace."
+        },
+        "dataNote": "Share of companies per sector keeping the Paris pace. Sectors with at least three assessed companies."
+      },
+      "conclusion": {
+        "title": "Most companies are not keeping the Paris pace – and the emissions that are off track are the largest",
+        "alignedLabel": "companies are cutting emissions in line with the Paris Agreement",
+        "companyShareLabel": "of the companies keep the pace",
+        "emissionsShareLabel": "of reported emissions are not in line with the Paris pace",
+        "body": "The assessment is based on the companies' own reported emissions and their forward trend, compared against an annual reduction of roughly 12 percent (the Carbon Law). Companies without sufficient data are not included.",
+        "ctaCompanies": "See which companies keep the pace",
+        "ctaSectors": "Compare the sectors",
+        "shareCta": "Feel free to share on your social channels",
+        "shareText": "Are companies keeping the Paris pace? A story about who is on track – and who is not.",
+        "methodologyLink": "Read more about how we assess companies against the Paris Agreement"
+      }
+    },
     "categories": {
       "1": {
         "name": "Purchased goods and services",
