@@ -1,11 +1,7 @@
-import { Pen } from "lucide-react";
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Text } from "@/components/ui/text";
 import type { CompanyDetails } from "@/types/company";
-import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/ui/button";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -29,8 +25,6 @@ export function CompanyOverviewNoData({
   headerChip,
 }: CompanyOverviewNoDataProps) {
   const { t } = useTranslation();
-  const { token } = useAuth();
-  const navigate = useNavigate();
   const sectorNames = useSectorNames();
   const { currentLanguage } = useLanguage();
 
@@ -45,21 +39,6 @@ export function CompanyOverviewNoData({
           logoUrl={company.logoUrl}
           headerChip={headerChip}
         />
-        {token && (
-          <div className="flex flex-row gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
-              onClick={() => navigate("edit")}
-            >
-              Edit
-              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
-                <Pen />
-              </div>
-            </Button>
-          </div>
-        )}
         <CompanyDescription description={description} />
       </div>
 

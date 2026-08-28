@@ -1,10 +1,7 @@
-import { Pen } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Text } from "@/components/ui/text";
 import type { ReportingPeriod } from "@/types/company";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/ui/button";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
@@ -24,7 +21,6 @@ export function CompanyOverviewActions({
   sortedPeriods,
 }: CompanyOverviewActionsProps) {
   const { token } = useAuth();
-  const navigate = useNavigate();
 
   if (!token) {
     return null;
@@ -32,17 +28,6 @@ export function CompanyOverviewActions({
 
   return (
     <div className="flex flex-row gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        className="gap-2"
-        onClick={() => navigate("edit")}
-      >
-        Edit
-        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-5/30 text-xs text-orange-2">
-          <Pen />
-        </div>
-      </Button>
       <EmissionsAssessmentButton
         companyId={companyId}
         sortedPeriods={sortedPeriods}

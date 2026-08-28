@@ -5,7 +5,6 @@ Sitemap: https://klimatkollen.se/sitemap.xml
 
 # Internal/protected routes - disallow crawling
 Disallow: /*/internal-pages/
-Disallow: /*/companies/*/edit
 Disallow: /*/403
 Disallow: /auth/callback
 Disallow: /*/error/
