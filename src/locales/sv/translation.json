@@ -228,7 +228,7 @@
       "companies": {
         "summary": "Företagsfilerna innehåller identitet och branschkoder, rapporteringsperiod, rapportlänkar samt utsläppstotaler med enheter.",
         "one": {
-          "title": "Utsläppstotaler",
+          "title": "Utsläpp 2024",
           "description": "Scope 1, 2 (marknad/plats/okänt), angiven scope 3-total och kategorinedbrytningar där det finns."
         },
         "two": {

@@ -228,7 +228,7 @@
       "companies": {
         "summary": "Company files include identity and industry codes, reporting period dates, report links, and emissions totals with units.",
         "one": {
-          "title": "Emissions totals",
+          "title": "Emissions 2024",
           "description": "Scope 1, 2 (market/location/unknown), scope 3 stated total, and category breakdowns where available."
         },
         "two": {
