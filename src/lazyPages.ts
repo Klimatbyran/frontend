@@ -60,6 +60,7 @@ export const PrivacyPage = lazy(() =>
   import("./pages/PrivacyPage").then((m) => ({ default: m.PrivacyPage })),
 );
 export const DataDownloadPage = lazy(() => import("./pages/DataDownloadPage"));
+export const DownloadsPage = lazy(() => import("./pages/DownloadsPage"));
 export const UnauthorizedErrorPage = lazy(() =>
   import("./pages/error/UnauthorizedErrorPage").then((m) => ({
     default: m.UnauthorizedErrorPage,

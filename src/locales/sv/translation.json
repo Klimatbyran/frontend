@@ -204,9 +204,26 @@
       "title": "Gratis databasutdrag",
       "description": "Svensk klimatdata från Klimatkollen för forskning och analys.",
       "export": "Statisk data för 2024",
-      "license": "Gratis för kommersiellt och icke-kommersiellt bruk"
+      "license": "Gratis för kommersiellt och icke-kommersiellt bruk",
+      "requestAccess": "Hämta data"
     },
+    "availableExtracts": "Vad som ingår",
     "chooseFormat": "Välj format",
+    "requestAccess": {
+      "title": "Begär åtkomst",
+      "emailLabel": "E-post",
+      "reasonLabel": "Anledning till datatillgång",
+      "submit": "Begär åtkomst",
+      "cancel": "Avbryt",
+      "successMessage": "Kolla din inkorg — vi har skickat en länk för att ladda ner datan.",
+      "errorMessage": "Kunde inte skicka begäran",
+      "reasonWork": "Arbete",
+      "reasonHobby": "Hobby",
+      "reasonCuriosity": "Nyfikenhet",
+      "errorGeneric": "Ett fel uppstod. Vänligen försök igen senare.",
+      "errorEmptyEmail": "Vänligen fyll i en giltig e-postadress.",
+      "errorInvalidEmail": "Vänligen fyll i en giltig e-postadress."
+    },
     "included": {
       "companies": {
         "summary": "Företagsfilerna innehåller identitet och branschkoder, rapporteringsperiod, rapportlänkar samt utsläppstotaler med enheter.",
@@ -262,6 +279,8 @@
     }
   },
   "downloadsPage": {
+    "title": "Ladda ner databasutdraget",
+    "description": "Ladda ner gratis svensk klimatdata från Klimatkollen för företag, kommuner eller regioner i det format du föredrar.",
     "csvFormat": "CSV-format",
     "csvDescription": "Ladda ner databasutdraget som en CSV-fil, perfekt för användning i Python, R, Excel eller Google Kalkylark. Alla fält är kommaseparerade.",
     "excelFormat": "Excel-format",

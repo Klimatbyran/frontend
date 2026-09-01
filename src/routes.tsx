@@ -9,6 +9,7 @@ import {
   CompaniesOverviewPage,
   CompanyDetailPage,
   DataDownloadPage,
+  DownloadsPage,
   ErrorPage,
   ExplorePage,
   ComparisonPage,
@@ -160,11 +161,16 @@ function ContentRoutes({ basePath }: { basePath: string }) {
       />
       <Route
         path={`${basePath}/data-download/database-download-2024`}
-        element={<Navigate to={`${basePath}/data-download`} replace />}
+        element={<DownloadsPage />}
       />
       <Route
         path={`${basePath}/data-download/database-download-2025`}
-        element={<Navigate to={`${basePath}/data-download`} replace />}
+        element={
+          <Navigate
+            to={`${basePath}/data-download/database-download-2024`}
+            replace
+          />
+        }
       />
     </>
   );

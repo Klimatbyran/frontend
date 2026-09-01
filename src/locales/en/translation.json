@@ -204,9 +204,26 @@
       "title": "Free Database Extract",
       "description": "Swedish climate data from Klimatkollen for research and analysis.",
       "export": "Static 2024 data",
-      "license": "Free for commercial and non-commercial use"
+      "license": "Free for commercial and non-commercial use",
+      "requestAccess": "Get Data"
     },
+    "availableExtracts": "What's included",
     "chooseFormat": "Choose a format",
+    "requestAccess": {
+      "title": "Request Access",
+      "emailLabel": "Email",
+      "reasonLabel": "Reason for data access",
+      "submit": "Request Access",
+      "cancel": "Cancel",
+      "successMessage": "Check your inbox — we've sent you a link to download the data.",
+      "errorMessage": "Failed to send access request",
+      "reasonWork": "Work",
+      "reasonHobby": "Hobby",
+      "reasonCuriosity": "Curiosity",
+      "errorGeneric": "An error occurred. Please try again later.",
+      "errorEmptyEmail": "Please enter a valid email address.",
+      "errorInvalidEmail": "Please enter a valid email address."
+    },
     "included": {
       "companies": {
         "summary": "Company files include identity and industry codes, reporting period dates, report links, and emissions totals with units.",
@@ -262,6 +279,8 @@
     }
   },
   "downloadsPage": {
+    "title": "Download Database Extract",
+    "description": "Download free Swedish climate data from Klimatkollen for companies, municipalities, or regions in your preferred format.",
     "csvFormat": "CSV Format",
     "csvDescription": "Download the database extract as a CSV file, ideal for use in Python, R, Excel, or Google Sheets. All fields are comma-separated.",
     "excelFormat": "Excel Format",
