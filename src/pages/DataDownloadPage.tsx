@@ -87,7 +87,7 @@ function DataDownloadPage() {
             {AVAILABLE_EXTRACTS.map(({ key, icon: Icon }) => (
               <div
                 key={key}
-                className="rounded-level-1 border border-black-1 bg-black-2 p-6"
+                className="rounded-level-1 bg-black-2 p-6"
               >
                 <div className="mb-3 flex items-center gap-3">
                   <div className="rounded-full bg-black-1 p-3">

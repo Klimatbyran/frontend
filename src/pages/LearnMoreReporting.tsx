@@ -38,7 +38,7 @@ function ImpactSection() {
   const { t } = useTranslation();
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="max-w-4xl mx-auto bg-black/40 backdrop-blur-xl rounded-2xl p-8 md:p-12 shadow-xl border border-white/10">
+      <div className="max-w-4xl mx-auto bg-black/40 backdrop-blur-xl rounded-2xl p-8 md:p-12 shadow-xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white drop-shadow-lg">
           {t("learnMorePage.impactTitle")}
         </h2>
@@ -60,7 +60,7 @@ function TrackingWhyMatters({ isMobile }: { isMobile: boolean }) {
   }) as string[];
 
   return (
-    <div className="mt-16 bg-black/40 backdrop-blur-xl rounded-xl p-8 border border-white/10 shadow-xl">
+    <div className="mt-16 bg-black/40 backdrop-blur-xl rounded-xl p-8 shadow-xl">
       <div className={isMobile ? "flex flex-col" : "flex items-start gap-6"}>
         {isMobile ? (
           <div className="mb-4">

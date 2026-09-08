@@ -55,7 +55,7 @@ export function ErrorPage() {
           </Link>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-3 border border-blue-5 text-blue-5 rounded-full hover:bg-blue-5/10 transition-colors"
+            className="px-6 py-3 bg-blue-5/10 text-blue-5 rounded-full hover:bg-blue-5/20 transition-colors"
           >
             {t("errorPage.tryAgain")}
           </button>

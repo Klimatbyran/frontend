@@ -112,13 +112,13 @@ export function LandingPageCTA() {
               }
             }}
             placeholder={t("landingPage.heroSearchPlaceholder")}
-            className="h-11 border-white/25 bg-black-2 pl-3 text-white placeholder:text-white/50 focus-visible:ring-white/40 min-[430px]:pl-8"
+            className="h-11 bg-black-1 pl-3 text-white placeholder:text-white/50 focus-visible:ring-white/40 min-[430px]:pl-8"
             aria-label={t("landingPage.heroSearchLabel")}
           />
         </div>
 
         {isDropdownOpen && searchQuery.trim() && (
-          <div className="absolute left-0 top-full z-30 mt-2 max-h-56 w-full overflow-y-auto rounded-md border border-white/10 bg-black-2 shadow-lg">
+          <div className="absolute left-0 top-full z-30 mt-2 max-h-56 w-full overflow-y-auto rounded-md bg-black-2 shadow-lg">
             {isDebouncing || isSearching ? (
               <div className="flex items-center gap-2 px-3 py-2 text-sm text-white/70">
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
@@ -167,7 +167,7 @@ export function LandingPageCTA() {
               key={`${item.type}-${item.type === "company" ? item.id : item.name}`}
               type="button"
               onClick={() => handleSearchSelection(item)}
-              className="group relative overflow-hidden rounded-md border border-white/20 px-2.5 py-1 hover:opacity-100 active:opacity-100"
+              className="group relative overflow-hidden rounded-md bg-black-1 px-2.5 py-1 hover:opacity-100 active:opacity-100"
             >
               <span
                 className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"

@@ -111,14 +111,14 @@ export function FilterPopover({
         <Button
           variant="outline"
           size="sm"
-          className="bg-black-1 border-black-1 text-grey hover:text-white hover:bg-black-1/80 hover:border-black-1 font-medium text-sm"
+          className="text-grey hover:text-white font-medium text-sm"
         >
           <Filter className="mr-2 h-4 w-4" />
           {t("filterPopover.filter")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[300px] p-0 bg-black-2 border-black-1"
+        className="w-[300px] p-0 bg-black-2"
         align="end"
       >
         <Command className="bg-transparent" shouldFilter={false}>
@@ -126,7 +126,7 @@ export function FilterPopover({
             value={search}
             onValueChange={setSearch}
             placeholder={t("filterPopover.searchInFilter")}
-            className="border-b border-black-1"
+            className="bg-black-1/50"
           />
           <CommandList className="max-h-[300px]">
             {filteredGroups.length === 0 && (

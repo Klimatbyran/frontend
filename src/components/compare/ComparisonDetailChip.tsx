@@ -48,10 +48,10 @@ export function ComparisonDetailChip({
             : t("explorePage.comparison.compare")
         }
         className={cn(
-          "inline-flex h-8 min-h-8 shrink-0 items-center justify-center gap-1.5 rounded-full border px-3 text-sm leading-none transition-colors",
+          "inline-flex h-8 min-h-8 shrink-0 items-center justify-center gap-1.5 rounded-full px-3 text-sm leading-none transition-colors",
           hasSelection
-            ? "border-blue-2 bg-blue-5/15 text-blue-2 hover:bg-blue-5/25"
-            : "border-white/40 bg-transparent text-white hover:bg-white/10",
+            ? "bg-blue-5/25 text-blue-2 hover:bg-blue-5/35"
+            : "bg-black-1 text-white hover:bg-black-2",
           className,
         )}
       >

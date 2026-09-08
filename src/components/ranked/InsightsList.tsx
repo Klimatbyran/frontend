@@ -60,11 +60,11 @@ function InsightsList<T>({
     : 1;
 
   return (
-    <div className="flex flex-col bg-black-2 border border-white/10 rounded-level-2 py-6">
+    <div className="flex flex-col bg-black-2 rounded-level-2 py-6">
       <h3 className="text-white text-lg font-semibold px-4 md:px-6 pb-2 md:pb-2">
         {title}
       </h3>
-      <div className="space-y-1 bg-black/40 h-full border-y border-white/10 px-4 md:px-6 py-2">
+      <div className="space-y-1 bg-black-1 h-full px-4 md:px-6 py-2">
         {entities.map((entity, index) => {
           const position = isBottomRanking ? totalCount - index : index + 1;
           const name = String(entity[nameKey]);
