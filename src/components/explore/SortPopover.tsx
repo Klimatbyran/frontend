@@ -65,7 +65,7 @@ export function SortPopover({
         <Button
           variant="outline"
           size="sm"
-          className="text-grey hover:text-white font-medium text-sm"
+          className="text-white font-medium text-sm"
         >
           <ArrowUpDown className="mr-2 h-4 w-4" />
           {t("sortPopover.sort")}
