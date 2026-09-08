@@ -127,7 +127,7 @@ export function FilterPopover({
             onValueChange={setSearch}
             placeholder={t("filterPopover.searchInFilter")}
             className="h-11"
-            wrapperClassName="m-3 rounded-md bg-black-2 px-3.5 py-2.5"
+            wrapperClassName="m-3 rounded-md bg-black-1 px-3.5 py-2.5 border-b border-black-2"
           />
           <CommandList className="max-h-[300px]">
             {filteredGroups.length === 0 && (
