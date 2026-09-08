@@ -470,6 +470,12 @@ function IntroPunchVisual({ content }: { content: IntroPunchContent }) {
   );
 }
 
+/** Landing and other embeds: map + stats side by side from md up. */
+export function NationIntroVisual({ metrics }: NationIntroPunchProps) {
+  const content = useIntroPunchContent(metrics);
+  return <IntroPunchVisual content={content} />;
+}
+
 /** Intro hero: stacked on mobile; centered title/body with map + stats side by side on desktop. */
 export function NationIntroHero({ metrics }: NationIntroPunchProps) {
   const { t } = useTranslation();
