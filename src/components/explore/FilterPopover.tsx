@@ -17,6 +17,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import {
+  explorePopoverContentClassName,
+  explorePopoverListClassName,
+} from "@/components/explore/explorePopoverStyles";
 
 export type FilterOption = {
   value: string;
@@ -118,7 +122,7 @@ export function FilterPopover({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[300px] overflow-hidden p-0 bg-black-1 shadow-[0_16px_48px_rgba(0,0,0,0.75)]"
+        className={cn("w-[300px]", explorePopoverContentClassName)}
         align="end"
       >
         <Command className="bg-transparent" shouldFilter={false}>
@@ -127,9 +131,9 @@ export function FilterPopover({
             onValueChange={setSearch}
             placeholder={t("filterPopover.searchInFilter")}
             className="h-11"
-            wrapperClassName="m-3 rounded-md bg-black-1 px-3.5 py-2.5 border-b border-black-2"
+            wrapperClassName="m-3 rounded-md bg-popover-elevated px-3.5 py-2.5 border-b border-black-2"
           />
-          <CommandList className="max-h-[300px]">
+          <CommandList className={explorePopoverListClassName}>
             {filteredGroups.length === 0 && (
               <CommandEmpty>{t("filterPopover.noFiltersFound")}</CommandEmpty>
             )}

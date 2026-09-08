@@ -14,6 +14,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  explorePopoverContentClassName,
+  explorePopoverListClassName,
+} from "@/components/explore/explorePopoverStyles";
+import { cn } from "@/lib/utils";
 
 const SORT_DIRECTION = ["none", "asc", "desc"] as const;
 export type SortDirection = (typeof SORT_DIRECTION)[number];
@@ -67,11 +72,11 @@ export function SortPopover({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[250px] overflow-hidden p-0 bg-black-1 shadow-[0_16px_48px_rgba(0,0,0,0.75)]"
+        className={cn("w-[250px]", explorePopoverContentClassName)}
         align="end"
       >
         <Command className="bg-transparent">
-          <CommandList className="max-h-[300px]">
+          <CommandList className={explorePopoverListClassName}>
             <CommandEmpty>{t("sortPopover.noResults")}</CommandEmpty>
             <CommandGroup heading={t("sortPopover.sortBy")}>
               {sortOptions.map((option) => (

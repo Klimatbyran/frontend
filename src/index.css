@@ -24,6 +24,7 @@
   --black-1: #2e2e2e;
   --black-2: #121212;
   --black-3: #000000;
+  --popover-elevated: color-mix(in srgb, var(--black-1) 82%, white);
 
   /* Orange palette */
   --orange-1: #fde7ce;
@@ -370,6 +371,33 @@ input[type="number"] {
 
   .scrollbar-legend:hover::-webkit-scrollbar-thumb {
     background-color: color-mix(in srgb, var(--grey) 50%, transparent);
+  }
+
+  .bg-popover-elevated {
+    background-color: var(--popover-elevated);
+  }
+
+  .scrollbar-popover {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--grey) 28%, transparent)
+      transparent;
+  }
+
+  .scrollbar-popover::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .scrollbar-popover::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-popover::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: color-mix(in srgb, var(--grey) 28%, transparent);
+  }
+
+  .scrollbar-popover:hover::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--grey) 45%, transparent);
   }
 }
 
