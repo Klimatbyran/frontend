@@ -117,10 +117,7 @@ export function FilterPopover({
           {t("filterPopover.filter")}
         </Button>
       </PopoverTrigger>
-      <PopoverContent
-        className="w-[300px] p-0 bg-black-2"
-        align="end"
-      >
+      <PopoverContent className="w-[300px] p-0 bg-black-2" align="end">
         <Command className="bg-transparent" shouldFilter={false}>
           <CommandInput
             value={search}

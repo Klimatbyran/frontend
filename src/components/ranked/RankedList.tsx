@@ -252,10 +252,7 @@ export function RankedList<T extends Record<string, unknown>>({
 
   return (
     <div
-      className={cn(
-        "bg-black-2 rounded-2xl flex flex-col h-full",
-        className,
-      )}
+      className={cn("bg-black-2 rounded-2xl flex flex-col h-full", className)}
     >
       <div className="p-4 bg-black-1/40">
         <div className="flex items-center gap-3">

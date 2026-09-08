@@ -66,10 +66,7 @@ export function SortPopover({
           {t("sortPopover.sort")}
         </Button>
       </PopoverTrigger>
-      <PopoverContent
-        className="w-[250px] p-0 bg-black-2"
-        align="end"
-      >
+      <PopoverContent className="w-[250px] p-0 bg-black-2" align="end">
         <Command className="bg-transparent">
           <CommandList className="max-h-[300px]">
             <CommandEmpty>{t("sortPopover.noResults")}</CommandEmpty>
