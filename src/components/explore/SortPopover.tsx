@@ -67,7 +67,7 @@ export function SortPopover({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[250px] p-0 bg-black-2 border-black-1"
+        className="w-[250px] overflow-hidden p-0 bg-[#1a1a1a] border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.7)]"
         align="end"
       >
         <Command className="bg-transparent">
