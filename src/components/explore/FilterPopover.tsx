@@ -130,8 +130,8 @@ export function FilterPopover({
             value={search}
             onValueChange={setSearch}
             placeholder={t("filterPopover.searchInFilter")}
-            className="h-11"
-            wrapperClassName="border-b border-black-2 bg-black-1 px-3 py-2"
+            className="h-9 py-0"
+            wrapperClassName="border-b border-black-2 bg-black-1 px-2 py-1"
           />
           <CommandList className={explorePopoverListClassName}>
             {filteredGroups.length === 0 && (
