@@ -15,7 +15,7 @@ export function SectionCard({
   items,
 }: SectionCardProps) {
   return (
-    <div className="bg-black/40 backdrop-blur-xl rounded-xl p-8 border border-white/10 shadow-xl">
+    <div className="bg-black/40 backdrop-blur-xl rounded-xl p-8 shadow-xl">
       {icon}
       <h3 className="text-2xl font-semibold mb-4 text-white drop-shadow-lg">
         {title}

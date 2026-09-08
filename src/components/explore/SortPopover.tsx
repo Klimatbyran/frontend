@@ -60,16 +60,13 @@ export function SortPopover({
         <Button
           variant="outline"
           size="sm"
-          className="bg-black-1 border-black-1 text-grey hover:text-white hover:bg-black-1/80 hover:border-black-1 font-medium text-sm"
+          className="text-grey hover:text-white font-medium text-sm"
         >
           <ArrowUpDown className="mr-2 h-4 w-4" />
           {t("sortPopover.sort")}
         </Button>
       </PopoverTrigger>
-      <PopoverContent
-        className="w-[250px] p-0 bg-black-2 border-black-1"
-        align="end"
-      >
+      <PopoverContent className="w-[250px] p-0 bg-black-2" align="end">
         <Command className="bg-transparent">
           <CommandList className="max-h-[300px]">
             <CommandEmpty>{t("sortPopover.noResults")}</CommandEmpty>

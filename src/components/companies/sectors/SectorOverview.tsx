@@ -46,7 +46,7 @@ const SectorOverview: React.FC<SectorOverviewProps> = ({
             <Button
               variant="outline"
               size="sm"
-              className="bg-black-2 border-black-1 text-white hover:bg-black-1"
+              className="bg-black-2 text-white hover:bg-black-1"
               asChild
             >
               <LocalizedLink to={`/sectors${location.search}`}>

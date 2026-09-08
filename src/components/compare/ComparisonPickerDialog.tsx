@@ -129,7 +129,7 @@ export function ComparisonPickerDialog({
         >
           <div
             className={cn(
-              "flex w-full flex-col overflow-hidden border border-black-1 bg-black-2 shadow-lg",
+              "flex w-full flex-col overflow-hidden bg-black-2 shadow-lg",
               sheetOnMobile
                 ? "rounded-t-2xl md:m-4 md:rounded-lg"
                 : "m-4 rounded-lg",

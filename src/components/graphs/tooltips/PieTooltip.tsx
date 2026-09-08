@@ -74,7 +74,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
   const actionHint = getActionHint(customActionLabel, isMobile, t);
 
   return (
-    <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50 relative">
+    <div className="bg-black-2 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50 relative">
       <div className="flex justify-end items-center relative z-30">
         {isMobile && (
           <button

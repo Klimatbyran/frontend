@@ -136,7 +136,7 @@ export function SearchDialog({
             className={cn(
               "bg-black-2 shadow-lg overflow-hidden",
               "transition-all duration-200 ease-in-out m-4",
-              "border border-black-1 rounded-lg",
+              "rounded-lg",
             )}
           >
             <Command className="rounded-sm px-8 pb-8 pt-2" shouldFilter={false}>

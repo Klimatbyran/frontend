@@ -110,7 +110,7 @@ export const CompaniesSection = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="group relative w-auto h-12 rounded-md overflow-hidden font-medium border-white group-hover:border-blue-3 hover:opacity-100 active:opacity-100"
+                className="group relative w-auto h-12 rounded-md overflow-hidden font-medium hover:opacity-100 active:opacity-100"
               >
                 <span
                   className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"
@@ -165,7 +165,7 @@ export const CompaniesSection = () => {
             <Button
               variant="outline"
               size="lg"
-              className="group relative w-auto h-12 rounded-md overflow-hidden font-medium border-white group-hover:border-blue-3 hover:opacity-100 active:opacity-100"
+              className="group relative w-auto h-12 rounded-md overflow-hidden font-medium hover:opacity-100 active:opacity-100"
             >
               <span
                 className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"

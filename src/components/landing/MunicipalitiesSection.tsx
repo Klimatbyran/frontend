@@ -57,7 +57,7 @@ export const MunicipalitiesSection = () => {
             )}
           >
             <div className="flex flex-wrap items-center gap-3 md:pt-4">
-              <div className="inline-flex rounded-md border border-black-1 bg-black-2 p-1">
+              <div className="inline-flex rounded-md bg-black-1 p-1">
                 <button
                   type="button"
                   onClick={() => setTerritoryMode("municipalities")}
@@ -146,7 +146,7 @@ export const MunicipalitiesSection = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="group relative w-auto h-12 rounded-md overflow-hidden font-medium border-white group-hover:border-blue-3 hover:opacity-100 active:opacity-100"
+                className="group relative w-auto h-12 rounded-md overflow-hidden font-medium hover:opacity-100 active:opacity-100"
               >
                 <span
                   className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"
@@ -167,7 +167,7 @@ export const MunicipalitiesSection = () => {
             <Button
               variant="outline"
               size="lg"
-              className="group relative w-auto h-12 rounded-md overflow-hidden font-medium border-white group-hover:border-blue-3 hover:opacity-100 active:opacity-100"
+              className="group relative w-auto h-12 rounded-md overflow-hidden font-medium hover:opacity-100 active:opacity-100"
             >
               <span
                 className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100"
