@@ -1,16 +1,15 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useHiddenItems } from "@/components/charts";
-import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
-import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
-import { useSectors } from "@/hooks/territories/useSectors";
-import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
+import { OverviewChart } from "@/components/territories/emissionsGraph/OverviewChart";
+import { useNationDetails } from "@/hooks/nation/useNationDetails";
+import { transformTerritoryEmissionsData } from "@/utils/data/territoryEmissionsTransforms";
 import { Text } from "../ui/text";
 import { Button } from "../ui/button";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
-  LANDING_SECTOR_CHART_MIN_HEIGHT_CLASS,
+  LANDING_CHART_PANEL_HEIGHT_CLASS,
   LANDING_SECTION_BODY_CLASS,
   LANDING_SECTION_TITLE_CLASS,
   LANDING_TEXT_BLOCK_MAX_CLASS,
@@ -18,13 +17,11 @@ import {
 
 export const CountriesSection = () => {
   const { t } = useTranslation();
-  const { sectorEmissions, loading: sectorEmissionsLoading } =
-    useSectorEmissions("nation", undefined);
-  const { getSectorInfo } = useSectors();
-  const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
-    useHiddenItems<string>([]);
-  const { availableYears, currentYear } =
-    useSectorYearSelection(sectorEmissions);
+  const { nation, loading } = useNationDetails();
+  const emissionsData = useMemo(
+    () => (nation ? transformTerritoryEmissionsData(nation) : []),
+    [nation],
+  );
 
   return (
     <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
@@ -43,22 +40,13 @@ export const CountriesSection = () => {
             {t("landingPage.countriesSection.description")}
           </Text>
         </div>
-        <div className={LANDING_SECTOR_CHART_MIN_HEIGHT_CLASS}>
-          {sectorEmissionsLoading ? (
-            <div className="h-[min(520px,70vh)] landing-laptop:h-[min(600px,78vh)] w-full animate-pulse bg-black-2 rounded-level-2" />
+        <div className={LANDING_CHART_PANEL_HEIGHT_CLASS}>
+          {loading ? (
+            <div className="h-full w-full animate-pulse bg-black-2 rounded-level-2" />
+          ) : emissionsData.length === 0 ? (
+            <Text className="text-grey">{t("detailPage.graph.noData")}</Text>
           ) : (
-            <SectorEmissionsChart
-              sectorEmissions={sectorEmissions}
-              availableYears={availableYears}
-              currentYear={currentYear}
-              getSectorInfo={getSectorInfo}
-              filteredSectors={filteredSectors}
-              onFilteredSectorsChange={setFilteredSectors}
-              helpItems={[]}
-              sectionClassName="bg-transparent !rounded-none !px-0 !py-0 [&>div:first-child]:pb-0"
-              showHeader={false}
-              compactLayout={false}
-            />
+            <OverviewChart projectedData={emissionsData} />
           )}
         </div>
 
