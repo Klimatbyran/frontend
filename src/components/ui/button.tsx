@@ -11,7 +11,7 @@ const buttonVariants = cva(
         default:
           "bg-black-2 text-white hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",
         outline:
-          "border border-white bg-transparent hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",
+          "bg-black-1 text-white hover:bg-black-2 active:ring-1 active:ring-white disabled:opacity-50",
         ghost:
           "bg-transparent hover:bg-white/10 active:ring-1 active:ring-white disabled:opacity-50",
         icon: "h-10 w-10 rounded-full bg-black-2 hover:opacity-80 active:ring-1 active:ring-white disabled:opacity-50",

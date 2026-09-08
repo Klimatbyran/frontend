@@ -60,14 +60,14 @@ export function SortPopover({
         <Button
           variant="outline"
           size="sm"
-          className="bg-black-1 border-black-1 text-grey hover:text-white hover:bg-black-1/80 hover:border-black-1 font-medium text-sm"
+          className="text-grey hover:text-white font-medium text-sm"
         >
           <ArrowUpDown className="mr-2 h-4 w-4" />
           {t("sortPopover.sort")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[250px] overflow-hidden p-0 bg-[#242424] border-white/25 shadow-[0_16px_48px_rgba(0,0,0,0.75)]"
+        className="w-[250px] overflow-hidden p-0 bg-black-1 shadow-[0_16px_48px_rgba(0,0,0,0.75)]"
         align="end"
       >
         <Command className="bg-transparent">
@@ -78,7 +78,7 @@ export function SortPopover({
                 <CommandItem
                   key={option.value}
                   onSelect={() => setSortBy(option.value)}
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer data-[selected=true]:bg-black-2"
                 >
                   <span>{option.label}</span>
                   {sortBy === option.value && (
@@ -122,7 +122,7 @@ export function SortPopover({
                       setSortDirection(option.value as SortDirection);
                     }
                   }}
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer data-[selected=true]:bg-black-2"
                 >
                   <div className="flex items-center gap-2">
                     {option.icon}

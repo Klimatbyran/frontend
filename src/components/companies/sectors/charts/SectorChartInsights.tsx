@@ -27,7 +27,7 @@ const SectorChartInsights: React.FC<SectorChartInsightsProps> = ({
         return (
           <motion.div
             key={`${animationKey}-${insight.title}`}
-            className="bg-black-2 rounded-lg border p-6 space-y-4"
+            className="bg-black-2 rounded-lg p-6 space-y-4"
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{

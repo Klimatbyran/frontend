@@ -93,7 +93,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
 
   return (
     <>
-      <div className="bg-black-2 rounded-lg border p-6 w-full space-y-6">
+      <div className="bg-black-2 rounded-lg p-6 w-full space-y-6">
         <div className="flex flex-col">
           <EmissionsTotalDisplay
             totalEmissions={totalEmissions}

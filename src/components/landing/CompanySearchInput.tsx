@@ -55,12 +55,12 @@ export const CompanySearchInput = memo(function CompanySearchInput({
             if (event.key === "Escape") setIsDropdownOpen(false);
           }}
           placeholder={t("landingPage.searchPlaceholder")}
-          className="h-11 border-white/25 bg-black-2 pl-10 text-white placeholder:text-white/50 focus-visible:ring-white/40"
+          className="h-11 bg-black-1 pl-10 text-white placeholder:text-white/50 focus-visible:ring-white/40"
           aria-label={t("landingPage.placeholder")}
         />
       </div>
       {isDropdownOpen && inputValue.trim() && (
-        <div className="absolute left-0 top-full z-30 mt-2 max-h-48 w-full overflow-y-auto rounded-md border border-white/10 bg-black-2 shadow-lg">
+        <div className="absolute left-0 top-full z-30 mt-2 max-h-48 w-full overflow-y-auto rounded-md bg-black-2 shadow-lg">
           {isDebouncing || isSearching ? (
             <div className="flex items-center gap-2 px-3 py-2 text-sm text-white/70">
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />

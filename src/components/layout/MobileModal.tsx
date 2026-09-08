@@ -33,7 +33,7 @@ export function MobileModal({
 
       <div
         ref={modalRef}
-        className="relative bg-black-2 border border-black-1 rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
+        className="relative bg-black-2 rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
       >
         <Button
           variant="ghost"

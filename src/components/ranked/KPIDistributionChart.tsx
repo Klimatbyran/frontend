@@ -67,7 +67,7 @@ function BooleanPieTooltip({
       : null;
 
   return (
-    <div className="bg-black-2 border border-black-1 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50">
+    <div className="bg-black-2 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50">
       <p className="text-sm font-medium mb-1">{item.name}</p>
       <div className="text-sm text-grey">
         <div>
@@ -229,7 +229,7 @@ function HistogramTooltip({
   const bin = payload[0]?.payload;
   if (!bin) return null;
   return (
-    <div className="bg-black-1 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
+    <div className="bg-black-1 rounded-lg px-3 py-2 text-xs shadow-xl">
       <p className="text-white/60 mb-1">
         {Number(bin.min).toFixed(1)}
         {unit} – {Number(bin.max).toFixed(1)}

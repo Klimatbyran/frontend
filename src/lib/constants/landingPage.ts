@@ -40,6 +40,3 @@ export const LANDING_CHART_PANEL_HEIGHT_CLASS =
 
 export const LANDING_TEXT_BLOCK_MAX_CLASS =
   "w-full max-w-[760px] landing-laptop:max-w-[880px]";
-
-export const LANDING_SECTOR_CHART_MIN_HEIGHT_CLASS =
-  "w-full landing-laptop:min-h-[min(600px,78vh)]";

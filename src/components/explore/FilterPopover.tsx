@@ -111,14 +111,14 @@ export function FilterPopover({
         <Button
           variant="outline"
           size="sm"
-          className="bg-black-1 border-black-1 text-grey hover:text-white hover:bg-black-1/80 hover:border-black-1 font-medium text-sm"
+          className="text-grey hover:text-white font-medium text-sm"
         >
           <Filter className="mr-2 h-4 w-4" />
           {t("filterPopover.filter")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[300px] overflow-hidden p-0 bg-[#242424] border-white/25 shadow-[0_16px_48px_rgba(0,0,0,0.75)]"
+        className="w-[300px] overflow-hidden p-0 bg-black-1 shadow-[0_16px_48px_rgba(0,0,0,0.75)]"
         align="end"
       >
         <Command className="bg-transparent" shouldFilter={false}>
@@ -127,7 +127,7 @@ export function FilterPopover({
             onValueChange={setSearch}
             placeholder={t("filterPopover.searchInFilter")}
             className="h-11"
-            wrapperClassName="m-3 rounded-md border border-white/10 bg-black-1 px-3.5 py-2.5"
+            wrapperClassName="m-3 rounded-md bg-black-2 px-3.5 py-2.5"
           />
           <CommandList className="max-h-[300px]">
             {filteredGroups.length === 0 && (
@@ -182,7 +182,7 @@ export function FilterPopover({
                                 <CommandItem
                                   key={`${i}-${j}-${option.value}`}
                                   onSelect={() => group.onSelect(option.value)}
-                                  className="flex items-center justify-between cursor-pointer"
+                                  className="flex items-center justify-between cursor-pointer data-[selected=true]:bg-black-2"
                                 >
                                   <span>{option.label}</span>
                                   {group.selectedValues.includes(
