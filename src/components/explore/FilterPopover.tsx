@@ -118,7 +118,7 @@ export function FilterPopover({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[300px] overflow-hidden p-0 bg-[#1a1a1a] border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.7)]"
+        className="w-[300px] overflow-hidden p-0 bg-[#242424] border-white/25 shadow-[0_16px_48px_rgba(0,0,0,0.75)]"
         align="end"
       >
         <Command className="bg-transparent" shouldFilter={false}>
@@ -126,7 +126,8 @@ export function FilterPopover({
             value={search}
             onValueChange={setSearch}
             placeholder={t("filterPopover.searchInFilter")}
-            wrapperClassName="m-2 rounded-md border border-white/10 bg-black-1 py-2"
+            className="h-11"
+            wrapperClassName="m-3 rounded-md border border-white/10 bg-black-1 px-3.5 py-2.5"
           />
           <CommandList className="max-h-[300px]">
             {filteredGroups.length === 0 && (
