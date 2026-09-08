@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { NationStackedAreaChart } from "@/components/nation/NationStackedAreaChart";
+import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { useNationStoryData } from "@/hooks/nation/useNationStoryData";
 import { Text } from "../ui/text";
 import { Button } from "../ui/button";
@@ -40,12 +40,12 @@ export const CountriesSection = () => {
           ) : !metrics?.stackData.length ? (
             <Text className="text-grey">{t("detailPage.graph.noData")}</Text>
           ) : (
-            <NationStackedAreaChart data={metrics.stackData} />
+            <NationStackedChart data={metrics.stackData} embedded />
           )}
         </div>
 
         <div className="w-full flex justify-start md:justify-end">
-          <LocalizedLink to="/nation" className="w-fit md:pt-2">
+          <LocalizedLink to="/valet-2026" className="w-fit md:pt-2">
             <Button
               variant="outline"
               size="lg"
