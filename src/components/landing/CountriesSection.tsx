@@ -1,8 +1,6 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { OverviewChart } from "@/components/territories/emissionsGraph/OverviewChart";
-import { useNationDetails } from "@/hooks/nation/useNationDetails";
-import { transformTerritoryEmissionsData } from "@/utils/data/territoryEmissionsTransforms";
+import { NationStackedAreaChart } from "@/components/nation/NationStackedAreaChart";
+import { useNationStoryData } from "@/hooks/nation/useNationStoryData";
 import { Text } from "../ui/text";
 import { Button } from "../ui/button";
 import { LocalizedLink } from "@/components/LocalizedLink";
@@ -17,11 +15,7 @@ import {
 
 export const CountriesSection = () => {
   const { t } = useTranslation();
-  const { nation, loading } = useNationDetails();
-  const emissionsData = useMemo(
-    () => (nation ? transformTerritoryEmissionsData(nation) : []),
-    [nation],
-  );
+  const { metrics, loading } = useNationStoryData();
 
   return (
     <div className="bg-black w-full flex flex-col items-center pt-44 md:pt-52">
@@ -43,10 +37,10 @@ export const CountriesSection = () => {
         <div className={LANDING_CHART_PANEL_HEIGHT_CLASS}>
           {loading ? (
             <div className="h-full w-full animate-pulse bg-black-2 rounded-level-2" />
-          ) : emissionsData.length === 0 ? (
+          ) : !metrics?.stackData.length ? (
             <Text className="text-grey">{t("detailPage.graph.noData")}</Text>
           ) : (
-            <OverviewChart projectedData={emissionsData} />
+            <NationStackedAreaChart data={metrics.stackData} />
           )}
         </div>
 
