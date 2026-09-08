@@ -88,7 +88,7 @@ export function SortPopover({
               ))}
             </CommandGroup>
 
-            <CommandSeparator className="bg-black-1" />
+            <CommandSeparator className="bg-black-2" />
             <CommandGroup heading={t("sortPopover.sortDirection.asc")}>
               {[
                 {

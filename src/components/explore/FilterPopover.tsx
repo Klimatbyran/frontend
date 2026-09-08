@@ -198,7 +198,7 @@ export function FilterPopover({
                   </CommandGroup>
 
                   {i < filteredGroups.length - 1 && (
-                    <CommandSeparator className="bg-black-1" />
+                    <CommandSeparator className="bg-black-2" />
                   )}
                 </Fragment>
               );
