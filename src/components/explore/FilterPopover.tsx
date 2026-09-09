@@ -17,6 +17,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import {
+  explorePopoverContentClassName,
+  explorePopoverListClassName,
+} from "@/components/explore/explorePopoverStyles";
 
 export type FilterOption = {
   value: string;
@@ -111,21 +115,25 @@ export function FilterPopover({
         <Button
           variant="outline"
           size="sm"
-          className="text-grey hover:text-white font-medium text-sm"
+          className="text-white font-medium text-sm"
         >
           <Filter className="mr-2 h-4 w-4" />
           {t("filterPopover.filter")}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0 bg-black-2" align="end">
+      <PopoverContent
+        className={cn("w-[300px]", explorePopoverContentClassName)}
+        align="end"
+      >
         <Command className="bg-transparent" shouldFilter={false}>
           <CommandInput
             value={search}
             onValueChange={setSearch}
             placeholder={t("filterPopover.searchInFilter")}
-            className="bg-black-1/50"
+            className="h-9 py-0"
+            wrapperClassName="border-b border-black-2 bg-black-1 px-2 py-1"
           />
-          <CommandList className="max-h-[300px]">
+          <CommandList className={explorePopoverListClassName}>
             {filteredGroups.length === 0 && (
               <CommandEmpty>{t("filterPopover.noFiltersFound")}</CommandEmpty>
             )}
@@ -178,7 +186,7 @@ export function FilterPopover({
                                 <CommandItem
                                   key={`${i}-${j}-${option.value}`}
                                   onSelect={() => group.onSelect(option.value)}
-                                  className="flex items-center justify-between cursor-pointer"
+                                  className="flex items-center justify-between cursor-pointer data-[selected=true]:bg-black-2"
                                 >
                                   <span>{option.label}</span>
                                   {group.selectedValues.includes(
@@ -194,7 +202,7 @@ export function FilterPopover({
                   </CommandGroup>
 
                   {i < filteredGroups.length - 1 && (
-                    <CommandSeparator className="bg-black-1" />
+                    <CommandSeparator className="bg-black-2" />
                   )}
                 </Fragment>
               );

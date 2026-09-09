@@ -14,6 +14,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  explorePopoverContentClassName,
+  explorePopoverListClassName,
+} from "@/components/explore/explorePopoverStyles";
+import { cn } from "@/lib/utils";
 
 const SORT_DIRECTION = ["none", "asc", "desc"] as const;
 export type SortDirection = (typeof SORT_DIRECTION)[number];
@@ -60,22 +65,25 @@ export function SortPopover({
         <Button
           variant="outline"
           size="sm"
-          className="text-grey hover:text-white font-medium text-sm"
+          className="text-white font-medium text-sm"
         >
           <ArrowUpDown className="mr-2 h-4 w-4" />
           {t("sortPopover.sort")}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] p-0 bg-black-2" align="end">
+      <PopoverContent
+        className={cn("w-[250px]", explorePopoverContentClassName)}
+        align="end"
+      >
         <Command className="bg-transparent">
-          <CommandList className="max-h-[300px]">
+          <CommandList className={explorePopoverListClassName}>
             <CommandEmpty>{t("sortPopover.noResults")}</CommandEmpty>
             <CommandGroup heading={t("sortPopover.sortBy")}>
               {sortOptions.map((option) => (
                 <CommandItem
                   key={option.value}
                   onSelect={() => setSortBy(option.value)}
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer data-[selected=true]:bg-black-2"
                 >
                   <span>{option.label}</span>
                   {sortBy === option.value && (
@@ -85,7 +93,7 @@ export function SortPopover({
               ))}
             </CommandGroup>
 
-            <CommandSeparator className="bg-black-1" />
+            <CommandSeparator className="bg-black-2" />
             <CommandGroup heading={t("sortPopover.sortDirection.asc")}>
               {[
                 {
@@ -119,7 +127,7 @@ export function SortPopover({
                       setSortDirection(option.value as SortDirection);
                     }
                   }}
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer data-[selected=true]:bg-black-2"
                 >
                   <div className="flex items-center gap-2">
                     {option.icon}
