@@ -15,6 +15,9 @@ import {
   getSearchTerms,
 } from "@/hooks/explore/exploreFilterUtils";
 import type { SortDirection } from "@/components/explore/SortPopover";
+import { buildSearchRegex } from "@/utils/data/search";
+import { SupportedLanguage } from "@/lib/languageDetection";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type RegionSortBy =
   | "total_emissions"
@@ -32,6 +35,7 @@ function isRegionSortBy(s: string): s is RegionSortBy {
 
 export function useRegionsFilters(regions: RegionForExplore[]) {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const sortOptions = useRegionSortOptions();
 
   const {
@@ -51,13 +55,24 @@ export function useRegionsFilters(regions: RegionForExplore[]) {
 
   const filteredRegions = useMemo(
     () =>
-      filterAndSortRegions(regions, {
-        meetsParisFilter,
-        searchQuery,
-        sortBy,
-        sortDirection,
-      }),
-    [regions, meetsParisFilter, searchQuery, sortBy, sortDirection],
+      filterAndSortRegions(
+        regions,
+        {
+          meetsParisFilter,
+          searchQuery,
+          sortBy,
+          sortDirection,
+        },
+        currentLanguage,
+      ),
+    [
+      regions,
+      meetsParisFilter,
+      searchQuery,
+      sortBy,
+      sortDirection,
+      currentLanguage,
+    ],
   );
 
   const filterGroups = [
@@ -104,19 +119,20 @@ function filterAndSortRegions(
     sortBy: RegionSortBy;
     sortDirection: SortDirection;
   },
+  currentLanguage: SupportedLanguage,
 ): RegionForExplore[] {
   const { meetsParisFilter, searchQuery, sortBy, sortDirection } = filters;
 
-  const searchTerms = getSearchTerms(searchQuery);
+  const searchPatterns = getSearchTerms(searchQuery).map((s) =>
+    buildSearchRegex(s, currentLanguage, false),
+  );
 
   return regions
     .filter((region) => {
       if (meetsParisFilter === "yes" && !region.meetsParis) return false;
       if (meetsParisFilter === "no" && region.meetsParis) return false;
-      if (searchTerms.length === 0) return true;
-      return searchTerms.some((term) =>
-        region.name.toLowerCase().includes(term),
-      );
+      if (searchPatterns.length === 0) return true;
+      return searchPatterns.some((pattern) => pattern.test(region.name));
     })
     .sort((a, b) => {
       let cmp = 0;
