@@ -31,6 +31,8 @@ import {
   useCompanyCountryNames,
 } from "./companyCountryFilterUtils";
 import { FilterOptionGroup } from "@/components/explore/FilterPopover";
+import { SupportedLanguage } from "@/lib/languageDetection";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type UseCompanyFiltersOptions = {
   includeSectorFilter?: boolean;
@@ -96,6 +98,7 @@ function useFilteredCompanies(
     >["sortDirection"];
     sectorNames: Record<string, string>;
     industryGroupNames: Record<string, string>;
+    currentLanguage: SupportedLanguage;
   },
 ) {
   return useMemo(
@@ -216,13 +219,15 @@ function useCompanyFilterUiState(
     industryGroupNames: Record<string, string>;
     industryGroupFilterOptionGroups: FilterOptionGroup[];
     countryNames: ReturnType<typeof useCompanyCountryNames>;
+    currentLanguage: SupportedLanguage;
     setSectors: (value: CompanySector[]) => void;
     setIndustryGroups: (value: IndustryGroupOption[]) => void;
     setSelectedCountries: (countries: CompanyCountryTagSlug[]) => void;
     setMeetsParisFilter: (value: string) => void;
   },
 ) {
-  const { exploreFilters, sectorNames, industryGroupNames } = options;
+  const { exploreFilters, sectorNames, industryGroupNames, currentLanguage } =
+    options;
   const {
     sectors,
     industryGroups,
@@ -242,6 +247,7 @@ function useCompanyFilterUiState(
     sortDirection: exploreFilters.sortDirection,
     sectorNames,
     industryGroupNames,
+    currentLanguage,
   });
 
   return {
@@ -273,6 +279,7 @@ export const useCompanyFilters = (
   const industryGroupNames = useIndustryGroupNames();
   const industryGroupFilterOptionGroups = useIndustryGroupFilterOptionGroups();
   const countryNames = useCompanyCountryNames();
+  const { currentLanguage } = useLanguage();
 
   const exploreFilters = useExploreFilters<CompanySortBy>({
     defaultSortBy: "total_emissions",
@@ -298,6 +305,7 @@ export const useCompanyFilters = (
     industryGroupNames,
     industryGroupFilterOptionGroups,
     countryNames,
+    currentLanguage,
     setSectors,
     setIndustryGroups,
     setSelectedCountries,
