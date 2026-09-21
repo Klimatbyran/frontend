@@ -342,9 +342,9 @@
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "mapPlaceholder": "Kartvisualisering kommer snart",
-    "filterByIndustry": "Filtrera efter sektor",
+    "filterByIndustry": "Filtrera efter branschgrupp",
     "clearFilters": "Rensa alla",
-    "selectIndustry": "Välj sektor",
+    "selectIndustry": "Välj branschgrupp",
     "selectCountry": "Välj land",
     "viewToggle": {
       "showGraph": "Graf",
@@ -483,10 +483,10 @@
       "meetsParisUnknown": "Okänt"
     },
     "insights": {
-      "largestSector": "Största sektorn",
+      "largestSector": "Största branschgruppen",
       "largestSectorDescription": "{{name}} står för {{share}} av totala utsläpp",
-      "topThreeSectors": "Topp 3 sektorer",
-      "topThreeSectorsDescription": "De tre största sektorerna står för {{share}} av utsläppen",
+      "topThreeSectors": "Topp 3 branschgrupper",
+      "topThreeSectorsDescription": "De tre största branschgrupperna står för {{share}} av utsläppen",
       "reportingCompanies": "Rapporterande företag",
       "reportingCompaniesDescription": "{{count}} företag rapporterade utsläpp för {{year}}",
       "largestCompany": "Största utsläpparen",

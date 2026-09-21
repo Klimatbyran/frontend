@@ -54,11 +54,11 @@ export function CompanyOverviewNoData({
       </div>
 
       <SupplementalDataPanel>
-        <SupplementalDataField label={t("companies.overview.sector")}>
-          <Text>{sectorName}</Text>
-        </SupplementalDataField>
         <SupplementalDataField label={t("companies.overview.industryGroup")}>
           <Text>{industryGroupName}</Text>
+        </SupplementalDataField>
+        <SupplementalDataField label={t("companies.overview.sector")}>
+          <Text>{sectorName}</Text>
         </SupplementalDataField>
       </SupplementalDataPanel>
 

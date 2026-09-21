@@ -1,8 +1,10 @@
 import { TrendingDown } from "lucide-react";
 import type { TFunction } from "i18next";
 import type { RankedCompany } from "@/types/company";
-import { getCompanyColors, sectorColors } from "@/lib/constants/companyColors";
-import type { SectorCode } from "@/lib/constants/sectors";
+import {
+  getCompanyColors,
+  getGicsCategoryColor,
+} from "@/lib/constants/companyColors";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChangeFromBaseYear } from "@/utils/calculations/emissionsCalculations";
@@ -19,6 +21,7 @@ export type PieChartEntry = {
   value: number;
   total: number;
   sectorCode?: string;
+  groupCode?: string;
   wikidataId?: string;
   companyId?: string;
   scope1?: number;
@@ -81,11 +84,7 @@ export const getMeetsParisStatus = (
 };
 
 export const getSectorColor = (sectorCode?: string): string => {
-  if (!sectorCode) {
-    return "var(--grey)";
-  }
-
-  return sectorColors[sectorCode as SectorCode]?.base ?? "var(--grey)";
+  return getGicsCategoryColor(sectorCode);
 };
 
 export const formatEmissionsLabel = (

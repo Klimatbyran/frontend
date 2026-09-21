@@ -65,7 +65,7 @@ function buildScopeSegments(
     buildScopeSegment(
       t("sectorsOverviewPage.insights.scope1"),
       largest.scope1 ?? 0,
-      getSectorColor(largest.sectorCode),
+      getSectorColor(largest.groupCode || largest.sectorCode),
       scopeTotal,
       currentLanguage,
     ),
@@ -98,7 +98,7 @@ function buildTopSectorBars(
       currentLanguage,
     ),
     share: entry.value / entry.total,
-    color: getSectorColor(entry.sectorCode),
+    color: getSectorColor(entry.groupCode || entry.sectorCode),
   }));
 }
 
@@ -169,7 +169,7 @@ function buildLargestSectorInsight(
             {
               label: largest.name,
               count: largest.value,
-              color: getSectorColor(largest.sectorCode),
+              color: getSectorColor(largest.groupCode || largest.sectorCode),
             },
           ],
     icon: PieChart,

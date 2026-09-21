@@ -2,7 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { sectorColors, getCompanyColors } from "@/lib/constants/companyColors";
+import {
+  getCompanyColors,
+  getGicsCategoryColor,
+} from "@/lib/constants/companyColors";
 import { RankedCompany } from "@/types/company";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useChartData } from "@/hooks/companies/useChartData";
@@ -31,6 +34,7 @@ interface PieChartClickData {
   category?: number;
   total?: number;
   sectorCode?: string;
+  groupCode?: string;
   wikidataId?: string;
 }
 
@@ -61,11 +65,12 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
   );
 
   const handlePieClick = (data: PieChartClickData) => {
-    if (!isSectorView && data?.sectorCode) {
+    const categoryCode = data?.groupCode || data?.sectorCode;
+    if (!isSectorView && categoryCode) {
       navigate(
         localizedPath(
           currentLanguage,
-          `/sectors/${data.sectorCode}${location.search}`,
+          `/sectors/${categoryCode}${location.search}`,
         ),
       );
     } else if (isSectorView && data?.wikidataId) {
@@ -78,10 +83,7 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
       ...entry,
       color: isSectorView
         ? getCompanyColors(index).base
-        : "sectorCode" in entry
-          ? sectorColors[entry.sectorCode as keyof typeof sectorColors]?.base ||
-            "var(--grey)"
-          : "var(--grey)",
+        : getGicsCategoryColor(entry.groupCode || entry.sectorCode),
     }),
   );
 

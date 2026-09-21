@@ -38,7 +38,7 @@ export type Scope3Category = NonNullable<
   NonNullable<CompanyDetails["reportingPeriods"][0]["emissions"]>["scope3"]
 >["categories"][0];
 
-// Industry GICS shape from company detail API (list endpoint has sectorCode only; detail has en/sv names)
+// Industry GICS shape from company detail API (list endpoint has sector/group codes; detail has en/sv names)
 export type CompanyIndustryGics = NonNullable<
   NonNullable<CompanyDetails["industry"]>["industryGics"]
 >;

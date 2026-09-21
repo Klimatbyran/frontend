@@ -41,14 +41,14 @@ const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
 function CompaniesOverviewMainGrid({
   companiesWithKPIs,
   selectedKPI,
-  selectedSector,
+  selectedIndustryGroup,
   viewMode,
   onCompanyClick,
   onViewModeChange,
 }: {
   companiesWithKPIs: CompanyWithKPIs[];
   selectedKPI: CompanyKPIValue;
-  selectedSector: string | null;
+  selectedIndustryGroup: string | null;
   viewMode: OverviewViewMode;
   onCompanyClick: (company: CompanyWithKPIs) => void;
   onViewModeChange: (mode: OverviewViewMode) => void;
@@ -121,13 +121,13 @@ function CompaniesOverviewMainGrid({
             companyData={companiesWithKPIs}
             selectedKPI={selectedKPI}
             section="top"
-            listKey={selectedSector ?? "all"}
+            listKey={selectedIndustryGroup ?? "all"}
           />
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}
             selectedKPI={selectedKPI}
             section="bottom"
-            listKey={selectedSector ?? "all"}
+            listKey={selectedIndustryGroup ?? "all"}
           />
           <CompanyInsightsPanel
             companyData={companiesWithKPIs}
@@ -143,30 +143,30 @@ function CompaniesOverviewMainGrid({
 function CompaniesOverviewContent({
   companiesWithKPIs,
   selectedKPI,
-  availableSectors,
-  selectedSector,
+  availableIndustryGroups,
+  selectedIndustryGroup,
   selectedCountries,
   availableCountries,
   viewMode,
   filterOpen,
   setFilterOpen,
   onKPIChange,
-  onSectorChange,
+  onIndustryGroupChange,
   onCountriesChange,
   onViewModeChange,
   onCompanyClick,
 }: {
   companiesWithKPIs: CompanyWithKPIs[];
   selectedKPI: CompanyKPIValue;
-  availableSectors: string[];
-  selectedSector: string | null;
+  availableIndustryGroups: string[];
+  selectedIndustryGroup: string | null;
   selectedCountries: CompanyCountryTagSlug[];
   availableCountries: CompanyCountryTagSlug[];
   viewMode: OverviewViewMode;
   filterOpen: boolean;
   setFilterOpen: (open: boolean) => void;
   onKPIChange: (kpi: CompanyKPIValue) => void;
-  onSectorChange: (sector: string) => void;
+  onIndustryGroupChange: (industryGroup: string) => void;
   onCountriesChange: (countries: CompanyCountryTagSlug[]) => void;
   onViewModeChange: (mode: OverviewViewMode) => void;
   onCompanyClick: (company: CompanyWithKPIs) => void;
@@ -174,11 +174,11 @@ function CompaniesOverviewContent({
   const { t } = useTranslation();
   const companyKPIs = useCompanyKPIs();
   const { filterGroups, activeFilters } = useCompaniesOverviewFilters({
-    availableSectors,
-    selectedSector,
+    availableIndustryGroups,
+    selectedIndustryGroup,
     selectedCountries,
     availableCountries,
-    onSectorChange,
+    onIndustryGroupChange,
     onCountriesChange,
   });
 
@@ -213,7 +213,7 @@ function CompaniesOverviewContent({
       <CompaniesOverviewMainGrid
         companiesWithKPIs={companiesWithKPIs}
         selectedKPI={selectedKPI}
-        selectedSector={selectedSector}
+        selectedIndustryGroup={selectedIndustryGroup}
         viewMode={viewMode}
         onCompanyClick={onCompanyClick}
         onViewModeChange={onViewModeChange}
@@ -229,14 +229,14 @@ export function CompaniesOverviewPage() {
   const companyKPIs = useCompanyKPIs();
   const [filterOpen, setFilterOpen] = useState(false);
 
-  const availableSectors = useMemo(() => {
+  const availableIndustryGroups = useMemo(() => {
     if (!companies) return [];
-    const sectors = new Set<string>();
+    const industryGroups = new Set<string>();
     companies.forEach((company) => {
-      const sectorCode = company.industry?.industryGics?.sectorCode;
-      if (sectorCode) sectors.add(sectorCode);
+      const groupCode = company.industry?.industryGics?.groupCode;
+      if (groupCode) industryGroups.add(groupCode);
     });
-    return Array.from(sectors).sort();
+    return Array.from(industryGroups).sort();
   }, [companies]);
 
   const availableCountries = useMemo(
@@ -244,9 +244,12 @@ export function CompaniesOverviewPage() {
     [companies],
   );
 
-  const urlState = useCompaniesOverviewUrlState(companyKPIs, availableSectors);
+  const urlState = useCompaniesOverviewUrlState(
+    companyKPIs,
+    availableIndustryGroups,
+  );
   const [selectedKPI, setSelectedKPI] = useState(urlState.getKPIFromURL());
-  const selectedSector = urlState.getSectorFromURL();
+  const selectedIndustryGroup = urlState.getIndustryGroupFromURL();
   const selectedCountries = urlState.getCountriesFromURL();
   const viewMode = urlState.getViewModeFromURL();
 
@@ -256,7 +259,7 @@ export function CompaniesOverviewPage() {
 
   const companiesWithKPIs = useCompaniesWithKPIs(
     companies,
-    selectedSector,
+    selectedIndustryGroup,
     selectedCountries,
     selectedKPI,
   );
@@ -287,8 +290,8 @@ export function CompaniesOverviewPage() {
     <CompaniesOverviewContent
       companiesWithKPIs={companiesWithKPIs}
       selectedKPI={selectedKPI}
-      availableSectors={availableSectors}
-      selectedSector={selectedSector}
+      availableIndustryGroups={availableIndustryGroups}
+      selectedIndustryGroup={selectedIndustryGroup}
       selectedCountries={selectedCountries}
       availableCountries={availableCountries}
       viewMode={viewMode}
@@ -298,8 +301,10 @@ export function CompaniesOverviewPage() {
         setSelectedKPI(kpi);
         urlState.setKPIInURL(String(kpi.key));
       }}
-      onSectorChange={(sector) => {
-        urlState.setSectorInURL(sector === "all" ? null : sector);
+      onIndustryGroupChange={(industryGroup) => {
+        urlState.setIndustryGroupInURL(
+          industryGroup === "all" ? null : industryGroup,
+        );
       }}
       onCountriesChange={urlState.setCountriesInURL}
       onViewModeChange={urlState.setViewModeInURL}

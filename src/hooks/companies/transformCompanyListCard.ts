@@ -100,6 +100,8 @@ export function transformCompanyToListCard(
     company,
     industryGroupNames,
   );
+  const showParentSector =
+    Boolean(sectorName) && sectorName !== industryGroupName;
 
   return {
     name,
@@ -107,10 +109,20 @@ export function transformCompanyToListCard(
       ? createElement(
           Fragment,
           null,
-          createElement("span", { className: "font-semibold" }, sectorName),
-          createElement("span", null, ` • ${industryGroupName}`),
+          createElement(
+            "span",
+            { className: "font-semibold" },
+            industryGroupName,
+          ),
+          showParentSector
+            ? createElement("span", null, ` • ${sectorName}`)
+            : null,
         )
-      : createElement("span", { className: "font-semibold" }, sectorName),
+      : createElement(
+          "span",
+          { className: "font-semibold" },
+          industryGroupName,
+        ),
     logoUrl: company.logoUrl,
     variant: "company" as const,
     baseYear: company?.baseYear?.year || null,

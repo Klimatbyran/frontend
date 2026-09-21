@@ -1,4 +1,9 @@
-import type { SectorCode } from "./sectors";
+import {
+  INDUSTRY_GROUP_CODES_BY_SECTOR,
+  type SectorCode,
+  getSectorCodeFromIndustryGroup,
+  isIndustryGroupCode,
+} from "./sectors";
 
 export interface SectorColor {
   base: string;
@@ -83,4 +88,41 @@ export const sectorColors: SectorColors = {
 export const getCompanyColors = (index: number) => {
   const colors = Object.values(sectorColors);
   return colors[index % colors.length];
+};
+
+const INDUSTRY_GROUP_SHADE_KEYS = ["base", "scope2", "scope3"] as const;
+
+export const getIndustryGroupColor = (groupCode?: string): string => {
+  if (!groupCode) {
+    return "var(--grey)";
+  }
+
+  const sectorCode = getSectorCodeFromIndustryGroup(groupCode);
+  if (!sectorCode) {
+    return "var(--grey)";
+  }
+
+  const palette = sectorColors[sectorCode];
+  const siblings = INDUSTRY_GROUP_CODES_BY_SECTOR[sectorCode];
+  const siblingIndex = isIndustryGroupCode(groupCode)
+    ? siblings.indexOf(groupCode)
+    : -1;
+  const shadeKey =
+    INDUSTRY_GROUP_SHADE_KEYS[
+      Math.max(0, siblingIndex) % INDUSTRY_GROUP_SHADE_KEYS.length
+    ];
+
+  return palette[shadeKey];
+};
+
+export const getGicsCategoryColor = (code?: string): string => {
+  if (!code) {
+    return "var(--grey)";
+  }
+
+  if (isIndustryGroupCode(code) || code.length === 4) {
+    return getIndustryGroupColor(code);
+  }
+
+  return sectorColors[code as SectorCode]?.base ?? "var(--grey)";
 };

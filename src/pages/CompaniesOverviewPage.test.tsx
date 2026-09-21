@@ -4,13 +4,13 @@ import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import type { RankedCompany } from "@/types/company";
 import { CompaniesOverviewPage } from "./CompaniesOverviewPage";
 
-const MATERIALS_SECTOR = "15";
-const HEALTHCARE_SECTOR = "35";
+const MATERIALS_GROUP = "1510";
+const HEALTHCARE_GROUP = "3510";
 
 function createCompany(
   id: string,
   name: string,
-  sectorCode: string,
+  groupCode: string,
 ): RankedCompany {
   return {
     id,
@@ -19,7 +19,8 @@ function createCompany(
     baseYear: { year: 2019 },
     industry: {
       industryGics: {
-        sectorCode,
+        sectorCode: groupCode.slice(0, 2),
+        groupCode,
       },
     },
     reportingPeriods: [
@@ -40,12 +41,12 @@ function createCompany(
 }
 
 const mockCompanies = [
-  createCompany("1", "Duni AB", MATERIALS_SECTOR),
-  createCompany("2", "Materials Two", MATERIALS_SECTOR),
-  createCompany("3", "Materials Three", MATERIALS_SECTOR),
-  createCompany("4", "Health One", HEALTHCARE_SECTOR),
-  createCompany("5", "Health Two", HEALTHCARE_SECTOR),
-  createCompany("6", "Health Three", HEALTHCARE_SECTOR),
+  createCompany("1", "Duni AB", MATERIALS_GROUP),
+  createCompany("2", "Materials Two", MATERIALS_GROUP),
+  createCompany("3", "Materials Three", MATERIALS_GROUP),
+  createCompany("4", "Health One", HEALTHCARE_GROUP),
+  createCompany("5", "Health Two", HEALTHCARE_GROUP),
+  createCompany("6", "Health Three", HEALTHCARE_GROUP),
 ];
 
 const { mockKpiDefinitions, capturedTopLists } = vi.hoisted(() => ({
@@ -125,14 +126,21 @@ vi.mock("@/components/explore/FilterPopover", () => ({
     groups,
   }: {
     groups: Array<{
-      options: Array<{ value: string; label: string }>;
+      options?: Array<{ value: string; label: string }>;
+      optionGroups?: Array<{
+        options: Array<{ value: string; label: string }>;
+      }>;
       selectedValues: string[];
       onSelect: (value: string) => void;
     }>;
   }) => (
     <div data-testid="filter-popover">
       {groups.flatMap((group) =>
-        group.options
+        (
+          group.options ??
+          group.optionGroups?.flatMap((optionGroup) => optionGroup.options) ??
+          []
+        )
           .filter((option) => option.value !== "all")
           .map((option) => (
             <button
@@ -184,7 +192,7 @@ describe("CompaniesOverviewPage", () => {
     capturedTopLists.length = 0;
   });
 
-  it("shows all companies by default when no sector filter is set", async () => {
+  it("shows all companies by default when no industry group filter is set", async () => {
     render(
       <MemoryRouter initialEntries={["/en/companies"]}>
         <Routes>
@@ -213,13 +221,13 @@ describe("CompaniesOverviewPage", () => {
     });
 
     expect(screen.getByTestId("location-search")).not.toHaveTextContent(
-      "sector=",
+      "industryGroup=",
     );
   });
 
-  it("keeps the top insights list scoped to the selected sector when switching", async () => {
+  it("keeps the top insights list scoped to the selected industry group when switching", async () => {
     render(
-      <MemoryRouter initialEntries={["/en/companies?sector=15"]}>
+      <MemoryRouter initialEntries={["/en/companies?industryGroup=1510"]}>
         <Routes>
           <Route
             path="/en/companies"
@@ -242,11 +250,11 @@ describe("CompaniesOverviewPage", () => {
       ]);
     });
 
-    fireEvent.click(screen.getByRole("button", { name: HEALTHCARE_SECTOR }));
+    fireEvent.click(screen.getByRole("button", { name: HEALTHCARE_GROUP }));
 
     await waitFor(() => {
       expect(screen.getByTestId("location-search")).toHaveTextContent(
-        `sector=${HEALTHCARE_SECTOR}`,
+        `industryGroup=${HEALTHCARE_GROUP}`,
       );
     });
 
@@ -261,9 +269,9 @@ describe("CompaniesOverviewPage", () => {
     expect(capturedTopLists.at(-1)).not.toContain("Duni AB");
   });
 
-  it("preserves the sector from the URL after company data loads", async () => {
+  it("preserves the industry group from the URL after company data loads", async () => {
     render(
-      <MemoryRouter initialEntries={["/en/companies?sector=35"]}>
+      <MemoryRouter initialEntries={["/en/companies?industryGroup=3510"]}>
         <Routes>
           <Route
             path="/en/companies"
@@ -280,12 +288,12 @@ describe("CompaniesOverviewPage", () => {
 
     await waitFor(() => {
       expect(screen.getByTestId("location-search")).toHaveTextContent(
-        "sector=35",
+        "industryGroup=3510",
       );
     });
 
     expect(
-      screen.getByRole("button", { name: HEALTHCARE_SECTOR }),
+      screen.getByRole("button", { name: HEALTHCARE_GROUP }),
     ).toHaveAttribute("aria-pressed", "true");
   });
 });

@@ -88,3 +88,18 @@ export type CompanySector = (typeof SECTORS)[number]["value"];
 export const INDUSTRY_GROUP_OPTIONS = ["all", ...INDUSTRY_GROUP_CODES] as const;
 
 export type IndustryGroupOption = (typeof INDUSTRY_GROUP_OPTIONS)[number];
+
+export function isSectorCode(code: string): code is SectorCode {
+  return (SECTOR_ORDER as readonly string[]).includes(code);
+}
+
+export function isIndustryGroupCode(code: string): code is IndustryGroupCode {
+  return (INDUSTRY_GROUP_CODES as readonly string[]).includes(code);
+}
+
+export function getSectorCodeFromIndustryGroup(
+  groupCode: string,
+): SectorCode | undefined {
+  const sectorCode = groupCode.slice(0, 2);
+  return isSectorCode(sectorCode) ? sectorCode : undefined;
+}

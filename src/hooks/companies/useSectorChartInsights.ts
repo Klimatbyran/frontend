@@ -38,6 +38,7 @@ type PieChartEntry = {
   value: number;
   total: number;
   sectorCode?: string;
+  groupCode?: string;
   wikidataId?: string;
   companyId?: string;
   scope1?: number;

@@ -1,8 +1,11 @@
 import { useMemo } from "react";
 import { RankedCompany } from "@/types/company";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
-import { useSectorNames } from "@/hooks/companies/useCompanySectors";
-import { SECTOR_ORDER } from "@/lib/constants/sectors";
+import { useIndustryGroupNames } from "@/hooks/companies/useCompanySectors";
+import {
+  INDUSTRY_GROUP_CODES,
+  getSectorCodeFromIndustryGroup,
+} from "@/lib/constants/sectors";
 
 const getEmissionsFromPeriod = (
   period: RankedCompany["reportingPeriods"][number],
@@ -18,20 +21,20 @@ const getEmissionsFromPeriod = (
   };
 };
 
-const calculateSectorScopesForYear = (
+const calculateIndustryGroupScopesForYear = (
   companies: RankedCompany[],
-  sectorCode: string,
+  groupCode: string,
   year: string,
 ): { scope1: number; scope2: number; scope3: number } => {
   let scope1 = 0;
   let scope2 = 0;
   let scope3 = 0;
 
-  const sectorCompanies = companies.filter(
-    (company) => company.industry?.industryGics?.sectorCode === sectorCode,
+  const groupCompanies = companies.filter(
+    (company) => company.industry?.industryGics?.groupCode === groupCode,
   );
 
-  sectorCompanies.forEach((company) => {
+  groupCompanies.forEach((company) => {
     const periodForYear = company.reportingPeriods.find((period) =>
       period.endDate.startsWith(year),
     );
@@ -55,6 +58,7 @@ const createCompanyDataItem = (
   name: string;
   value: number;
   sectorCode: string | undefined;
+  groupCode: string | undefined;
   wikidataId: string | undefined;
   companyId: string;
   total: number;
@@ -79,6 +83,7 @@ const createCompanyDataItem = (
     name: company.name,
     value: totalEmissions,
     sectorCode: company.industry?.industryGics?.sectorCode,
+    groupCode: company.industry?.industryGics?.groupCode,
     wikidataId: getCompanyUrlSegment(company),
     companyId: company.id,
     total: totalEmissions,
@@ -105,37 +110,38 @@ const buildCompanyPieData = (
   return normalizeAndSortPieData(companyData);
 };
 
-const buildSectorPieData = (
+const buildIndustryGroupPieData = (
   companies: RankedCompany[],
   selectedYear: string,
-  sectorNames: Record<string, string>,
+  industryGroupNames: Record<string, string>,
 ) => {
-  const sectorTotals = SECTOR_ORDER.map((sectorCode) => {
-    const sectorName = sectorNames[sectorCode as keyof typeof sectorNames];
-    const { scope1, scope2, scope3 } = calculateSectorScopesForYear(
+  const groupTotals = INDUSTRY_GROUP_CODES.map((groupCode) => {
+    const groupName = industryGroupNames[groupCode];
+    const { scope1, scope2, scope3 } = calculateIndustryGroupScopesForYear(
       companies,
-      sectorCode,
+      groupCode,
       selectedYear,
     );
     const value = scope1 + scope2 + scope3;
 
     return {
-      key: sectorCode,
-      name: sectorName,
+      key: groupCode,
+      name: groupName,
       value,
-      sectorCode,
+      sectorCode: getSectorCodeFromIndustryGroup(groupCode),
+      groupCode,
       scope1,
       scope2,
       scope3,
     };
   }).filter((item) => item.value > 0);
 
-  const totalEmissions = sectorTotals.reduce(
-    (sum, sector) => sum + sector.value,
+  const totalEmissions = groupTotals.reduce(
+    (sum, group) => sum + group.value,
     0,
   );
-  return sectorTotals
-    .map((sector) => ({ ...sector, total: totalEmissions }))
+  return groupTotals
+    .map((group) => ({ ...group, total: totalEmissions }))
     .sort((a, b) => b.value / b.total - a.value / a.total);
 };
 
@@ -144,14 +150,18 @@ export const useChartData = (
   isSectorView: boolean,
   selectedYear: string,
 ) => {
-  const sectorNames = useSectorNames();
+  const industryGroupNames = useIndustryGroupNames();
 
   const pieChartData = useMemo(
     () =>
       isSectorView
         ? buildCompanyPieData(companies, selectedYear)
-        : buildSectorPieData(companies, selectedYear, sectorNames),
-    [companies, selectedYear, isSectorView, sectorNames],
+        : buildIndustryGroupPieData(
+            companies,
+            selectedYear,
+            industryGroupNames,
+          ),
+    [companies, selectedYear, isSectorView, industryGroupNames],
   );
 
   const totalEmissions = useMemo(

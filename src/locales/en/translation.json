@@ -342,9 +342,9 @@
     "errorTitle": "Failed to retrieve company information",
     "errorDescription": "Please try again later",
     "mapPlaceholder": "Map visualization coming soon",
-    "filterByIndustry": "Filter by industry",
+    "filterByIndustry": "Filter by industry group",
     "clearFilters": "Clear all",
-    "selectIndustry": "Select industry",
+    "selectIndustry": "Select industry group",
     "selectCountry": "Select country",
     "viewToggle": {
       "showGraph": "Graph",
@@ -432,10 +432,10 @@
       "meetsParisUnknown": "Unknown"
     },
     "insights": {
-      "largestSector": "Largest sector",
+      "largestSector": "Largest industry group",
       "largestSectorDescription": "{{name}} accounts for {{share}} of total emissions",
-      "topThreeSectors": "Top 3 sectors",
-      "topThreeSectorsDescription": "The three largest sectors account for {{share}} of emissions",
+      "topThreeSectors": "Top 3 industry groups",
+      "topThreeSectorsDescription": "The three largest industry groups account for {{share}} of emissions",
       "reportingCompanies": "Reporting companies",
       "reportingCompaniesDescription": "{{count}} companies reported emissions for {{year}}",
       "largestCompany": "Largest emitter",
