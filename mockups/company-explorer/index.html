@@ -282,10 +282,9 @@
         flex: 1;
         min-width: 0;
       }
-      .chipgroup.collapsed .chiprow .chip:not(.on) {
-        display: none;
-      }
-      .chipgroup.collapsed .seg button:not(.on) {
+      /* Collapsed shows the "All industries" chip plus whatever is selected,
+         so the way back to everything is always one click away. */
+      .chipgroup.collapsed .chiprow .chip:not(.on):not([data-sec=""]) {
         display: none;
       }
       .filtertoggle {
@@ -429,11 +428,22 @@
         margin-bottom: 40px;
       }
 
-      /* ---------- the headline answer ---------- */
+      /* ---------- the headline answer ----------
+       * Full width, but the sentence and the breakdown sit side by side so
+       * neither has to stretch the whole shell to stay legible.
+       */
       .answer {
         background: var(--black-2);
         border-radius: var(--r2);
-        padding: 32px 36px 34px;
+        padding: 36px 40px 38px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 0.85fr);
+        gap: 56px;
+        align-items: center;
+      }
+      /* The "no matches" and "nothing to judge" states have no breakdown. */
+      .answer.solo {
+        display: block;
       }
       .answer .akicker {
         font-size: 12px;
@@ -443,29 +453,29 @@
         margin: 0 0 14px;
       }
       .answer .ahead {
-        font-size: 30px;
+        font-size: 28px;
         font-weight: 300;
         line-height: 1.3;
         margin: 0;
-        max-width: 780px;
+        max-width: 620px;
       }
       /* The count leads on its own line so the sentence completes it. */
       .answer .ahead .anum {
         display: block;
-        font-size: 68px;
+        font-size: 92px;
         font-weight: 500;
         line-height: 0.95;
         letter-spacing: -0.04em;
         color: var(--blue-2);
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         font-variant-numeric: tabular-nums;
       }
       .answer .asub {
         font-size: 16px;
         line-height: 1.65;
         color: rgba(255, 255, 255, 0.65);
-        margin: 14px 0 0;
-        max-width: 680px;
+        margin: 16px 0 0;
+        max-width: 620px;
       }
 
       /* One dot per company, on-track first, with the three groups written out
@@ -473,7 +483,7 @@
       .adotnote {
         font-size: 12.5px;
         color: rgba(255, 255, 255, 0.4);
-        margin: 24px 0 0;
+        margin: 0;
       }
       /* Dot size is set per render so a handful of companies still fills the
          block instead of trailing off as a single sparse row. */
@@ -498,7 +508,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 11px 0;
+        padding: 13px 0;
         font-size: 14px;
         border-top: 1px solid rgba(255, 255, 255, 0.08);
       }
@@ -572,51 +582,7 @@
       }
 
       /* ---------- map hero: map + short answer side by side ---------- */
-      .maphero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.85fr);
-        gap: 24px;
-        align-items: stretch;
-        margin-bottom: 40px;
-      }
-      .maphero-main {
-        padding: 22px 22px 18px;
-        min-width: 0;
-      }
-      .maphero-main .cardhead {
-        margin-bottom: 14px;
-      }
-      .maphero-side {
-        min-width: 0;
-        display: flex;
-      }
-      /* Sentence at the top, breakdown pinned to the bottom, so the card fills
-         the map's height instead of floating in the middle of it. */
-      .maphero-side .answer {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        padding: 30px 30px 32px;
-      }
-      .maphero-side .answer .ahead {
-        font-size: 25px;
-        max-width: none;
-      }
-      .maphero-side .answer .ahead .anum {
-        font-size: 88px;
-        margin-bottom: 12px;
-      }
-      .maphero-side .answer .asub {
-        font-size: 15px;
-      }
-      .maphero-side .answer .adotnote {
-        margin-top: auto;
-      }
-      .maphero-side .answer .akey > div {
-        padding: 13px 0;
-      }
-
-      /* ---------- industry ranking, beside the short answer ---------- */
+      /* ---------- industry ranking, full width under the verdicts ---------- */
       .seccard {
         background: var(--black-2);
         display: flex;
@@ -627,12 +593,17 @@
         flex-direction: column;
         flex: 1;
       }
+      /* Column 4 is an empty spacer: it keeps the bar a readable length at
+         full width instead of stretching it the whole shell, while the
+         percentage stays pinned to the right edge. */
       .shead,
       .srow {
         display: grid;
-        grid-template-columns: 1fr auto minmax(70px, 130px) 40px;
+        grid-template-columns:
+          minmax(140px, 260px) 120px minmax(0, 620px)
+          minmax(0, 1fr) 52px;
         align-items: center;
-        gap: 12px;
+        gap: 16px;
       }
       .shead {
         padding: 0 8px 8px;
@@ -677,7 +648,7 @@
       .sbar {
         height: 6px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.09);
+        background: rgba(255, 255, 255, 0.06);
         overflow: hidden;
       }
       /* An industry with nobody on track still gets a stub of the ramp's worst
@@ -689,6 +660,7 @@
         border-radius: 999px;
       }
       .spct {
+        grid-column: -2 / -1;
         font-size: 13px;
         text-align: right;
         font-variant-numeric: tabular-nums;
@@ -1195,6 +1167,7 @@
       /* Lets a screenshot capture just the top of the page (?frame=top) so the
          mobile layout can be shown without a 4000px strip. */
       body.frame-top .verdicts,
+      body.frame-top .seccard,
       body.frame-top .tablecard,
       body.frame-top footer.note {
         display: none;
@@ -1213,7 +1186,7 @@
          relying on scroll position at screenshot time. */
       body.frame-lower .pagehead,
       body.frame-lower .scopebar,
-      body.frame-lower .maphero {
+      body.frame-lower .answer {
         display: none;
       }
       body.frame-lower .filterfab {
@@ -1251,16 +1224,12 @@
           min-width: 0;
           align-items: flex-start;
         }
+        /* Not flex:1 — the toggle should sit beside the chips it reveals,
+           not pinned to the far edge of an otherwise empty bar. */
         .filterfacet .chiprow {
-          flex: 1;
+          flex: 0 1 auto;
           flex-wrap: wrap;
           gap: 8px;
-        }
-        .filterfacet .chipgroup.collapsed .chiprow .chip:not(.on) {
-          display: inline-flex;
-        }
-        .filterfacet .filtertoggle {
-          display: none;
         }
       }
 
@@ -1295,17 +1264,22 @@
           font-size: 14.5px;
         }
 
+        /* Too narrow for two columns: the breakdown drops under the sentence. */
         .answer {
+          display: block;
           padding: 22px 20px 24px;
         }
         .answer .ahead {
           font-size: 22px;
         }
+        .answer .ahead .anum {
+          font-size: 68px;
+        }
         .answer .asub {
           font-size: 15px;
         }
         .adotnote {
-          margin-top: 18px;
+          margin-top: 20px;
         }
         .adots i {
           width: 10px;
@@ -1375,9 +1349,6 @@
           padding: 2px 4px;
           font-size: 11px;
         }
-        .filtertoggle .toggle-label {
-          display: none;
-        }
         .chip {
           padding: 4px 8px;
           font-size: 12px;
@@ -1391,22 +1362,6 @@
           padding: 0 8px;
           font-size: 12px;
         }
-        /* Stacked, the answer has to lead — the industries are the follow-up. */
-        .maphero {
-          grid-template-columns: 1fr;
-          gap: 16px;
-          margin-bottom: 24px;
-        }
-        .maphero-side {
-          order: -1;
-        }
-        .maphero-main {
-          padding: 14px;
-        }
-        .maphero-side .answer {
-          padding: 22px 20px 24px;
-        }
-
         .seccard .cardhead {
           margin-bottom: 10px;
         }
@@ -1573,8 +1528,8 @@
               data-filter="sector"
               aria-expanded="false"
             >
-              <span class="when-collapsed toggle-label">More</span>
-              <span class="when-expanded toggle-label">Less</span>
+              <span class="when-collapsed toggle-label">Show more</span>
+              <span class="when-expanded toggle-label">Show less</span>
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M6 9l6 6 6-6" />
               </svg>
@@ -1586,31 +1541,28 @@
     </div>
 
     <div class="shell">
-      <section class="maphero">
-        <div class="card seccard maphero-main">
-          <div class="cardhead">
-            <div>
-              <h2>Which industries are doing best?</h2>
-              <p>
-                How much of each industry is cutting fast enough for Paris.
-                Click one to see only its companies.
-              </p>
-            </div>
-          </div>
-          <div class="seclist" id="sector-list"></div>
-          <div class="secfoot">
-            <div class="ramp" id="sector-ramp"></div>
-            <div class="rampscale">
-              <span>Hardly any on track</span><span>Most on track</span>
-            </div>
-          </div>
-        </div>
-        <aside class="maphero-side">
-          <section class="answer" id="answer"></section>
-        </aside>
-      </section>
+      <section class="answer" id="answer"></section>
 
       <section class="verdicts" id="notable"></section>
+
+      <section class="card seccard">
+        <div class="cardhead">
+          <div>
+            <h2>Which industries are doing best?</h2>
+            <p>
+              How much of each industry is cutting fast enough for Paris.
+              Click one to see only its companies.
+            </p>
+          </div>
+        </div>
+        <div class="seclist" id="sector-list"></div>
+        <div class="secfoot">
+          <div class="ramp" id="sector-ramp"></div>
+          <div class="rampscale">
+            <span>Hardly any on track</span><span>Most on track</span>
+          </div>
+        </div>
+      </section>
 
       <section class="card tablecard">
         <div class="cardhead">
@@ -1874,6 +1826,9 @@
       function renderAnswer(s) {
         const el = document.getElementById("answer");
 
+        // Without a breakdown there is no second column to fill.
+        el.classList.toggle("solo", s.n === 0 || !s.known);
+
         if (s.n === 0) {
           el.innerHTML = `
             <p class="akicker">The short answer</p>
@@ -1923,15 +1878,19 @@
           </div>`;
 
         el.innerHTML = `
-          <p class="akicker">The short answer</p>
-          <p class="ahead">${head}</p>
-          <p class="asub">${sub}</p>
-          <p class="adotnote">Each dot is one company</p>
-          <div class="adots" style="--dot:${dotSize}px;--dotgap:${dotGap}px" aria-hidden="true">${dots}</div>
-          <div class="akey">
-            ${keyRow("var(--blue-3)", "On track for Paris", s.yes)}
-            ${keyRow("var(--pink-3)", "Off track", s.no)}
-            ${keyRow("var(--nodata)", "Not enough data", s.unknown)}
+          <div class="acopy">
+            <p class="akicker">The short answer</p>
+            <p class="ahead">${head}</p>
+            <p class="asub">${sub}</p>
+          </div>
+          <div class="abreak">
+            <p class="adotnote">Each dot is one company</p>
+            <div class="adots" style="--dot:${dotSize}px;--dotgap:${dotGap}px" aria-hidden="true">${dots}</div>
+            <div class="akey">
+              ${keyRow("var(--blue-3)", "On track for Paris", s.yes)}
+              ${keyRow("var(--pink-3)", "Off track", s.no)}
+              ${keyRow("var(--nodata)", "Not enough data", s.unknown)}
+            </div>
           </div>`;
       }
 

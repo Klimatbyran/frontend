@@ -38,7 +38,9 @@ shot "company-explorer-desktop"  1512 2550 2 ""
 # company table fit in one shot instead of a 4000px strip.
 shot "company-explorer-desktop-lower" 1512 2300 2 "?frame=lower&rows=12"
 shot "company-explorer-filtered" 1512 2550 2 "?sector=20"
+# The industry chips start collapsed; ?expand=sector captures "Show more".
+shot "company-explorer-filters-open" 1512 900 2 "?frame=top&expand=sector"
 # Chrome clamps a headless window to 500px wide on macOS, so ?frame=phone
 # constrains the document to 390px inside a 500px window instead.
-shot "company-explorer-phone"     500 1950 2 "?frame=top,phone"
-shot "company-explorer-phone-lower" 500 1500 2 "?frame=lower,phone"
+shot "company-explorer-phone"     500 1000 2 "?frame=top,phone"
+shot "company-explorer-phone-lower" 500 1620 2 "?frame=lower,phone"
