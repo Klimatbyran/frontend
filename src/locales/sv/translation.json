@@ -465,7 +465,8 @@
       "ofTotalEmissionsDescription": " av totala utsläpp.",
       "directEmissionsDescription": "Direkta utsläpp (Scope 1) står för ",
       "ofTotalFootprintDescription": " av totala utsläpp.",
-      "downstreamActivitiesDescription": "Nedströmsaktiviteter bidrar med "
+      "downstreamActivitiesDescription": "Nedströmsaktiviteter bidrar med ",
+      "restPieSliceName": "Övriga företag"
     }
   },
   "sectorsOverviewPage": {

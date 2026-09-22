@@ -13,6 +13,7 @@ interface PieTooltipEntry {
   name?: string;
   value?: number | null;
   payload?: {
+    key?: string | null;
     total?: number | null;
   } | null;
 }
@@ -22,6 +23,7 @@ interface PieTooltipProps {
   payload?: PieTooltipEntry[];
   label?: string;
   customActionLabel?: string;
+  showActionLabelForNull?: boolean;
   showPercentage?: boolean;
   percentageLabel?: string;
 }
@@ -50,6 +52,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
   active,
   payload,
   customActionLabel,
+  showActionLabelForNull = true,
   showPercentage = true,
   percentageLabel,
 }) => {
@@ -71,7 +74,9 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
   const { value, payload: data } = payload[0];
   const safeValue = value != null ? value : 0;
   const percentage = computePercent(safeValue, data?.total, currentLanguage);
-  const actionHint = getActionHint(customActionLabel, isMobile, t);
+  const actionHint =
+    (data?.key !== null || showActionLabelForNull) &&
+    getActionHint(customActionLabel, isMobile, t);
 
   return (
     <div className="bg-black-2 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50 relative">
@@ -99,7 +104,9 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
             {percentage} {percentageLabel || t("graphs.pieChart.ofTotal")}
           </div>
         )}
-        <p className="text-xs italic text-blue-2 mt-2">{actionHint}</p>
+        {actionHint && (
+          <p className="text-xs italic text-blue-2 mt-2">{actionHint}</p>
+        )}
       </div>
     </div>
   );

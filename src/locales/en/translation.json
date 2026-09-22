@@ -414,7 +414,8 @@
       "emissionsUnit": "ton CO₂e",
       "noDataAvailablePieChart": "No data available for this year",
       "pieLegendCompany": "View company details",
-      "pieLegendSector": "View sector details"
+      "pieLegendSector": "View sector details",
+      "restPieSliceName": "Other companies"
     }
   },
   "sectorsOverviewPage": {
