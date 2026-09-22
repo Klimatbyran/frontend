@@ -7,8 +7,6 @@ import type {
   RankedCompany,
 } from "@/types/company";
 
-export type { CompanyKpiData } from "@/types/company";
-
 /** Fetches company KPIs from `/companies/kpis` (overview). */
 export function useCompaniesKPIs(options?: { enabled?: boolean }) {
   const {
@@ -29,14 +27,14 @@ export function useCompaniesKPIs(options?: { enabled?: boolean }) {
   };
 }
 
-export function buildCompanyKpiLookup(
+function buildCompanyKpiLookup(
   companiesKpiData: CompanyKpiData[],
 ): Map<string, CompanyKpiData> {
   return new Map(companiesKpiData.map((kpi) => [kpi.wikidataId, kpi]));
 }
 
 /** Merge API KPI values onto a ranked company. Falls back to client calc. */
-export function mergeApiKpisOntoCompany(
+function mergeApiKpisOntoCompany(
   company: RankedCompany,
   kpiLookup: Map<string, CompanyKpiData>,
 ): CompanyWithKPIs {

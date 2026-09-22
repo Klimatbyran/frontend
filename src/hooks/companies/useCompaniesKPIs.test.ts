@@ -1,10 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { CompanyKpiData, RankedCompany } from "@/types/company";
-import {
-  applyCompanyKpis,
-  buildCompanyKpiLookup,
-  mergeApiKpisOntoCompany,
-} from "./useCompaniesKPIs";
+import { applyCompanyKpis } from "./useCompaniesKPIs";
 
 vi.mock("@/hooks/companies/useCompanyKPIs", () => ({
   enrichCompanyWithKPIs: (company: RankedCompany) => ({
@@ -63,10 +59,9 @@ describe("applyCompanyKpis", () => {
   });
 
   it("falls back per company when a row is missing from the KPI payload", () => {
-    const missing = createCompany("2", "Other AB");
-    const merged = mergeApiKpisOntoCompany(
-      missing,
-      buildCompanyKpiLookup(apiKpis),
+    const [merged] = applyCompanyKpis(
+      [createCompany("2", "Other AB")],
+      apiKpis,
     );
 
     expect(merged.meetsParis).toBe(false);
