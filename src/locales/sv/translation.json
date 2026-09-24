@@ -2225,7 +2225,7 @@
     "aboveAverage": "{{entityPlural}} över genomsnittet",
     "titleBest": "Topp {{nrOfEntities}} {{entityPlural}}",
     "titleTop": "Bästa {{nrOfEntities}} {{entityPlural}}",
-    "titleWorst": "Sämsta {{nrOfEntities}} {{entityPlural}}"
+    "titleWorst": "Botten {{nrOfEntities}} {{entityPlural}}"
   },
   "chartLegend": {
     "clickToFilterOut": "Klicka för att filtrera bort",
