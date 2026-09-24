@@ -1985,8 +1985,8 @@
         },
         "keyStatistics": {
           "average": "Genomsnitt",
-          "best": "Bäst",
-          "worst": "Sämst"
+          "best": "Toppen",
+          "worst": "Botten"
         },
         "distribution": {
           "title": "Fördelning",
