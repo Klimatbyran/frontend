@@ -1,0 +1,31 @@
+---
+description: Placement, size, reuse, and simplicity for Bolt code
+alwaysApply: true
+---
+
+# Code structure
+
+Use judgment. The goal is readable modules, not a folder of tiny wrappers.
+
+## Where code lives
+
+- UI used by 2+ pages or the app shell goes in `src/components`.
+- Shared stateful logic goes in `src/hooks`. Shared pure helpers, API clients, and calculations go in `src/lib` or the existing `src/utils` area that already owns that kind of helper.
+- Page-only code stays with that page, or in the feature folder under `src/components` or `src/pages` that already groups it. Fit the trees that already exist.
+- Keep a helper local until a second real caller needs it.
+
+## Size and reuse
+
+- Aim for about 300 lines when a clean split exists. A file past ~500 lines that mixes concerns should be split when a clear boundary exists.
+- Pull distinct UI into components, stateful flows into hooks, and pure helpers into `lib` or `utils`.
+- Prefer a few clear files over one huge file or many pass-through wrappers.
+- Extend an existing focused module before growing a mega-file.
+- Only split files this change touches, unless asked for a broader cleanup.
+- Leave tightly coupled steps together when splitting them would force the reader to jump.
+
+## How to build
+
+- Reuse an existing component, hook, or helper when it already fits.
+- Keep each component and function on one responsibility, with a name that says what it does.
+- Prefer a simple, explicit solution that handles the real edge cases. Skip extra layers, config, and indirection this change does not need.
+- Match the design and coding style of the surrounding code: patterns, naming, UI primitives, and file layout already used in this repo.
