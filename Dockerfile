@@ -1,3 +1,8 @@
+# Global ARG: only args declared before the first FROM are visible to later
+# FROM instructions. Declaring this inside a stage leaves ${PREVIOUS_IMAGE}
+# unexpanded, and BuildKit fails with "base name should not be blank".
+ARG PREVIOUS_IMAGE=ghcr.io/klimatbyran/frontend:latest
+
 # Build stage
 FROM node:20-slim AS build
 
@@ -25,7 +30,6 @@ RUN npm run build
 
 # Previous release — keep hashed /assets across deploys so mixed pods during
 # rolling updates do not 404 when HTML references a new chunk hash.
-ARG PREVIOUS_IMAGE=ghcr.io/klimatbyran/frontend:latest
 FROM ${PREVIOUS_IMAGE} AS previous_release
 
 # Production stage
