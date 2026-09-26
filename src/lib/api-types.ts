@@ -477,6 +477,55 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    /**
+     * Added ahead of published OpenAPI from UnearthData/api#125.
+     * Do not hand-edit other generated paths.
+     */
+    "/companies/kpis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get company KPIs
+         * @description Retrieve key performance indicators for all companies, including Paris agreement compliance and emissions change from base year.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            wikidataId: string;
+                            name: string;
+                            sectorCode?: string | null;
+                            meetsParis: boolean | null;
+                            emissionsChangeFromBaseYear: number | null;
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/companies/search": {
         parameters: {
             query?: never;

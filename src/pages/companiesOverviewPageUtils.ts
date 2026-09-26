@@ -17,8 +17,9 @@ import type { FilterGroup } from "@/components/explore/FilterPopover";
 import {
   CompanyKPIValue,
   CompanyWithKPIs,
-  enrichCompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
+import { applyCompanyKpis } from "@/hooks/companies/useCompaniesKPIs";
+import type { CompanyKpiData } from "@/types/company";
 import { DataPoint } from "@/types/rankings";
 
 export function useCompaniesOverviewUrlState(
@@ -106,6 +107,7 @@ export function useCompaniesWithKPIs(
   selectedSector: string | null,
   selectedCountries: CompanyCountryTagSlug[],
   selectedKPI: CompanyKPIValue,
+  companiesKpiData: CompanyKpiData[] = [],
 ) {
   const selectedCountriesKey = [...selectedCountries].sort().join(",");
 
@@ -127,8 +129,14 @@ export function useCompaniesWithKPIs(
       return true;
     });
 
-    return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedCountriesKey, selectedSector, selectedKPI.key]);
+    return applyCompanyKpis(filtered, companiesKpiData);
+  }, [
+    companies,
+    companiesKpiData,
+    selectedCountriesKey,
+    selectedSector,
+    selectedKPI.key,
+  ]);
 }
 
 export function asCompanyDataPoint(

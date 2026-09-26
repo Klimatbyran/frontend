@@ -25,6 +25,7 @@ import {
   CompanyKPIValue,
   CompanyWithKPIs,
 } from "@/hooks/companies/useCompanyKPIs";
+import { useCompaniesKPIs } from "@/hooks/companies/useCompaniesKPIs";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
 import {
   asCompanyDataPoint,
@@ -226,6 +227,8 @@ export function CompaniesOverviewPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { companies, companiesLoading, companiesError } = useCompanies();
+  const { companiesKpiData, loading: companiesKpisLoading } =
+    useCompaniesKPIs();
   const companyKPIs = useCompanyKPIs();
   const [filterOpen, setFilterOpen] = useState(false);
 
@@ -259,9 +262,10 @@ export function CompaniesOverviewPage() {
     selectedSector,
     selectedCountries,
     selectedKPI,
+    companiesKpiData,
   );
 
-  if (companiesLoading) {
+  if (companiesLoading || companiesKpisLoading) {
     return (
       <OverviewPageSkeleton
         variant="companies"

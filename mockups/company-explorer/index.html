@@ -1,0 +1,2481 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Company Explorer — mockup</title>
+
+    <style>
+      /* DM Sans, loaded from the project's own @fontsource package */
+      @font-face {
+        font-family: "DM Sans";
+        font-weight: 200;
+        font-display: block;
+        src: url("../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-200-normal.woff2")
+          format("woff2");
+      }
+      @font-face {
+        font-family: "DM Sans";
+        font-weight: 300;
+        font-display: block;
+        src: url("../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-300-normal.woff2")
+          format("woff2");
+      }
+      @font-face {
+        font-family: "DM Sans";
+        font-weight: 400;
+        font-display: block;
+        src: url("../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2")
+          format("woff2");
+      }
+      @font-face {
+        font-family: "DM Sans";
+        font-weight: 500;
+        font-display: block;
+        src: url("../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-500-normal.woff2")
+          format("woff2");
+      }
+      @font-face {
+        font-family: "DM Sans";
+        font-weight: 600;
+        font-display: block;
+        src: url("../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-600-normal.woff2")
+          format("woff2");
+      }
+
+      :root {
+        --white: #f7f7f7;
+        --grey: #878787;
+        --black-1: #2e2e2e;
+        --black-2: #121212;
+        --black-3: #000000;
+
+        --blue-1: #d4e7f7;
+        --blue-2: #99cfff;
+        --blue-3: #59a0e1;
+        --blue-4: #206288;
+        --blue-5: #13364e;
+
+        --green-1: #f1ffcc;
+        --green-2: #d5fd63;
+        --green-3: #aae506;
+        --green-4: #6c9105;
+        --green-5: #3d4b16;
+
+        --pink-1: #fae1e9;
+        --pink-2: #eea0b7;
+        --pink-3: #f0759a;
+        --pink-4: #97455d;
+        --pink-5: #73263d;
+
+        --orange-2: #fdb768;
+        --orange-3: #f48f2a;
+        --orange-4: #b25f00;
+
+        /* "No data" needs to read as a real third group, not as background. */
+        --nodata: rgba(255, 255, 255, 0.2);
+
+        --card: rgba(255, 255, 255, 0.05);
+        --card-hi: rgba(255, 255, 255, 0.08);
+        --hair: rgba(255, 255, 255, 0.08);
+        --hair-soft: rgba(255, 255, 255, 0.05);
+
+        --r1: 48px;
+        --r2: 30px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--black-3);
+      }
+
+      body {
+        font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+        color: var(--white);
+        -webkit-font-smoothing: antialiased;
+        font-weight: 400;
+        padding-top: 96px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-weight: 300;
+        letter-spacing: -0.025em;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+
+      /* ---------- app chrome (matches Layout + Header) ---------- */
+      .appbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        background: var(--black-2);
+      }
+      .appbar .shell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+      .logo {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--grey);
+      }
+      .appbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: var(--grey);
+      }
+      .lang {
+        font-size: 14px;
+        color: var(--grey);
+      }
+
+      /* ---------- page head (matches PageHeader title-only) ---------- */
+      .pagehead {
+        padding: 8px 0 28px;
+        max-width: 720px;
+      }
+      .mockflag {
+        display: inline-block;
+        border: 1px solid rgba(244, 143, 42, 0.35);
+        color: var(--orange-3);
+        border-radius: 999px;
+        padding: 2px 8px;
+        letter-spacing: 0.08em;
+        font-size: 10px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      h1 {
+        font-size: 34px;
+        font-weight: 300;
+        line-height: 1.25;
+        margin: 0;
+      }
+      .lead {
+        font-size: 17px;
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.72);
+        margin: 16px 0 0;
+      }
+
+      /* A plain-language "what does this mean" block that stays folded away
+         until someone actually wants the method. */
+      .explainer {
+        margin-top: 20px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        overflow: hidden;
+      }
+      .explainer > summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 14px 18px;
+        font-size: 15px;
+        color: var(--blue-2);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .explainer > summary::-webkit-details-marker {
+        display: none;
+      }
+      .explainer > summary::after {
+        content: "＋";
+        margin-left: auto;
+        opacity: 0.6;
+        font-size: 14px;
+      }
+      .explainer[open] > summary::after {
+        content: "−";
+      }
+      .explainer .exbody {
+        padding: 0 18px 18px;
+        font-size: 15px;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.68);
+      }
+      .explainer .exbody p {
+        margin: 0 0 12px;
+      }
+      .explainer .exbody p:last-child {
+        margin-bottom: 0;
+      }
+      .explainer .exbody strong {
+        color: var(--white);
+        font-weight: 500;
+      }
+
+      /* ---------- scope bar (matches SectorOverview sticky filters) ---------- */
+      .scopebar {
+        position: sticky;
+        top: 48px;
+        z-index: 40;
+        background: var(--black-3);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.35);
+        padding: 8px 0 10px;
+        margin-bottom: 16px;
+        transition: transform 0.24s ease, box-shadow 0.24s ease;
+        will-change: transform;
+      }
+      .scopebar.is-hidden {
+        transform: translateY(calc(-100% - 48px));
+        box-shadow: none;
+        pointer-events: none;
+      }
+      .filterfacet + .filterfacet {
+        margin-top: 6px;
+      }
+      .filterrow {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .flabel {
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.45);
+        margin: 0 0 10px;
+        padding-left: 2px;
+      }
+      .chiprow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+      /* Each facet collapses to the active chip(s) and expands on demand. */
+      .chipgroup {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+      }
+      /* Collapsed shows the "All industries" chip plus whatever is selected,
+         so the way back to everything is always one click away. */
+      .chipgroup.collapsed .chiprow .chip:not(.on):not([data-sec=""]) {
+        display: none;
+      }
+      .filtertoggle {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        border: 0;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+        padding: 4px 6px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 400;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: color 0.15s;
+      }
+      .filtertoggle:hover {
+        color: var(--white);
+      }
+      .filtertoggle svg {
+        flex: none;
+        opacity: 0.7;
+      }
+      .filtertoggle .when-expanded {
+        display: none;
+      }
+      .chipgroup.expanded .filtertoggle .when-collapsed {
+        display: none;
+      }
+      .chipgroup.expanded .filtertoggle .when-expanded {
+        display: inline;
+      }
+      .chipgroup.expanded .filtertoggle svg {
+        transform: rotate(180deg);
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.65);
+        padding: 5px 10px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+      }
+      .chip:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: var(--white);
+      }
+      .chip .n {
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+      }
+      .chip.on {
+        background: rgba(89, 160, 225, 0.15);
+        border-color: rgba(89, 160, 225, 0.55);
+        color: var(--blue-3);
+        box-shadow: none;
+      }
+      .chip.on .n {
+        color: rgba(89, 160, 225, 0.75);
+      }
+      .chip .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        flex: none;
+      }
+      .seg {
+        display: inline-flex;
+        background: var(--black-1);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .seg button {
+        border: 0;
+        background: transparent;
+        color: var(--grey);
+        font: inherit;
+        font-size: 13px;
+        font-weight: 400;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .seg button .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+      }
+      .seg button.on {
+        background: rgba(19, 54, 78, 0.3);
+        color: var(--blue-2);
+      }
+
+      /* ---------- cards / grid (matches RankedList + InsightsList) ---------- */
+      .card {
+        background: var(--black-2);
+        border-radius: 16px;
+        padding: 28px;
+      }
+      .cardhead {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 22px;
+      }
+      .cardhead h2 {
+        font-size: 21px;
+        font-weight: 400;
+        margin: 0 0 8px;
+      }
+      .cardhead p {
+        margin: 0;
+        font-size: 14.5px;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.6;
+        max-width: 560px;
+      }
+      .cardhead .right {
+        margin-left: auto;
+        flex: none;
+      }
+
+      section {
+        margin-bottom: 40px;
+      }
+
+      /* ---------- the headline answer ----------
+       * Full width, but the sentence and the breakdown sit side by side so
+       * neither has to stretch the whole shell to stay legible.
+       */
+      .answer {
+        background: var(--black-2);
+        border-radius: var(--r2);
+        padding: 36px 40px 38px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 0.85fr);
+        gap: 56px;
+        align-items: center;
+      }
+      /* The "no matches" and "nothing to judge" states have no breakdown. */
+      .answer.solo {
+        display: block;
+      }
+      .answer .akicker {
+        font-size: 12px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.45);
+        margin: 0 0 14px;
+      }
+      .answer .ahead {
+        font-size: 28px;
+        font-weight: 300;
+        line-height: 1.3;
+        margin: 0;
+        max-width: 620px;
+      }
+      /* The count leads on its own line so the sentence completes it. */
+      .answer .ahead .anum {
+        display: block;
+        font-size: 92px;
+        font-weight: 500;
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+        color: var(--blue-2);
+        margin-bottom: 12px;
+        font-variant-numeric: tabular-nums;
+      }
+      .answer .asub {
+        font-size: 16px;
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.65);
+        margin: 16px 0 0;
+        max-width: 620px;
+      }
+
+      /* One dot per company, on-track first, with the three groups written out
+         underneath. A share you can count beats a share you have to decode. */
+      .adotnote {
+        font-size: 12.5px;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 0;
+      }
+      /* Dot size is set per render so a handful of companies still fills the
+         block instead of trailing off as a single sparse row. */
+      .adots {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--dotgap, 6px);
+        margin: 10px 0 0;
+      }
+      .adots i {
+        display: block;
+        width: var(--dot, 12px);
+        height: var(--dot, 12px);
+        border-radius: 999px;
+      }
+      .akey {
+        display: flex;
+        flex-direction: column;
+        margin-top: 14px;
+      }
+      .akey > div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 0;
+        font-size: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .akey > div:last-child {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .akey .ksw {
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        flex: none;
+      }
+      .akey .klabel {
+        flex: 1;
+        min-width: 0;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .akey .kval {
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+      }
+      .akey .kpct {
+        width: 42px;
+        text-align: right;
+        color: rgba(255, 255, 255, 0.42);
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ---------- doing well / doing badly ---------- */
+      .verdicts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+        gap: 24px;
+      }
+      .verdict {
+        padding: 26px 0 20px;
+      }
+      .verdict .vhead {
+        padding: 0 28px;
+        margin-bottom: 18px;
+      }
+      .verdict .vtag {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        padding: 4px 12px;
+        font-size: 12.5px;
+        font-weight: 500;
+        margin-bottom: 12px;
+      }
+      .verdict .vtag.good {
+        background: rgba(89, 160, 225, 0.15);
+        color: var(--blue-2);
+      }
+      .verdict .vtag.bad {
+        background: rgba(240, 117, 154, 0.13);
+        color: var(--pink-2);
+      }
+      .verdict h2 {
+        font-size: 21px;
+        font-weight: 400;
+        margin: 0 0 8px;
+      }
+      .verdict .vsub {
+        margin: 0;
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* ---------- map hero: map + short answer side by side ---------- */
+      /* ---------- industry ranking, full width under the verdicts ---------- */
+      .seccard {
+        background: var(--black-2);
+        display: flex;
+        flex-direction: column;
+      }
+      .seclist {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+      /* Column 4 is an empty spacer: it keeps the bar a readable length at
+         full width instead of stretching it the whole shell, while the
+         percentage stays pinned to the right edge. */
+      .shead,
+      .srow {
+        display: grid;
+        grid-template-columns:
+          minmax(140px, 260px) 120px minmax(0, 620px)
+          minmax(0, 1fr) 52px;
+        align-items: center;
+        gap: 16px;
+      }
+      .shead {
+        padding: 0 8px 8px;
+        border-bottom: 1px solid var(--hair);
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .shead span:last-child {
+        text-align: right;
+      }
+      .srow {
+        width: 100%;
+        padding: 11px 8px;
+        border: 0;
+        border-bottom: 1px solid var(--hair-soft);
+        border-radius: 10px;
+        background: none;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .srow:last-child {
+        border-bottom: 0;
+      }
+      .srow:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .srow.sel {
+        background: rgba(153, 207, 255, 0.11);
+      }
+      .sname {
+        font-size: 14.5px;
+      }
+      .scount {
+        font-size: 12.5px;
+        color: var(--grey);
+        font-variant-numeric: tabular-nums;
+      }
+      .sbar {
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        overflow: hidden;
+      }
+      /* An industry with nobody on track still gets a stub of the ramp's worst
+         colour, so "bad" reads as bad rather than as an empty track. */
+      .sbar i {
+        display: block;
+        height: 100%;
+        min-width: 7px;
+        border-radius: 999px;
+      }
+      .spct {
+        grid-column: -2 / -1;
+        font-size: 13px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .spct.nil {
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      .secfoot {
+        margin-top: 18px;
+        padding-top: 14px;
+        border-top: 1px solid var(--hair-soft);
+        max-width: 270px;
+      }
+      .ramp {
+        display: flex;
+      }
+      .ramp i {
+        flex: 1;
+        height: 9px;
+      }
+      .ramp i:first-child {
+        border-radius: 3px 0 0 3px;
+      }
+      .ramp i:last-child {
+        border-radius: 0 3px 3px 0;
+      }
+      .rampscale {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 11px;
+        color: var(--grey);
+        margin-top: 6px;
+      }
+
+      /* ---------- notable (matches InsightsList) ---------- */
+      .cardbody {
+        background: rgba(0, 0, 0, 0.4);
+        padding: 10px 28px 12px;
+      }
+      .irow {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+      }
+      .irow .fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        border-radius: 10px;
+        opacity: 0.16;
+      }
+      .irow:hover .fill {
+        opacity: 0.26;
+      }
+      .irow .rk {
+        position: relative;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.35);
+        width: 16px;
+        font-variant-numeric: tabular-nums;
+      }
+      .irow .nm {
+        position: relative;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.92);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .irow .sub {
+        position: relative;
+        font-size: 11.5px;
+        color: var(--grey);
+        margin-left: auto;
+        flex: none;
+      }
+      .irow .vl {
+        position: relative;
+        font-size: 14.5px;
+        font-weight: 500;
+        margin-left: 12px;
+        flex: none;
+        font-variant-numeric: tabular-nums;
+      }
+      .irow .vl small {
+        font-size: 11.5px;
+        font-weight: 400;
+        color: var(--grey);
+        margin-left: 4px;
+      }
+      .iempty {
+        font-size: 14px;
+        color: var(--grey);
+        line-height: 1.6;
+        padding: 12px 12px 30px;
+        max-width: 320px;
+      }
+
+      /* ---------- table (matches RankedList) ---------- */
+      .tablecard {
+        padding: 0;
+        overflow: hidden;
+      }
+      .tablecard .cardhead {
+        padding: 24px 24px 0;
+      }
+      .tablecard thead th,
+      .tablecard tbody td {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      thead th {
+        font-size: 12px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--grey);
+        font-weight: 400;
+        text-align: left;
+        padding: 0 16px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      thead th.r {
+        text-align: right;
+      }
+      thead th .sm {
+        display: none;
+      }
+      .unit {
+        color: var(--grey);
+        font-size: 11.5px;
+      }
+      thead th.c {
+        text-align: center;
+      }
+      tbody td {
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 14px;
+        vertical-align: middle;
+      }
+      tbody tr:hover {
+        background: rgba(0, 0, 0, 0.35);
+      }
+      tbody tr {
+        cursor: default;
+      }
+      .colink {
+        color: inherit;
+        text-decoration: none;
+      }
+      .colink:hover {
+        color: var(--white);
+        text-decoration: underline;
+      }
+      td.r {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      td.c {
+        text-align: center;
+      }
+      .rank {
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 14px;
+        font-variant-numeric: tabular-nums;
+        width: 30px;
+      }
+      .co {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+      .avatar {
+        width: 29px;
+        height: 29px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        font-size: 10.5px;
+        font-weight: 600;
+        flex: none;
+        letter-spacing: 0.01em;
+      }
+      .sec {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--grey);
+        font-size: 12.5px;
+      }
+      .divbar {
+        display: inline-grid;
+        grid-template-columns: 42px 42px;
+        width: 84px;
+        height: 7px;
+        vertical-align: middle;
+        margin-left: 10px;
+      }
+      .divbar .lf,
+      .divbar .rt {
+        position: relative;
+        background: rgba(255, 255, 255, 0.055);
+      }
+      .divbar .lf {
+        border-radius: 999px 0 0 999px;
+      }
+      .divbar .rt {
+        border-radius: 0 999px 999px 0;
+      }
+      .divbar i {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+      .divbar .lf i {
+        right: 0;
+        background: var(--blue-3);
+        border-radius: 999px 0 0 999px;
+      }
+      .divbar .rt i {
+        left: 0;
+        background: var(--pink-3);
+        border-radius: 0 999px 999px 0;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 4px 11px;
+        font-size: 11.5px;
+        white-space: nowrap;
+      }
+      .badge .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+      }
+      .b-yes {
+        background: rgba(89, 160, 225, 0.13);
+        color: var(--blue-3);
+      }
+      .b-no {
+        background: rgba(240, 117, 154, 0.13);
+        color: var(--pink-3);
+      }
+      .b-unk {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--grey);
+      }
+      .tablefoot {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 24px 24px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* ---------- table search + compare tags ---------- */
+      .tabletoolbar {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 0 24px 16px;
+      }
+      .co-search {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        min-height: 40px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        transition: border-color 0.15s, background 0.15s;
+      }
+      .co-search:focus-within {
+        border-color: rgba(89, 160, 225, 0.45);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .co-tags {
+        display: contents;
+      }
+      .co-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border-radius: 999px;
+        background: rgba(89, 160, 225, 0.15);
+        color: var(--blue-2);
+        padding: 3px 8px 3px 10px;
+        font-size: 12.5px;
+        white-space: nowrap;
+        max-width: 180px;
+      }
+      .co-tag span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .co-tag button {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        opacity: 0.65;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        font-size: 15px;
+      }
+      .co-tag button:hover {
+        opacity: 1;
+      }
+      .co-search input {
+        flex: 1 1 120px;
+        min-width: 80px;
+        border: 0;
+        background: transparent;
+        color: var(--white);
+        font: inherit;
+        font-size: 14px;
+        outline: none;
+        padding: 4px 2px;
+      }
+      .co-search input::placeholder {
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .co-suggest {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 6px);
+        z-index: 20;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--black-1);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+        overflow: hidden;
+        max-height: 280px;
+        overflow-y: auto;
+      }
+      .co-suggest button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: var(--white);
+        font: inherit;
+        font-size: 13.5px;
+        text-align: left;
+        padding: 10px 14px;
+        cursor: pointer;
+      }
+      .co-suggest button:hover,
+      .co-suggest button.active {
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .co-suggest .smeta {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--grey);
+      }
+      .comparebtn {
+        flex: none;
+        border: 1px solid rgba(89, 160, 225, 0.35);
+        background: rgba(89, 160, 225, 0.12);
+        color: var(--blue-2);
+        border-radius: 999px;
+        height: 40px;
+        padding: 0 18px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: opacity 0.15s, background 0.15s;
+      }
+      .comparebtn:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+      .comparebtn:not(:disabled):hover {
+        background: rgba(89, 160, 225, 0.22);
+      }
+      .sortdir {
+        width: 36px;
+        padding: 0;
+        font-size: 16px;
+        line-height: 1;
+      }
+      thead th.sortable {
+        cursor: pointer;
+        user-select: none;
+      }
+      thead th.sortable:hover {
+        color: rgba(255, 255, 255, 0.75);
+      }
+      thead th.sorted {
+        color: var(--blue-2);
+      }
+      thead th .sorticon {
+        display: inline-block;
+        margin-left: 4px;
+        opacity: 0.85;
+        font-size: 11px;
+      }
+      tbody tr.tr-compare {
+        background: rgba(89, 160, 225, 0.06);
+      }
+      tbody tr.tr-compare:hover {
+        background: rgba(89, 160, 225, 0.1);
+      }
+      .ghostbtn {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: transparent;
+        color: var(--white);
+        border-radius: 999px;
+        height: 32px;
+        padding: 0 16px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 300;
+        cursor: pointer;
+      }
+      .ghostbtn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .pos {
+        color: var(--pink-3);
+      }
+      .neg {
+        color: var(--blue-3);
+      }
+      .nul {
+        color: var(--grey);
+      }
+
+      /* Phone-only shortcut back to the filters, since the scope bar stops
+         being sticky at this width. */
+      .filterfab {
+        display: none;
+        position: fixed;
+        left: 50%;
+        bottom: 20px;
+        transform: translate(-50%, 90px);
+        z-index: 60;
+        align-items: center;
+        gap: 9px;
+        background: var(--black-1);
+        color: var(--white);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        padding: 12px 20px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.7);
+        cursor: pointer;
+        transition: transform 0.22s ease;
+      }
+      .filterfab.show {
+        transform: translate(-50%, 0);
+      }
+
+      footer.note {
+        padding: 8px 0 64px;
+        max-width: 720px;
+        font-size: 14.5px;
+        color: rgba(255, 255, 255, 0.45);
+        line-height: 1.7;
+      }
+      footer.note p {
+        margin: 0 0 14px;
+      }
+      footer.note p:last-child {
+        margin-bottom: 0;
+      }
+      footer.note b {
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+      }
+
+      /* Lets a screenshot capture just the top of the page (?frame=top) so the
+         mobile layout can be shown without a 4000px strip. */
+      body.frame-top .verdicts,
+      body.frame-top .seccard,
+      body.frame-top .tablecard,
+      body.frame-top footer.note {
+        display: none;
+      }
+
+      /* Headless Chrome refuses a window narrower than 500px, so ?frame=phone
+         constrains the document itself to a real phone width instead. */
+      body.frame-phone {
+        width: 390px;
+        margin: 0 auto;
+        overflow-x: hidden;
+      }
+
+      /* ?frame=lower composes the bottom half of the page, so the insight
+         carousel and the floating filter button can be captured without
+         relying on scroll position at screenshot time. */
+      body.frame-lower .pagehead,
+      body.frame-lower .scopebar,
+      body.frame-lower .answer {
+        display: none;
+      }
+      body.frame-lower .filterfab {
+        transform: translate(-50%, 0);
+      }
+
+      /* ---------- narrower screens ---------- */
+
+      /* Desktop: inline labels and all chips visible so the bar fills out
+         instead of two lonely collapsed rows with empty space beside them. */
+      @media (min-width: 761px) {
+        .scopebar {
+          padding: 10px 0 12px;
+        }
+        .filterfacet {
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+        }
+        .filterfacet + .filterfacet {
+          margin-top: 8px;
+        }
+        .filterfacet .flabel {
+          width: 56px;
+          margin: 6px 0 0;
+          padding: 0;
+          flex: none;
+        }
+        .filterfacet .filterrow {
+          flex: 1;
+          min-width: 0;
+        }
+        .filterfacet .chipgroup {
+          flex: 1;
+          min-width: 0;
+          align-items: flex-start;
+        }
+        /* Not flex:1 — the toggle should sit beside the chips it reveals,
+           not pinned to the far edge of an otherwise empty bar. */
+        .filterfacet .chiprow {
+          flex: 0 1 auto;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .shell {
+          padding: 0 16px;
+        }
+        .appbar-right span:first-child {
+          display: none;
+        }
+        body {
+          padding-top: 48px;
+        }
+        .mockflag {
+          display: none;
+        }
+        .pagehead {
+          padding: 4px 0 18px;
+        }
+        h1 {
+          font-size: 25px;
+        }
+        .lead {
+          font-size: 15.5px;
+          margin-top: 12px;
+        }
+        .explainer {
+          margin-top: 16px;
+        }
+        .explainer > summary,
+        .explainer .exbody {
+          font-size: 14.5px;
+        }
+
+        /* Too narrow for two columns: the breakdown drops under the sentence. */
+        .answer {
+          display: block;
+          padding: 22px 20px 24px;
+        }
+        .answer .ahead {
+          font-size: 22px;
+        }
+        .answer .ahead .anum {
+          font-size: 68px;
+        }
+        .answer .asub {
+          font-size: 15px;
+        }
+        .adotnote {
+          margin-top: 20px;
+        }
+        .adots i {
+          width: 10px;
+          height: 10px;
+        }
+
+        /* One compact row per facet: label inline, not stacked above. */
+        .scopebar {
+          position: static;
+          top: auto;
+          padding: 6px 0 8px;
+          margin-bottom: 10px;
+          box-shadow: none;
+        }
+        .scopebar .shell {
+          padding-right: 0;
+        }
+        .filterfacet {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .filterfacet + .filterfacet {
+          margin-top: 4px;
+        }
+        .flabel {
+          width: 44px;
+          margin: 0;
+          padding: 0;
+          font-size: 9px;
+          letter-spacing: 0.04em;
+          line-height: 1.2;
+          flex: none;
+        }
+        .filterrow {
+          flex: 1;
+          min-width: 0;
+          gap: 4px;
+        }
+        .chipgroup {
+          flex: 1 1 0;
+          min-width: 0;
+          gap: 4px;
+        }
+        .chipgroup.collapsed .chiprow {
+          flex-wrap: nowrap;
+          overflow: visible;
+          mask-image: none;
+          padding-right: 0;
+        }
+        .chipgroup.expanded .chiprow {
+          flex: 1 1 0;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          padding-right: 14px;
+          scrollbar-width: none;
+          mask-image: linear-gradient(
+            to right,
+            #000 calc(100% - 20px),
+            transparent
+          );
+        }
+        .chipgroup.expanded .chiprow::-webkit-scrollbar {
+          display: none;
+        }
+        .filtertoggle {
+          padding: 2px 4px;
+          font-size: 11px;
+        }
+        .chip {
+          padding: 4px 8px;
+          font-size: 12px;
+          gap: 4px;
+        }
+        .chip .n {
+          font-size: 10px;
+        }
+        .seg button {
+          height: 26px;
+          padding: 0 8px;
+          font-size: 12px;
+        }
+        .seccard .cardhead {
+          margin-bottom: 10px;
+        }
+        .seccard .cardhead h2 {
+          font-size: 16px;
+        }
+        .seccard .cardhead p {
+          font-size: 12px;
+        }
+        /* The company count is the first thing to go when space is tight. */
+        .shead,
+        .srow {
+          grid-template-columns: 1fr minmax(52px, 1fr) 38px;
+          gap: 10px;
+        }
+        .scount,
+        .shead .scount {
+          display: none;
+        }
+
+        section {
+          margin-bottom: 24px;
+        }
+        .card {
+          padding: 18px;
+          border-radius: 22px;
+        }
+        .cardhead .right {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .cardhead {
+          flex-direction: column;
+          gap: 12px;
+        }
+        .cardhead .right {
+          margin-left: 0;
+        }
+        .tabletoolbar {
+          flex-direction: column;
+          padding: 0 16px 14px;
+        }
+        .comparebtn {
+          width: 100%;
+        }
+        .tabletools {
+          width: 100%;
+        }
+        .tabletools .seg {
+          flex: 1;
+        }
+        .tabletools .seg button {
+          flex: 1;
+          justify-content: center;
+        }
+
+        .secfoot {
+          max-width: none;
+        }
+
+        /* Two verdict cards read better stacked than side by side. */
+        .verdicts {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        .verdict {
+          padding: 20px 0 14px;
+        }
+        .verdict .vhead {
+          padding: 0 18px;
+          margin-bottom: 14px;
+        }
+        .verdict h2 {
+          font-size: 19px;
+        }
+        .cardbody {
+          padding: 6px 12px 8px;
+        }
+
+        .filterfab {
+          display: flex;
+        }
+
+        /* Table keeps company, emissions and alignment; the rest moves to the
+           company detail page. */
+        thead th:nth-child(1),
+        tbody td:nth-child(1),
+        thead th:nth-child(3),
+        tbody td:nth-child(3) {
+          display: none;
+        }
+        .divbar,
+        .unit-co2,
+        .irow .sub {
+          display: none;
+        }
+        thead th .lg {
+          display: none;
+        }
+        thead th .sm {
+          display: inline;
+        }
+        thead th,
+        tbody td {
+          padding: 11px 6px;
+        }
+        thead th {
+          font-size: 9px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="appbar">
+      <div class="shell">
+        <div class="logo">Klimatkollen</div>
+        <div class="appbar-right">
+          <span class="lang">EN</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <div class="pagehead">
+        <span class="mockflag">Mockup · sample numbers</span>
+        <h1>Which big Swedish companies are doing enough about the climate?</h1>
+        <p class="lead">
+          Meeting the Paris Agreement means cutting emissions roughly in half
+          this decade. Here is how Sweden’s largest listed companies are doing.
+        </p>
+
+        <details class="explainer">
+          <summary>How do we decide if a company is on track?</summary>
+          <div class="exbody">
+            <p>
+              We give every company a <strong>carbon budget</strong> — the most
+              it can still emit if the world is to stay within 1.5&nbsp;°C of
+              warming — and check whether it is cutting fast enough to stay
+              inside it.
+            </p>
+            <p>
+              Fast enough is <strong>on track</strong>. Too slow, or not
+              cutting at all, is <strong>off track</strong>. Companies that
+              haven’t reported enough years yet are shown as
+              <strong>not enough data</strong> rather than hidden.
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="scopebar">
+      <div class="shell">
+        <div class="filterfacet">
+          <p class="flabel">Industry</p>
+          <div class="filterrow">
+            <div id="g-sector" class="chipgroup collapsed">
+            <div id="f-sector" class="chiprow"></div>
+            <button
+              type="button"
+              class="filtertoggle"
+              data-filter="sector"
+              aria-expanded="false"
+            >
+              <span class="when-collapsed toggle-label">Show more</span>
+              <span class="when-expanded toggle-label">Show less</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <section class="answer" id="answer"></section>
+
+      <section class="verdicts" id="notable"></section>
+
+      <section class="card seccard">
+        <div class="cardhead">
+          <div>
+            <h2>Which industries are doing best?</h2>
+            <p>
+              How much of each industry is cutting fast enough for Paris.
+              Click one to see only its companies.
+            </p>
+          </div>
+        </div>
+        <div class="seclist" id="sector-list"></div>
+        <div class="secfoot">
+          <div class="ramp" id="sector-ramp"></div>
+          <div class="rampscale">
+            <span>Hardly any on track</span><span>Most on track</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card tablecard">
+        <div class="cardhead">
+          <div>
+            <h2>Every company in this view</h2>
+            <p>
+              Search for a company, or add a few to compare. Click any name for
+              its full history.
+            </p>
+          </div>
+          <div class="right tabletools" style="display: flex; gap: 10px; align-items: center">
+            <div class="seg" id="table-sort">
+              <button class="on" data-sort="paris">On track first</button>
+              <button data-sort="emissions">Biggest emitters</button>
+              <button data-sort="name">A–Z</button>
+            </div>
+            <button class="ghostbtn sortdir" id="sort-dir" type="button" title="Flip the order" aria-label="Flip the order">↓</button>
+          </div>
+        </div>
+        <div class="tabletoolbar">
+          <div class="co-search" id="co-search">
+            <div class="co-tags" id="co-tags"></div>
+            <input
+              type="search"
+              id="co-q"
+              placeholder="Search for a company…"
+              autocomplete="off"
+              aria-autocomplete="list"
+              aria-controls="co-suggest"
+            />
+            <div class="co-suggest" id="co-suggest" hidden></div>
+          </div>
+          <button class="comparebtn" id="btn-compare" type="button" disabled>
+            Compare <span id="compare-n">0</span>
+          </button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 42px"></th>
+              <th class="sortable" data-sort="name">Company<span class="sorticon"></span></th>
+              <th class="sortable" data-sort="sector" style="width: 220px">Industry<span class="sorticon"></span></th>
+              <th class="sortable r" data-sort="emissions" style="width: 160px">
+                <span class="lg">Emissions last year</span
+                ><span class="sm">Emissions</span><span class="sorticon"></span>
+              </th>
+              <th class="sortable r" data-sort="change" style="width: 210px">
+                <span class="lg">Change so far</span
+                ><span class="sm">Change</span><span class="sorticon"></span>
+              </th>
+              <th class="sortable c sorted" data-sort="paris" style="width: 160px">
+                <span class="lg">On track for Paris?</span
+                ><span class="sm">On track?</span><span class="sorticon">↓</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="tablefoot">
+          <button class="ghostbtn" id="btn-more">Show 12 more</button>
+          <span id="m-foot"></span>
+        </div>
+      </section>
+
+      <button class="filterfab" id="filter-fab">
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3 6h18M6 12h12M10 18h4" />
+        </svg>
+        <span id="fab-label">Filters</span>
+      </button>
+
+      <footer class="note">
+        <p>
+          <b>Emissions</b> means everything a company reports — its own
+          factories and vehicles, the energy it buys, and the emissions from
+          its suppliers and its products. That last part is usually the
+          biggest, which is why a bank or a clothing brand can have a far
+          bigger footprint than you would expect. We measure it in
+          <b>CO₂e</b>, which adds up all the greenhouse gases as if they were
+          carbon dioxide.
+        </p>
+        <p>
+          <b>Change so far</b> compares the latest year with the first year the
+          company reported. A minus number means emissions have come down.
+        </p>
+      </footer>
+    </div>
+
+    <script src="sample-data.js"></script>
+    <script>
+      const SECTORS = window.SAMPLE_SECTORS;
+
+      /**
+       * Sample alignment: a company counts as on track if it has cut deeply
+       * enough since its base year, with a few hand-set exceptions so the
+       * mockup doesn't look like a single mechanical rule.
+       */
+      const PARIS_THRESHOLD = -26;
+      const FORCE_ON_TRACK = new Set([
+        "Novo Nordisk",
+        "Atlas Copco",
+        "Ambu",
+        "Axfood",
+        "Valmet",
+        "Landsvirkjun",
+      ]);
+      const FORCE_OFF_TRACK = new Set(["Orrön Energy", "Holmen"]);
+
+      function sampleParis(name, change) {
+        if (change === null) return null;
+        if (FORCE_ON_TRACK.has(name)) return 1;
+        if (FORCE_OFF_TRACK.has(name)) return 0;
+        return change <= PARIS_THRESHOLD ? 1 : 0;
+      }
+
+      const WIKIDATA = window.SAMPLE_WIKIDATA || {};
+
+      // This is a Sweden page: the shared Nordic sample set is narrowed once,
+      // here, so nothing downstream has to think about country at all.
+      const ALL = window.SAMPLE_COMPANIES.filter((r) => r[1] === "SE").map(
+        (r, i) => ({
+          id: String(i),
+          wikidataId: WIKIDATA[r[0]] || null,
+          name: r[0],
+          sector: String(r[2]),
+          emissions: r[3],
+          change: r[4],
+          paris: sampleParis(r[0], r[4]),
+          baseYear: r[6],
+        }),
+      );
+
+      const SHORT_SECTOR = {
+        10: "Energy",
+        15: "Materials",
+        20: "Industrials",
+        25: "Consumer disc.",
+        30: "Consumer staples",
+        35: "Healthcare",
+        40: "Financials",
+        45: "IT",
+        50: "Communication",
+        55: "Utilities",
+        60: "Real estate",
+      };
+
+      const state = {
+        sectors: new Set(),
+        rowLimit: 9,
+        tableQuery: "",
+        tableSort: { key: "paris", dir: "desc" },
+        compareIds: new Set(),
+        suggestIndex: -1,
+        filterExpand: {
+          sector: false,
+        },
+      };
+
+      const SORT_DEFAULTS = {
+        emissions: "desc",
+        change: "asc",
+        name: "asc",
+        sector: "asc",
+        paris: "desc",
+      };
+      const COMPARISON_MAX = 4;
+
+      function companyPath(c) {
+        const seg = c.wikidataId || c.id;
+        return `/companies/${seg}`;
+      }
+
+      function companyNameLink(c) {
+        return `<a class="colink" href="${companyPath(c)}">${c.name}</a>`;
+      }
+
+      /* ---------- formatting ---------- */
+      const nf = (n) => n.toLocaleString("en-US").replace(/,/g, " ");
+
+      function fmtT(t) {
+        if (t >= 1e9) return { v: (t / 1e9).toFixed(2), u: "Gt" };
+        if (t >= 1e6) return { v: (t / 1e6).toFixed(1), u: "Mt" };
+        if (t >= 1e3) return { v: Math.round(t / 1e3).toString(), u: "kt" };
+        return { v: nf(t), u: "t" };
+      }
+      const fmtPct = (n) => (n > 0 ? "+" : "") + n + "%";
+      const cls = (n) => (n === null ? "nul" : n < 0 ? "neg" : "pos");
+
+      function initials(name) {
+        const w = name.replace(/[^A-Za-zÀ-ÿ ]/g, " ").trim().split(/\s+/);
+        return ((w[0] || "")[0] + ((w[1] || "")[0] || "")).toUpperCase();
+      }
+      function hexA(hex, a) {
+        const n = parseInt(hex.slice(1), 16);
+        return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`;
+      }
+
+      /* ---------- selection ----------
+       * Faceted counting: the sector filter is excluded when counting sectors,
+       * so the chips and the industry ranking keep showing where you could go
+       * next instead of collapsing to one row once you pick something.
+       */
+      function applyFilters(skip) {
+        skip = skip || {};
+        return ALL.filter((c) => {
+          if (!skip.sector && state.sectors.size && !state.sectors.has(c.sector))
+            return false;
+          return true;
+        });
+      }
+
+      const visible = () => applyFilters();
+
+      function stats(list) {
+        const known = list.filter((c) => c.paris !== null);
+        const yes = known.filter((c) => c.paris === 1).length;
+        const withChange = list.filter((c) => c.change !== null);
+        return {
+          n: list.length,
+          known: known.length,
+          yes,
+          no: known.length - yes,
+          unknown: list.length - known.length,
+          reducing: withChange.filter((c) => c.change < 0).length,
+        };
+      }
+
+      /* ---------- the headline answer ----------
+       * Everything above the fold exists to answer one question in words:
+       * how many of the companies you are looking at are actually on track.
+       */
+      function inWords(part, whole) {
+        // "1 of the 11 companies" already reads as a ratio; repeating it as
+        // "about 1 in 11" adds nothing.
+        if (!whole || part < 2) return null;
+        const oneIn = Math.round(whole / part);
+        if (oneIn < 2) return null;
+        return `about 1 in ${oneIn}`;
+      }
+
+      function listWords(words) {
+        if (words.length <= 1) return words[0] || "";
+        if (words.length === 2) return `${words[0]} and ${words[1]}`;
+        return `${words.slice(0, -1).join(", ")} and ${words[words.length - 1]}`;
+      }
+
+      /* Reads as a trailing clause, e.g. "we track in Industrials", so the
+       * same phrase can slot into several sentences. */
+      function scopePhrase() {
+        const ss = [...state.sectors].map((code) => SHORT_SECTOR[code]);
+        return ss.length ? `we track in ${listWords(ss)}` : "we track";
+      }
+
+      function renderAnswer(s) {
+        const el = document.getElementById("answer");
+
+        // Without a breakdown there is no second column to fill.
+        el.classList.toggle("solo", s.n === 0 || !s.known);
+
+        if (s.n === 0) {
+          el.innerHTML = `
+            <p class="akicker">The short answer</p>
+            <p class="ahead">No companies match this combination.</p>
+            <p class="asub">Try removing a filter to widen the selection again.</p>`;
+          return;
+        }
+
+        if (!s.known) {
+          el.innerHTML = `
+            <p class="akicker">The short answer</p>
+            <p class="ahead">None of the ${s.n} Swedish companies ${scopePhrase()} report enough for us to judge them yet.</p>
+            <p class="asub">It takes a few years of comparable numbers before there is a trend to measure.</p>`;
+          return;
+        }
+
+        // Headline counts every company in view, including the ones we can't
+        // judge, so the sentence doesn't need a caveat about which ones count.
+        const pct = Math.round((s.yes / s.n) * 100);
+        const ratio = inWords(s.yes, s.n);
+        const head = `<b class="anum">${s.yes}</b> of the ${s.n} Swedish companies ${scopePhrase()}
+          ${s.yes === 1 ? "is" : "are"} cutting emissions fast enough for the Paris goal.`;
+
+        // Most companies here are bringing emissions down a little, so the gap
+        // between "falling" and "falling fast enough" is the real story.
+        const sub = `That is ${pct}%${ratio ? `, or ${ratio}` : ""}. ${
+          s.reducing > s.yes
+            ? "Plenty of the others are cutting too — just not fast enough to count."
+            : "The rest are not cutting fast enough to count."
+        }`;
+
+        const dot = (color, count) =>
+          `<i style="background:${color}"></i>`.repeat(count);
+        const dots =
+          dot("var(--blue-3)", s.yes) +
+          dot("var(--pink-3)", s.no) +
+          dot("var(--nodata)", s.unknown);
+        const [dotSize, dotGap] =
+          s.n <= 24 ? [22, 9] : s.n <= 60 ? [16, 7] : [12, 6];
+
+        const keyRow = (color, label, count) => `
+          <div>
+            <span class="ksw" style="background:${color}"></span>
+            <span class="klabel">${label}</span>
+            <span class="kval">${count}</span>
+            <span class="kpct">${Math.round((count / s.n) * 100)}%</span>
+          </div>`;
+
+        el.innerHTML = `
+          <div class="acopy">
+            <p class="akicker">The short answer</p>
+            <p class="ahead">${head}</p>
+            <p class="asub">${sub}</p>
+          </div>
+          <div class="abreak">
+            <p class="adotnote">Each dot is one company</p>
+            <div class="adots" style="--dot:${dotSize}px;--dotgap:${dotGap}px" aria-hidden="true">${dots}</div>
+            <div class="akey">
+              ${keyRow("var(--blue-3)", "On track for Paris", s.yes)}
+              ${keyRow("var(--pink-3)", "Off track", s.no)}
+              ${keyRow("var(--nodata)", "Not enough data", s.unknown)}
+            </div>
+          </div>`;
+      }
+
+      /* ---------- industry ranking ---------- */
+      const SHARE_RAMP = {
+        stops: ["#73263d", "#97455d", "#f0759a", "#99cfff", "#59a0e1"],
+        breaks: [20, 35, 50, 65],
+      };
+
+      function metricFor(code, list) {
+        const rows = list.filter((c) => c.sector === code);
+        const known = rows.filter((c) => c.paris !== null);
+        return {
+          code,
+          n: rows.length,
+          share: known.length
+            ? (known.filter((c) => c.paris === 1).length / known.length) * 100
+            : null,
+        };
+      }
+
+      function fillFor(m) {
+        if (m.share === null || m.n === 0) return "#141414";
+        let i = 0;
+        while (i < SHARE_RAMP.breaks.length && m.share >= SHARE_RAMP.breaks[i])
+          i++;
+        return SHARE_RAMP.stops[i];
+      }
+
+      function renderSectors(list) {
+        // Best first, and industries we can't judge at all sink to the bottom
+        // rather than sitting at a misleading 0%.
+        const rows = Object.keys(SECTORS)
+          .map((code) => metricFor(code, list))
+          .filter((m) => m.n > 0)
+          .sort((a, b) => (b.share ?? -1) - (a.share ?? -1));
+
+        const head = `<div class="shead">
+          <span>Industry</span>
+          <span class="scount">We track</span>
+          <span>On track</span>
+          <span></span>
+        </div>`;
+
+        document.getElementById("sector-list").innerHTML =
+          head +
+          rows
+            .map((m) => {
+              const sel = state.sectors.has(m.code);
+              const pct = m.share === null ? null : Math.round(m.share);
+              return `<button type="button" class="srow ${sel ? "sel" : ""}" data-sec="${m.code}">
+                <span class="sname">${SHORT_SECTOR[m.code]}</span>
+                <span class="scount">${m.n} ${m.n === 1 ? "company" : "companies"}</span>
+                <span class="sbar"><i style="width:${pct === null ? 0 : pct}%;background:${fillFor(m)}"></i></span>
+                <span class="spct ${pct === null ? "nil" : ""}">${pct === null ? "–" : pct + "%"}</span>
+              </button>`;
+            })
+            .join("");
+
+        document.getElementById("sector-ramp").innerHTML = SHARE_RAMP.stops
+          .map((s) => `<i style="background:${s}"></i>`)
+          .join("");
+      }
+
+      /* ---------- who is doing well, who is doing badly ---------- */
+      function verdictCard({ tag, tone, title, sub, items, color, empty }) {
+        const vals = items.map((c) => c.change);
+        const lo = Math.min(...vals);
+        const hi = Math.max(...vals);
+        const span = hi - lo;
+        const maxAbs = Math.max(...vals.map(Math.abs), 0.001);
+
+        // On the "doing well" side every company is cutting, so the bar can
+        // show the actual size of the cut. On the "falling behind" side the
+        // numbers can all still be negative — companies that are shrinking
+        // emissions, just far too slowly — and scaling those on the raw value
+        // would draw the best of a bad bunch as the worst offender. There the
+        // bar spans the card's own range instead, worst always longest.
+        const barWidth = (change) =>
+          tone === "good"
+            ? (Math.abs(change) / maxAbs) * 100
+            : span
+              ? 22 + ((change - lo) / span) * 78
+              : 100;
+
+        const body = items.length
+          ? items
+              .map(
+                (c, i) => `<a class="irow" href="${companyPath(c)}">
+              <span class="fill" style="width:${barWidth(c.change).toFixed(1)}%;background:${color}"></span>
+              <span class="rk">${i + 1}</span>
+              <span class="nm">${c.name}</span>
+              <span class="sub"><span class="ssec">${SHORT_SECTOR[c.sector]}</span></span>
+              <span class="vl" style="color:${color}">${fmtPct(c.change)}<small>so far</small></span>
+            </a>`,
+              )
+              .join("")
+          : `<div class="iempty">${empty}</div>`;
+
+        return `<div class="card verdict">
+          <div class="vhead">
+            <span class="vtag ${tone}">${tag}</span>
+            <h2>${title}</h2>
+            <p class="vsub">${sub}</p>
+          </div>
+          <div class="cardbody">${body}</div>
+        </div>`;
+      }
+
+      function renderNotable(list) {
+        const withCh = list.filter((c) => c.change !== null);
+        // "Doing well" is deliberately drawn from the on-track group only, so
+        // a big cut from a company that is still overshooting its budget
+        // doesn't get presented as a success story.
+        const good = withCh
+          .filter((c) => c.paris === 1)
+          .sort((a, b) => a.change - b.change)
+          .slice(0, 5);
+        const bad = withCh
+          .filter((c) => c.paris === 0)
+          .sort((a, b) => b.change - a.change)
+          .slice(0, 5);
+
+        document.getElementById("notable").innerHTML = [
+          verdictCard({
+            tag: "Doing well",
+            tone: "good",
+            title: "Cutting the fastest",
+            sub: "On track for Paris, and cutting harder than anyone else here.",
+            items: good,
+            color: "#59A0E1",
+            empty:
+              "Nobody here is cutting fast enough to count as on track. Try widening the filters.",
+          }),
+          verdictCard({
+            tag: "Falling behind",
+            tone: "bad",
+            title: "Not cutting fast enough",
+            sub: "Off track for Paris, worst first. Some are still growing their emissions, others are shrinking them far too slowly.",
+            items: bad,
+            color: "#F0759A",
+            empty:
+              "Everyone here is either on track or doesn’t report enough for us to judge.",
+          }),
+        ].join("");
+      }
+
+      /* ---------- table ---------- */
+      function companyById(id) {
+        return ALL.find((c) => c.id === id);
+      }
+
+      function compareLinkTo(c) {
+        return `/companies/${c.wikidataId || c.id}`;
+      }
+
+      function filterTableList(list) {
+        const q = state.tableQuery.trim().toLowerCase();
+        if (!q) return list;
+        return list.filter((c) => c.name.toLowerCase().includes(q));
+      }
+
+      function sortCompanies(list) {
+        const { key, dir } = state.tableSort;
+        const mul = dir === "asc" ? 1 : -1;
+        const text = (a, b) => mul * a.localeCompare(b, "en", { sensitivity: "base" });
+        const num = (av, bv) => {
+          if (av === null && bv === null) return 0;
+          if (av === null) return 1;
+          if (bv === null) return -1;
+          return mul * (av - bv);
+        };
+
+        return [...list].sort((a, b) => {
+          switch (key) {
+            case "name":
+              return text(a.name, b.name);
+            case "sector":
+              return text(SECTORS[a.sector].name, SECTORS[b.sector].name);
+            case "change":
+              return num(a.change, b.change);
+            case "paris":
+              return num(a.paris, b.paris);
+            case "emissions":
+            default:
+              return mul * (a.emissions - b.emissions);
+          }
+        });
+      }
+
+      function suggestMatches(list) {
+        const q = state.tableQuery.trim().toLowerCase();
+        if (q.length < 1) return [];
+        return list
+          .filter(
+            (c) =>
+              c.name.toLowerCase().includes(q) && !state.compareIds.has(c.id),
+          )
+          .slice(0, 8);
+      }
+
+      function syncSortUi() {
+        const { key, dir } = state.tableSort;
+        document.querySelectorAll("#table-sort button").forEach((btn) => {
+          btn.classList.toggle("on", btn.dataset.sort === key);
+        });
+        document.getElementById("sort-dir").textContent = dir === "asc" ? "↑" : "↓";
+        document.querySelectorAll("thead th.sortable").forEach((th) => {
+          const active = th.dataset.sort === key;
+          th.classList.toggle("sorted", active);
+          const icon = th.querySelector(".sorticon");
+          if (icon) icon.textContent = active ? (dir === "asc" ? "↑" : "↓") : "";
+        });
+      }
+
+      function renderCompareTags() {
+        const tags = document.getElementById("co-tags");
+        tags.innerHTML = [...state.compareIds]
+          .map((id) => {
+            const c = companyById(id);
+            if (!c) return "";
+            return `<span class="co-tag" data-id="${c.id}">
+              <span>${c.name}</span>
+              <button type="button" aria-label="Remove ${c.name}">×</button>
+            </span>`;
+          })
+          .join("");
+
+        const n = state.compareIds.size;
+        document.getElementById("compare-n").textContent = String(n);
+        document.getElementById("btn-compare").disabled = n < 2;
+      }
+
+      function renderSuggest(list) {
+        const box = document.getElementById("co-suggest");
+        const matches = suggestMatches(list);
+        if (!state.tableQuery.trim() || matches.length === 0) {
+          box.hidden = true;
+          box.innerHTML = "";
+          state.suggestIndex = -1;
+          return;
+        }
+
+        box.hidden = false;
+        box.innerHTML = matches
+          .map((c, i) => {
+            const col = SECTORS[c.sector].color;
+            return `<button type="button" data-id="${c.id}" class="${i === state.suggestIndex ? "active" : ""}">
+              <span class="avatar" style="width:22px;height:22px;font-size:9px;background:${hexA(col, 0.18)};color:${col};border-radius:999px;display:grid;place-items:center">${initials(c.name)}</span>
+              ${c.name}
+              <span class="smeta">${SHORT_SECTOR[c.sector] || SECTORS[c.sector].name}</span>
+            </button>`;
+          })
+          .join("");
+      }
+
+      function addCompareTag(id) {
+        if (!companyById(id) || state.compareIds.has(id)) return;
+        if (state.compareIds.size >= COMPARISON_MAX) return;
+        state.compareIds.add(id);
+        state.tableQuery = "";
+        document.getElementById("co-q").value = "";
+        state.suggestIndex = -1;
+        renderCompareTags();
+        renderRows(visible());
+      }
+
+      function removeCompareTag(id) {
+        state.compareIds.delete(id);
+        renderCompareTags();
+        renderRows(visible());
+      }
+
+      function setTableSort(key) {
+        if (state.tableSort.key === key) {
+          state.tableSort.dir = state.tableSort.dir === "asc" ? "desc" : "asc";
+        } else {
+          state.tableSort = { key, dir: SORT_DEFAULTS[key] || "asc" };
+        }
+        syncSortUi();
+        renderRows(visible());
+      }
+
+      function renderRows(list) {
+        const filtered = filterTableList(list);
+        const sorted = sortCompanies(filtered);
+        const shown = sorted.slice(0, state.rowLimit);
+        const maxAbs = Math.max(
+          ...list.filter((c) => c.change !== null).map((c) => Math.abs(c.change)),
+          1,
+        );
+
+        document.getElementById("rows").innerHTML = shown
+          .map((c, i) => {
+            const col = SECTORS[c.sector].color;
+            const f = fmtT(c.emissions);
+            const w =
+              c.change === null
+                ? 0
+                : (Math.abs(c.change) / maxAbs) * 100;
+            const bar =
+              c.change === null
+                ? `<span class="divbar"><span class="lf"></span><span class="rt"></span></span>`
+                : c.change < 0
+                  ? `<span class="divbar"><span class="lf"><i style="width:${w}%"></i></span><span class="rt"></span></span>`
+                  : `<span class="divbar"><span class="lf"></span><span class="rt"><i style="width:${w}%"></i></span></span>`;
+            const badge =
+              c.paris === 1
+                ? `<span class="badge b-yes"><i class="dot" style="background:var(--blue-3)"></i>On track</span>`
+                : c.paris === 0
+                  ? `<span class="badge b-no"><i class="dot" style="background:var(--pink-3)"></i>Off track</span>`
+                  : `<span class="badge b-unk"><i class="dot" style="background:var(--grey)"></i>No data</span>`;
+            const pinned = state.compareIds.has(c.id) ? "tr-compare" : "";
+            return `<tr${pinned ? ` class="${pinned}"` : ""}>
+            <td class="rank">${i + 1}</td>
+            <td><div class="co">
+              <span class="avatar" style="background:${hexA(col, 0.18)};color:${col}">${initials(c.name)}</span>
+              ${companyNameLink(c)}
+            </div></td>
+            <td><span class="sec"><i class="dot" style="width:8px;height:8px;border-radius:999px;background:${col};display:inline-block"></i>${SECTORS[c.sector].name}</span></td>
+            <td class="r">${f.v} <span class="unit">${f.u}<span class="unit-co2"> CO₂e</span></span></td>
+            <td class="r"><span class="${cls(c.change)}">${c.change === null ? "Not enough data" : fmtPct(c.change)}</span>${bar}</td>
+            <td class="c">${badge}</td>
+          </tr>`;
+          })
+          .join("");
+
+        const qNote = state.tableQuery.trim()
+          ? ` matching “${state.tableQuery.trim()}”`
+          : "";
+        document.getElementById("m-foot").textContent =
+          `Showing ${shown.length} of ${filtered.length} companies in view${qNote}`;
+        renderSuggest(list);
+      }
+
+      /* ---------- filter chips ---------- */
+      function syncFilterGroups() {
+        for (const facet of ["sector"]) {
+          const group = document.getElementById("g-" + facet);
+          const open = state.filterExpand[facet];
+          group.classList.toggle("expanded", open);
+          group.classList.toggle("collapsed", !open);
+          group.querySelector(".filtertoggle").setAttribute(
+            "aria-expanded",
+            open,
+          );
+        }
+      }
+
+      function renderChips() {
+        const sectorPool = applyFilters({ sector: true });
+
+        document.getElementById("f-sector").innerHTML =
+          `<button class="chip ${state.sectors.size === 0 ? "on" : ""}" data-sec="">All industries <span class="n">${sectorPool.length}</span></button>` +
+          Object.keys(SECTORS)
+            .map((code) => {
+              const n = sectorPool.filter((c) => c.sector === code).length;
+              return `<button class="chip ${state.sectors.has(code) ? "on" : ""}" data-sec="${code}">
+              <i class="dot" style="background:${SECTORS[code].color}"></i>${SHORT_SECTOR[code]} <span class="n">${n}</span></button>`;
+            })
+            .join("");
+
+        document.querySelectorAll("#f-sector [data-sec]").forEach((el) =>
+          el.addEventListener("click", () => {
+            if (!el.dataset.sec) state.sectors.clear();
+            else toggle(state.sectors, el.dataset.sec);
+            render();
+          }),
+        );
+        syncFilterGroups();
+      }
+
+      function toggle(set, v) {
+        set.has(v) ? set.delete(v) : set.add(v);
+      }
+
+      // Delegated: the ranking rows are rebuilt on every render, and binding
+      // them here keeps that out of renderChips' [data-sec] sweep.
+      document.getElementById("sector-list").addEventListener("click", (e) => {
+        const row = e.target.closest(".srow");
+        if (!row) return;
+        toggle(state.sectors, row.dataset.sec);
+        render();
+      });
+
+      /* ---------- render ---------- */
+      function render() {
+        const list = visible();
+        const s = stats(list);
+        document.getElementById("fab-label").textContent =
+          `Filters · ${nf(s.n)} companies`;
+        renderChips();
+        renderAnswer(s);
+        renderNotable(list);
+        // The ranking ignores the industry filter so it stays usable as a
+        // selector after an industry has been picked.
+        renderSectors(applyFilters({ sector: true }));
+        renderRows(list);
+        renderCompareTags();
+        syncSortUi();
+      }
+
+      document.querySelector(".scopebar").addEventListener("click", (e) => {
+        const btn = e.target.closest(".filtertoggle");
+        if (!btn) return;
+        const facet = btn.dataset.filter;
+        state.filterExpand[facet] = !state.filterExpand[facet];
+        syncFilterGroups();
+      });
+
+      document.getElementById("btn-more").addEventListener("click", () => {
+        state.rowLimit += 12;
+        renderRows(visible());
+      });
+
+      document.querySelectorAll("#table-sort button").forEach((btn) =>
+        btn.addEventListener("click", () => setTableSort(btn.dataset.sort)),
+      );
+      document.getElementById("sort-dir").addEventListener("click", () => {
+        state.tableSort.dir = state.tableSort.dir === "asc" ? "desc" : "asc";
+        syncSortUi();
+        renderRows(visible());
+      });
+      document.querySelectorAll("thead th.sortable").forEach((th) =>
+        th.addEventListener("click", () => setTableSort(th.dataset.sort)),
+      );
+
+      const coQ = document.getElementById("co-q");
+      coQ.addEventListener("input", () => {
+        state.tableQuery = coQ.value;
+        state.suggestIndex = -1;
+        renderRows(visible());
+      });
+      coQ.addEventListener("keydown", (e) => {
+        const list = visible();
+        const matches = suggestMatches(list);
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (!matches.length) return;
+          state.suggestIndex = Math.min(state.suggestIndex + 1, matches.length - 1);
+          renderSuggest(list);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          state.suggestIndex = Math.max(state.suggestIndex - 1, 0);
+          renderSuggest(list);
+        } else if (e.key === "Enter") {
+          e.preventDefault();
+          const pick =
+            state.suggestIndex >= 0
+              ? matches[state.suggestIndex]
+              : matches[0];
+          if (pick) addCompareTag(pick.id);
+        } else if (e.key === "Escape") {
+          state.tableQuery = "";
+          coQ.value = "";
+          state.suggestIndex = -1;
+          renderRows(visible());
+        } else if (e.key === "Backspace" && !coQ.value && state.compareIds.size) {
+          const last = [...state.compareIds].pop();
+          if (last) removeCompareTag(last);
+        }
+      });
+
+      document.getElementById("co-search").addEventListener("click", (e) => {
+        const tagBtn = e.target.closest(".co-tag button");
+        if (tagBtn) {
+          removeCompareTag(tagBtn.closest(".co-tag").dataset.id);
+          return;
+        }
+        const pick = e.target.closest(".co-suggest button");
+        if (pick) addCompareTag(pick.dataset.id);
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest("#co-search")) {
+          document.getElementById("co-suggest").hidden = true;
+        }
+      });
+
+      document.getElementById("btn-compare").addEventListener("click", () => {
+        const ids = [...state.compareIds]
+          .map((id) => compareLinkTo(companyById(id)))
+          .filter(Boolean);
+        if (ids.length < 2) return;
+        window.location.href = `/explore/compare?${ids.map((id) => `id=${encodeURIComponent(id)}`).join("&")}`;
+      });
+
+      // Hide the sticky filter bar on scroll down, bring it back on scroll up.
+      const fab = document.getElementById("filter-fab");
+      const scopebar = document.querySelector(".scopebar");
+      let lastScrollY = window.scrollY;
+      let filtersHidden = false;
+
+      function scopebarIsSticky() {
+        return window.matchMedia("(min-width: 761px)").matches;
+      }
+
+      function setFiltersHidden(hidden) {
+        filtersHidden = hidden;
+        scopebar.classList.toggle("is-hidden", hidden && scopebarIsSticky());
+      }
+
+      fab.addEventListener("click", () => {
+        setFiltersHidden(false);
+        scopebar.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      function syncFab() {
+        const rect = scopebar.getBoundingClientRect();
+        const gone = rect.bottom < 0;
+        const tucked =
+          scopebarIsSticky() && filtersHidden && window.scrollY > 48;
+        fab.classList.toggle("show", gone || tucked);
+      }
+
+      function syncScrollChrome() {
+        const y = window.scrollY;
+        const delta = y - lastScrollY;
+
+        if (!scopebarIsSticky()) {
+          setFiltersHidden(false);
+        } else if (y <= 48) {
+          setFiltersHidden(false);
+        } else if (delta > 8 && y > 120) {
+          setFiltersHidden(true);
+        } else if (delta < -8) {
+          setFiltersHidden(false);
+        }
+
+        lastScrollY = y;
+        syncFab();
+      }
+
+      window.addEventListener("scroll", syncScrollChrome, { passive: true });
+      window.addEventListener("resize", () => {
+        if (!scopebarIsSticky()) setFiltersHidden(false);
+        syncFab();
+      });
+
+      // Allow ?sector=10 so alternate states can be captured.
+      const q = new URLSearchParams(location.search);
+      (q.get("sector") || "").split(",").filter(Boolean)
+        .forEach((c) => state.sectors.add(c));
+      if (q.get("rows")) state.rowLimit = +q.get("rows");
+      (q.get("expand") || "").split(",").filter(Boolean).forEach((f) => {
+        if (f in state.filterExpand) state.filterExpand[f] = true;
+      });
+      const frames = (q.get("frame") || "").split(",").filter(Boolean);
+      frames.forEach((f) => document.body.classList.add("frame-" + f));
+      if (q.get("scrollY")) {
+        requestAnimationFrame(() => {
+          window.scrollTo(0, +q.get("scrollY"));
+          lastScrollY = window.scrollY;
+          syncScrollChrome();
+        });
+      }
+
+      // ?debug=1 reports horizontal-overflow offenders straight onto the page,
+      // so a headless screenshot is enough to diagnose layout width problems.
+      if (q.get("debug")) {
+        const vw = document.documentElement.clientWidth;
+        const offenders = [...document.querySelectorAll("*")]
+          .map((el) => ({
+            el,
+            right: el.getBoundingClientRect().right,
+            tag:
+              el.tagName.toLowerCase() +
+              (el.id ? "#" + el.id : "") +
+              (el.className && typeof el.className === "string"
+                ? "." + el.className.trim().split(/\s+/).join(".")
+                : ""),
+          }))
+          .filter((o) => o.right > vw + 1)
+          .sort((a, b) => b.right - a.right)
+          .slice(0, 12);
+        const box = document.createElement("pre");
+        box.style.cssText =
+          "position:fixed;inset:0 auto auto 0;z-index:999;background:#001;color:#0f0;font:11px monospace;padding:8px;margin:0;max-width:100vw;white-space:pre-wrap";
+        box.textContent =
+          `innerWidth=${innerWidth} clientWidth=${vw} scrollWidth=${document.documentElement.scrollWidth}\n` +
+          offenders.map((o) => `${Math.round(o.right)}  ${o.tag}`).join("\n");
+        document.body.appendChild(box);
+      }
+
+      render();
+    </script>
+  </body>
+</html>

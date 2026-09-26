@@ -82,6 +82,20 @@ vi.mock("@/hooks/companies/useCompanyKPIs", () => ({
   }),
 }));
 
+vi.mock("@/hooks/companies/useCompaniesKPIs", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("@/hooks/companies/useCompaniesKPIs")>();
+
+  return {
+    ...actual,
+    useCompaniesKPIs: () => ({
+      companiesKpiData: [],
+      loading: false,
+      error: null,
+    }),
+  };
+});
+
 vi.mock("@/hooks/useScreenSize", () => ({
   useScreenSize: () => ({ isMobile: false }),
 }));
