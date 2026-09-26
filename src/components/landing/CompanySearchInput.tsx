@@ -15,7 +15,9 @@ export const CompanySearchInput = memo(function CompanySearchInput({
 }) {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState("");
-  const [searchQuery, setSearchQuery] = useState(LANDING_DEFAULT_COMPANY_SEARCH);
+  const [searchQuery, setSearchQuery] = useState(
+    LANDING_DEFAULT_COMPANY_SEARCH,
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { searchResults, isSearching, isDebouncing } =
     useCompanySearch(searchQuery);
