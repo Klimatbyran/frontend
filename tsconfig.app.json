@@ -15,13 +15,13 @@
     "jsx": "react-jsx",
 
     /* Linting */
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
     /* for ShadCN */
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
