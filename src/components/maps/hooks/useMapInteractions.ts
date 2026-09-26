@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import L from "leaflet";
 import { DataItem, DataKPI } from "@/types/rankings";
@@ -60,10 +60,6 @@ export function useMapInteractions({
     },
     [isControlled, onHoveredAreaChange],
   );
-  const [hoveredValue, setHoveredValue] = useState<number | boolean | null>(
-    null,
-  );
-  const [hoveredRank, setHoveredRank] = useState<number | null>(null);
 
   const getAreaData = useCallback(
     (name: string): { value: number | boolean | null; rank: number | null } => {
@@ -89,6 +85,12 @@ export function useMapInteractions({
       return { value, rank };
     },
     [data, selectedKPI, sortedData],
+  );
+
+  const { value: hoveredValue, rank: hoveredRank } = useMemo(
+    () =>
+      hoveredArea ? getAreaData(hoveredArea) : { value: null, rank: null },
+    [hoveredArea, getAreaData],
   );
 
   const getColorByValue = useCallback(
@@ -150,8 +152,6 @@ export function useMapInteractions({
           mouseout: () => {
             if (!isMobile) {
               setHoveredArea(null);
-              setHoveredValue(null);
-              setHoveredRank(null);
             }
           },
           click: () => {
@@ -168,18 +168,6 @@ export function useMapInteractions({
     },
     [propertyNameField, onAreaClick, setHoveredArea, showTooltip],
   );
-
-  useEffect(() => {
-    if (!hoveredArea) {
-      setHoveredValue(null);
-      setHoveredRank(null);
-      return;
-    }
-
-    const { value, rank } = getAreaData(hoveredArea);
-    setHoveredValue(value);
-    setHoveredRank(rank);
-  }, [hoveredArea, getAreaData]);
 
   return {
     hoveredArea,
