@@ -55,11 +55,12 @@ function MapOverlays({
           rank={hoveredRank}
           unit={selectedKPI.unit ?? ""}
           total={data.length}
-          nullValue={
-            selectedKPI.key
-              ? t(`${entityType}.list.kpis.${selectedKPI.key}.nullValues`)
-              : t("noData")
-          }
+          nullValue={t(
+            `${entityType}.list.kpis.${selectedKPI.key}.nullValues`,
+            {
+              defaultValue: t("noData"),
+            },
+          )}
           selectedKPI={selectedKPI as KPIValue}
           onClick={onAreaClick ? () => onAreaClick(hoveredArea) : undefined}
         />

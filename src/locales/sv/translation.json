@@ -465,7 +465,8 @@
       "ofTotalEmissionsDescription": " av totala utsläpp.",
       "directEmissionsDescription": "Direkta utsläpp (Scope 1) står för ",
       "ofTotalFootprintDescription": " av totala utsläpp.",
-      "downstreamActivitiesDescription": "Nedströmsaktiviteter bidrar med "
+      "downstreamActivitiesDescription": "Nedströmsaktiviteter bidrar med ",
+      "restPieSliceName": "Övriga företag"
     }
   },
   "sectorsOverviewPage": {
@@ -1343,10 +1344,6 @@
     "elin": {
       "role": "Utvecklare",
       "description": "AI- och backendutvecklare med fokus på att skapa tillförlitliga och produktionsklara AI-lösningar. Har en bakgrund både som konsult och inom forskning. Hjälper Klimatkollen i arbetet med att använda AI för att tillgängliggöra klimatdata."
-    },
-    "carl": {
-      "role": "Utvecklare",
-      "description": "Frontend-utvecklare som älskar naturen, klättring och att bygga verktyg som gör klimatdata lättare att förstå. Stöttar Klimatkollens volontärer, utvecklar webbsidan och försöker hitta den perfekta GIF:en för varje tillfälle."
     },
     "myvi": {
       "role": "Dataanalytiker",

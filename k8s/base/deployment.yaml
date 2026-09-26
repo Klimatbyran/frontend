@@ -12,7 +12,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1
+      # Surge all replicas so new pods (with merged /assets) join before old ones drain.
+      maxSurge: 3
       maxUnavailable: 0
   template:
     metadata:

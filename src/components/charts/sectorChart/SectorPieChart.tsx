@@ -15,6 +15,12 @@ export interface PieChartItem {
   [key: string]: unknown;
 }
 
+export interface PieChartRestSliceOptions {
+  minSlicePercentage: number;
+  restSliceColor: string;
+  restSliceLabel: string;
+}
+
 interface SectorPieChartProps {
   sectorEmissions?: SectorEmissions;
   year?: number;
@@ -27,6 +33,7 @@ interface SectorPieChartProps {
   customActionLabel?: string;
   desktopScale?: boolean;
   animationKey?: string;
+  restSliceOptions?: PieChartRestSliceOptions;
 }
 
 const PIE_CORNER_RADIUS = 8;
@@ -43,6 +50,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   customActionLabel,
   desktopScale = false,
   animationKey,
+  restSliceOptions,
 }) => {
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
@@ -69,7 +77,27 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
         .sort((a, b) => b.value - a.value);
 
   const total = pieData.reduce((sum, item) => sum + item.value, 0);
-  const pieDataWithTotal = pieData.map((item) => ({ ...item, total }));
+  const filteredPieData = pieData.filter(
+    (d) =>
+      d.value / total >= (restSliceOptions?.minSlicePercentage ?? 0) * 0.01,
+  );
+  const filteredTotal = filteredPieData.reduce(
+    (sum, item) => sum + item.value,
+    0,
+  );
+  const pieDataWithTotal = (
+    pieData.length - filteredPieData.length > 1 && restSliceOptions
+      ? [
+          ...filteredPieData,
+          {
+            key: null,
+            name: restSliceOptions?.restSliceLabel,
+            value: total - filteredTotal,
+            color: restSliceOptions?.restSliceColor,
+          },
+        ]
+      : pieData
+  ).map((item) => ({ ...item, total }));
   const displayNameKey = nameKey ?? "name";
 
   const scale = desktopScale && !isMobile ? 1.2 : 1;
@@ -159,7 +187,12 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             ))}
           </Pie>
           <Tooltip
-            content={<PieTooltip customActionLabel={customActionLabel} />}
+            content={
+              <PieTooltip
+                customActionLabel={customActionLabel}
+                showActionLabelForNull={false}
+              />
+            }
             animationDuration={0}
             isAnimationActive={false}
           />

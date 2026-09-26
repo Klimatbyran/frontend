@@ -4,6 +4,10 @@ metadata:
   name: frontend
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # Route HTML and /assets/* to the same pod during rolling deploys (hash skew).
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "klimatkollen-route"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "86400"
 spec:
   ingressClassName: nginx
   tls:

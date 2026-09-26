@@ -4,6 +4,7 @@ namespace: frontend-stage
 resources:
   - ../../base
 patches:
+  - path: deployment-patch.yaml
   - patch: |-
       - op: add
         path: /spec/template/spec/containers/0/env/-
@@ -20,4 +21,4 @@ patches:
       name: frontend
 images:
   - name: ghcr.io/klimatbyran/frontend
-    newTag: "8.2.9-rc.4" # {"$imagepolicy": "flux-system:frontend-stage:tag"}
+    newTag: "8.2.9-rc.8" # {"$imagepolicy": "flux-system:frontend-stage:tag"}
