@@ -57,7 +57,7 @@
     "gray-matter": "^4.0.3",
     "i18next": "^25.4.1",
     "i18next-browser-languagedetector": "^8.0.4",
-    "js-yaml": "^4.3.1",
+    "js-yaml": "^4.3.2",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.474.0",
@@ -93,6 +93,7 @@
     "@babel/preset-react": "^7.27.1",
     "@eslint/js": "^9.11.1",
     "@tailwindcss/container-queries": "^0.1.1",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/js-yaml": "^4.0.9",
@@ -128,7 +129,7 @@
   },
   "overrides": {
     "@redocly/openapi-core": {
-      "js-yaml": "4.3.1",
+      "js-yaml": "4.3.2",
       "minimatch": "5.1.8"
     },
     "esbuild": "0.28.2",
