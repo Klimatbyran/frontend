@@ -20,6 +20,9 @@ export const POPULAR_HERO_ITEMS: HeroSearchResult[] = [
   { type: "region", name: "Skåne län" },
 ];
 
+/** Default company shown in the landing page emissions chart (fully verified data). */
+export const LANDING_DEFAULT_COMPANY_SEARCH = "Telia Company";
+
 /** Landing section typography/layout – laptop-only bumps (768–1279px); mobile + xl+ unchanged. */
 export const LANDING_SECTION_TITLE_CLASS =
   "text-3xl sm:text-4xl font-light landing-laptop:text-4xl landing-laptop:sm:text-[2.75rem] landing-laptop:leading-tight";
