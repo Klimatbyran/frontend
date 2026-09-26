@@ -19,18 +19,37 @@ const timeout = typeof window === "undefined" ? 10000 : undefined;
 const client = createClient<paths>({ baseUrl });
 client.use(authMiddleware);
 
+function withServerApiKey(request: Request): Request {
+  const apiKey =
+    typeof process !== "undefined"
+      ? process.env.GARBO_ALL_ACCESS_API_KEY
+      : undefined;
+  if (
+    typeof window !== "undefined" ||
+    !apiKey ||
+    request.headers.has("X-API-Key")
+  ) {
+    return request;
+  }
+  const headers = new Headers(request.headers);
+  headers.set("X-API-Key", apiKey);
+  return new Request(request, { headers });
+}
+
 const { GET } = createClient<paths>({
   baseUrl,
   fetch: (request: Request) => {
+    const authedRequest = withServerApiKey(request);
     if (typeof window === "undefined" && timeout) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
-      return fetch(request.url, {
-        ...request,
+      return fetch(authedRequest.url, {
+        method: authedRequest.method,
+        headers: authedRequest.headers,
         signal: controller.signal,
       }).finally(() => clearTimeout(timeoutId));
     }
-    return fetch(request);
+    return fetch(authedRequest);
   },
 });
 // ...existing code above...
