@@ -12,6 +12,7 @@ import { useExploreFilters } from "@/hooks/explore/useExploreFilters";
 import { parseSelectedRegions } from "./municipalityFilterUtils";
 import { filterAndSortMunicipalities } from "./municipalityFilterSort";
 import { useMunicipalityFilterGroups } from "./useMunicipalityFilterGroups";
+import { useLanguage } from "@/components/LanguageProvider";
 
 function useMunicipalityRegionFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,6 +33,7 @@ function useMunicipalityRegionFilter() {
 
 export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const sortOptions = useSortOptions();
   const { selectedRegions, setSelectedRegions } = useMunicipalityRegionFilter();
 
@@ -52,13 +54,17 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
 
   const filteredMunicipalities = useMemo(
     () =>
-      filterAndSortMunicipalities(municipalities, {
-        selectedRegions,
-        meetsParisFilter,
-        searchQuery,
-        sortBy,
-        sortDirection,
-      }),
+      filterAndSortMunicipalities(
+        municipalities,
+        {
+          selectedRegions,
+          meetsParisFilter,
+          searchQuery,
+          sortBy,
+          sortDirection,
+        },
+        currentLanguage,
+      ),
     [
       municipalities,
       selectedRegions,
@@ -66,6 +72,7 @@ export const useMunicipalitiesFilters = (municipalities: Municipality[]) => {
       searchQuery,
       sortBy,
       sortDirection,
+      currentLanguage,
     ],
   );
 

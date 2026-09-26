@@ -2,6 +2,8 @@ import { Municipality, type MunicipalitySortBy } from "@/types/municipality";
 import type { SortDirection } from "@/components/explore/SortPopover";
 import type { MeetsParisFilter } from "@/hooks/explore/useExploreFilters";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
+import { SupportedLanguage } from "@/lib/languageDetection";
+import { buildSearchRegex } from "@/utils/data/search";
 
 export const filterAndSortMunicipalities = (
   municipalities: Municipality[],
@@ -12,6 +14,7 @@ export const filterAndSortMunicipalities = (
     sortBy: MunicipalitySortBy;
     sortDirection: SortDirection;
   },
+  currentLanguage: SupportedLanguage,
 ): Municipality[] => {
   const {
     selectedRegions,
@@ -20,6 +23,11 @@ export const filterAndSortMunicipalities = (
     sortBy,
     sortDirection,
   } = filters;
+
+  const searchPatterns = getSearchTerms(searchQuery).map((s) =>
+    buildSearchRegex(s, currentLanguage, false),
+  );
+
   return municipalities
     .filter((municipality) => {
       if (
@@ -39,10 +47,9 @@ export const filterAndSortMunicipalities = (
         }
       }
 
-      if (searchQuery) {
-        const searchTerms = getSearchTerms(searchQuery);
-        return searchTerms.some((term) =>
-          municipality.name.toLowerCase().startsWith(term),
+      if (searchPatterns.length > 0) {
+        return searchPatterns.some((pattern) =>
+          pattern.test(municipality.name),
         );
       }
 
