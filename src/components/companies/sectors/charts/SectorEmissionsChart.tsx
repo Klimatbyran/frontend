@@ -118,6 +118,17 @@ const SectorEmissionsChart: React.FC<EmissionsChartProps> = ({
                   )}
                   desktopScale={!screenSize.isMobile}
                   animationKey={chartAnimationKey}
+                  restSliceOptions={
+                    isSectorView
+                      ? {
+                          minSlicePercentage: 0.1,
+                          restSliceColor: "var(--grey)",
+                          restSliceLabel: t(
+                            "companyDetailPage.sectorGraphs.restPieSliceName",
+                          ),
+                        }
+                      : undefined
+                  }
                 />
                 <div className="w-full flex lg:items-center">
                   <SectorPieLegend
