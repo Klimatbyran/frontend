@@ -21,8 +21,14 @@ client.use(authMiddleware);
 
 function withServerApiKey(request: Request): Request {
   const apiKey =
-    typeof process !== "undefined" ? process.env.GARBO_ALL_ACCESS_API_KEY : undefined;
-  if (typeof window !== "undefined" || !apiKey || request.headers.has("X-API-Key")) {
+    typeof process !== "undefined"
+      ? process.env.GARBO_ALL_ACCESS_API_KEY
+      : undefined;
+  if (
+    typeof window !== "undefined" ||
+    !apiKey ||
+    request.headers.has("X-API-Key")
+  ) {
     return request;
   }
   const headers = new Headers(request.headers);
