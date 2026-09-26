@@ -41,6 +41,9 @@ jobs:
       - name: 🏗️ Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: 📦 Pull previous image (for /assets carry-forward)
+        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest || true
+
       - name: 🔧 Build and push Docker Image with Secrets
         uses: docker/build-push-action@v6
         with:
@@ -50,6 +53,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           build-args: |
             VITE_MAILCHIMP_URL=${{ env.VITE_MAILCHIMP_URL }}
+            PREVIOUS_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
       - name: 🎫 Update patch version
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"

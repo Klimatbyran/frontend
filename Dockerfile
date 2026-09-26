@@ -23,11 +23,17 @@ COPY . .
 # Build the app (includes sitemap generation)
 RUN npm run build
 
+# Previous release — keep hashed /assets across deploys so mixed pods during
+# rolling updates do not 404 when HTML references a new chunk hash.
+ARG PREVIOUS_IMAGE=ghcr.io/klimatbyran/frontend:latest
+FROM ${PREVIOUS_IMAGE} AS previous_release
+
 # Production stage
 FROM nginx:alpine
 
-# Copy built assets from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+RUN mkdir -p /usr/share/nginx/html/assets
+COPY --from=previous_release /usr/share/nginx/html/assets/ /usr/share/nginx/html/assets/
+COPY --from=build /app/dist/ /usr/share/nginx/html/
 
 # Copy nginx config template and entrypoint
 COPY nginx.conf.template /etc/nginx/templates/nginx.conf.template
