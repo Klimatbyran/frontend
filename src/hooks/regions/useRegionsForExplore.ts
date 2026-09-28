@@ -1,37 +1,73 @@
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getExploreRegionsPage } from "@/lib/api";
-import { mapExploreRegion } from "@/lib/page-mappers";
+import { getRegions } from "@/lib/api";
 
 export type RegionForExplore = {
   name: string;
   logoUrl: string | null;
-  lastYear: number | null;
-  lastYearEmissions: number | null;
+  emissions: Record<string, number>;
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
   municipalityCount: number;
+};
+
+type ApiRegion = {
+  region: string;
+  logoUrl?: string | null;
+  emissions: ({ year: string; value: number } | null)[];
+  historicalEmissionChangePercent: number;
+  meetsParis: boolean;
   municipalities: string[];
 };
 
+function normalizeRegion(apiRegion: ApiRegion): RegionForExplore {
+  const emissions: Record<string, number> = {};
+  apiRegion.emissions.forEach((emission) => {
+    if (emission) {
+      emissions[emission.year] = emission.value;
+    }
+  });
+
+  return {
+    name: apiRegion.region,
+    logoUrl: apiRegion.logoUrl ?? null,
+    emissions,
+    meetsParis: apiRegion.meetsParis ?? false,
+    historicalEmissionChangePercent:
+      apiRegion.historicalEmissionChangePercent ?? 0,
+    municipalityCount: apiRegion.municipalities?.length ?? 0,
+  };
+}
+
+export function getLastEmissionYear(region: RegionForExplore): string | null {
+  const years = Object.keys(region.emissions)
+    .filter((y) => !isNaN(Number(y)))
+    .map(Number)
+    .sort((a, b) => b - a);
+  return years.length > 0 ? String(years[0]) : null;
+}
+
 /**
- * List-card fields for the regions explore tab, comparison, and nation region list.
- * Comes from `/pages/explore/regions` instead of the full `/regions/` payload.
+ * Hook to get all regions with data needed for the explore list (emissions, meetsParis, change %).
  */
 export function useRegionsForExplore(options?: { enabled?: boolean }) {
   const {
     data: regions = [],
     isLoading,
     error,
-  } = useQuery({
-    queryKey: ["pages", "explore", "regions"],
-    queryFn: getExploreRegionsPage,
+  } = useQuery<ApiRegion[], Error>({
+    queryKey: ["regions"],
+    queryFn: getRegions,
     enabled: options?.enabled ?? true,
-    staleTime: 1800000,
-    select: (data): RegionForExplore[] => data.items.map(mapExploreRegion),
   });
 
+  const regionsForExplore = useMemo(
+    () => regions.map(normalizeRegion),
+    [regions],
+  );
+
   return {
-    regions,
+    regions: regionsForExplore,
     loading: isLoading,
     error,
   };

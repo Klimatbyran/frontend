@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { type RegionForExplore } from "./useRegionsForExplore";
+import {
+  type RegionForExplore,
+  getLastEmissionYear,
+} from "./useRegionsForExplore";
 import { useRegionSortOptions } from "./useRegionSorting";
 import {
   useExploreFilters,
@@ -133,8 +136,10 @@ function filterAndSortRegions(
     })
     .sort((a, b) => {
       let cmp = 0;
-      const emissionsA = a.lastYearEmissions ?? 0;
-      const emissionsB = b.lastYearEmissions ?? 0;
+      const lastYearA = getLastEmissionYear(a);
+      const lastYearB = getLastEmissionYear(b);
+      const emissionsA = lastYearA ? (a.emissions[lastYearA] ?? 0) : 0;
+      const emissionsB = lastYearB ? (b.emissions[lastYearB] ?? 0) : 0;
 
       switch (sortBy) {
         case "name":

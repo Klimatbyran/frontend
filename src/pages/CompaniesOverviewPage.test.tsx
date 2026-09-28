@@ -65,8 +65,8 @@ const { mockKpiDefinitions, capturedTopLists } = vi.hoisted(() => ({
   capturedTopLists: [] as string[][],
 }));
 
-vi.mock("@/hooks/companies/useCompaniesOverview", () => ({
-  useCompaniesOverview: () => ({
+vi.mock("@/hooks/companies/useCompanies", () => ({
+  useCompanies: () => ({
     companies: mockCompanies,
     companiesLoading: false,
     companiesError: null,

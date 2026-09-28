@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useSectorCompanies } from "@/hooks/companies/useSectorCompanies";
+import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useParams } from "react-router-dom";
 import SectorOverview from "@/components/companies/sectors/SectorOverview";
@@ -18,7 +18,7 @@ import { SECTOR_ORDER, SectorCode } from "@/lib/constants/sectors";
 export function SectorDetailPage() {
   const { code } = useParams<{ code: string }>();
   const { t } = useTranslation();
-  const { companies, companiesLoading, companiesError } = useSectorCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies();
   const sectorTitles = useSectorTitles();
   const { currentLanguage } = useLanguage();
 

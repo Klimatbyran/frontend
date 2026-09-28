@@ -12,7 +12,6 @@ import {
   createBudgetKPIColorGetter,
   createSymmetricKPIColorGetter,
 } from "@/utils/insights/kpiColorUtils";
-import { getPageFields } from "@/lib/page-mappers";
 
 // Re-export types for convenience
 export type { CompanyWithKPIs, CompanyKPIValue } from "@/types/company";
@@ -81,15 +80,6 @@ export const useCompanyKPIs = (): CompanyKPIValue[] => {
 export const enrichCompanyWithKPIs = (
   company: RankedCompany,
 ): CompanyWithKPIs => {
-  const pageFields = getPageFields(company);
-  if (pageFields) {
-    return {
-      ...company,
-      meetsParis: pageFields.meetsParis,
-      emissionsChangeFromBaseYear: pageFields.emissionsChangeFromBaseYear,
-    };
-  }
-
   const trendAnalysis = calculateTrendline(company);
   const meetsParis = trendAnalysis
     ? calculateMeetsParis(company, trendAnalysis)

@@ -1,7 +1,10 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { type RegionForExplore } from "./useRegionsForExplore";
+import {
+  type RegionForExplore,
+  getLastEmissionYear,
+} from "./useRegionsForExplore";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
@@ -20,11 +23,13 @@ export function useTransformRegionListCard({
 
   return useMemo(() => {
     return filteredRegions.map((region) => {
-      const lastYearStr =
-        region.lastYear != null ? String(Math.trunc(region.lastYear)) : "";
+      const lastYearStr = getLastEmissionYear(region) ?? "";
+      const lastYearValue = lastYearStr
+        ? region.emissions[lastYearStr]
+        : undefined;
       const emissionsValue =
-        region.lastYearEmissions != null
-          ? formatEmissionsAbsolute(region.lastYearEmissions, currentLanguage)
+        lastYearValue !== undefined
+          ? formatEmissionsAbsolute(lastYearValue, currentLanguage)
           : t("municipalities.card.noData");
       const changeValue =
         region.historicalEmissionChangePercent != null

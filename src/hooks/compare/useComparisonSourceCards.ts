@@ -1,6 +1,6 @@
-import { useExploreCompanies } from "@/hooks/companies/useExploreCompanies";
+import { useCompanies } from "@/hooks/companies/useCompanies";
 import useTransformCompanyListCard from "@/hooks/companies/useTransformCompanyListCard";
-import { useExploreMunicipalities } from "@/hooks/municipalities/useExploreMunicipalities";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import useTransformMunicipalityListCard from "@/hooks/municipalities/useTransformMunicipalityListCard";
 import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
 import { useTransformRegionListCard } from "@/hooks/regions/useTransformRegionListCard";
@@ -16,10 +16,10 @@ export function useComparisonSourceCards({
   loadMunicipalities,
   loadRegions,
 }: UseComparisonSourceCardsOptions) {
-  const { companies, companiesLoading } = useExploreCompanies({
+  const { companies, companiesLoading } = useCompanies({
     enabled: loadCompanies,
   });
-  const { municipalities, municipalitiesLoading } = useExploreMunicipalities({
+  const { municipalities, municipalitiesLoading } = useMunicipalities({
     enabled: loadMunicipalities,
   });
   const { regions, loading: regionsLoading } = useRegionsForExplore({

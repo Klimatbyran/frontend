@@ -1,33 +1,41 @@
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getLandingPageData } from "@/lib/api";
+import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
-import { getEntityDetailPath } from "@/utils/routing";
 
+const TOP_LIST_COUNT = 5;
 export const SCROLL_FADE_THRESHOLD = 200;
 
 export function useLandingPageData() {
-  const { data } = useQuery({
-    queryKey: ["pages", "landing"],
-    queryFn: getLandingPageData,
-    staleTime: 1800000,
-  });
+  const { companies } = useCompanies();
+  const { getTopMunicipalities } = useMunicipalities();
 
+  // Get top companies by total emissions
   const largestCompanyEmitters = useMemo(() => {
-    return (data?.companies ?? []).map((company) => ({
-      name: company.name,
-      value: company.latestTotalEmissions,
-      link: getCompanyDetailPath(company),
-    }));
-  }, [data]);
+    return companies
+      .sort(
+        (a, b) =>
+          (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
+          (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0),
+      )
+      .slice(0, TOP_LIST_COUNT)
+      .map((company) => ({
+        name: company.name,
+        value:
+          company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
+          0,
+        link: getCompanyDetailPath(company),
+      }));
+  }, [companies]);
 
+  // Get top municipalities by emissions reduction
   const topMunicipalities = useMemo(() => {
-    return (data?.municipalities ?? []).map((municipality) => ({
+    return getTopMunicipalities(TOP_LIST_COUNT).map((municipality) => ({
       name: municipality.name,
       value: municipality.historicalEmissionChangePercent,
-      link: getEntityDetailPath("municipality", municipality.name),
+      link: `/municipalities/${municipality.name}`,
     }));
-  }, [data]);
+  }, [getTopMunicipalities]);
 
   return {
     largestCompanyEmitters,

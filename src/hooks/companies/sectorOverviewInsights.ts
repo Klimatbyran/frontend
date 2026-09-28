@@ -242,11 +242,10 @@ export function buildSectorOverviewInsights(
     reportingYear,
   );
   const scopeSegments = buildScopeSegments(largest, t, currentLanguage);
-  const parisCounts = countMeetsParisStatuses(reportingCompanies);
-  const parisSegments =
-    parisCounts.meetsParisYes + parisCounts.meetsParisNo > 0
-      ? buildParisSegments(t, parisCounts)
-      : [];
+  const parisSegments = buildParisSegments(
+    t,
+    countMeetsParisStatuses(reportingCompanies),
+  );
 
   return [
     buildLargestSectorInsight(context, largest, largestShare, scopeSegments),
