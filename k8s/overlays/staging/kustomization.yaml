@@ -5,6 +5,9 @@ resources:
   - ../../base
 patches:
   - path: deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: frontend
   - patch: |-
       - op: add
         path: /spec/template/spec/containers/0/env/-
