@@ -63,6 +63,24 @@ npm run generate-api:staging   # or generate-api:local against a running API
 
 Do not hand-edit `src/lib/api-types.ts` except when temporarily ahead of a staged OpenAPI publish.
 
+### Lightweight `/pages` API (list views)
+
+Heavy list screens do not call `/companies/`, `/municipalities/`, or `/regions/` anymore. They use the Unearth **pages** routes (see [staging API reference — pages](https://stage-api.unearthdata.ai/reference/#tag/pages)):
+
+| Frontend use | Endpoint |
+|--------------|----------|
+| Companies overview (ranked list / KPIs) | `GET /pages/companies-overview` |
+| Explore & comparison — companies | `GET /pages/explore/companies` |
+| Explore & comparison — municipalities | `GET /pages/explore/municipalities` |
+| Explore & comparison — regions | `GET /pages/explore/regions` |
+| Sector overview & sector detail charts | `GET /pages/sectors` |
+| Sitemap generation | `GET /pages/sitemap` |
+| Landing top lists (`useLandingPageData`) | `GET /pages/landing` |
+
+**Still on full endpoints:** company/municipality/region **detail** pages, overview **maps** (`/municipalities/kpis`, `/regions/kpis`), company search, downloads/exports, and internal dashboards (`useCompanies` → `/companies/`).
+
+Client helpers live in `src/lib/api.ts`. Response shapes for `/pages/*` are declared in `src/lib/page-paths.ts` and merged into the OpenAPI client type until production OpenAPI includes them; run `npm run generate-api:staging` after they ship, then move types into `api-types.ts` if desired. Mappers in `src/lib/page-mappers.ts` turn page payloads into existing `RankedCompany`, `Municipality`, and explore-region types. Prefer the dedicated hooks (`useCompaniesOverview`, `useExploreCompanies`, `useSectorCompanies`, `useExploreMunicipalities`, `useRegionsForExplore`) over `useCompanies` / `useMunicipalities` / `getRegions` for the screens above.
+
 ## 👩‍💻 Contributing
 
 Do you have an idea for a feature? Jump into the code or head to our [Discord server](https://discord.gg/N5P64QPQ6v) to discuss your thoughts. You can also submit an [issue](https://github.com/Klimatbyran/beta/issues) explaining your suggestion.
