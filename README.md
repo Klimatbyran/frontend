@@ -70,9 +70,9 @@ Heavy list screens do not call `/companies/`, `/municipalities/`, or `/regions/`
 | Frontend use | Endpoint |
 |--------------|----------|
 | Companies overview (ranked list / KPIs) | `GET /pages/companies-overview` |
-| Explore & comparison — companies | `GET /pages/explore/companies` |
-| Explore & comparison — municipalities | `GET /pages/explore/municipalities` |
-| Explore & comparison — regions | `GET /pages/explore/regions` |
+| Explore & comparison — companies | `GET /pages/explore/companies` (client loads all pages, `pageSize` 200) |
+| Explore & comparison — municipalities | `GET /pages/explore/municipalities` (same) |
+| Explore & comparison — regions | `GET /pages/explore/regions` (same) |
 | Sector overview & sector detail charts | `GET /pages/sectors` |
 | Sitemap generation | `GET /pages/sitemap` |
 | Landing top lists (`useLandingPageData`) | `GET /pages/landing` |

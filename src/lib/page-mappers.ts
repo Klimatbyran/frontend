@@ -50,6 +50,10 @@ function industryFromCodes(
   sectorCode: string | null,
   industryGroupCode: string | null,
 ) {
+  if (!sectorCode && !industryGroupCode) {
+    return null;
+  }
+
   return {
     industryGics: {
       sectorCode: sectorCode ?? undefined,

@@ -1,6 +1,11 @@
 import createClient from "openapi-fetch";
 import type { paths as GeneratedPaths } from "./api-types";
-import type { PagePaths } from "./page-paths";
+import type {
+  ExploreCompaniesPage,
+  ExploreMunicipalitiesPage,
+  ExploreRegionsPage,
+  PagePaths,
+} from "./page-paths";
 import { authMiddleware } from "./auth-middleware";
 
 type paths = GeneratedPaths & PagePaths;
@@ -345,6 +350,46 @@ async function readPage<T>(
   return data;
 }
 
+/** API max for explore list pagination (`/pages/explore/*`). */
+const EXPLORE_PAGE_SIZE = 200;
+
+type ExploreListPage<TItem> = {
+  items: TItem[];
+  totalPages: number;
+};
+
+async function fetchAllExploreListPages<TItem>(
+  fetchPage: (page: number) => Promise<ExploreListPage<TItem>>,
+): Promise<TItem[]> {
+  const first = await fetchPage(1);
+  const items = [...first.items];
+
+  for (let page = 2; page <= first.totalPages; page++) {
+    const next = await fetchPage(page);
+    items.push(...next.items);
+  }
+
+  return items;
+}
+
+function wrapExploreItems<TItem>(
+  items: TItem[],
+): {
+  items: TItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+} {
+  return {
+    items,
+    total: items.length,
+    page: 1,
+    pageSize: items.length,
+    totalPages: 1,
+  };
+}
+
 export function getCompaniesOverviewPage() {
   return readPage(
     GET("/pages/companies-overview", {}),
@@ -352,22 +397,40 @@ export function getCompaniesOverviewPage() {
   );
 }
 
-export function getExploreCompaniesPage() {
-  return readPage(
-    GET("/pages/explore/companies", {}),
-    "/pages/explore/companies",
+export async function getExploreCompaniesPage(): Promise<ExploreCompaniesPage> {
+  const items = await fetchAllExploreListPages((page) =>
+      readPage(
+        GET("/pages/explore/companies", {
+          params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
+        }),
+        "/pages/explore/companies",
+      ),
   );
+  return wrapExploreItems(items);
 }
 
-export function getExploreMunicipalitiesPage() {
-  return readPage(
-    GET("/pages/explore/municipalities", {}),
-    "/pages/explore/municipalities",
+export async function getExploreMunicipalitiesPage(): Promise<ExploreMunicipalitiesPage> {
+  const items = await fetchAllExploreListPages((page) =>
+      readPage(
+        GET("/pages/explore/municipalities", {
+          params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
+        }),
+        "/pages/explore/municipalities",
+      ),
   );
+  return wrapExploreItems(items);
 }
 
-export function getExploreRegionsPage() {
-  return readPage(GET("/pages/explore/regions", {}), "/pages/explore/regions");
+export async function getExploreRegionsPage(): Promise<ExploreRegionsPage> {
+  const items = await fetchAllExploreListPages((page) =>
+      readPage(
+        GET("/pages/explore/regions", {
+          params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
+        }),
+        "/pages/explore/regions",
+      ),
+  );
+  return wrapExploreItems(items);
 }
 
 export function getLandingPageData() {

@@ -28,6 +28,36 @@ const filterParams = {
 };
 
 describe("page mappers", () => {
+  it("leaves industry unset when sector and group codes are missing", () => {
+    const company = mapExploreCompany({
+      id: "22222222-2222-2222-2222-222222222222",
+      name: "No sector",
+      tags: [],
+      sectorCode: null,
+      industryGroupCode: null,
+      baseYear: null,
+      meetsParis: null,
+      emissionsChangeFromBaseYear: null,
+      latestYear: null,
+      latestTotalEmissions: null,
+      emissionsChangeLastTwoYears: null,
+      emissionsIsAIGenerated: false,
+      changeRateIsAIGenerated: false,
+      hasScope3Coverage: false,
+      isFinancialsSector: false,
+      scope1Emissions: null,
+      scope2Emissions: null,
+      scope3Emissions: null,
+      turnover: null,
+      turnoverCurrency: null,
+      turnoverIsAIGenerated: false,
+      employees: null,
+      employeesIsAIGenerated: false,
+    });
+
+    expect(company.industry).toBeNull();
+  });
+
   it("keeps overview KPI fields from the lightweight payload", () => {
     const company = mapCompaniesOverviewItem({
       id: "11111111-1111-1111-1111-111111111111",
