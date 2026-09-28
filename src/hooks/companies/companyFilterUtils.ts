@@ -107,7 +107,12 @@ function yearOverYearChange(company: RankedCompany): number {
   if (pageFields?.source === "explore") {
     return pageFields.emissionsChangeLastTwoYears || 0;
   }
-  return calculateEmissionsChange(company.reportingPeriods[0]) || 0;
+  return (
+    calculateEmissionsChange(
+      company.reportingPeriods[0],
+      company.reportingPeriods[1],
+    ) || 0
+  );
 }
 
 function latestTotalEmissions(company: RankedCompany): number {

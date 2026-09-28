@@ -1,5 +1,6 @@
 import type { RankedCompany } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
+import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import type {
   CompaniesOverviewItem,
   ExploreCompanyItem,
@@ -154,48 +155,57 @@ export function mapExploreCompany(item: ExploreCompanyItem): RankedCompany {
   } as RankedCompany;
 }
 
+function mapSectorReportingPeriod(
+  period: SectorCompanyItem["periods"][number],
+): RankedCompany["reportingPeriods"][number] {
+  const year = Math.trunc(period.year);
+  const hasScopeBreakdown =
+    period.scope1 != null || period.scope2 != null || period.scope3 != null;
+  const scopeSum =
+    (period.scope1 ?? 0) + (period.scope2 ?? 0) + (period.scope3 ?? 0);
+  const total = period.total ?? (scopeSum > 0 ? scopeSum : null);
+
+  const emissions: NonNullable<
+    RankedCompany["reportingPeriods"][number]["emissions"]
+  > = {
+    calculatedTotalEmissions: total,
+  };
+
+  if (hasScopeBreakdown) {
+    if (period.scope1 != null) {
+      emissions.scope1 = { total: period.scope1 };
+    }
+    if (period.scope2 != null) {
+      emissions.scope2 = { calculatedTotalEmissions: period.scope2 };
+    }
+    if (period.scope3 != null) {
+      emissions.scope3 = { calculatedTotalEmissions: period.scope3 };
+    }
+  } else if (total != null && total > 0) {
+    emissions.scope1 = { total };
+  }
+
+  return {
+    endDate: `${year}-12-31`,
+    emissions,
+  };
+}
+
 export function mapSectorCompany(item: SectorCompanyItem): RankedCompany {
   const periods = [...item.periods].sort((a, b) => b.year - a.year);
+  const reportingPeriods = periods.map(mapSectorReportingPeriod);
+  const emissionsChange = calculateEmissionsChange(
+    reportingPeriods[0],
+    reportingPeriods[1],
+  );
 
   return {
     ...sharedCompanyFields(item),
     logoUrl: null,
-    reportingPeriods: periods.map((period) => {
-      const year = Math.trunc(period.year);
-      const hasScopeBreakdown =
-        period.scope1 != null || period.scope2 != null || period.scope3 != null;
-      const scopeSum =
-        (period.scope1 ?? 0) + (period.scope2 ?? 0) + (period.scope3 ?? 0);
-      const total = period.total ?? (scopeSum > 0 ? scopeSum : null);
-
-      const emissions: NonNullable<
-        RankedCompany["reportingPeriods"][number]["emissions"]
-      > = {
-        calculatedTotalEmissions: total,
-      };
-
-      if (hasScopeBreakdown) {
-        if (period.scope1 != null) {
-          emissions.scope1 = { total: period.scope1 };
-        }
-        if (period.scope2 != null) {
-          emissions.scope2 = { calculatedTotalEmissions: period.scope2 };
-        }
-        if (period.scope3 != null) {
-          emissions.scope3 = { calculatedTotalEmissions: period.scope3 };
-        }
-      } else if (total != null && total > 0) {
-        emissions.scope1 = { total };
-      }
-
-      return {
-        endDate: `${year}-12-31`,
-        emissions,
-      };
-    }),
+    reportingPeriods,
     metrics: {
-      emissionsReduction: 0,
-      displayReduction: "0.0",
+      emissionsReduction: emissionsChange ?? 0,
+      displayReduction: formatReductionValue(emissionsChange),
     },
   } as RankedCompany;
 }

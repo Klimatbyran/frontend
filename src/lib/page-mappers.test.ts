@@ -167,6 +167,43 @@ describe("page mappers", () => {
     expect(getPageFields(company)).toBeUndefined();
   });
 
+  it("sorts sector companies by YoY change from consecutive years", () => {
+    const reducer = mapSectorCompany({
+      id: "11111111-1111-1111-1111-111111111111",
+      name: "Reducer",
+      tags: ["sweden"],
+      sectorCode: "10",
+      industryGroupCode: "1010",
+      periods: [
+        { year: 2024, scope1: 50, scope2: 0, scope3: 0, total: 50 },
+        { year: 2023, scope1: 100, scope2: 0, scope3: 0, total: 100 },
+      ],
+    });
+    const increaser = mapSectorCompany({
+      id: "22222222-2222-2222-2222-222222222222",
+      name: "Increaser",
+      tags: ["sweden"],
+      sectorCode: "10",
+      industryGroupCode: "1010",
+      periods: [
+        { year: 2024, scope1: 100, scope2: 0, scope3: 0, total: 100 },
+        { year: 2023, scope1: 50, scope2: 0, scope3: 0, total: 50 },
+      ],
+    });
+
+    const sorted = filterAndSortCompanies([increaser, reducer], {
+      ...filterParams,
+      sortBy: "emissions_reduction",
+      sortDirection: "desc",
+    });
+
+    expect(sorted.map((company) => company.name)).toEqual([
+      "Increaser",
+      "Reducer",
+    ]);
+    expect(reducer.metrics.emissionsReduction).toBe(-50);
+  });
+
   it("maps total-only sector years onto scope1 for chart aggregation", () => {
     const company = mapSectorCompany({
       id: "11111111-1111-1111-1111-111111111111",
