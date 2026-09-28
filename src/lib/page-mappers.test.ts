@@ -174,7 +174,9 @@ describe("page mappers", () => {
       tags: ["sweden"],
       sectorCode: "10",
       industryGroupCode: "1010",
-      periods: [{ year: 2024, scope1: null, scope2: null, scope3: null, total: 42 }],
+      periods: [
+        { year: 2024, scope1: null, scope2: null, scope3: null, total: 42 },
+      ],
     });
 
     expect(

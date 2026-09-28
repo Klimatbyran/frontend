@@ -163,9 +163,7 @@ export function mapSectorCompany(item: SectorCompanyItem): RankedCompany {
     reportingPeriods: periods.map((period) => {
       const year = Math.trunc(period.year);
       const hasScopeBreakdown =
-        period.scope1 != null ||
-        period.scope2 != null ||
-        period.scope3 != null;
+        period.scope1 != null || period.scope2 != null || period.scope3 != null;
       const scopeSum =
         (period.scope1 ?? 0) + (period.scope2 ?? 0) + (period.scope3 ?? 0);
       const total = period.total ?? (scopeSum > 0 ? scopeSum : null);
