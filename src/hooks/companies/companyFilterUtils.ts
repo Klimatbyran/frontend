@@ -3,6 +3,7 @@ import type { RankedCompany } from "@/types/company";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
+import { getPageFields } from "@/lib/page-mappers";
 import {
   CompanySector,
   INDUSTRY_GROUP_OPTIONS,
@@ -91,6 +92,43 @@ function matchesSearch(
   );
 }
 
+function resolveMeetsParis(company: RankedCompany): boolean | null {
+  const pageFields = getPageFields(company);
+  if (pageFields) {
+    return pageFields.meetsParis;
+  }
+
+  const trendAnalysis = calculateTrendline(company);
+  return trendAnalysis ? calculateMeetsParis(company, trendAnalysis) : null;
+}
+
+function yearOverYearChange(company: RankedCompany): number {
+  const pageFields = getPageFields(company);
+  if (pageFields?.source === "explore") {
+    return pageFields.emissionsChangeLastTwoYears || 0;
+  }
+  return calculateEmissionsChange(company.reportingPeriods[0]) || 0;
+}
+
+function latestTotalEmissions(company: RankedCompany): number {
+  const pageFields = getPageFields(company);
+  if (pageFields?.source === "explore") {
+    return pageFields.latestTotalEmissions || 0;
+  }
+  return company.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
+}
+
+function scope3CoverageRank(company: RankedCompany): number {
+  const pageFields = getPageFields(company);
+  if (pageFields?.source === "explore") {
+    return pageFields.hasScope3Coverage ? 1 : 0;
+  }
+  return (company.reportingPeriods[0]?.emissions?.scope3?.categories?.length ||
+    0) > 0
+    ? 1
+    : 0;
+}
+
 function matchesMeetsParis(
   company: RankedCompany,
   meetsParisFilter: MeetsParisFilter,
@@ -99,10 +137,7 @@ function matchesMeetsParis(
     return true;
   }
 
-  const trendAnalysis = calculateTrendline(company);
-  const meetsParis = trendAnalysis
-    ? calculateMeetsParis(company, trendAnalysis)
-    : null;
+  const meetsParis = resolveMeetsParis(company);
 
   if (meetsParisFilter === "yes") return meetsParis === true;
   if (meetsParisFilter === "no") return meetsParis === false;
@@ -115,8 +150,8 @@ function compareEmissionsReduction(
   b: RankedCompany,
   sortDirection: SortDirection,
 ): number {
-  const aChange = calculateEmissionsChange(a.reportingPeriods[0]) || 0;
-  const bChange = calculateEmissionsChange(b.reportingPeriods[0]) || 0;
+  const aChange = yearOverYearChange(a);
+  const bChange = yearOverYearChange(b);
   return sortDirection === "asc" ? aChange - bChange : bChange - aChange;
 }
 
@@ -125,10 +160,8 @@ function compareTotalEmissions(
   b: RankedCompany,
   sortDirection: SortDirection,
 ): number {
-  const aEmissions =
-    a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
-  const bEmissions =
-    b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
+  const aEmissions = latestTotalEmissions(a);
+  const bEmissions = latestTotalEmissions(b);
   return sortDirection === "asc"
     ? aEmissions - bEmissions
     : bEmissions - aEmissions;
@@ -139,24 +172,15 @@ function compareScope3Coverage(
   b: RankedCompany,
   sortDirection: SortDirection,
 ): number {
-  const aHasCategories =
-    (a.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0) > 0
-      ? 1
-      : 0;
-  const bHasCategories =
-    (b.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0) > 0
-      ? 1
-      : 0;
+  const aHasCategories = scope3CoverageRank(a);
+  const bHasCategories = scope3CoverageRank(b);
   return sortDirection === "asc"
     ? bHasCategories - aHasCategories
     : aHasCategories - bHasCategories;
 }
 
 function getMeetsParisSortValue(company: RankedCompany): number {
-  const trendAnalysis = calculateTrendline(company);
-  const meetsParis = trendAnalysis
-    ? calculateMeetsParis(company, trendAnalysis)
-    : null;
+  const meetsParis = resolveMeetsParis(company);
   return meetsParis === true ? 2 : meetsParis === false ? 1 : 0;
 }
 

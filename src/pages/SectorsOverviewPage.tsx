@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useSectorCompanies } from "@/hooks/companies/useSectorCompanies";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import SectorOverview from "@/components/companies/sectors/SectorOverview";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -10,7 +10,7 @@ import {
 
 export function SectorsOverviewPage() {
   const { t } = useTranslation();
-  const { companies, companiesLoading, companiesError } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useSectorCompanies();
 
   const { filteredCompanies, filterGroups, activeFilters } = useCompanyFilters(
     companies,

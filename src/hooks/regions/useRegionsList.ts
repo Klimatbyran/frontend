@@ -1,45 +1,15 @@
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getRegions } from "@/lib/api";
-import type { EmissionDataPoint } from "@/types/municipality";
-import { mapEmissionArray } from "@/utils/data/emissionArrayUtils";
+import { useRegionsForExplore } from "./useRegionsForExplore";
 
-type ApiRegion = {
-  region: string;
-  emissions: ({ year: string; value: number } | null)[];
-};
-
-export type RegionListItem = {
-  name: string;
-  emissions: (EmissionDataPoint | null)[];
-};
-
-const normalizeRegion = (apiRegion: ApiRegion): RegionListItem => {
-  return {
-    name: apiRegion.region,
-    emissions: mapEmissionArray(apiRegion.emissions),
-  };
-};
-
-/** Fetches all regions from `/regions/` (includes emissions time series). */
+/** Region names for the nation page, from the lightweight explore regions list. */
 export function useRegionsList() {
-  const {
-    data: regions = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["regions"],
-    queryFn: getRegions,
-  });
+  const { regions, loading, error } = useRegionsForExplore();
 
-  const normalizedRegions = useMemo(() => {
-    return (regions as ApiRegion[]).map(normalizeRegion);
-  }, [regions]);
+  const names = useMemo(() => regions.map((region) => region.name), [regions]);
 
   return {
-    regions: normalizedRegions.map((region) => region.name),
-    regionsData: normalizedRegions,
-    loading: isLoading,
+    regions: names,
+    loading,
     error,
   };
 }

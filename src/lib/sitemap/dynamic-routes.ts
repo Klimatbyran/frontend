@@ -1,4 +1,4 @@
-import { getCompanies, getMunicipalities } from "../api.js";
+import { getSitemapPage } from "../api.js";
 import { createSlug } from "../utils.js";
 import type { SitemapEntry } from "./static-routes";
 
@@ -9,13 +9,26 @@ function getCompanyUrlSegment(company: {
   return company.wikidataId ?? company.id.split("-")[0];
 }
 
-async function fetchMunicipalityRoutes(
+function withEnglishRoutes(
+  routes: SitemapEntry[],
+  swedishPrefix: string,
+  englishPrefix: string,
+  englishPriority: string,
+): SitemapEntry[] {
+  return routes.map((route) => ({
+    ...route,
+    loc: route.loc.replace(swedishPrefix, englishPrefix),
+    priority: englishPriority,
+  }));
+}
+
+async function fetchSitemapEntries(
   currentDate: string,
 ): Promise<SitemapEntry[]> {
-  const municipalities = await getMunicipalities();
-  if (!municipalities || municipalities.length === 0) {
-    return [];
-  }
+  const sitemap = await getSitemapPage();
+  const municipalities = sitemap.municipalities ?? [];
+  const companies = sitemap.companies ?? [];
+  const regions = sitemap.regions ?? [];
 
   const municipalityRoutes = municipalities
     .filter((municipality) => municipality.name)
@@ -28,26 +41,6 @@ async function fetchMunicipalityRoutes(
         priority: "0.6",
       };
     });
-
-  const englishMunicipalityRoutes = municipalityRoutes.map((route) => ({
-    ...route,
-    loc: route.loc.replace(
-      "https://klimatkollen.se/sv/municipalities/",
-      "https://klimatkollen.se/en/municipalities/",
-    ),
-    priority: "0.5",
-  }));
-
-  return [...municipalityRoutes, ...englishMunicipalityRoutes];
-}
-
-async function fetchCompanyRoutes(
-  currentDate: string,
-): Promise<SitemapEntry[]> {
-  const companies = await getCompanies();
-  if (!companies || companies.length === 0) {
-    return [];
-  }
 
   const companyRoutes = companies.map((company) => {
     const slug = createSlug(company.name);
@@ -69,16 +62,41 @@ async function fetchCompanyRoutes(
     };
   });
 
-  return [...companyRoutes, ...englishCompanyRoutes];
+  const regionRoutes = regions
+    .filter((region) => region.name)
+    .map((region) => ({
+      loc: `https://klimatkollen.se/sv/regions/${encodeURI(region.name.toLowerCase())}`,
+      lastmod: currentDate,
+      changefreq: "monthly",
+      priority: "0.6",
+    }));
+
+  return [
+    ...municipalityRoutes,
+    ...withEnglishRoutes(
+      municipalityRoutes,
+      "https://klimatkollen.se/sv/municipalities/",
+      "https://klimatkollen.se/en/municipalities/",
+      "0.5",
+    ),
+    ...companyRoutes,
+    ...englishCompanyRoutes,
+    ...regionRoutes,
+    ...withEnglishRoutes(
+      regionRoutes,
+      "https://klimatkollen.se/sv/regions/",
+      "https://klimatkollen.se/en/regions/",
+      "0.5",
+    ),
+  ];
 }
 
 export async function fetchDynamicRoutes(
   currentDate: string,
 ): Promise<{ routes: SitemapEntry[]; error?: unknown }> {
   try {
-    const municipalityRoutes = await fetchMunicipalityRoutes(currentDate);
-    const companyRoutes = await fetchCompanyRoutes(currentDate);
-    return { routes: [...municipalityRoutes, ...companyRoutes] };
+    const routes = await fetchSitemapEntries(currentDate);
+    return { routes };
   } catch (error) {
     return { routes: [], error };
   }

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useCompaniesOverview } from "@/hooks/companies/useCompaniesOverview";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
@@ -225,7 +225,8 @@ function CompaniesOverviewContent({
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { companies, companiesLoading, companiesError } = useCompanies();
+  const { companies, companiesLoading, companiesError } =
+    useCompaniesOverview();
   const companyKPIs = useCompanyKPIs();
   const [filterOpen, setFilterOpen] = useState(false);
 

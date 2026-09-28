@@ -1,6 +1,9 @@
 import createClient from "openapi-fetch";
-import type { paths } from "./api-types";
+import type { paths as GeneratedPaths } from "./api-types";
+import type { PagePaths } from "./page-paths";
 import { authMiddleware } from "./auth-middleware";
+
+type paths = GeneratedPaths & PagePaths;
 
 export const API_BASE_URL = "https://api.unearthdata.ai/api";
 
@@ -328,4 +331,53 @@ export async function getCompaniesBySearchTerm(
     console.error("Error searching companies:", error);
     return [];
   }
+}
+
+async function readPage<T>(
+  result: Promise<{ data?: T; error?: unknown }>,
+  label: string,
+): Promise<T> {
+  const { data, error } = await result;
+  if (error) throw error;
+  if (data == null) {
+    throw new Error(`Empty response from ${label}`);
+  }
+  return data;
+}
+
+export function getCompaniesOverviewPage() {
+  return readPage(
+    GET("/pages/companies-overview", {}),
+    "/pages/companies-overview",
+  );
+}
+
+export function getExploreCompaniesPage() {
+  return readPage(
+    GET("/pages/explore/companies", {}),
+    "/pages/explore/companies",
+  );
+}
+
+export function getExploreMunicipalitiesPage() {
+  return readPage(
+    GET("/pages/explore/municipalities", {}),
+    "/pages/explore/municipalities",
+  );
+}
+
+export function getExploreRegionsPage() {
+  return readPage(GET("/pages/explore/regions", {}), "/pages/explore/regions");
+}
+
+export function getLandingPageData() {
+  return readPage(GET("/pages/landing", {}), "/pages/landing");
+}
+
+export function getSectorsPage() {
+  return readPage(GET("/pages/sectors", {}), "/pages/sectors");
+}
+
+export function getSitemapPage() {
+  return readPage(GET("/pages/sitemap", {}), "/pages/sitemap");
 }

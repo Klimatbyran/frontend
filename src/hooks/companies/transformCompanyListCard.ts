@@ -16,6 +16,7 @@ import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculat
 import { getCompanyDetailPath } from "@/utils/companyRouting";
 import { IndustryGroupCode } from "@/lib/constants/sectors";
 import { SupportedLanguage } from "@/lib/languageDetection";
+import { getPageFields } from "@/lib/page-mappers";
 
 type TransformCompanyOptions = {
   sectorNames: Record<string, string>;
@@ -87,30 +88,81 @@ function buildEmissionsFields(
   };
 }
 
-export function transformCompanyToListCard(
+function descriptionForCompany(
   company: RankedCompany,
-  options: TransformCompanyOptions,
-): ListCardProps {
-  const { sectorNames, industryGroupNames } = options;
-  const { name, industry, reportingPeriods } = company;
-  const latestPeriod = reportingPeriods?.[0];
-  const previousPeriod = reportingPeriods?.[1];
+  sectorNames: Record<string, string>,
+  industryGroupNames: Record<IndustryGroupCode, string>,
+) {
   const sectorName = getCompanySectorName(company, sectorNames);
   const industryGroupName = getCompanyIndustryGroupName(
     company,
     industryGroupNames,
   );
 
+  return company.industry
+    ? createElement(
+        Fragment,
+        null,
+        createElement("span", { className: "font-semibold" }, sectorName),
+        createElement("span", null, ` • ${industryGroupName}`),
+      )
+    : createElement("span", { className: "font-semibold" }, sectorName);
+}
+
+export function transformCompanyToListCard(
+  company: RankedCompany,
+  options: TransformCompanyOptions,
+): ListCardProps {
+  const { sectorNames, industryGroupNames } = options;
+  const { name, industry, reportingPeriods } = company;
+  const pageFields = getPageFields(company);
+  const description = descriptionForCompany(
+    company,
+    sectorNames,
+    industryGroupNames,
+  );
+
+  if (pageFields?.source === "explore") {
+    const emissionsChange = pageFields.emissionsChangeLastTwoYears;
+    return {
+      name,
+      description,
+      logoUrl: company.logoUrl,
+      variant: "company" as const,
+      baseYear: company?.baseYear?.year || null,
+      linkTo: getCompanyDetailPath(company),
+      meetsParis: pageFields.meetsParis,
+      meetsParisTranslationKey: "companies.card.meetsParis",
+      emissionsValue:
+        pageFields.latestTotalEmissions != null
+          ? formatEmissionsAbsolute(
+              pageFields.latestTotalEmissions,
+              options.currentLanguage,
+            )
+          : null,
+      emissionsYear:
+        pageFields.latestYear != null
+          ? String(Math.trunc(pageFields.latestYear))
+          : undefined,
+      emissionsUnit: options.t("emissionsUnit"),
+      emissionsIsAIGenerated: pageFields.emissionsIsAIGenerated,
+      changeRateValue: emissionsChange
+        ? formatPercentChange(emissionsChange, options.currentLanguage)
+        : null,
+      changeRateColor: getChangeRateColor(emissionsChange),
+      changeRateIsAIGenerated: pageFields.changeRateIsAIGenerated,
+      changeRateTooltip: getChangeRateTooltip(emissionsChange, options.t),
+      isFinancialsSector: pageFields.isFinancialsSector,
+      hasScope3Coverage: pageFields.hasScope3Coverage,
+    };
+  }
+
+  const latestPeriod = reportingPeriods?.[0];
+  const previousPeriod = reportingPeriods?.[1];
+
   return {
     name,
-    description: industry
-      ? createElement(
-          Fragment,
-          null,
-          createElement("span", { className: "font-semibold" }, sectorName),
-          createElement("span", null, ` • ${industryGroupName}`),
-        )
-      : createElement("span", { className: "font-semibold" }, sectorName),
+    description,
     logoUrl: company.logoUrl,
     variant: "company" as const,
     baseYear: company?.baseYear?.year || null,

@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { useCompanies } from "@/hooks/companies/useCompanies";
+import { useExploreCompanies } from "@/hooks/companies/useExploreCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import { useExploreMunicipalities } from "@/hooks/municipalities/useExploreMunicipalities";
 import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
@@ -49,8 +49,8 @@ export function ExplorePage() {
   const isRegionsTab = mainFilterParam === "regions";
 
   const { municipalities, municipalitiesLoading, municipalitiesError } =
-    useMunicipalities({ enabled: isMunicipalitiesTab });
-  const { companies, companiesLoading, companiesError } = useCompanies({
+    useExploreMunicipalities({ enabled: isMunicipalitiesTab });
+  const { companies, companiesLoading, companiesError } = useExploreCompanies({
     enabled: isCompaniesTab,
   });
   const {

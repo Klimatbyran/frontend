@@ -16,6 +16,7 @@ interface IMunicipalitiesReturn {
   getTopMunicipalities: (count?: number) => Municipality[];
 }
 
+/** Full municipality records, including yearly emissions series. */
 export function useMunicipalities(options?: {
   enabled?: boolean;
 }): IMunicipalitiesReturn {

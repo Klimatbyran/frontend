@@ -6,10 +6,10 @@ import type { RegionForExplore } from "@/hooks/regions/useRegionsForExplore";
 import type { SupportedLanguage } from "@/utils/formatting/localization";
 import {
   enrichComparisonItem,
-  getCompanyLinkTo,
   getMunicipalityLinkTo,
   getRegionLinkTo,
 } from "@/utils/compare/buildComparisonDetails";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 import { isSameComparisonLink } from "@/utils/compare/comparisonUtils";
 
 type ComparisonVariant = "company" | "municipality" | "region";
@@ -52,7 +52,7 @@ function enrichCompanyCards(
 
   return cards.map((card) => {
     const company = companies.find((c) =>
-      isSameComparisonLink(getCompanyLinkTo(c.wikidataId), card.linkTo),
+      isSameComparisonLink(getCompanyDetailPath(c), card.linkTo),
     );
 
     return enrichComparisonItem(card, {

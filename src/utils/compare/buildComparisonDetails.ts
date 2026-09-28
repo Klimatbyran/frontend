@@ -13,6 +13,7 @@ import {
 } from "@/utils/formatting/localization";
 import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 import { getEntityDetailPath } from "@/utils/routing";
+import { getPageFields } from "@/lib/page-mappers";
 
 export type ComparisonDetails = {
   consumptionEmissionsPerCapita?: string | null;
@@ -139,6 +140,31 @@ export function buildCompanyComparisonDetails(
   t: TFunction,
   isAIGenerated: IsAIGeneratedFn,
 ): ComparisonDetails {
+  const pageFields = getPageFields(company);
+  if (pageFields?.source === "explore") {
+    return {
+      turnover: pageFields.turnover
+        ? formatTurnoverValue(
+            pageFields.turnover,
+            currentLanguage,
+            t,
+            pageFields.turnoverCurrency,
+          )
+        : null,
+      turnoverIsAIGenerated: pageFields.turnoverIsAIGenerated,
+      employees: pageFields.employees
+        ? formatEmployeeCount(pageFields.employees, currentLanguage)
+        : null,
+      employeesIsAIGenerated: pageFields.employeesIsAIGenerated,
+      ...formatScopeEmissions(
+        pageFields.scope1Emissions,
+        pageFields.scope2Emissions,
+        pageFields.scope3Emissions,
+        currentLanguage,
+      ),
+    };
+  }
+
   const latestPeriod = company.reportingPeriods?.[0];
   if (!latestPeriod) {
     return {};
@@ -220,10 +246,6 @@ export function enrichComparisonItem(
 
 export function getMunicipalityLinkTo(name: string): string {
   return `/municipalities/${name}`;
-}
-
-export function getCompanyLinkTo(wikidataId: string): string {
-  return `/companies/${wikidataId}`;
 }
 
 export function getRegionLinkTo(name: string): string {
