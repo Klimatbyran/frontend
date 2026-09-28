@@ -17,7 +17,7 @@ import { Region } from "@/types/region";
 import { resolveRegionFromMapName, toMapRegionName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
-import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { DataChipSelector } from "@/components/ranked/DataChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
@@ -165,7 +165,7 @@ export function RegionalOverviewPage() {
         title={t("regionalOverviewPage.title")}
       />
 
-      <KPIChipSelector<Region>
+      <DataChipSelector<Region>
         selectedKPI={selectedKPI}
         kpis={regionalKPIs}
         onKPIChange={(kpi) => {

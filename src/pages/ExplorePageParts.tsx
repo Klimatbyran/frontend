@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { KPIChip } from "@/components/ranked/KPIChip";
+import { SelectionChip } from "@/components/explore/SelectionChip";
 import { CompanyList } from "@/components/companies/list/CompanyList";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { RegionList } from "@/components/regions/list/RegionList";
@@ -91,7 +91,7 @@ function ExploreFilterToggles({
   return (
     <div className={cn("flex flex-wrap items-center gap-2 mb-4")}>
       {mainFilterToggles.map(({ key, path, labelKey }) => (
-        <KPIChip
+        <SelectionChip
           key={key}
           selected={mainFilter === key}
           onClick={() => {
@@ -101,7 +101,7 @@ function ExploreFilterToggles({
           }}
         >
           {t(labelKey)}
-        </KPIChip>
+        </SelectionChip>
       ))}
     </div>
   );

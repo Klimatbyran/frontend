@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { GitCompareArrows } from "lucide-react";
-import { KPIChip } from "@/components/ranked/KPIChip";
+import { SelectionChip } from "@/components/explore/SelectionChip";
 import type { ComparisonSelection } from "@/hooks/compare/useComparisonSelection";
 import { ComparisonActionBar } from "./ComparisonActionBar";
 
@@ -13,7 +13,7 @@ export function ComparisonToggle({ comparison }: ComparisonControlsProps) {
   const { isCompareMode, setCompareMode } = comparison;
 
   return (
-    <KPIChip
+    <SelectionChip
       selected={isCompareMode}
       onClick={() => setCompareMode(!isCompareMode)}
       aria-label={t("explorePage.comparison.toggleMode")}
@@ -22,7 +22,7 @@ export function ComparisonToggle({ comparison }: ComparisonControlsProps) {
       className="shrink-0"
     >
       {t("explorePage.comparison.compare")}
-    </KPIChip>
+    </SelectionChip>
   );
 }
 

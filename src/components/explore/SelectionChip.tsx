@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export function getKpiChipClassName(selected: boolean) {
+export function getSelectionChipClassName(selected: boolean) {
   return cn(
     "flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap",
     selected
@@ -10,23 +10,24 @@ export function getKpiChipClassName(selected: boolean) {
   );
 }
 
-export interface KPIChipProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface SelectionChipProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   selected?: boolean;
   icon?: ReactNode;
 }
 
-export function KPIChip({
+export function SelectionChip({
   selected = false,
   icon,
   className,
   children,
   type = "button",
   ...props
-}: KPIChipProps) {
+}: SelectionChipProps) {
   return (
     <button
       type={type}
-      className={cn(getKpiChipClassName(selected), className)}
+      className={cn(getSelectionChipClassName(selected), className)}
       aria-current={selected ? "true" : undefined}
       {...props}
     >

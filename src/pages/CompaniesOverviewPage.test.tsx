@@ -90,8 +90,8 @@ vi.mock("@/components/layout/PageHeader", () => ({
   PageHeader: () => <div />,
 }));
 
-vi.mock("@/components/ranked/KPIChipSelector", () => ({
-  KPIChipSelector: ({ actions }: { actions?: React.ReactNode }) => (
+vi.mock("@/components/ranked/DataChipSelector", () => ({
+  DataChipSelector: ({ actions }: { actions?: React.ReactNode }) => (
     <div data-testid="kpi-selector">{actions}</div>
   ),
 }));

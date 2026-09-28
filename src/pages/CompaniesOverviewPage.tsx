@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { DataChipSelector } from "@/components/ranked/DataChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
@@ -189,7 +189,7 @@ function CompaniesOverviewContent({
         title={t("companiesOverviewPage.title")}
       />
 
-      <KPIChipSelector<CompanyWithKPIs>
+      <DataChipSelector<CompanyWithKPIs>
         selectedKPI={selectedKPI}
         kpis={companyKPIs}
         onKPIChange={onKPIChange}

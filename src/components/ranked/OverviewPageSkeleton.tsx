@@ -10,7 +10,7 @@ export type OverviewPageSkeletonVariant =
 
 interface OverviewPageSkeletonProps {
   variant?: OverviewPageSkeletonVariant;
-  /** Number of KPI chip placeholders on desktop */
+  /** Number of data chip placeholders on desktop */
   chipCount?: number;
 }
 
@@ -22,7 +22,7 @@ function SkeletonBlock({ className = "" }: { className?: string }) {
   return <div className={`${SHIMMER} ${className}`} />;
 }
 
-function KPIChipSelectorSkeleton({
+function DataChipSelectorSkeleton({
   chipCount,
   showActions = false,
 }: {
@@ -147,7 +147,7 @@ export function OverviewPageSkeleton({
     <>
       <SkeletonBlock className="h-9 w-56 md:w-72 mb-2 md:mb-3" />
 
-      <KPIChipSelectorSkeleton
+      <DataChipSelectorSkeleton
         chipCount={chipCount}
         showActions={variant === "companies"}
       />

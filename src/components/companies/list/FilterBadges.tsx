@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
-import { getKpiChipClassName } from "@/components/ranked/KPIChip";
+import { getSelectionChipClassName } from "@/components/explore/SelectionChip";
 import { cn } from "@/lib/utils";
 
 export interface FilterBadge {
@@ -25,7 +25,7 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
         return (
           <span
             key={index}
-            className={cn(getKpiChipClassName(true), "pl-2 pr-1 gap-1.5")}
+            className={cn(getSelectionChipClassName(true), "pl-2 pr-1 gap-1.5")}
           >
             <span className="text-blue-3/70 text-xs">
               {filter.type === "sort"

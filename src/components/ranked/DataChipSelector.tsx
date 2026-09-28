@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { KPIValue } from "@/types/rankings";
-import { KPIChip } from "@/components/ranked/KPIChip";
+import { SelectionChip } from "@/components/explore/SelectionChip";
 
-interface KPIChipSelectorProps<T> {
+interface DataChipSelectorProps<T> {
   selectedKPI: KPIValue<T>;
   kpis: KPIValue<T>[];
   onKPIChange: (kpi: KPIValue<T>) => void;
@@ -15,11 +15,11 @@ interface KPIChipSelectorProps<T> {
   translationPrefix?: string;
   /** Label shown above the chips / as the dropdown trigger label */
   label?: string;
-  /** Optional controls rendered on the same row as the KPI selector */
+  /** Optional controls rendered on the same row as the data selector */
   actions?: React.ReactNode;
 }
 
-export function KPIChipSelector<T>({
+export function DataChipSelector<T>({
   selectedKPI,
   kpis,
   onKPIChange,
@@ -27,7 +27,7 @@ export function KPIChipSelector<T>({
   translationPrefix,
   label,
   actions,
-}: KPIChipSelectorProps<T>) {
+}: DataChipSelectorProps<T>) {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -84,7 +84,7 @@ export function KPIChipSelector<T>({
       )}
 
       <div className="flex flex-col gap-2">
-        {/* Mobile: KPI dropdown */}
+        {/* Mobile: dropdown */}
         <div className="md:hidden w-full">
           <div className="relative" ref={dropdownRef}>
             <button
@@ -144,7 +144,7 @@ export function KPIChipSelector<T>({
           </div>
         </div>
 
-        {/* KPI chips + actions share a wrapping row on desktop */}
+        {/* Chips + actions share a wrapping row on desktop */}
         <div className="flex flex-wrap items-center gap-2">
           <div
             className="hidden md:flex gap-2 flex-wrap min-w-0"
@@ -154,7 +154,7 @@ export function KPIChipSelector<T>({
             {kpis.map((kpi) => {
               const isSelected = String(kpi.key) === String(selectedKPI.key);
               return (
-                <KPIChip
+                <SelectionChip
                   key={String(kpi.key)}
                   selected={isSelected}
                   onClick={() => onKPIChange(kpi)}
@@ -162,7 +162,7 @@ export function KPIChipSelector<T>({
                   icon={iconMap[String(kpi.key)]}
                 >
                   {getLabel(kpi)}
-                </KPIChip>
+                </SelectionChip>
               );
             })}
           </div>
