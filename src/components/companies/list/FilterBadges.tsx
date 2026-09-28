@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { getKpiChipClassName } from "@/components/ranked/KPIChip";
+import { cn } from "@/lib/utils";
 
 export interface FilterBadge {
   type: "filter" | "sort";
@@ -22,12 +23,11 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
         if (filter.type === "sort" && view !== "list") return null;
 
         return (
-          <Badge
+          <span
             key={index}
-            variant="secondary"
-            className="bg-blue-5/30 text-blue-2 pl-2 pr-1 flex items-center gap-1"
+            className={cn(getKpiChipClassName(true), "pl-2 pr-1 gap-1.5")}
           >
-            <span className="text-grey text-xs mr-1">
+            <span className="text-blue-3/70 text-xs">
               {filter.type === "sort"
                 ? t("explorePage.sorting")
                 : t("explorePage.filter")}
@@ -41,12 +41,12 @@ export function FilterBadges({ filters, view }: FilterBadgesProps) {
                   e.preventDefault();
                   filter.onRemove?.();
                 }}
-                className="hover:bg-blue-5/50 p-1 rounded-sm transition-colors"
+                className="hover:bg-blue-3/20 p-1 rounded-full transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>
             )}
-          </Badge>
+          </span>
         );
       })}
     </div>

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { KPIValue } from "@/types/rankings";
+import { KPIChip } from "@/components/ranked/KPIChip";
 
 interface KPIChipSelectorProps<T> {
   selectedKPI: KPIValue<T>;
@@ -153,21 +154,15 @@ export function KPIChipSelector<T>({
             {kpis.map((kpi) => {
               const isSelected = String(kpi.key) === String(selectedKPI.key);
               return (
-                <button
+                <KPIChip
                   key={String(kpi.key)}
+                  selected={isSelected}
                   onClick={() => onKPIChange(kpi)}
                   title={kpi.description}
-                  aria-current={isSelected ? "true" : undefined}
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap",
-                    isSelected
-                      ? "bg-blue-3/20 text-blue-3 shadow-[0_0_12px_rgba(76,155,232,0.3)]"
-                      : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white",
-                  )}
+                  icon={iconMap[String(kpi.key)]}
                 >
-                  {iconMap[String(kpi.key)]}
                   {getLabel(kpi)}
-                </button>
+                </KPIChip>
               );
             })}
           </div>
