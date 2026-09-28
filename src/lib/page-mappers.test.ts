@@ -167,6 +167,22 @@ describe("page mappers", () => {
     expect(getPageFields(company)).toBeUndefined();
   });
 
+  it("maps total-only sector years onto scope1 for chart aggregation", () => {
+    const company = mapSectorCompany({
+      id: "11111111-1111-1111-1111-111111111111",
+      name: "Total only",
+      tags: ["sweden"],
+      sectorCode: "10",
+      industryGroupCode: "1010",
+      periods: [{ year: 2024, scope1: null, scope2: null, scope3: null, total: 42 }],
+    });
+
+    expect(
+      company.reportingPeriods[0]?.emissions?.calculatedTotalEmissions,
+    ).toBe(42);
+    expect(company.reportingPeriods[0]?.emissions?.scope1?.total).toBe(42);
+  });
+
   it("keeps the latest municipality and region figures without a time series", () => {
     const municipality = mapExploreMunicipality({
       name: "Ale",

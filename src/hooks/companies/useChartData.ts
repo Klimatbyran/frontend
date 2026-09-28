@@ -11,11 +11,17 @@ const getEmissionsFromPeriod = (
     return { scope1: 0, scope2: 0, scope3: 0 };
   }
 
-  return {
-    scope1: period.emissions.scope1?.total || 0,
-    scope2: period.emissions.scope2?.calculatedTotalEmissions || 0,
-    scope3: period.emissions.scope3?.calculatedTotalEmissions || 0,
-  };
+  const scope1 = period.emissions.scope1?.total || 0;
+  const scope2 = period.emissions.scope2?.calculatedTotalEmissions || 0;
+  const scope3 = period.emissions.scope3?.calculatedTotalEmissions || 0;
+  const scopeSum = scope1 + scope2 + scope3;
+  const total = period.emissions.calculatedTotalEmissions;
+
+  if (scopeSum === 0 && total != null && total > 0) {
+    return { scope1: total, scope2: 0, scope3: 0 };
+  }
+
+  return { scope1, scope2, scope3 };
 };
 
 const calculateSectorScopesForYear = (
