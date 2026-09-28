@@ -1,5 +1,5 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it, beforeEach, vi } from "vitest";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import type { RankedCompany } from "@/types/company";
 import { CompaniesOverviewPage } from "./CompaniesOverviewPage";
@@ -11,58 +11,35 @@ function createCompany(
   id: string,
   name: string,
   sectorCode: string,
+  tags: string[],
+  meetsParis: boolean | null,
 ): RankedCompany {
   return {
     id,
     name,
     wikidataId: `Q${id}`,
+    tags,
     baseYear: { year: 2019 },
-    industry: {
-      industryGics: {
-        sectorCode,
-      },
-    },
+    industry: { industryGics: { sectorCode } },
     reportingPeriods: [
-      {
-        endDate: "2024-12-31",
-        emissions: { calculatedTotalEmissions: 1000 },
-      },
-      {
-        endDate: "2019-12-31",
-        emissions: { calculatedTotalEmissions: 2000 },
-      },
+      { endDate: "2024-12-31", emissions: { calculatedTotalEmissions: 1000 } },
+      { endDate: "2019-12-31", emissions: { calculatedTotalEmissions: 2000 } },
     ],
-    metrics: {
-      emissionsReduction: 50,
-      displayReduction: "50.0",
-    },
-  } as RankedCompany;
+    metrics: { emissionsReduction: 50, displayReduction: "50.0" },
+    meetsParis,
+  } as unknown as RankedCompany;
 }
 
 const mockCompanies = [
-  createCompany("1", "Duni AB", MATERIALS_SECTOR),
-  createCompany("2", "Materials Two", MATERIALS_SECTOR),
-  createCompany("3", "Materials Three", MATERIALS_SECTOR),
-  createCompany("4", "Health One", HEALTHCARE_SECTOR),
-  createCompany("5", "Health Two", HEALTHCARE_SECTOR),
-  createCompany("6", "Health Three", HEALTHCARE_SECTOR),
+  createCompany("1", "Duni AB", MATERIALS_SECTOR, ["sweden"], true),
+  createCompany("2", "Materials Two", MATERIALS_SECTOR, ["sweden"], false),
+  createCompany("3", "Health One", HEALTHCARE_SECTOR, ["sweden"], true),
+  createCompany("4", "Health Two", HEALTHCARE_SECTOR, ["sweden"], false),
+  createCompany("5", "Oslo Corp", MATERIALS_SECTOR, ["norway"], true),
 ];
 
-const { mockKpiDefinitions, capturedTopLists } = vi.hoisted(() => ({
-  mockKpiDefinitions: [
-    {
-      key: "emissionsChangeFromBaseYear",
-      label: "emissionsChangeFromBaseYear",
-      unit: "%",
-      source: "",
-      sourceUrls: [],
-      description: "",
-      detailedDescription: "",
-      higherIsBetter: false,
-      nullValues: "No data",
-    },
-  ],
-  capturedTopLists: [] as string[][],
+const { capturedLists } = vi.hoisted(() => ({
+  capturedLists: [] as string[][],
 }));
 
 vi.mock("@/hooks/companies/useCompanies", () => ({
@@ -73,105 +50,38 @@ vi.mock("@/hooks/companies/useCompanies", () => ({
   }),
 }));
 
+// The page reads meetsParis straight off the enriched company, so the fixture
+// carries the verdict and enrichment just passes it through.
 vi.mock("@/hooks/companies/useCompanyKPIs", () => ({
-  useCompanyKPIs: () => mockKpiDefinitions,
+  useCompanyKPIs: () => [],
   enrichCompanyWithKPIs: (company: RankedCompany) => ({
     ...company,
     emissionsChangeFromBaseYear: -50,
-    meetsParis: true,
   }),
-}));
-
-vi.mock("@/hooks/useScreenSize", () => ({
-  useScreenSize: () => ({ isMobile: false }),
 }));
 
 vi.mock("@/components/layout/PageHeader", () => ({
   PageHeader: () => <div />,
 }));
 
-vi.mock("@/components/ranked/KPIChipSelector", () => ({
-  KPIChipSelector: ({ actions }: { actions?: React.ReactNode }) => (
-    <div data-testid="kpi-selector">{actions}</div>
-  ),
+vi.mock("@/components/companies/overview/IndustryEmissionsPie", () => ({
+  IndustryEmissionsPie: () => <div data-testid="industry-pie" />,
 }));
 
-vi.mock("@/components/ranked/OverviewSplitLayout", async (importOriginal) => {
-  const actual =
-    await importOriginal<
-      typeof import("@/components/ranked/OverviewSplitLayout")
-    >();
-
-  return {
-    ...actual,
-    OverviewSplitLayout: ({
-      visualization,
-    }: {
-      visualization: React.ReactNode;
-    }) => <div data-testid="visualization">{visualization}</div>,
-  };
-});
-
-vi.mock("@/components/ranked/RankedList", () => ({
-  default: () => <div data-testid="ranked-list" />,
+vi.mock("@/components/ranked/InsightsList", () => ({
+  default: () => <div data-testid="insights-list" />,
 }));
 
-vi.mock("@/components/companies/rankedList/CompanyKPIVisualization", () => ({
-  CompanyKPIVisualization: () => <div data-testid="kpi-visualization" />,
-}));
-
-vi.mock("@/components/explore/FilterPopover", () => ({
-  FilterPopover: ({
-    groups,
-  }: {
-    groups: Array<{
-      options: Array<{ value: string; label: string }>;
-      selectedValues: string[];
-      onSelect: (value: string) => void;
-    }>;
-  }) => (
-    <div data-testid="filter-popover">
-      {groups.flatMap((group) =>
-        group.options
-          .filter((option) => option.value !== "all")
-          .map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              aria-pressed={group.selectedValues.includes(option.value)}
-              onClick={() => group.onSelect(option.value)}
-            >
-              {option.value}
-            </button>
-          )),
-      )}
-    </div>
-  ),
-}));
-
-vi.mock("@/components/companies/rankedList/CompanyInsightsPanel", () => ({
-  default: ({
-    companyData,
-    section,
-  }: {
-    companyData: Array<{
-      name: string;
-      industry?: { industryGics?: { sectorCode?: string } };
-    }>;
-    section?: string;
-  }) => {
-    if (section === "top") {
-      capturedTopLists.push(companyData.map((company) => company.name));
-    }
-
-    return <div data-testid={`insights-${section}`} />;
+vi.mock("@/components/companies/list/CompanyList", () => ({
+  CompanyList: ({ companies }: { companies: Array<{ name: string }> }) => {
+    capturedLists.push(companies.map((company) => company.name));
+    return <div data-testid="company-list" />;
   },
 }));
 
 vi.mock("react-i18next", () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-  }),
+  useTranslation: () => ({ t: (key: string) => key }),
+  Trans: ({ i18nKey }: { i18nKey: string }) => <span>{i18nKey}</span>,
 }));
 
 function LocationDisplay() {
@@ -179,113 +89,73 @@ function LocationDisplay() {
   return <div data-testid="location-search">{location.search}</div>;
 }
 
+function renderPage(initialEntry: string) {
+  return render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Routes>
+        <Route
+          path="/en/companies"
+          element={
+            <>
+              <CompaniesOverviewPage />
+              <LocationDisplay />
+            </>
+          }
+        />
+      </Routes>
+    </MemoryRouter>,
+  );
+}
+
 describe("CompaniesOverviewPage", () => {
   beforeEach(() => {
-    capturedTopLists.length = 0;
+    capturedLists.length = 0;
   });
 
-  it("shows all companies by default when no sector filter is set", async () => {
-    render(
-      <MemoryRouter initialEntries={["/en/companies"]}>
-        <Routes>
-          <Route
-            path="/en/companies"
-            element={
-              <>
-                <CompaniesOverviewPage />
-                <LocationDisplay />
-              </>
-            }
-          />
-        </Routes>
-      </MemoryRouter>,
-    );
+  it("shows only Swedish companies", async () => {
+    renderPage("/en/companies");
 
     await waitFor(() => {
-      expect(capturedTopLists.at(-1)).toEqual([
+      expect(capturedLists.at(-1)).toEqual([
         "Duni AB",
         "Materials Two",
-        "Materials Three",
         "Health One",
         "Health Two",
-        "Health Three",
       ]);
     });
-
-    expect(screen.getByTestId("location-search")).not.toHaveTextContent(
-      "sector=",
-    );
+    expect(capturedLists.at(-1)).not.toContain("Oslo Corp");
   });
 
-  it("keeps the top insights list scoped to the selected sector when switching", async () => {
-    render(
-      <MemoryRouter initialEntries={["/en/companies?sector=15"]}>
-        <Routes>
-          <Route
-            path="/en/companies"
-            element={
-              <>
-                <CompaniesOverviewPage />
-                <LocationDisplay />
-              </>
-            }
-          />
-        </Routes>
-      </MemoryRouter>,
+  it("scopes the page to an industry picked from the chips", async () => {
+    renderPage("/en/companies");
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /companiesOverviewPage\.paris\.showMore/,
+      }),
     );
-
-    await waitFor(() => {
-      expect(capturedTopLists.at(-1)).toEqual([
-        "Duni AB",
-        "Materials Two",
-        "Materials Three",
-      ]);
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: HEALTHCARE_SECTOR }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /sector\.healthCare\.name/ }),
+    );
 
     await waitFor(() => {
       expect(screen.getByTestId("location-search")).toHaveTextContent(
         `sector=${HEALTHCARE_SECTOR}`,
       );
     });
-
     await waitFor(() => {
-      expect(capturedTopLists.at(-1)).toEqual([
-        "Health One",
-        "Health Two",
-        "Health Three",
-      ]);
+      expect(capturedLists.at(-1)).toEqual(["Health One", "Health Two"]);
     });
-
-    expect(capturedTopLists.at(-1)).not.toContain("Duni AB");
   });
 
-  it("preserves the sector from the URL after company data loads", async () => {
-    render(
-      <MemoryRouter initialEntries={["/en/companies?sector=35"]}>
-        <Routes>
-          <Route
-            path="/en/companies"
-            element={
-              <>
-                <CompaniesOverviewPage />
-                <LocationDisplay />
-              </>
-            }
-          />
-        </Routes>
-      </MemoryRouter>,
-    );
+  it("preserves the industry from the URL after company data loads", async () => {
+    renderPage(`/en/companies?sector=${MATERIALS_SECTOR}`);
 
     await waitFor(() => {
-      expect(screen.getByTestId("location-search")).toHaveTextContent(
-        "sector=35",
-      );
+      expect(capturedLists.at(-1)).toEqual(["Duni AB", "Materials Two"]);
     });
-
     expect(
-      screen.getByRole("button", { name: HEALTHCARE_SECTOR }),
+      screen.getByRole("button", { name: /sector\.materials\.name/ }),
     ).toHaveAttribute("aria-pressed", "true");
   });
 });
