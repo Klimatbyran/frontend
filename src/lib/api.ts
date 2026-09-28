@@ -372,9 +372,7 @@ async function fetchAllExploreListPages<TItem>(
   return items;
 }
 
-function wrapExploreItems<TItem>(
-  items: TItem[],
-): {
+function wrapExploreItems<TItem>(items: TItem[]): {
   items: TItem[];
   total: number;
   page: number;
@@ -399,36 +397,36 @@ export function getCompaniesOverviewPage() {
 
 export async function getExploreCompaniesPage(): Promise<ExploreCompaniesPage> {
   const items = await fetchAllExploreListPages((page) =>
-      readPage(
-        GET("/pages/explore/companies", {
-          params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
-        }),
-        "/pages/explore/companies",
-      ),
+    readPage(
+      GET("/pages/explore/companies", {
+        params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
+      }),
+      "/pages/explore/companies",
+    ),
   );
   return wrapExploreItems(items);
 }
 
 export async function getExploreMunicipalitiesPage(): Promise<ExploreMunicipalitiesPage> {
   const items = await fetchAllExploreListPages((page) =>
-      readPage(
-        GET("/pages/explore/municipalities", {
-          params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
-        }),
-        "/pages/explore/municipalities",
-      ),
+    readPage(
+      GET("/pages/explore/municipalities", {
+        params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
+      }),
+      "/pages/explore/municipalities",
+    ),
   );
   return wrapExploreItems(items);
 }
 
 export async function getExploreRegionsPage(): Promise<ExploreRegionsPage> {
   const items = await fetchAllExploreListPages((page) =>
-      readPage(
-        GET("/pages/explore/regions", {
-          params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
-        }),
-        "/pages/explore/regions",
-      ),
+    readPage(
+      GET("/pages/explore/regions", {
+        params: { query: { page, pageSize: EXPLORE_PAGE_SIZE } },
+      }),
+      "/pages/explore/regions",
+    ),
   );
   return wrapExploreItems(items);
 }
