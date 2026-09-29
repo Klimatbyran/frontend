@@ -52,12 +52,6 @@ function ComparisonRoutes({ basePath }: { basePath: string }) {
         path={`${basePath}/explore/:mainFilter`}
         element={<ExplorePage />}
       />
-      {/* The overview renders the shared company list, which offers compare
-          selection and so needs the same provider as explore. */}
-      <Route
-        path={`${basePath}/companies`}
-        element={<CompaniesOverviewPage />}
-      />
       <Route
         path={`${basePath}/companies/:id`}
         element={<CompanyDetailPage />}
@@ -86,6 +80,10 @@ function CompanyRoutes({ basePath }: { basePath: string }) {
       <Route
         path={`${basePath}/sectors/:code`}
         element={<SectorDetailPage />}
+      />
+      <Route
+        path={`${basePath}/companies`}
+        element={<CompaniesOverviewPage />}
       />
       <Route element={<ProtectedRoute />}>
         <Route

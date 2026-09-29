@@ -72,10 +72,10 @@ vi.mock("@/components/ranked/InsightsList", () => ({
   default: () => <div data-testid="insights-list" />,
 }));
 
-vi.mock("@/components/companies/list/CompanyList", () => ({
-  CompanyList: ({ companies }: { companies: Array<{ name: string }> }) => {
+vi.mock("@/components/companies/overview/CompaniesTable", () => ({
+  CompaniesTable: ({ companies }: { companies: Array<{ name: string }> }) => {
     capturedLists.push(companies.map((company) => company.name));
-    return <div data-testid="company-list" />;
+    return <div data-testid="companies-table" />;
   },
 }));
 

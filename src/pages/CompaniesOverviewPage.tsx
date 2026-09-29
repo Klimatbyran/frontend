@@ -4,7 +4,7 @@ import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import InsightsList from "@/components/ranked/InsightsList";
-import { CompanyList } from "@/components/companies/list/CompanyList";
+import { CompaniesTable } from "@/components/companies/overview/CompaniesTable";
 import { ParisAnswerCard } from "@/components/companies/overview/ParisAnswerCard";
 import { ParisExplainer } from "@/components/companies/overview/ParisExplainer";
 import { IndustryChipFilter } from "@/components/companies/overview/IndustryChipFilter";
@@ -130,7 +130,10 @@ export function CompaniesOverviewPage() {
   return (
     <div className="space-y-8 md:space-y-10">
       <div className="space-y-5">
+        {/* Layout already applies `container mx-auto px-4`; PageHeader's own
+            max-width and padding would inset the title past the cards. */}
         <PageHeader
+          className="mx-0 mb-0 max-w-none p-0 md:mb-0"
           title={t("companiesOverviewPage.paris.title")}
           description={t("companiesOverviewPage.paris.lead")}
         />
@@ -160,12 +163,7 @@ export function CompaniesOverviewPage() {
         onSelect={(code) => urlState.setSectorInURL(code)}
       />
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-light md:text-[21px]">
-          {t("companiesOverviewPage.paris.everyCompanyTitle")}
-        </h2>
-        <CompanyList companies={inView} />
-      </section>
+      <CompaniesTable companies={inView} />
     </div>
   );
 }

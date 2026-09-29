@@ -1,0 +1,123 @@
+import { render, screen, fireEvent, within } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import type { CompanyWithKPIs } from "@/types/company";
+import { CompaniesTable } from "./CompaniesTable";
+
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string, opts?: Record<string, unknown>) =>
+      opts ? `${key}:${JSON.stringify(opts)}` : key,
+  }),
+}));
+
+vi.mock("@/components/LanguageProvider", () => ({
+  useLanguage: () => ({ currentLanguage: "en" }),
+}));
+
+function company(
+  name: string,
+  meetsParis: boolean | null,
+  change: number | null,
+  emissions: number,
+): CompanyWithKPIs {
+  return {
+    id: name,
+    name,
+    wikidataId: `Q-${name}`,
+    industry: { industryGics: { sectorCode: "15" } },
+    reportingPeriods: [{ emissions: { calculatedTotalEmissions: emissions } }],
+    meetsParis,
+    emissionsChangeFromBaseYear: change,
+  } as unknown as CompanyWithKPIs;
+}
+
+const companies = [
+  company("Alpha", false, 20, 900),
+  company("Bravo", true, -40, 100),
+  company("Charlie", null, null, 500),
+];
+
+function renderTable(list: CompanyWithKPIs[] = companies) {
+  return render(
+    <MemoryRouter>
+      <CompaniesTable companies={list} />
+    </MemoryRouter>,
+  );
+}
+
+/** The company cell holds an avatar span before the name, so read the link's
+ * last child rather than the whole cell. */
+function rowNames(): string[] {
+  return within(document.querySelector("tbody")!)
+    .getAllByRole("row")
+    .map(
+      (row) =>
+        row.querySelector("td:nth-child(2) a span:last-child")?.textContent ??
+        "",
+    );
+}
+
+describe("CompaniesTable", () => {
+  it("renders one row per company", () => {
+    renderTable();
+    expect(document.querySelectorAll("tbody tr")).toHaveLength(3);
+  });
+
+  it("sorts on-track companies first by default", () => {
+    renderTable();
+    // Bravo meets Paris, Alpha does not, Charlie can't be judged.
+    expect(rowNames()).toEqual(["Bravo", "Alpha", "Charlie"]);
+  });
+
+  it("sorts by emissions when asked", () => {
+    renderTable();
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "companiesOverviewPage.paris.sortEmissions",
+      }),
+    );
+    expect(rowNames()).toEqual(["Alpha", "Charlie", "Bravo"]);
+  });
+
+  it("flips the sort direction", () => {
+    renderTable();
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "companiesOverviewPage.paris.flipOrder",
+      }),
+    );
+    expect(rowNames()).toEqual(["Charlie", "Alpha", "Bravo"]);
+  });
+
+  it("filters by search query", () => {
+    renderTable();
+    fireEvent.change(screen.getByRole("searchbox"), {
+      target: { value: "brav" },
+    });
+    expect(rowNames()).toEqual(["Bravo"]);
+  });
+
+  it("paginates with show more", () => {
+    const many = Array.from({ length: 20 }, (_, i) =>
+      company(`Co ${String(i).padStart(2, "0")}`, true, -30, 100 - i),
+    );
+    renderTable(many);
+
+    expect(document.querySelectorAll("tbody tr")).toHaveLength(12);
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /companiesOverviewPage\.paris\.showMoreRows/,
+      }),
+    );
+    expect(document.querySelectorAll("tbody tr")).toHaveLength(20);
+  });
+
+  it("links each company to its detail page", () => {
+    renderTable();
+    expect(screen.getByRole("link", { name: /Bravo/ })).toHaveAttribute(
+      "href",
+      expect.stringContaining("Q-Bravo"),
+    );
+  });
+});
