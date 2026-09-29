@@ -152,7 +152,6 @@ export function RegionalOverviewPage() {
       data={mapData}
       selectedKPI={selectedKPI}
       onAreaClick={handleRegionAreaClick}
-      defaultCenter={[63.55, 17]}
       defaultZoom={isMobile ? 4 : undefined}
       className="max-w-none"
     />
