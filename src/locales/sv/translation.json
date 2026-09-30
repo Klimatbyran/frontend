@@ -842,7 +842,7 @@
         "forestFire": {
           "title": "Skogsbränder",
           "paragraph1": "Vi har räknat ut hur stor skogsbrand som skulle krävas  för att generera motsvarande mängd utsläpp. Vi utgår från följande antaganden:",
-          "paragraph2": "Utifrån utsläpps­förändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs siffran med välkända ytstorlekar som fotbollsplaner, tennisbanor eller städer. Då kan vi säga till exempel: “Det här utsläppet motsvarar utsläppen från en skogsbrand stor som X fotbollsplaner“.",
+          "paragraph2": "Utifrån utsläpps\u00ADförändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs siffran med välkända ytstorlekar som fotbollsplaner, tennisbanor eller städer. Då kan vi säga till exempel: “Det här utsläppet motsvarar utsläppen från en skogsbrand stor som X fotbollsplaner“.",
           "bullet1": "I genomsnitt innehåller varje hektar skogsmark omkring 50 ton kol (C). (1)",
           "bullet2": "Kol omvandlas till koldioxid (CO₂) genom faktorn 44/12 (molekylvikter), vilket innebär att en hektar motsvarar ungefär 50 × (44/12) ≈ 183 ton CO₂.",
           "source": "https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions"
@@ -1675,11 +1675,6 @@
         "dark": "Mörkt"
       },
       "generate": "Generera"
-    }
-  },
-  "nation": {
-    "detailPage": {
-      "regions": "Utforska Sveriges län"
     },
     "understandingEmissions": {
       "title": "Förstå utsläppen",
@@ -1722,6 +1717,11 @@
         "driversHint": "Det här är de största kategorierna företaget rapporterat — längre ner på sidan finns den fulla interaktiva uppdelningen.",
         "noCategories": "Det här företaget har inte publicerat någon Scope 3-kategoriuppdelning för året, så vi kan bara visa Scope 3-totalen."
       }
+    }
+  },
+  "nation": {
+    "detailPage": {
+      "regions": "Utforska Sveriges län"
     },
     "story": {
       "unit": {
