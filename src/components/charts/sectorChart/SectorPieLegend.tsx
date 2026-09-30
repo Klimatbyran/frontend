@@ -25,6 +25,7 @@ interface LegendProps {
   onItemClick?: (item: PieChartItem) => void;
   getActionTooltip?: (item: PieChartItem) => string;
   gridColumns?: 1 | 2;
+  compact?: boolean;
   emissionsUnit?: string;
   emissionsUnitClassName?: string;
   animationKey?: string;
@@ -39,6 +40,7 @@ const SectorPieLegend: React.FC<LegendProps> = ({
   onItemClick,
   getActionTooltip,
   gridColumns = 1,
+  compact = false,
   emissionsUnit,
   emissionsUnitClassName,
   animationKey = "default",
@@ -77,10 +79,11 @@ const SectorPieLegend: React.FC<LegendProps> = ({
 
   const unitLabel = emissionsUnit ?? t("emissionsUnit");
 
+  const gridGap = compact ? "gap-1" : "gap-2";
   const gridClass =
     gridColumns === 2
-      ? "grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[300px] lg:max-h-[600px] overflow-y-auto scrollbar-legend w-full pr-1"
-      : "grid grid-cols-1 gap-2 w-full pr-2 mt-2 md:mt-4";
+      ? `grid grid-cols-1 lg:grid-cols-2 ${gridGap} max-h-[300px] lg:max-h-[600px] overflow-y-auto scrollbar-legend w-full pr-1`
+      : `grid grid-cols-1 ${gridGap} w-full ${compact ? "pr-0" : "pr-2 mt-2 md:mt-4"} ${compact ? "max-h-[320px] overflow-y-auto scrollbar-legend" : ""}`;
 
   return (
     <TooltipProvider>
@@ -97,7 +100,9 @@ const SectorPieLegend: React.FC<LegendProps> = ({
             <Tooltip key={`${animationKey}-legend-${index}`}>
               <TooltipTrigger asChild>
                 <motion.div
-                  className="flex items-center gap-2 p-2 rounded-md hover:bg-black-1 transition-colors cursor-pointer"
+                  className={`flex items-center rounded-md hover:bg-black-1 transition-colors cursor-pointer ${
+                    compact ? "gap-1.5 p-1.5" : "gap-2 p-2"
+                  }`}
                   onClick={() => handleLegendItemClick(entry)}
                   initial={reduceMotion ? false : { opacity: 0, x: -10 }}
                   animate={{ opacity: isFiltered ? 0.5 : 1, x: 0 }}
@@ -112,10 +117,14 @@ const SectorPieLegend: React.FC<LegendProps> = ({
                     style={{ backgroundColor: entry.color }}
                   />
                   <div className="min-w-0 flex-1">
-                    <div className="text-sm text-white break-words">
+                    <div
+                      className={`text-white break-words ${compact ? "text-xs leading-snug" : "text-sm"}`}
+                    >
                       {displayName}
                     </div>
-                    <div className="text-xs text-grey flex justify-between">
+                    <div
+                      className={`text-grey flex justify-between ${compact ? "text-[11px]" : "text-xs"}`}
+                    >
                       <span>
                         {formatEmissionsAbsolute(
                           Math.round(entry.value),

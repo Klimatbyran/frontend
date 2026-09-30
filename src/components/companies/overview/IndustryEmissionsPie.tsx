@@ -63,12 +63,15 @@ export function IndustryEmissionsPie({
         {t("companiesOverviewPage.paris.industriesDescription")}
       </p>
 
-      <div className="mt-6 grid items-center gap-10 md:grid-cols-[minmax(0,380px)_minmax(0,1fr)] md:gap-14">
-        <div>
+      <div className="mt-6 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,240px)] md:gap-10 lg:grid-cols-[minmax(0,560px)_minmax(0,260px)]">
+        <div className="min-h-[260px] md:min-h-[380px]">
           <SectorPieChart
             data={data}
             onItemClick={handleSelect}
             customActionLabel={t("companiesOverviewPage.paris.clickIndustry")}
+            fillContainer
+            desktopScale
+            maxOuterRadius={240}
           />
           <div className="mt-6 max-w-[270px]">
             <div className="flex">
@@ -97,7 +100,8 @@ export function IndustryEmissionsPie({
           data={data}
           total={total}
           onItemClick={handleSelect}
-          gridColumns={2}
+          gridColumns={1}
+          compact
           getActionTooltip={() =>
             t("companiesOverviewPage.paris.clickIndustry")
           }

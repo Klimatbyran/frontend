@@ -32,6 +32,8 @@ interface SectorPieChartProps {
   onItemClick?: (data: PieChartItem) => void;
   customActionLabel?: string;
   desktopScale?: boolean;
+  fillContainer?: boolean;
+  maxOuterRadius?: number;
   animationKey?: string;
   restSliceOptions?: PieChartRestSliceOptions;
 }
@@ -49,13 +51,19 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   onItemClick,
   customActionLabel,
   desktopScale = false,
+  fillContainer = false,
+  maxOuterRadius,
   animationKey,
   restSliceOptions,
 }) => {
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { size, containerRef } = useResponsiveChartSize();
+  const { size, containerRef } = useResponsiveChartSize(
+    false,
+    maxOuterRadius,
+    fillContainer,
+  );
 
   const pieData: PieChartItem[] = data
     ? data
