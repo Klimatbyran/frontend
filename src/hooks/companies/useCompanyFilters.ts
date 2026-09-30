@@ -89,20 +89,18 @@ function useFilteredCompanies(
   );
 }
 
-function useCompanyFilterGroups(
-  options: {
-    includeSectorFilter: boolean;
-    includeIndustryGroupFilter: boolean;
-    searchParams: URLSearchParams;
-    sectorNames: Record<string, string>;
-    sectorOptions: ReturnType<typeof useSectors>;
-    industryGroupNames: Record<string, string>;
-    industryGroupFilterOptionGroups: FilterOptionGroup[];
-    setSectors: (value: CompanySector[]) => void;
-    setIndustryGroups: (value: IndustryGroupOption[]) => void;
-    setMeetsParisFilter: (value: string) => void;
-  },
-) {
+function useCompanyFilterGroups(options: {
+  includeSectorFilter: boolean;
+  includeIndustryGroupFilter: boolean;
+  searchParams: URLSearchParams;
+  sectorNames: Record<string, string>;
+  sectorOptions: ReturnType<typeof useSectors>;
+  industryGroupNames: Record<string, string>;
+  industryGroupFilterOptionGroups: FilterOptionGroup[];
+  setSectors: (value: CompanySector[]) => void;
+  setIndustryGroups: (value: IndustryGroupOption[]) => void;
+  setMeetsParisFilter: (value: string) => void;
+}) {
   const { t } = useTranslation();
   const {
     includeSectorFilter,
