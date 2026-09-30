@@ -15,6 +15,7 @@ import { FeatureCollection } from "geojson";
 import { PageHeader } from "@/components/layout/PageHeader";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
+import { OVERVIEW_MAP_DEFAULT_CENTER } from "@/components/maps/mapConstants";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
@@ -154,6 +155,7 @@ function MunicipalitiesOverviewContent({
                 data={mapData}
                 selectedKPI={selectedKPI}
                 onAreaClick={onMunicipalityAreaClick}
+                defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
                 defaultZoom={isMobile ? 4 : undefined}
                 className="max-w-none"
               />

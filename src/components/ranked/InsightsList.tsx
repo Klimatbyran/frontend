@@ -64,7 +64,7 @@ function InsightsList<T>({
       <h3 className="text-white text-lg font-semibold px-4 md:px-6 pb-2 md:pb-2">
         {title}
       </h3>
-      <div className="space-y-1 bg-black-1 h-full px-4 md:px-6 py-2">
+      <div className="space-y-1 h-full px-4 md:px-6 py-2">
         {entities.map((entity, index) => {
           const position = isBottomRanking ? totalCount - index : index + 1;
           const name = String(entity[nameKey]);

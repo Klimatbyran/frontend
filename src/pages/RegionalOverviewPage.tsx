@@ -5,6 +5,7 @@ import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap, { DataItem } from "@/components/maps/TerritoryMap";
+import { OVERVIEW_MAP_DEFAULT_CENTER } from "@/components/maps/mapConstants";
 import regionGeoJson from "@/data/regionGeo.json";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
 import {
@@ -152,7 +153,7 @@ export function RegionalOverviewPage() {
       data={mapData}
       selectedKPI={selectedKPI}
       onAreaClick={handleRegionAreaClick}
-      defaultCenter={[63.55, 17]}
+      defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
       defaultZoom={isMobile ? 4 : undefined}
       className="max-w-none"
     />
