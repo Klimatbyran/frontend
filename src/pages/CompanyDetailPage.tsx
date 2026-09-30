@@ -9,6 +9,7 @@ import { EmissionsHistory } from "@/components/companies/detail/history/Emission
 import { TurnoverEmissionsHistory } from "@/components/companies/detail/history/TurnoverEmissionsHistory";
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
+import { UnderstandingEmissions } from "@/components/companies/detail/understanding-emissions/UnderstandingEmissions";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/relatableNumbers";
 import type { CompanyDetails, ReportingPeriod } from "@/types/company";
@@ -133,6 +134,10 @@ function CompanyDetailContent({
             yearOverYearChange={yearOverYearChange}
           />
         )}
+        <UnderstandingEmissions
+          companyName={company.name}
+          selectedPeriod={selectedPeriod}
+        />
         <EmissionsHistory company={company} onYearSelect={onYearSelect} />
         <TurnoverEmissionsHistory
           company={company}
