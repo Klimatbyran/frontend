@@ -65,7 +65,9 @@ export function ParisAnswerCard({
   }
 
   const scope = industryLabel
-    ? t("companiesOverviewPage.paris.scopeIndustry", { industry: industryLabel })
+    ? t("companiesOverviewPage.paris.scopeIndustry", {
+        industry: industryLabel,
+      })
     : t("companiesOverviewPage.paris.scopeAll");
 
   const size = dotSize(total);

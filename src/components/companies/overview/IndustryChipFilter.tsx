@@ -80,7 +80,9 @@ export function IndustryChipFilter({
         <Chip
           key={option.code}
           active={selected === option.code}
-          onClick={() => onSelect(selected === option.code ? null : option.code)}
+          onClick={() =>
+            onSelect(selected === option.code ? null : option.code)
+          }
         >
           <i
             className="size-2 rounded-full"
@@ -103,7 +105,10 @@ export function IndustryChipFilter({
           ? t("companiesOverviewPage.paris.showLess")
           : t("companiesOverviewPage.paris.showMore")}
         <ChevronDown
-          className={cn("size-3 transition-transform", expanded && "rotate-180")}
+          className={cn(
+            "size-3 transition-transform",
+            expanded && "rotate-180",
+          )}
         />
       </button>
     </div>

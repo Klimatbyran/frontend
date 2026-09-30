@@ -176,9 +176,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
             type="button"
             title={t("companiesOverviewPage.paris.flipOrder")}
             aria-label={t("companiesOverviewPage.paris.flipOrder")}
-            onClick={() =>
-              setDirection((d) => (d === "asc" ? "desc" : "asc"))
-            }
+            onClick={() => setDirection((d) => (d === "asc" ? "desc" : "asc"))}
             className="grid size-8 place-items-center rounded-full bg-black-1 text-white/60 transition-colors hover:text-white"
           >
             {direction === "asc" ? (
@@ -228,8 +226,9 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
           </TableHeader>
           <TableBody>
             {shown.map((company, index) => {
-              const sector = company.industry?.industryGics
-                ?.sectorCode as SectorCode | undefined;
+              const sector = company.industry?.industryGics?.sectorCode as
+                | SectorCode
+                | undefined;
               const change = company.emissionsChangeFromBaseYear;
 
               return (

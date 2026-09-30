@@ -12,7 +12,9 @@ export function isSwedishCompany(company: { tags?: string[] }): boolean {
 }
 
 export function latestEmissions(company: CompanyWithKPIs): number {
-  return company.reportingPeriods?.[0]?.emissions?.calculatedTotalEmissions ?? 0;
+  return (
+    company.reportingPeriods?.[0]?.emissions?.calculatedTotalEmissions ?? 0
+  );
 }
 
 export interface ParisSummary {
