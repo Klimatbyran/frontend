@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { getCompaniesBySearchTerm } from "@/lib/api";
 import { HERO_SEARCH_DEBOUNCE_MS } from "@/lib/constants/landingPage";
+import { filterSwedishCompanies } from "@/hooks/companies/companyCountryFilterUtils";
 
 export function useCompanySearch(searchQuery: string) {
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery.trim());
@@ -22,10 +23,11 @@ export function useCompanySearch(searchQuery: string) {
 
   const { data: searchResults = [], isFetching: isSearching } = useQuery({
     queryKey: ["companySearch", debouncedQuery],
-    queryFn: () =>
-      debouncedQuery
-        ? getCompaniesBySearchTerm(debouncedQuery)
-        : Promise.resolve([]),
+    queryFn: async () => {
+      if (!debouncedQuery) return [];
+      const results = await getCompaniesBySearchTerm(debouncedQuery);
+      return filterSwedishCompanies(results);
+    },
     enabled: !!debouncedQuery,
     staleTime: 60 * 1000,
   });

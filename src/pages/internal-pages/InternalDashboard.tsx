@@ -304,7 +304,9 @@ function CompaniesTable({
 }
 
 export const InternalDashboard = () => {
-  const { companies, companiesLoading, companiesError } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies({
+    includeAllCountries: true,
+  });
   const { currentLanguage } = useLanguage();
   const [sortBy, setSortBy] = useState<SortColumn>("emissions");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");

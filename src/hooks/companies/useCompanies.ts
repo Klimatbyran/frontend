@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCompanies } from "@/lib/api";
 import { cleanEmissions } from "@/utils/data/cleaning";
 import type { RankedCompany, ReportingPeriodFromList } from "@/types/company";
+import { filterSwedishCompanies } from "@/hooks/companies/companyCountryFilterUtils";
 
 function formatReductionValue(value: number): string {
   if (value > 200) return ">200";
@@ -18,18 +19,25 @@ interface ICompaniesReturn {
 
 export function useCompanies(options?: {
   enabled?: boolean;
+  /** When false (default), non-Swedish companies are excluded from the list. */
+  includeAllCountries?: boolean;
 }): ICompaniesReturn {
+  const includeAllCountries = options?.includeAllCountries ?? false;
   const {
     data: companies = [],
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["companies"],
+    queryKey: ["companies", { includeAllCountries }],
     queryFn: getCompanies,
     enabled: options?.enabled ?? true,
     staleTime: 1800000,
     select: (data): RankedCompany[] => {
-      return data.map((company) => {
+      const scopedData = includeAllCountries
+        ? data
+        : filterSwedishCompanies(data);
+
+      return scopedData.map((company) => {
         // Calculate emissions reduction
         const latestPeriod = company.reportingPeriods?.[0];
         const previousPeriod = company.reportingPeriods?.[1];

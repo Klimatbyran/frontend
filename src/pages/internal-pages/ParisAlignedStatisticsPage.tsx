@@ -10,7 +10,9 @@ import { ParisAlignedNotesSection } from "./paris-aligned-statistics/ParisAligne
 import { ParisAlignedSummarySection } from "./paris-aligned-statistics/ParisAlignedSummarySection";
 
 export function ParisAlignedStatisticsPage() {
-  const { companies, companiesLoading, companiesError } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies({
+    includeAllCountries: true,
+  });
 
   const statistics = useMemo(
     () => (companies ? calculateParisAlignedStatistics(companies) : null),

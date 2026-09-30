@@ -1,6 +1,7 @@
 import { getCompanies, getMunicipalities } from "../api.js";
 import { createSlug } from "../utils.js";
 import type { SitemapEntry } from "./static-routes";
+import { filterSwedishCompanies } from "@/hooks/companies/companyCountryFilterUtils";
 
 function getCompanyUrlSegment(company: {
   id: string;
@@ -44,8 +45,8 @@ async function fetchMunicipalityRoutes(
 async function fetchCompanyRoutes(
   currentDate: string,
 ): Promise<SitemapEntry[]> {
-  const companies = await getCompanies();
-  if (!companies || companies.length === 0) {
+  const companies = filterSwedishCompanies((await getCompanies()) ?? []);
+  if (companies.length === 0) {
     return [];
   }
 

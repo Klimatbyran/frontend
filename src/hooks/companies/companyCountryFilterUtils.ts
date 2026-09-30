@@ -12,6 +12,29 @@ type CompanyWithTags = {
   tags?: string[] | null;
 };
 
+/** Country tags on a company excluding Sweden (Nordic/non-Swedish slugs from the API). */
+const NON_SWEDISH_COUNTRY_TAGS = COMPANY_COUNTRY_TAG_SLUGS.filter(
+  (slug) => slug !== "sweden",
+);
+
+/** Public company lists only include Swedish companies (untagged legacy rows are treated as Swedish). */
+export function isSwedishCompany(company: CompanyWithTags): boolean {
+  const tags = company.tags ?? [];
+  const countryTags = tags.filter(isCompanyCountryTagSlug);
+
+  if (countryTags.length === 0) {
+    return true;
+  }
+
+  return !countryTags.some((tag) => NON_SWEDISH_COUNTRY_TAGS.includes(tag));
+}
+
+export function filterSwedishCompanies<T extends CompanyWithTags>(
+  companies: T[],
+): T[] {
+  return companies.filter(isSwedishCompany);
+}
+
 export function useCompanyCountryNames() {
   const { t } = useTranslation();
 

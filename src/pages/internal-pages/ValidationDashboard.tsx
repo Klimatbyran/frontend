@@ -20,7 +20,7 @@ import { getCompanyDetailPath } from "@/utils/companyRouting";
 import { formatPercent } from "@/utils/formatting/localization";
 
 const useGetUnverifiedCompaniesForYear = (year: number) => {
-  const { companies } = useCompanies();
+  const { companies } = useCompanies({ includeAllCountries: true });
   const { isEmissionsAIGenerated } = useVerificationStatus();
 
   return companies
@@ -109,7 +109,7 @@ export const ValidationDashboard = () => {
     companies: allCompanies,
     companiesLoading: companiesLoading,
     companiesError: companiesError,
-  } = useCompanies();
+  } = useCompanies({ includeAllCountries: true });
   const unverifiedCompanies = useGetUnverifiedCompaniesForYear(parseInt(year));
   const { currentLanguage } = useLanguage();
   const {

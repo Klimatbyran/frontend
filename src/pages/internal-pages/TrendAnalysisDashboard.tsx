@@ -214,7 +214,9 @@ function TrendAnalysisContent({
 }
 
 export function TrendAnalysisDashboard() {
-  const { companies, companiesLoading, companiesError } = useCompanies();
+  const { companies, companiesLoading, companiesError } = useCompanies({
+    includeAllCountries: true,
+  });
   const { currentLanguage } = useLanguage();
   const originalAnalyses = useTrendAnalyses(companies);
   const [filteredCompanies, setFilteredCompanies] = useState<CompanyAnalysis[]>(

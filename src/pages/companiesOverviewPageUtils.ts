@@ -4,15 +4,6 @@ import { useTranslation } from "react-i18next";
 import type { RankedCompany } from "@/types/company";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import type { OverviewViewMode } from "@/components/ranked/OverviewSplitLayout";
-import {
-  buildCountryActiveFilters,
-  buildCountryFilterGroup,
-  companyMatchesCountries,
-  parseCountriesFromURL,
-  toggleCountrySelection,
-  useCompanyCountryNames,
-} from "@/hooks/companies/companyCountryFilterUtils";
-import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
 import type { FilterGroup } from "@/components/explore/FilterPopover";
 import {
   CompanyKPIValue,
@@ -63,21 +54,6 @@ export function useCompaniesOverviewUrlState(
     [location.search, navigate],
   );
 
-  const getCountriesFromURL = useCallback(
-    () => parseCountriesFromURL(new URLSearchParams(location.search)),
-    [location.search],
-  );
-
-  const setCountriesInURL = useCallback(
-    (countries: CompanyCountryTagSlug[]) => {
-      const params = new URLSearchParams(location.search);
-      if (countries.length === 0) params.delete("countries");
-      else params.set("countries", countries.join(","));
-      navigate({ search: params.toString() }, { replace: true });
-    },
-    [location.search, navigate],
-  );
-
   const getViewModeFromURL = useCallback((): OverviewViewMode => {
     const params = new URLSearchParams(location.search);
     return params.get("view") === "list" ? "list" : "graph";
@@ -94,8 +70,6 @@ export function useCompaniesOverviewUrlState(
     setKPIInURL,
     getSectorFromURL,
     setSectorInURL,
-    getCountriesFromURL,
-    setCountriesInURL,
     getViewModeFromURL,
     setViewModeInURL,
   };
@@ -104,16 +78,12 @@ export function useCompaniesOverviewUrlState(
 export function useCompaniesWithKPIs(
   companies: RankedCompany[] | undefined,
   selectedSector: string | null,
-  selectedCountries: CompanyCountryTagSlug[],
   selectedKPI: CompanyKPIValue,
 ) {
-  const selectedCountriesKey = [...selectedCountries].sort().join(",");
-
   return useMemo(() => {
     if (!companies) return [];
 
     const filtered = companies.filter((company) => {
-      if (!companyMatchesCountries(company, selectedCountries)) return false;
       if (selectedSector) {
         const sectorCode = company.industry?.industryGics?.sectorCode;
         if (sectorCode !== selectedSector) return false;
@@ -128,7 +98,7 @@ export function useCompaniesWithKPIs(
     });
 
     return filtered.map((company) => enrichCompanyWithKPIs(company));
-  }, [companies, selectedCountriesKey, selectedSector, selectedKPI.key]);
+  }, [companies, selectedSector, selectedKPI.key]);
 }
 
 export function asCompanyDataPoint(
@@ -160,28 +130,17 @@ export function asCompanyDataPoint(
 export function useCompaniesOverviewFilters(options: {
   availableSectors: string[];
   selectedSector: string | null;
-  selectedCountries: CompanyCountryTagSlug[];
-  availableCountries: CompanyCountryTagSlug[];
   onSectorChange: (sector: string) => void;
-  onCountriesChange: (countries: CompanyCountryTagSlug[]) => void;
 }) {
-  const {
-    availableSectors,
-    selectedSector,
-    selectedCountries,
-    availableCountries,
-    onSectorChange,
-    onCountriesChange,
-  } = options;
+  const { availableSectors, selectedSector, onSectorChange } = options;
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
-  const countryNames = useCompanyCountryNames();
 
   const filterGroups: FilterGroup[] = useMemo(() => {
-    const groups: FilterGroup[] = [];
+    if (availableSectors.length === 0) return [];
 
-    if (availableSectors.length > 0) {
-      groups.push({
+    return [
+      {
         heading: t("companiesOverviewPage.filterByIndustry"),
         options: [
           { value: "all", label: t("explorePage.companies.allSectors") },
@@ -193,35 +152,13 @@ export function useCompaniesOverviewFilters(options: {
         selectedValues: selectedSector ? [selectedSector] : ["all"],
         onSelect: onSectorChange,
         selectMultiple: false,
-      });
-    }
-
-    const countryGroup = buildCountryFilterGroup({
-      t,
-      countryNames,
-      availableCountries,
-      selectedCountries,
-      onSelect: (value) =>
-        onCountriesChange(toggleCountrySelection(selectedCountries, value)),
-    });
-
-    if (countryGroup) groups.push(countryGroup);
-    return groups;
-  }, [
-    availableSectors,
-    selectedSector,
-    availableCountries,
-    selectedCountries,
-    sectorNames,
-    countryNames,
-    t,
-    onSectorChange,
-    onCountriesChange,
-  ]);
+      },
+    ];
+  }, [availableSectors, selectedSector, sectorNames, t, onSectorChange]);
 
   const activeFilters = useMemo(
-    () => [
-      ...(selectedSector
+    () =>
+      selectedSector
         ? [
             {
               type: "filter" as const,
@@ -231,24 +168,8 @@ export function useCompaniesOverviewFilters(options: {
               onRemove: () => onSectorChange("all"),
             },
           ]
-        : []),
-      ...buildCountryActiveFilters({
-        countryNames,
-        selectedCountries,
-        onRemove: (country) =>
-          onCountriesChange(
-            selectedCountries.filter((value) => value !== country),
-          ),
-      }),
-    ],
-    [
-      selectedSector,
-      selectedCountries,
-      sectorNames,
-      countryNames,
-      onSectorChange,
-      onCountriesChange,
-    ],
+        : [],
+    [selectedSector, sectorNames, onSectorChange],
   );
 
   return { filterGroups, activeFilters };

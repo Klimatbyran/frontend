@@ -18,8 +18,6 @@ import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsig
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
 import { FilterPopover } from "@/components/explore/FilterPopover";
 import { FilterBadges } from "@/components/companies/list/FilterBadges";
-import { getAvailableCountryOptions } from "@/hooks/companies/companyCountryFilterUtils";
-import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
 import {
   useCompanyKPIs,
   CompanyKPIValue,
@@ -145,14 +143,11 @@ function CompaniesOverviewContent({
   selectedKPI,
   availableSectors,
   selectedSector,
-  selectedCountries,
-  availableCountries,
   viewMode,
   filterOpen,
   setFilterOpen,
   onKPIChange,
   onSectorChange,
-  onCountriesChange,
   onViewModeChange,
   onCompanyClick,
 }: {
@@ -160,14 +155,11 @@ function CompaniesOverviewContent({
   selectedKPI: CompanyKPIValue;
   availableSectors: string[];
   selectedSector: string | null;
-  selectedCountries: CompanyCountryTagSlug[];
-  availableCountries: CompanyCountryTagSlug[];
   viewMode: OverviewViewMode;
   filterOpen: boolean;
   setFilterOpen: (open: boolean) => void;
   onKPIChange: (kpi: CompanyKPIValue) => void;
   onSectorChange: (sector: string) => void;
-  onCountriesChange: (countries: CompanyCountryTagSlug[]) => void;
   onViewModeChange: (mode: OverviewViewMode) => void;
   onCompanyClick: (company: CompanyWithKPIs) => void;
 }) {
@@ -176,10 +168,7 @@ function CompaniesOverviewContent({
   const { filterGroups, activeFilters } = useCompaniesOverviewFilters({
     availableSectors,
     selectedSector,
-    selectedCountries,
-    availableCountries,
     onSectorChange,
-    onCountriesChange,
   });
 
   return (
@@ -239,15 +228,9 @@ export function CompaniesOverviewPage() {
     return Array.from(sectors).sort();
   }, [companies]);
 
-  const availableCountries = useMemo(
-    () => getAvailableCountryOptions(companies ?? []),
-    [companies],
-  );
-
   const urlState = useCompaniesOverviewUrlState(companyKPIs, availableSectors);
   const [selectedKPI, setSelectedKPI] = useState(urlState.getKPIFromURL());
   const selectedSector = urlState.getSectorFromURL();
-  const selectedCountries = urlState.getCountriesFromURL();
   const viewMode = urlState.getViewModeFromURL();
 
   useEffect(() => {
@@ -257,7 +240,6 @@ export function CompaniesOverviewPage() {
   const companiesWithKPIs = useCompaniesWithKPIs(
     companies,
     selectedSector,
-    selectedCountries,
     selectedKPI,
   );
 
@@ -289,8 +271,6 @@ export function CompaniesOverviewPage() {
       selectedKPI={selectedKPI}
       availableSectors={availableSectors}
       selectedSector={selectedSector}
-      selectedCountries={selectedCountries}
-      availableCountries={availableCountries}
       viewMode={viewMode}
       filterOpen={filterOpen}
       setFilterOpen={setFilterOpen}
@@ -301,7 +281,6 @@ export function CompaniesOverviewPage() {
       onSectorChange={(sector) => {
         urlState.setSectorInURL(sector === "all" ? null : sector);
       }}
-      onCountriesChange={urlState.setCountriesInURL}
       onViewModeChange={urlState.setViewModeInURL}
       onCompanyClick={(company) => navigate(getCompanyDetailPath(company))}
     />
