@@ -102,10 +102,7 @@ export interface CompaniesTableProps {
 
 /** The overview's own list: one row per company with the two figures the page
  * is about, rather than the card grid used on Explore. */
-function companyDetailHref(
-  company: CompanyWithKPIs,
-  language: string,
-): string {
+function companyDetailHref(company: CompanyWithKPIs, language: string): string {
   return localizedPath(language, getCompanyDetailPath(company));
 }
 

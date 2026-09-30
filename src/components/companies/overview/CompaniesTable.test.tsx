@@ -1,6 +1,12 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { MemoryRouter, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import {
+  MemoryRouter,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import type { CompanyWithKPIs } from "@/types/company";
 import { CompaniesTable } from "./CompaniesTable";
 
@@ -141,10 +147,7 @@ describe("CompaniesTable", () => {
               path="/en/companies-overview"
               element={<CompaniesTable companies={companies} />}
             />
-            <Route
-              path="/en/companies/:id"
-              element={<div>Detail</div>}
-            />
+            <Route path="/en/companies/:id" element={<div>Detail</div>} />
           </Route>
         </Routes>
       </MemoryRouter>,
