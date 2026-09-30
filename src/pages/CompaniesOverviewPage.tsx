@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
+import { CompaniesOverviewSkeleton } from "@/components/companies/overview/CompaniesOverviewSkeleton";
 import InsightsList from "@/components/ranked/InsightsList";
 import { CompaniesTable } from "@/components/companies/overview/CompaniesTable";
 import { ParisAnswerCard } from "@/components/companies/overview/ParisAnswerCard";
@@ -87,7 +87,7 @@ export function CompaniesOverviewPage() {
     [swedishCompanies],
   );
 
-  const urlState = useCompaniesOverviewUrlState([], availableSectors);
+  const urlState = useCompaniesOverviewUrlState(availableSectors);
   const selectedSector = urlState.getSectorFromURL() as SectorCode | null;
 
   // The industry breakdown ignores the industry filter so it stays usable as
@@ -111,7 +111,7 @@ export function CompaniesOverviewPage() {
   const summary = useMemo(() => summariseParis(inView), [inView]);
 
   if (companiesLoading) {
-    return <OverviewPageSkeleton variant="companies" chipCount={2} />;
+    return <CompaniesOverviewSkeleton />;
   }
 
   if (companiesError) {

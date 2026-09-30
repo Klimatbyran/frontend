@@ -1,4 +1,5 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useParams } from "react-router-dom";
+import { SECTOR_ORDER, type SectorCode } from "@/lib/constants/sectors";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useLanguage } from "./components/LanguageProvider";
@@ -30,8 +31,6 @@ import {
   ReportLandingPage,
   ReportsPage,
   RequestsDashboard,
-  SectorsOverviewPage,
-  SectorDetailPage,
   SupportPage,
   TrendAnalysisDashboard,
   UnauthorizedErrorPage,
@@ -73,17 +72,36 @@ function ComparisonRoutes({ basePath }: { basePath: string }) {
   );
 }
 
+/** A retired /sectors/:code URL maps onto the overview's industry filter. */
+function SectorRedirect({ basePath }: { basePath: string }) {
+  const { code } = useParams<{ code: string }>();
+  const isKnownSector =
+    Boolean(code) && SECTOR_ORDER.includes(code as SectorCode);
+
+  return (
+    <Navigate
+      to={`${basePath}/companies${isKnownSector ? `?sector=${code}` : ""}`}
+      replace
+    />
+  );
+}
+
 function CompanyRoutes({ basePath }: { basePath: string }) {
   return (
     <>
-      <Route path={`${basePath}/sectors`} element={<SectorsOverviewPage />} />
-      <Route
-        path={`${basePath}/sectors/:code`}
-        element={<SectorDetailPage />}
-      />
       <Route
         path={`${basePath}/companies`}
         element={<CompaniesOverviewPage />}
+      />
+      {/* The sector pages were replaced by the industry breakdown on the
+          companies overview; both URLs were indexed, so keep them resolvable. */}
+      <Route
+        path={`${basePath}/sectors`}
+        element={<Navigate to={`${basePath}/companies`} replace />}
+      />
+      <Route
+        path={`${basePath}/sectors/:code`}
+        element={<SectorRedirect basePath={basePath} />}
       />
       <Route element={<ProtectedRoute />}>
         <Route

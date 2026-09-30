@@ -11,16 +11,6 @@ export const CompanyDetailPage = lazy(() =>
     default: m.CompanyDetailPage,
   })),
 );
-export const SectorsOverviewPage = lazy(() =>
-  import("./pages/SectorsOverviewPage").then((m) => ({
-    default: m.SectorsOverviewPage,
-  })),
-);
-export const SectorDetailPage = lazy(() =>
-  import("./pages/SectorDetailPage").then((m) => ({
-    default: m.SectorDetailPage,
-  })),
-);
 export const ErrorPage = lazy(() =>
   import("./pages/ErrorPage").then((m) => ({ default: m.ErrorPage })),
 );
