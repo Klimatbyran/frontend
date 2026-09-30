@@ -151,6 +151,7 @@ export function CompaniesOverviewPage() {
       />
 
       <ParisAnswerCard
+        key={selectedSector ?? "all"}
         summary={summary}
         industryLabel={selectedSector ? sectorNames[selectedSector] : null}
       />

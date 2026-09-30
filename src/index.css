@@ -399,3 +399,13 @@ input[type="number"] {
     transform: translateY(0);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes fadeSlideIn {
+    from,
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

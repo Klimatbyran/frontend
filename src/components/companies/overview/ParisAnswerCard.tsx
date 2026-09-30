@@ -1,4 +1,6 @@
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useChartMotion } from "@/hooks/useChartMotion";
 import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
 
 /**
@@ -16,11 +18,29 @@ interface BreakdownRowProps {
   label: string;
   count: number;
   total: number;
+  index: number;
 }
 
-function BreakdownRow({ color, label, count, total }: BreakdownRowProps) {
+function BreakdownRow({
+  color,
+  label,
+  count,
+  total,
+  index,
+}: BreakdownRowProps) {
+  const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
+
   return (
-    <div className="flex items-center gap-2.5 border-t border-white/10 py-3 text-sm last:border-b">
+    <motion.div
+      className="flex items-center gap-2.5 border-t border-white/10 py-3 text-sm last:border-b"
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: fadeDuration,
+        delay: stagger(index, 0.06),
+        ease,
+      }}
+    >
       <span
         className="size-2.5 shrink-0 rounded-full"
         style={{ backgroundColor: color }}
@@ -30,7 +50,7 @@ function BreakdownRow({ color, label, count, total }: BreakdownRowProps) {
       <span className="w-11 text-right tabular-nums text-white/40">
         {total ? Math.round((count / total) * 100) : 0}%
       </span>
-    </div>
+    </motion.div>
   );
 }
 
@@ -45,6 +65,7 @@ export function ParisAnswerCard({
   industryLabel,
 }: ParisAnswerCardProps) {
   const { t } = useTranslation();
+  const { reduceMotion, fadeDuration, ease } = useChartMotion();
   const { total, onTrack, offTrack, unknown, reducing, onTrackPercent } =
     summary;
 
@@ -77,6 +98,9 @@ export function ParisAnswerCard({
     ...Array<string>(unknown).fill("rgba(255,255,255,0.2)"),
   ];
 
+  const dotDelay = (index: number) =>
+    reduceMotion ? 0 : Math.min(index * 0.015, 0.85);
+
   return (
     <section className="grid items-center gap-9 rounded-level-2 bg-black-2 px-6 py-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.85fr)] md:gap-14 md:px-10 md:py-9">
       <div>
@@ -84,17 +108,41 @@ export function ParisAnswerCard({
           {t("companiesOverviewPage.paris.kicker")}
         </p>
         <p className="max-w-[620px] text-[22px] font-light leading-snug md:text-[28px]">
-          <b className="mb-3 block text-[68px] font-medium leading-none tracking-tighter text-blue-2 tabular-nums md:text-[92px]">
+          <motion.b
+            className="mb-3 block text-[68px] font-medium leading-none tracking-tighter text-blue-2 tabular-nums md:text-[92px]"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: fadeDuration, ease }}
+          >
             {onTrack}
-          </b>
-          {t("companiesOverviewPage.paris.heading", { count: total, scope })}
+          </motion.b>
+          <motion.span
+            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: fadeDuration,
+              delay: reduceMotion ? 0 : 0.08,
+              ease,
+            }}
+          >
+            {t("companiesOverviewPage.paris.heading", { count: total, scope })}
+          </motion.span>
         </p>
-        <p className="mt-4 max-w-[620px] text-base leading-relaxed text-white/65">
+        <motion.p
+          className="mt-4 max-w-[620px] text-base leading-relaxed text-white/65"
+          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: fadeDuration,
+            delay: reduceMotion ? 0 : 0.14,
+            ease,
+          }}
+        >
           {t("companiesOverviewPage.paris.share", { percent: onTrackPercent })}{" "}
           {reducing > onTrack
             ? t("companiesOverviewPage.paris.manyCutting")
             : t("companiesOverviewPage.paris.restTooSlow")}
-        </p>
+        </motion.p>
       </div>
 
       <div>
@@ -107,10 +155,17 @@ export function ParisAnswerCard({
           style={{ gap: size > 16 ? 9 : 6 }}
         >
           {dots.map((color, index) => (
-            <span
+            <motion.span
               key={index}
               className="block rounded-full"
               style={{ width: size, height: size, backgroundColor: color }}
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.35 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.28,
+                delay: dotDelay(index),
+                ease,
+              }}
             />
           ))}
         </div>
@@ -120,18 +175,21 @@ export function ParisAnswerCard({
             label={t("companiesOverviewPage.paris.onTrack")}
             count={onTrack}
             total={total}
+            index={0}
           />
           <BreakdownRow
             color="var(--pink-3)"
             label={t("companiesOverviewPage.paris.offTrack")}
             count={offTrack}
             total={total}
+            index={1}
           />
           <BreakdownRow
             color="rgba(255,255,255,0.2)"
             label={t("companiesOverviewPage.paris.notEnoughData")}
             count={unknown}
             total={total}
+            index={2}
           />
         </div>
       </div>

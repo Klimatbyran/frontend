@@ -1,5 +1,7 @@
+import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useChartMotion } from "@/hooks/useChartMotion";
 import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
@@ -31,6 +33,8 @@ export function IndustryEmissionsPie({
 }: IndustryEmissionsPieProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
+  const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
+  const pieAnimationKey = selected ?? "all";
 
   const data = useMemo<PieChartItem[]>(
     () =>
@@ -71,11 +75,12 @@ export function IndustryEmissionsPie({
               data={data}
               onItemClick={handleSelect}
               customActionLabel={t("companiesOverviewPage.paris.clickIndustry")}
+              animationKey={pieAnimationKey}
             />
             <div className="mt-6 max-w-[270px]">
               <div className="flex">
                 {SHARE_RAMP_STOPS.map((stop, index) => (
-                  <i
+                  <motion.i
                     key={stop}
                     className={`h-2.5 flex-1 ${
                       index === 0
@@ -84,7 +89,14 @@ export function IndustryEmissionsPie({
                           ? "rounded-r-sm"
                           : ""
                     }`}
-                    style={{ backgroundColor: stop }}
+                    style={{ backgroundColor: stop, transformOrigin: "bottom" }}
+                    initial={reduceMotion ? false : { opacity: 0, scaleY: 0 }}
+                    animate={{ opacity: 1, scaleY: 1 }}
+                    transition={{
+                      duration: fadeDuration,
+                      delay: stagger(index, 0.05),
+                      ease,
+                    }}
                   />
                 ))}
               </div>
@@ -101,6 +113,7 @@ export function IndustryEmissionsPie({
             onItemClick={handleSelect}
             gridColumns={1}
             compact
+            animationKey={pieAnimationKey}
             getActionTooltip={() =>
               t("companiesOverviewPage.paris.clickIndustry")
             }
