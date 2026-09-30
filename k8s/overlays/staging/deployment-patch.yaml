@@ -1,7 +1,6 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-spec:
-  strategy:
+# Replace the whole strategy: base sets rollingUpdate, which the API rejects
+# when type is Recreate.
+- op: replace
+  path: /spec/strategy
+  value:
     type: Recreate

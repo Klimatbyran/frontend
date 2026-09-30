@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { KPIValue } from "@/types/rankings";
+import { SelectionChip } from "@/components/explore/SelectionChip";
 
-interface KPIChipSelectorProps<T> {
+interface DataChipSelectorProps<T> {
   selectedKPI: KPIValue<T>;
   kpis: KPIValue<T>[];
   onKPIChange: (kpi: KPIValue<T>) => void;
@@ -14,11 +15,11 @@ interface KPIChipSelectorProps<T> {
   translationPrefix?: string;
   /** Label shown above the chips / as the dropdown trigger label */
   label?: string;
-  /** Optional controls rendered on the same row as the KPI selector */
+  /** Optional controls rendered on the same row as the data selector */
   actions?: React.ReactNode;
 }
 
-export function KPIChipSelector<T>({
+export function DataChipSelector<T>({
   selectedKPI,
   kpis,
   onKPIChange,
@@ -26,7 +27,7 @@ export function KPIChipSelector<T>({
   translationPrefix,
   label,
   actions,
-}: KPIChipSelectorProps<T>) {
+}: DataChipSelectorProps<T>) {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -83,7 +84,7 @@ export function KPIChipSelector<T>({
       )}
 
       <div className="flex flex-col gap-2">
-        {/* Mobile: KPI dropdown */}
+        {/* Mobile: dropdown */}
         <div className="md:hidden w-full">
           <div className="relative" ref={dropdownRef}>
             <button
@@ -143,7 +144,7 @@ export function KPIChipSelector<T>({
           </div>
         </div>
 
-        {/* KPI chips + actions share a wrapping row on desktop */}
+        {/* Chips + actions share a wrapping row on desktop */}
         <div className="flex flex-wrap items-center gap-2">
           <div
             className="hidden md:flex gap-2 flex-wrap min-w-0"
@@ -153,21 +154,15 @@ export function KPIChipSelector<T>({
             {kpis.map((kpi) => {
               const isSelected = String(kpi.key) === String(selectedKPI.key);
               return (
-                <button
+                <SelectionChip
                   key={String(kpi.key)}
+                  selected={isSelected}
                   onClick={() => onKPIChange(kpi)}
                   title={kpi.description}
-                  aria-current={isSelected ? "true" : undefined}
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap",
-                    isSelected
-                      ? "bg-blue-3/20 text-blue-3 shadow-[0_0_12px_rgba(76,155,232,0.3)]"
-                      : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white",
-                  )}
+                  icon={iconMap[String(kpi.key)]}
                 >
-                  {iconMap[String(kpi.key)]}
                   {getLabel(kpi)}
-                </button>
+                </SelectionChip>
               );
             })}
           </div>

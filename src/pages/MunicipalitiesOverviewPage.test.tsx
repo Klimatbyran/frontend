@@ -55,8 +55,8 @@ vi.mock(
   }),
 );
 
-vi.mock("@/components/ranked/KPIChipSelector", () => ({
-  KPIChipSelector: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
+vi.mock("@/components/ranked/DataChipSelector", () => ({
+  DataChipSelector: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
     <div data-testid="kpi-selector">{String(selectedKPI.key)}</div>
   ),
 }));

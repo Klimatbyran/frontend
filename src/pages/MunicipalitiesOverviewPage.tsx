@@ -34,7 +34,7 @@ import {
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import { useScreenSize } from "@/hooks/useScreenSize";
-import { KPIChipSelector } from "@/components/ranked/KPIChipSelector";
+import { DataChipSelector } from "@/components/ranked/DataChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import type { Municipality } from "@/types/municipality";
 
@@ -134,7 +134,7 @@ function MunicipalitiesOverviewContent({
         title={t("municipalitiesOverviewPage.title")}
       />
 
-      <KPIChipSelector<Municipality>
+      <DataChipSelector<Municipality>
         selectedKPI={selectedKPI}
         kpis={municipalityKPIs}
         onKPIChange={onKPIChange}

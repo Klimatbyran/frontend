@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { Toggle } from "@/components/ui/toggle";
+import { SelectionChip } from "@/components/explore/SelectionChip";
 import { CompanyList } from "@/components/companies/list/CompanyList";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { RegionList } from "@/components/regions/list/RegionList";
@@ -91,18 +91,17 @@ function ExploreFilterToggles({
   return (
     <div className={cn("flex flex-wrap items-center gap-2 mb-4")}>
       {mainFilterToggles.map(({ key, path, labelKey }) => (
-        <Toggle
+        <SelectionChip
           key={key}
+          selected={mainFilter === key}
           onClick={() => {
             if (mainFilter !== key) {
               onNavigate([path, globalUrlSearchParamStr].join("?"));
             }
           }}
-          variant="outlineWhite"
-          pressed={mainFilter === key}
         >
           {t(labelKey)}
-        </Toggle>
+        </SelectionChip>
       ))}
     </div>
   );
