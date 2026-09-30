@@ -106,9 +106,9 @@ function IndustryPieSkeleton() {
         <Block className="h-4 w-2/3 max-w-[380px]" />
       </div>
 
-      <div className="mt-6 grid items-center gap-10 md:grid-cols-[minmax(0,380px)_minmax(0,1fr)] md:gap-14">
+      <div className="mt-6 grid items-center gap-8 md:gap-16 lg:grid-cols-2">
         <div>
-          <Block className="mx-auto size-[260px] rounded-full" />
+          <Block className="mx-auto size-[400px] max-w-full rounded-full" />
           <div className="mt-6 max-w-[270px]">
             <Block className="h-2.5 w-full rounded-sm" />
             <div className="mt-1.5 flex justify-between">
@@ -118,7 +118,7 @@ function IndustryPieSkeleton() {
           </div>
         </div>
 
-        <div className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+        <div className="grid gap-y-3">
           {Array.from({ length: 10 }, (_, index) => (
             <div key={index} className="flex items-center gap-2">
               <Block className="size-3 shrink-0 rounded-full" />

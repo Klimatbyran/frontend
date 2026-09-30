@@ -4,6 +4,7 @@ import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/charts/sectorChart/SectorPieLegend";
+import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import {
   SHARE_RAMP_STOPS,
   shareRampColor,
@@ -63,49 +64,48 @@ export function IndustryEmissionsPie({
         {t("companiesOverviewPage.paris.industriesDescription")}
       </p>
 
-      <div className="mt-6 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,240px)] md:gap-10 lg:grid-cols-[minmax(0,560px)_minmax(0,260px)]">
-        <div className="min-h-[260px] md:min-h-[380px]">
-          <SectorPieChart
-            data={data}
-            onItemClick={handleSelect}
-            customActionLabel={t("companiesOverviewPage.paris.clickIndustry")}
-            fillContainer
-            desktopScale
-            maxOuterRadius={240}
-          />
-          <div className="mt-6 max-w-[270px]">
-            <div className="flex">
-              {SHARE_RAMP_STOPS.map((stop, index) => (
-                <i
-                  key={stop}
-                  className={`h-2.5 flex-1 ${
-                    index === 0
-                      ? "rounded-l-sm"
-                      : index === SHARE_RAMP_STOPS.length - 1
-                        ? "rounded-r-sm"
-                        : ""
-                  }`}
-                  style={{ backgroundColor: stop }}
-                />
-              ))}
-            </div>
-            <div className="mt-1.5 flex justify-between text-[11px] text-grey">
-              <span>{t("companiesOverviewPage.paris.rampLow")}</span>
-              <span>{t("companiesOverviewPage.paris.rampHigh")}</span>
+      <div className="mt-6">
+        <DetailPieSectorGrid>
+          <div>
+            <SectorPieChart
+              data={data}
+              onItemClick={handleSelect}
+              customActionLabel={t("companiesOverviewPage.paris.clickIndustry")}
+            />
+            <div className="mt-6 max-w-[270px]">
+              <div className="flex">
+                {SHARE_RAMP_STOPS.map((stop, index) => (
+                  <i
+                    key={stop}
+                    className={`h-2.5 flex-1 ${
+                      index === 0
+                        ? "rounded-l-sm"
+                        : index === SHARE_RAMP_STOPS.length - 1
+                          ? "rounded-r-sm"
+                          : ""
+                    }`}
+                    style={{ backgroundColor: stop }}
+                  />
+                ))}
+              </div>
+              <div className="mt-1.5 flex justify-between text-[11px] text-grey">
+                <span>{t("companiesOverviewPage.paris.rampLow")}</span>
+                <span>{t("companiesOverviewPage.paris.rampHigh")}</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <SectorPieLegend
-          data={data}
-          total={total}
-          onItemClick={handleSelect}
-          gridColumns={1}
-          compact
-          getActionTooltip={() =>
-            t("companiesOverviewPage.paris.clickIndustry")
-          }
-        />
+          <SectorPieLegend
+            data={data}
+            total={total}
+            onItemClick={handleSelect}
+            gridColumns={1}
+            compact
+            getActionTooltip={() =>
+              t("companiesOverviewPage.paris.clickIndustry")
+            }
+          />
+        </DetailPieSectorGrid>
       </div>
     </section>
   );
