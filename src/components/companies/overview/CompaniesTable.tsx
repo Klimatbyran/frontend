@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import {
   Table,
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
+import { localizedPath } from "@/utils/routing";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
   formatEmissionsAbsoluteCompact,
@@ -100,10 +102,32 @@ export interface CompaniesTableProps {
 
 /** The overview's own list: one row per company with the two figures the page
  * is about, rather than the card grid used on Explore. */
+function companyDetailHref(
+  company: CompanyWithKPIs,
+  language: string,
+): string {
+  return localizedPath(language, getCompanyDetailPath(company));
+}
+
+function openCompanyDetail(
+  company: CompanyWithKPIs,
+  language: string,
+  navigate: ReturnType<typeof useNavigate>,
+  event: Pick<MouseEvent, "metaKey" | "ctrlKey" | "shiftKey" | "button">,
+) {
+  const href = companyDetailHref(company, language);
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1) {
+    window.open(href, "_blank", "noopener,noreferrer");
+    return;
+  }
+  navigate(href);
+}
+
 export function CompaniesTable({ companies }: CompaniesTableProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const sectorNames = useSectorNames();
+  const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("paris");
@@ -231,17 +255,28 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 | undefined;
               const change = company.emissionsChangeFromBaseYear;
 
+              const detailPath = getCompanyDetailPath(company);
+
+              const goToDetail = (event: MouseEvent<HTMLTableRowElement>) => {
+                if ((event.target as HTMLElement).closest("a")) {
+                  return;
+                }
+                openCompanyDetail(company, currentLanguage, navigate, event);
+              };
+
               return (
                 <TableRow
                   key={company.id}
-                  className="border-white/5 hover:bg-white/5"
+                  className="cursor-pointer border-white/5 hover:bg-white/5"
+                  onClick={goToDetail}
+                  onAuxClick={goToDetail}
                 >
                   <TableCell className="py-3 text-right font-mono text-xs text-white/30">
                     {index + 1}
                   </TableCell>
                   <TableCell className="py-3">
                     <LocalizedLink
-                      to={getCompanyDetailPath(company)}
+                      to={detailPath}
                       className="flex items-center gap-2.5 hover:underline"
                     >
                       <span
