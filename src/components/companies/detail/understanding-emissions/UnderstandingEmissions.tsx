@@ -65,24 +65,9 @@ export function UnderstandingEmissions({
       notReported,
       unit,
     ),
-    scope1: formatScopeValue(
-      model.scope1,
-      currentLanguage,
-      notReported,
-      unit,
-    ),
-    scope2: formatScopeValue(
-      model.scope2,
-      currentLanguage,
-      notReported,
-      unit,
-    ),
-    scope3: formatScopeValue(
-      model.scope3,
-      currentLanguage,
-      notReported,
-      unit,
-    ),
+    scope1: formatScopeValue(model.scope1, currentLanguage, notReported, unit),
+    scope2: formatScopeValue(model.scope2, currentLanguage, notReported, unit),
+    scope3: formatScopeValue(model.scope3, currentLanguage, notReported, unit),
   };
 
   const centerLabelByTab: Record<GuideTab, string> = {
@@ -101,7 +86,9 @@ export function UnderstandingEmissions({
   };
 
   return (
-    <SectionWithHelp helpItems={["totalEmissions", "scope1", "scope2", "scope3"]}>
+    <SectionWithHelp
+      helpItems={["totalEmissions", "scope1", "scope2", "scope3"]}
+    >
       <div className="space-y-6 md:space-y-8">
         <div className="max-w-3xl space-y-3">
           <Text variant="h3">
@@ -157,13 +144,19 @@ export function UnderstandingEmissions({
                 </Text>
                 <ul className="space-y-3 text-grey md:text-lg">
                   <li>
-                    {t("companies.understandingEmissions.overview.bulletScope1")}
+                    {t(
+                      "companies.understandingEmissions.overview.bulletScope1",
+                    )}
                   </li>
                   <li>
-                    {t("companies.understandingEmissions.overview.bulletScope2")}
+                    {t(
+                      "companies.understandingEmissions.overview.bulletScope2",
+                    )}
                   </li>
                   <li>
-                    {t("companies.understandingEmissions.overview.bulletScope3")}
+                    {t(
+                      "companies.understandingEmissions.overview.bulletScope3",
+                    )}
                   </li>
                 </ul>
               </TabsContent>
@@ -225,9 +218,7 @@ export function UnderstandingEmissions({
                           key={driver.category}
                           className="flex flex-wrap items-baseline justify-between gap-2 border-b border-black-2 pb-2 last:border-0 last:pb-0"
                         >
-                          <span>
-                            {getCategoryName(driver.category)}
-                          </span>
+                          <span>{getCategoryName(driver.category)}</span>
                           <span className="text-grey">
                             {formatEmissionsAbsolute(
                               driver.total,
@@ -248,16 +239,12 @@ export function UnderstandingEmissions({
                       ))}
                     </ul>
                     <Text className="text-sm text-grey">
-                      {t(
-                        "companies.understandingEmissions.scope3.driversHint",
-                      )}
+                      {t("companies.understandingEmissions.scope3.driversHint")}
                     </Text>
                   </div>
                 ) : (
                   <Text className="text-grey md:text-lg">
-                    {t(
-                      "companies.understandingEmissions.scope3.noCategories",
-                    )}
+                    {t("companies.understandingEmissions.scope3.noCategories")}
                   </Text>
                 )}
               </TabsContent>

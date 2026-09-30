@@ -6,9 +6,7 @@ import {
   getScopeValues,
 } from "./buildUnderstandingEmissionsModel";
 
-function makePeriod(
-  emissions: ReportingPeriod["emissions"],
-): ReportingPeriod {
+function makePeriod(emissions: ReportingPeriod["emissions"]): ReportingPeriod {
   return {
     id: "period-1",
     startDate: "2024-01-01T00:00:00.000Z",

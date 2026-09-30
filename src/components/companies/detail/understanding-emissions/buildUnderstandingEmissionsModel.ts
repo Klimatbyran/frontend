@@ -77,8 +77,7 @@ export function buildUnderstandingEmissionsModel(
   year: string,
 ): UnderstandingEmissionsModel {
   const { scope1, scope2, scope3, total } = getScopeValues(period.emissions);
-  const knownScopeSum =
-    (scope1 ?? 0) + (scope2 ?? 0) + (scope3 ?? 0);
+  const knownScopeSum = (scope1 ?? 0) + (scope2 ?? 0) + (scope3 ?? 0);
   const shareBase = total && total > 0 ? total : knownScopeSum;
 
   return {
