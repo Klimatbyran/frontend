@@ -13,6 +13,15 @@ function dotSize(total: number): number {
   return 12;
 }
 
+/** Each dot pops in; the wave finishes under ~1.6s even for the full Swedish set. */
+const DOT_ENTER_DURATION = 0.2;
+const DOT_WAVE_SPAN = 1.35;
+
+function dotStaggerStep(count: number): number {
+  if (count <= 1) return 0;
+  return DOT_WAVE_SPAN / (count - 1);
+}
+
 interface BreakdownRowProps {
   color: string;
   label: string;
@@ -98,8 +107,7 @@ export function ParisAnswerCard({
     ...Array<string>(unknown).fill("rgba(255,255,255,0.2)"),
   ];
 
-  const dotDelay = (index: number) =>
-    reduceMotion ? 0 : Math.min(index * 0.015, 0.85);
+  const staggerStep = dotStaggerStep(dots.length);
 
   return (
     <section className="grid items-center gap-9 rounded-level-2 bg-black-2 px-6 py-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.85fr)] md:gap-14 md:px-10 md:py-9">
@@ -149,26 +157,40 @@ export function ParisAnswerCard({
         <p className="text-xs text-white/40">
           {t("companiesOverviewPage.paris.dotNote")}
         </p>
-        <div
+        <motion.div
           aria-hidden="true"
           className="mt-2.5 flex flex-wrap"
           style={{ gap: size > 16 ? 9 : 6 }}
+          initial={reduceMotion ? false : "hidden"}
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: reduceMotion ? 0 : staggerStep,
+              },
+            },
+          }}
         >
           {dots.map((color, index) => (
             <motion.span
               key={index}
               className="block rounded-full"
               style={{ width: size, height: size, backgroundColor: color }}
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.35 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: reduceMotion ? 0 : 0.28,
-                delay: dotDelay(index),
-                ease,
+              variants={{
+                hidden: { opacity: 0, scale: 0.35 },
+                visible: {
+                  opacity: 1,
+                  scale: 1,
+                  transition: {
+                    duration: reduceMotion ? 0 : DOT_ENTER_DURATION,
+                    ease,
+                  },
+                },
               }}
             />
           ))}
-        </div>
+        </motion.div>
         <div className="mt-3.5">
           <BreakdownRow
             color="var(--blue-3)"
