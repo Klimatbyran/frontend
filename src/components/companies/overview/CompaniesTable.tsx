@@ -64,27 +64,52 @@ function ParisBadge({ value }: { value: boolean | null | undefined }) {
   );
 }
 
-function SortButton({
-  active,
-  onClick,
+function SortableColumnHead({
+  columnKey,
+  activeKey,
+  direction,
+  onSort,
+  className,
+  align = "start",
   children,
 }: {
-  active: boolean;
-  onClick: () => void;
+  columnKey: SortKey;
+  activeKey: SortKey;
+  direction: "asc" | "desc";
+  onSort: (key: SortKey) => void;
+  className?: string;
+  align?: "start" | "center" | "end";
   children: React.ReactNode;
 }) {
+  const active = activeKey === columnKey;
   return (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onClick}
-      className={cn(
-        "h-7 rounded-full px-3 text-xs transition-colors",
-        active ? "bg-blue-5/40 text-blue-2" : "text-white/60 hover:text-white",
-      )}
-    >
-      {children}
-    </button>
+    <TableHead className={className}>
+      <button
+        type="button"
+        onClick={() => onSort(columnKey)}
+        aria-sort={
+          active
+            ? direction === "asc"
+              ? "ascending"
+              : "descending"
+            : undefined
+        }
+        className={cn(
+          "inline-flex w-full items-center gap-1 font-normal transition-colors hover:text-white/70",
+          align === "end" && "justify-end",
+          align === "center" && "justify-center",
+          active ? "text-white/70" : "text-inherit",
+        )}
+      >
+        {children}
+        {active &&
+          (direction === "asc" ? (
+            <ArrowUp className="size-3.5 shrink-0 opacity-80" aria-hidden />
+          ) : (
+            <ArrowDown className="size-3.5 shrink-0 opacity-80" aria-hidden />
+          ))}
+      </button>
+    </TableHead>
   );
 }
 
@@ -147,58 +172,25 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
 
   const shown = rows.slice(0, limit);
 
-  const changeSort = (key: SortKey) => {
-    setSortKey(key);
-    setDirection(DEFAULT_DIRECTION[key]);
+  const toggleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setDirection((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setDirection(DEFAULT_DIRECTION[key]);
+    }
     setLimit(PAGE_SIZE);
   };
 
   return (
     <section className="rounded-level-2 bg-black-2 p-5 md:p-7">
-      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div>
-          <h2 className="text-xl font-light md:text-[21px]">
-            {t("companiesOverviewPage.paris.everyCompanyTitle")}
-          </h2>
-          <p className="mt-2 max-w-[560px] text-sm leading-relaxed text-white/60">
-            {t("companiesOverviewPage.paris.everyCompanyDescription")}
-          </p>
-        </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <div className="flex items-center gap-1 rounded-full bg-black-1 p-1">
-            <SortButton
-              active={sortKey === "paris"}
-              onClick={() => changeSort("paris")}
-            >
-              {t("companiesOverviewPage.paris.sortOnTrack")}
-            </SortButton>
-            <SortButton
-              active={sortKey === "emissions"}
-              onClick={() => changeSort("emissions")}
-            >
-              {t("companiesOverviewPage.paris.sortEmissions")}
-            </SortButton>
-            <SortButton
-              active={sortKey === "name"}
-              onClick={() => changeSort("name")}
-            >
-              {t("companiesOverviewPage.paris.sortName")}
-            </SortButton>
-          </div>
-          <button
-            type="button"
-            title={t("companiesOverviewPage.paris.flipOrder")}
-            aria-label={t("companiesOverviewPage.paris.flipOrder")}
-            onClick={() => setDirection((d) => (d === "asc" ? "desc" : "asc"))}
-            className="grid size-8 place-items-center rounded-full bg-black-1 text-white/60 transition-colors hover:text-white"
-          >
-            {direction === "asc" ? (
-              <ArrowUp className="size-4" />
-            ) : (
-              <ArrowDown className="size-4" />
-            )}
-          </button>
-        </div>
+      <div>
+        <h2 className="text-xl font-light md:text-[21px]">
+          {t("companiesOverviewPage.paris.everyCompanyTitle")}
+        </h2>
+        <p className="mt-2 max-w-[560px] text-sm leading-relaxed text-white/60">
+          {t("companiesOverviewPage.paris.everyCompanyDescription")}
+        </p>
       </div>
 
       <div className="relative mt-5">
@@ -220,21 +212,41 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
           <TableHeader>
             <TableRow className="border-white/10 hover:bg-transparent">
               <TableHead className="w-10 text-white/40">#</TableHead>
-              <TableHead className="text-white/40">
+              <SortableColumnHead
+                columnKey="name"
+                activeKey={sortKey}
+                direction={direction}
+                onSort={toggleSort}
+                className="text-white/40"
+              >
                 {t("companiesOverviewPage.paris.colCompany")}
-              </TableHead>
+              </SortableColumnHead>
               <TableHead className="hidden text-white/40 md:table-cell">
                 {t("companiesOverviewPage.paris.colIndustry")}
               </TableHead>
-              <TableHead className="hidden text-right text-white/40 sm:table-cell">
+              <SortableColumnHead
+                columnKey="emissions"
+                activeKey={sortKey}
+                direction={direction}
+                onSort={toggleSort}
+                align="end"
+                className="hidden text-white/40 sm:table-cell"
+              >
                 {t("companiesOverviewPage.paris.colEmissions")}
-              </TableHead>
+              </SortableColumnHead>
               <TableHead className="text-right text-white/40">
                 {t("companiesOverviewPage.paris.colChange")}
               </TableHead>
-              <TableHead className="text-center text-white/40">
+              <SortableColumnHead
+                columnKey="paris"
+                activeKey={sortKey}
+                direction={direction}
+                onSort={toggleSort}
+                align="center"
+                className="text-white/40"
+              >
                 {t("companiesOverviewPage.paris.colOnTrack")}
-              </TableHead>
+              </SortableColumnHead>
             </TableRow>
           </TableHeader>
           <TableBody>

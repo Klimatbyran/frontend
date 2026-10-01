@@ -70,21 +70,21 @@ describe("CompaniesTable", () => {
     expect(rowNames()).toEqual(["Bravo", "Alpha", "Charlie"]);
   });
 
-  it("sorts by emissions when asked", () => {
+  it("sorts by emissions when the column header is clicked", () => {
     renderTable();
     fireEvent.click(
       screen.getByRole("button", {
-        name: "companiesOverviewPage.paris.sortEmissions",
+        name: /companiesOverviewPage\.paris\.colEmissions/,
       }),
     );
     expect(rowNames()).toEqual(["Alpha", "Charlie", "Bravo"]);
   });
 
-  it("flips the sort direction", () => {
+  it("flips the sort direction when the active column header is clicked again", () => {
     renderTable();
     fireEvent.click(
       screen.getByRole("button", {
-        name: "companiesOverviewPage.paris.flipOrder",
+        name: /companiesOverviewPage\.paris\.colOnTrack/,
       }),
     );
     expect(rowNames()).toEqual(["Charlie", "Alpha", "Bravo"]);
