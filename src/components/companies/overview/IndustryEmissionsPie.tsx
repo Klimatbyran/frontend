@@ -65,33 +65,38 @@ export function IndustryEmissionsPie({
       <div className="mt-6">
         <DetailPieSectorGrid stretchColumns>
           <div className="min-w-0">
-            <SectorPieChart data={data} animationKey={pieAnimationKey} />
-            <div className="mt-6 max-w-[270px]">
-              <div className="flex">
-                {SHARE_RAMP_STOPS.map((stop, index) => (
-                  <motion.i
-                    key={stop}
-                    className={`h-2.5 flex-1 ${
-                      index === 0
-                        ? "rounded-l-sm"
-                        : index === SHARE_RAMP_STOPS.length - 1
-                          ? "rounded-r-sm"
-                          : ""
-                    }`}
-                    style={{ backgroundColor: stop, transformOrigin: "bottom" }}
-                    initial={reduceMotion ? false : { opacity: 0, scaleY: 0 }}
-                    animate={{ opacity: 1, scaleY: 1 }}
-                    transition={{
-                      duration: fadeDuration,
-                      delay: stagger(index, 0.05),
-                      ease,
-                    }}
-                  />
-                ))}
-              </div>
-              <div className="mt-1.5 flex justify-between text-[11px] text-grey">
-                <span>{t("companiesOverviewPage.paris.rampLow")}</span>
-                <span>{t("companiesOverviewPage.paris.rampHigh")}</span>
+            <div className="mx-auto w-[80%] max-w-full">
+              <SectorPieChart data={data} animationKey={pieAnimationKey} />
+              <div className="mt-6">
+                <div className="flex">
+                  {SHARE_RAMP_STOPS.map((stop, index) => (
+                    <motion.i
+                      key={stop}
+                      className={`h-2.5 flex-1 ${
+                        index === 0
+                          ? "rounded-l-sm"
+                          : index === SHARE_RAMP_STOPS.length - 1
+                            ? "rounded-r-sm"
+                            : ""
+                      }`}
+                      style={{
+                        backgroundColor: stop,
+                        transformOrigin: "bottom",
+                      }}
+                      initial={reduceMotion ? false : { opacity: 0, scaleY: 0 }}
+                      animate={{ opacity: 1, scaleY: 1 }}
+                      transition={{
+                        duration: fadeDuration,
+                        delay: stagger(index, 0.05),
+                        ease,
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="mt-1.5 flex justify-between text-[11px] text-grey">
+                  <span>{t("companiesOverviewPage.paris.rampLow")}</span>
+                  <span>{t("companiesOverviewPage.paris.rampHigh")}</span>
+                </div>
               </div>
             </div>
           </div>
