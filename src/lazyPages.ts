@@ -142,3 +142,8 @@ export const ComparisonPage = lazy(() =>
     default: m.ComparisonPage,
   })),
 );
+export const UxReviewPage = lazy(() =>
+  import("./pages/UxReviewPage").then((m) => ({
+    default: m.UxReviewPage,
+  })),
+);
