@@ -24,18 +24,39 @@ function buildCumulative(facts: ParisBudgetFacts): YearPoint[] {
   });
 }
 
-function Spill({ x, delay }: { x: number; delay: number }) {
+/** Water running down the outside of the tub once the budget is spent. */
+function Spill({
+  x,
+  direction,
+  animate,
+}: {
+  x: number;
+  direction: -1 | 1;
+  animate: boolean;
+}) {
+  const stream = `M${x} ${RIM_Y - 2} c${direction * 10} 14 ${direction * 12} 40 ${direction * 8} 74`;
+
   return (
-    <motion.path
-      d={`M${x} ${RIM_Y + 4} q4 26 -2 52`}
-      fill="none"
-      stroke="var(--pink-3)"
-      strokeWidth="5"
-      strokeLinecap="round"
-      initial={{ opacity: 0, pathLength: 0 }}
-      animate={{ opacity: [0, 0.9, 0], pathLength: 1 }}
-      transition={{ duration: 1.6, delay, repeat: Infinity, ease: "easeIn" }}
-    />
+    <g>
+      <path
+        d={stream}
+        fill="none"
+        stroke="var(--pink-3)"
+        strokeWidth="7"
+        strokeLinecap="round"
+        opacity={0.85}
+      />
+      {animate && (
+        <motion.circle
+          cx={x + direction * 10}
+          cy={RIM_Y + 30}
+          r={4}
+          fill="var(--pink-2)"
+          animate={{ cy: [RIM_Y + 20, RIM_Y + 86], opacity: [1, 1, 0] }}
+          transition={{ repeat: Infinity, duration: 1.1, ease: "easeIn" }}
+        />
+      )}
+    </g>
   );
 }
 
@@ -102,6 +123,7 @@ export function BudgetBathtub({ facts }: { facts: ParisBudgetFacts }) {
         {!reducedMotion && (
           <motion.circle
             cx={326}
+            cy={32}
             r={3.2}
             fill={surfaceColor}
             animate={{ cy: [32, 66], opacity: [0, 1, 1, 0] }}
@@ -132,10 +154,24 @@ export function BudgetBathtub({ facts }: { facts: ParisBudgetFacts }) {
           strokeWidth="3"
         />
 
-        {overflowing && !reducedMotion && (
+        {overflowing && (
           <>
-            <Spill x={56} delay={0} />
-            <Spill x={384} delay={0.5} />
+            {/* Water heaped over the rim, then running down both sides */}
+            <path
+              d={`M${BASIN_LEFT - 4} ${RIM_Y} Q220 ${RIM_Y - 26} ${BASIN_RIGHT + 4} ${RIM_Y} Z`}
+              fill="var(--pink-4)"
+              fillOpacity={0.9}
+            />
+            <Spill x={BASIN_LEFT - 6} direction={-1} animate={!reducedMotion} />
+            <Spill x={BASIN_RIGHT + 6} direction={1} animate={!reducedMotion} />
+            <ellipse
+              cx="220"
+              cy="250"
+              rx="124"
+              ry="9"
+              fill="var(--pink-4)"
+              fillOpacity={0.55}
+            />
           </>
         )}
 

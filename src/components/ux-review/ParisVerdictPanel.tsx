@@ -91,10 +91,10 @@ export function ParisVerdictPanel({ facts }: { facts: ParisBudgetFacts }) {
       </div>
 
       <p className="max-w-2xl text-base leading-relaxed text-white/80">
-        Sweden is cutting emissions by roughly{" "}
+        On the current path Sweden&apos;s emissions fall by roughly{" "}
         {facts.trendRatePercent.toFixed(0)}% a year. To stay inside the budget
-        we would need to cut about 12% a year, every year, starting now. At
-        today&apos;s pace the whole thing is spent by{" "}
+        they would have to fall by about 12% a year, every year, starting now.
+        At today&apos;s pace the whole budget is spent by{" "}
         {facts.budgetSpentYear ?? facts.endYear} — and we keep emitting for
         another {facts.endYear - (facts.budgetSpentYear ?? facts.endYear)} years
         after that.
