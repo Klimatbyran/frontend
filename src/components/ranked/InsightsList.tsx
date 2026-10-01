@@ -53,11 +53,12 @@ function InsightsList<T>({
   showBars = false,
   colorItem,
 }: InsightsListProps<T>) {
-  const { reduceMotion, barDuration } = useChartMotion();
+  const { reduceMotion, barDuration, ease } = useChartMotion();
   const rowFadeMs = reduceMotion ? 0 : 350;
   const rowStaggerMs = reduceMotion ? 0 : 35;
   const barTransitionMs = reduceMotion ? 0 : barDuration * 1000;
   const barStaggerMs = reduceMotion ? 0 : 40;
+  const barEase = `cubic-bezier(${ease.join(", ")})`;
 
   const numericValues = entities
     .map((e) => e[dataPointKey])
@@ -98,11 +99,15 @@ function InsightsList<T>({
                 <div
                   className="absolute inset-y-0 left-0 rounded-lg opacity-20 group-hover:opacity-30"
                   style={{
-                    width: `${barWidth}%`,
+                    ["--insights-bar-width" as string]: `${barWidth}%`,
                     backgroundColor: color ?? "currentColor",
-                    transition: barTransitionMs
-                      ? `width ${barTransitionMs}ms ease-out ${index * barStaggerMs}ms, opacity 0.3s ease`
-                      : undefined,
+                    ...(barTransitionMs
+                      ? {
+                          animation: `barGrowFromLeft ${barTransitionMs}ms ${barEase} both`,
+                          animationDelay: `${index * barStaggerMs}ms`,
+                        }
+                      : { width: `${barWidth}%` }),
+                    transition: "opacity 0.3s ease",
                   }}
                 />
               )}
