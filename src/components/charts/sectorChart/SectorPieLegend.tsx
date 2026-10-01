@@ -113,9 +113,7 @@ const SectorPieLegend: React.FC<LegendProps> = ({
                   : "cursor-default"
               } ${compact ? "gap-1.5 p-1.5" : "gap-2 p-2"}`}
               onClick={
-                isInteractive
-                  ? () => handleLegendItemClick(entry)
-                  : undefined
+                isInteractive ? () => handleLegendItemClick(entry) : undefined
               }
               initial={reduceMotion ? false : { opacity: 0, x: -10 }}
               animate={{ opacity: isFiltered ? 0.5 : 1, x: 0 }}
@@ -152,9 +150,7 @@ const SectorPieLegend: React.FC<LegendProps> = ({
           );
 
           if (!isInteractive) {
-            return (
-              <div key={`${animationKey}-legend-${index}`}>{row}</div>
-            );
+            return <div key={`${animationKey}-legend-${index}`}>{row}</div>;
           }
 
           return (
