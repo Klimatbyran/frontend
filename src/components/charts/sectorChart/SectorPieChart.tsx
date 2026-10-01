@@ -117,6 +117,8 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
     animationKey ??
     pieDataWithTotal.map((entry) => `${entry.key}-${entry.value}`).join("|");
 
+  const isInteractive = Boolean(onItemClick || onFilteredSectorsChange);
+
   const toggleFilter = (sectorName: string) => {
     if (!onFilteredSectorsChange) return;
     const newFiltered = new Set(filteredSectors);
@@ -179,7 +181,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             outerRadius={outerRadius}
             cornerRadius={PIE_CORNER_RADIUS}
             paddingAngle={2}
-            onClick={handleSectorClick}
+            onClick={isInteractive ? handleSectorClick : undefined}
             isAnimationActive={!reduceMotion}
             animationBegin={0}
             animationDuration={pieDuration}
@@ -190,7 +192,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
                 key={entry.key}
                 fill={entry.color}
                 stroke={entry.color}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: isInteractive ? "pointer" : "default" }}
               />
             ))}
           </Pie>
@@ -199,6 +201,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
               <PieTooltip
                 customActionLabel={customActionLabel}
                 showActionLabelForNull={false}
+                showActionHint={isInteractive}
               />
             }
             animationDuration={0}

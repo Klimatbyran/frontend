@@ -17,8 +17,8 @@ import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 export interface IndustryEmissionsPieProps {
   rows: IndustryBreakdownRow[];
+  /** Drives chart re-animation when the chip filter changes. */
   selected: SectorCode | null;
-  onSelect: (code: SectorCode | null) => void;
 }
 
 /**
@@ -29,7 +29,6 @@ export interface IndustryEmissionsPieProps {
 export function IndustryEmissionsPie({
   rows,
   selected,
-  onSelect,
 }: IndustryEmissionsPieProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
@@ -52,11 +51,6 @@ export function IndustryEmissionsPie({
     [data],
   );
 
-  const handleSelect = (item: PieChartItem) => {
-    const code = item.key as SectorCode;
-    onSelect(selected === code ? null : code);
-  };
-
   if (data.length === 0) return null;
 
   return (
@@ -69,14 +63,9 @@ export function IndustryEmissionsPie({
       </p>
 
       <div className="mt-6">
-        <DetailPieSectorGrid>
-          <div>
-            <SectorPieChart
-              data={data}
-              onItemClick={handleSelect}
-              customActionLabel={t("companiesOverviewPage.paris.clickIndustry")}
-              animationKey={pieAnimationKey}
-            />
+        <DetailPieSectorGrid stretchColumns>
+          <div className="min-w-0">
+            <SectorPieChart data={data} animationKey={pieAnimationKey} />
             <div className="mt-6 max-w-[270px]">
               <div className="flex">
                 {SHARE_RAMP_STOPS.map((stop, index) => (
@@ -107,17 +96,16 @@ export function IndustryEmissionsPie({
             </div>
           </div>
 
-          <SectorPieLegend
-            data={data}
-            total={total}
-            onItemClick={handleSelect}
-            gridColumns={1}
-            compact
-            animationKey={pieAnimationKey}
-            getActionTooltip={() =>
-              t("companiesOverviewPage.paris.clickIndustry")
-            }
-          />
+          <div className="flex min-h-0 w-full flex-col justify-start lg:h-full lg:min-h-0">
+            <SectorPieLegend
+              data={data}
+              total={total}
+              gridColumns={1}
+              compact
+              fillHeight
+              animationKey={pieAnimationKey}
+            />
+          </div>
         </DetailPieSectorGrid>
       </div>
     </section>

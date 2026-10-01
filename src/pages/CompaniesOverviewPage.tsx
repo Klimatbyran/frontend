@@ -158,11 +158,7 @@ export function CompaniesOverviewPage() {
 
       <VerdictLists companies={inView} />
 
-      <IndustryEmissionsPie
-        rows={industryRows}
-        selected={selectedSector}
-        onSelect={(code) => urlState.setSectorInURL(code)}
-      />
+      <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
 
       <CompaniesTable companies={inView} />
     </div>
