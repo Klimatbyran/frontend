@@ -6,6 +6,7 @@ import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
+import { getMeetsParisDisplay } from "@/components/detail/meetsParisStat";
 import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
 import { OverviewStat } from "./OverviewStat";
 import { FinancialsTooltip } from "./FinancialsTooltip";
@@ -47,19 +48,6 @@ interface CompanyOverviewMainStatsProps {
   meetsParis: boolean | null;
 }
 
-function getMeetsParisDisplay(
-  meetsParis: boolean | null,
-  t: (key: string) => string,
-) {
-  if (meetsParis === true) {
-    return { value: t("yes"), className: "text-green-3" };
-  }
-  if (meetsParis === false) {
-    return { value: t("no"), className: "text-pink-3" };
-  }
-  return { value: t("unknown"), className: "text-grey" };
-}
-
 export function CompanyOverviewMainStats({
   periodYear,
   sectorCode,
@@ -74,8 +62,17 @@ export function CompanyOverviewMainStats({
   const meetsParisDisplay = getMeetsParisDisplay(meetsParis, t);
 
   return (
-    <div className="mb-10 md:mb-16 space-y-4 md:space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row md:gap-16 md:items-center">
+    <div className="mb-10 space-y-8 md:mb-16 md:space-y-12">
+      <div className="max-w-2xl">
+        <OverviewStat
+          label={t("detailPage.meetsParisGoal")}
+          value={meetsParisDisplay.value}
+          valueClassName={meetsParisDisplay.valueClassName}
+          caption={meetsParisDisplay.caption}
+        />
+      </div>
+
+      <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-16">
         <OverviewStat
           label={
             <div className="flex items-center gap-2">
@@ -129,12 +126,6 @@ export function CompanyOverviewMainStats({
             )
           }
           showAiIcon={yearOverYearAIGenerated}
-        />
-
-        <OverviewStat
-          label={t("companies.overview.onTrackToMeetParis")}
-          value={meetsParisDisplay.value}
-          valueClassName={meetsParisDisplay.className}
         />
       </div>
     </div>

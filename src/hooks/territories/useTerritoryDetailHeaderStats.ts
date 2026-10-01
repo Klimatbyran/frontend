@@ -5,6 +5,7 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
+import { createMeetsParisStat } from "@/components/detail/meetsParisStat";
 import type { EmissionDataPoint } from "@/types/municipality";
 import type { SupportedLanguage } from "@/lib/languageDetection";
 
@@ -13,27 +14,6 @@ export type TerritoryDetailStatsSource = {
   historicalEmissionChangePercent: number;
   emissions: (EmissionDataPoint | null)[];
 };
-
-function createMeetsParisStat(
-  meetsParis: boolean,
-  t: ReturnType<typeof useTranslation>["t"],
-): DetailStat {
-  return {
-    label: t("detailPage.meetsParisGoal"),
-    value:
-      meetsParis === true
-        ? t("yes")
-        : meetsParis === false
-          ? t("no")
-          : t("unknown"),
-    valueClassName:
-      meetsParis === true
-        ? "text-green-3"
-        : meetsParis === false
-          ? "text-pink-3"
-          : "text-grey",
-  };
-}
 
 function createChangeSince2015Stat(
   historicalEmissionChangePercent: number,

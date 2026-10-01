@@ -15,6 +15,8 @@ interface OverviewStatProps {
   variant?: "overview" | "detail";
   info?: boolean;
   infoText?: string;
+  /** Short plain-language line under the value. */
+  caption?: string;
   useFlex1?: boolean;
 }
 
@@ -28,6 +30,7 @@ export function OverviewStat({
   variant = "overview",
   info = false,
   infoText,
+  caption,
   useFlex1 = true,
 }: OverviewStatProps) {
   const isDetailVariant = variant === "detail";
@@ -92,11 +95,16 @@ export function OverviewStat({
   };
 
   return (
-    <div className={cn(useFlex1 && "flex-1", className)}>
+    <div className={cn(useFlex1 && "flex-1", "min-w-0", className)}>
       <div className={isDetailVariant ? "" : "mb-1 md:mb-2"}>
         {renderLabel()}
       </div>
       {renderValue()}
+      {caption && (
+        <Text className="mt-2 max-w-prose text-base text-grey md:text-lg">
+          {caption}
+        </Text>
+      )}
     </div>
   );
 }

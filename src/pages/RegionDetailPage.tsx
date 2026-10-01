@@ -38,7 +38,11 @@ export function RegionDetailPage() {
         <DetailHeader
           name={region.name}
           logoUrl={region.logoUrl}
-          helpItems={["regionTotalEmissions", "detailWhyDataDelay"]}
+          helpItems={[
+            "onTrackForParis",
+            "regionTotalEmissions",
+            "detailWhyDataDelay",
+          ]}
           stats={headerStats}
           headerChip={
             <ComparisonDetailChip

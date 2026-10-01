@@ -173,6 +173,7 @@ function useMunicipalityPageData(id: string | undefined) {
 }
 
 const HEADER_HELP_ITEMS: DataGuideItemId[] = [
+  "onTrackForParis",
   "municipalityTotalEmissions",
   "detailWhyDataDelay",
   "municipalityDeeperChanges",
