@@ -26,9 +26,7 @@ export function NavSubGroupSection({
           onNavigate={onNavigate}
         />
       ) : (
-        <span className={NAV_SECTION_LABEL_CLASS}>
-          {t(group.label)}
-        </span>
+        <span className={NAV_SECTION_LABEL_CLASS}>{t(group.label)}</span>
       )}
       <ul className="flex flex-col pl-3">
         {group.items.map((sublink) => (
