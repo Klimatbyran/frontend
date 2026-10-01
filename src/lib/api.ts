@@ -91,14 +91,12 @@ export async function authenticateWithGithub(code: string) {
 
 // Companies API
 export async function getCompanies() {
-  try {
-    const { data, error } = await GET("/companies/", {});
-    if (error) throw error;
-    return data || [];
-  } catch (error) {
+  const { data, error } = await GET("/companies/", {});
+  if (error) {
     console.error("Error fetching companies:", error);
-    return [];
+    throw error;
   }
+  return data || [];
 }
 
 export async function getCompanyDetails(id: string) {
