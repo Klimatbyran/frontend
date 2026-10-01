@@ -9,7 +9,7 @@ import { HeaderLanguageButtons } from "./HeaderLanguageButtons";
 import { isNavLinkActive } from "./navActive";
 import { NavSubGroupSection } from "./NavSubGroupSection";
 import { NavSubLinkItem } from "./NavSubLinkItem";
-import { NAV_TITLE_CLASS } from "./navStyles";
+import { NAV_LINK_CLASS } from "./navStyles";
 import { isNavSubGroup, NavLink } from "./types";
 
 export function HeaderMobileMenu({
@@ -95,7 +95,7 @@ export function HeaderMobileMenu({
                             <NavSubLinkItem
                               key={item.path}
                               sublink={item}
-                              className={NAV_TITLE_CLASS}
+                              className={NAV_LINK_CLASS}
                               onNavigate={onToggleMenu}
                             />
                           ),

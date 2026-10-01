@@ -1,7 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { NavSubLinkItem } from "./NavSubLinkItem";
-import { NAV_SUB_ITEM_CLASS, NAV_TITLE_CLASS } from "./navStyles";
+import {
+  NAV_LINK_CLASS,
+  NAV_SECTION_LABEL_CLASS,
+  NAV_SUB_ITEM_CLASS,
+} from "./navStyles";
 import { NavSubGroup } from "./types";
 
 export function NavSubGroupSection({
@@ -18,11 +22,11 @@ export function NavSubGroupSection({
       {group.path ? (
         <NavSubLinkItem
           sublink={{ label: group.label, path: group.path }}
-          className={NAV_TITLE_CLASS}
+          className={NAV_LINK_CLASS}
           onNavigate={onNavigate}
         />
       ) : (
-        <span className={cn(NAV_TITLE_CLASS, "hover:bg-transparent")}>
+        <span className={NAV_SECTION_LABEL_CLASS}>
           {t(group.label)}
         </span>
       )}

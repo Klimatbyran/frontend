@@ -1,6 +1,6 @@
 import { NavSubGroupSection } from "./NavSubGroupSection";
 import { NavSubLinkItem } from "./NavSubLinkItem";
-import { NAV_TITLE_CLASS } from "./navStyles";
+import { NAV_LINK_CLASS } from "./navStyles";
 import { isNavSubGroup, NavSubItem } from "./types";
 
 export function SubLinksMenu({
@@ -21,7 +21,7 @@ export function SubLinksMenu({
           <li key={item.path}>
             <NavSubLinkItem
               sublink={item}
-              className={NAV_TITLE_CLASS}
+              className={NAV_LINK_CLASS}
               onNavigate={onNavigate}
             />
           </li>
