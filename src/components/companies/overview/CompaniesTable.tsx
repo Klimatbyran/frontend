@@ -37,14 +37,6 @@ const DEFAULT_DIRECTION: Record<SortKey, "asc" | "desc"> = {
   name: "asc",
 };
 
-function initials(name: string): string {
-  const words = name
-    .replace(/[^\p{L} ]/gu, " ")
-    .trim()
-    .split(/\s+/);
-  return ((words[0]?.[0] ?? "") + (words[1]?.[0] ?? "")).toUpperCase();
-}
-
 function ParisBadge({ value }: { value: boolean | null | undefined }) {
   const { t } = useTranslation();
 
@@ -274,19 +266,9 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   <TableCell className="py-3">
                     <LocalizedLink
                       to={detailPath}
-                      className="flex items-center gap-2.5 hover:underline"
+                      className="truncate hover:underline"
                     >
-                      <span
-                        className="grid size-7 shrink-0 place-items-center rounded-full text-[10px] font-semibold"
-                        style={{
-                          backgroundColor: sector
-                            ? `color-mix(in srgb, ${sectorColors[sector].base} 20%, transparent)`
-                            : "rgba(255,255,255,0.08)",
-                        }}
-                      >
-                        {initials(company.name)}
-                      </span>
-                      <span className="truncate">{company.name}</span>
+                      {company.name}
                     </LocalizedLink>
                   </TableCell>
                   <TableCell className="hidden py-3 text-grey md:table-cell">

@@ -52,16 +52,10 @@ function renderTable(list: CompanyWithKPIs[] = companies) {
   );
 }
 
-/** The company cell holds an avatar span before the name, so read the link's
- * last child rather than the whole cell. */
 function rowNames(): string[] {
   return within(document.querySelector("tbody")!)
     .getAllByRole("row")
-    .map(
-      (row) =>
-        row.querySelector("td:nth-child(2) a span:last-child")?.textContent ??
-        "",
-    );
+    .map((row) => row.querySelector("td:nth-child(2) a")?.textContent ?? "");
 }
 
 describe("CompaniesTable", () => {
