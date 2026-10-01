@@ -75,8 +75,14 @@ export function ParisAnswerCard({
 }: ParisAnswerCardProps) {
   const { t } = useTranslation();
   const { reduceMotion, fadeDuration, ease } = useChartMotion();
-  const { total, onTrack, offTrack, unknown, reducing, onTrackPercent } =
-    summary;
+  const {
+    total,
+    onTrack,
+    offTrack,
+    unknown,
+    reducingNotOnTrack,
+    onTrackPercent,
+  } = summary;
 
   if (total === 0) {
     return (
@@ -147,7 +153,7 @@ export function ParisAnswerCard({
           }}
         >
           {t("companiesOverviewPage.paris.share", { percent: onTrackPercent })}{" "}
-          {reducing > onTrack
+          {reducingNotOnTrack > 0
             ? t("companiesOverviewPage.paris.manyCutting")
             : t("companiesOverviewPage.paris.restTooSlow")}
         </motion.p>

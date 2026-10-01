@@ -5,6 +5,7 @@ import {
   fastestCutters,
   furthestBehind,
   isSwedishCompany,
+  latestEmissions,
   shareRampColor,
   summariseParis,
 } from "./parisOverviewUtils";
@@ -27,6 +28,16 @@ function company(
     emissionsChangeFromBaseYear: change,
   } as unknown as CompanyWithKPIs;
 }
+
+describe("latestEmissions", () => {
+  it("returns null when the latest total is missing", () => {
+    expect(
+      latestEmissions({
+        reportingPeriods: [{ emissions: {} }],
+      } as CompanyWithKPIs),
+    ).toBeNull();
+  });
+});
 
 describe("isSwedishCompany", () => {
   it("matches on the sweden tag", () => {
@@ -57,6 +68,11 @@ describe("summariseParis", () => {
   it("counts every company that is cutting at all, not just the on-track ones", () => {
     // Three have a negative change; only two of those are on track.
     expect(summariseParis(companies).reducing).toBe(3);
+  });
+
+  it("counts cutters only among companies not on track for the answer card copy", () => {
+    // Off A is cutting; on-track cutters must not flip the others-cutting line.
+    expect(summariseParis(companies).reducingNotOnTrack).toBe(1);
   });
 
   it("takes the on-track share of everyone in view, including the unjudged", () => {

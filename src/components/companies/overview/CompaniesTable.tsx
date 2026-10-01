@@ -25,17 +25,98 @@ import { latestEmissions } from "@/hooks/companies/parisOverviewUtils";
 import type { CompanyWithKPIs } from "@/types/company";
 import { cn } from "@/lib/utils";
 
-type SortKey = "paris" | "emissions" | "name";
+type SortKey =
+  | "index"
+  | "name"
+  | "industry"
+  | "emissions"
+  | "change"
+  | "paris";
 
 const PAGE_SIZE = 12;
 
-/** Descending reads as "best first" for a verdict, "biggest first" for a
- * quantity, and A–Z only makes sense ascending. */
+/** Default direction per column the first time it is selected. */
 const DEFAULT_DIRECTION: Record<SortKey, "asc" | "desc"> = {
-  paris: "desc",
-  emissions: "desc",
+  index: "asc",
   name: "asc",
+  industry: "asc",
+  emissions: "desc",
+  change: "asc",
+  paris: "desc",
 };
+
+function sectorCode(company: CompanyWithKPIs): SectorCode | undefined {
+  return company.industry?.industryGics?.sectorCode as SectorCode | undefined;
+}
+
+function parisScore(company: CompanyWithKPIs): number {
+  if (company.meetsParis === true) return 1;
+  if (company.meetsParis === false) return 0;
+  return -1;
+}
+
+function compareNullableNumber(
+  a: number | null | undefined,
+  b: number | null | undefined,
+  factor: number,
+): number {
+  const missingA = a == null;
+  const missingB = b == null;
+  if (missingA && missingB) return 0;
+  if (missingA) return 1;
+  if (missingB) return -1;
+  return factor * (a - b);
+}
+
+function compareStringsEmptyLast(
+  a: string,
+  b: string,
+  factor: number,
+  locale: string,
+): number {
+  if (!a && !b) return 0;
+  if (!a) return 1;
+  if (!b) return -1;
+  return factor * a.localeCompare(b, locale);
+}
+
+function compareCompanies(
+  a: CompanyWithKPIs,
+  b: CompanyWithKPIs,
+  sortKey: SortKey,
+  factor: number,
+  locale: string,
+  sectorNames: Record<string, string>,
+  sourceIndex: Map<string, number>,
+): number {
+  switch (sortKey) {
+    case "index":
+      return (
+        factor * ((sourceIndex.get(a.id) ?? 0) - (sourceIndex.get(b.id) ?? 0))
+      );
+    case "name":
+      return factor * a.name.localeCompare(b.name, locale);
+    case "industry": {
+      const labelA = sectorCode(a) ? (sectorNames[sectorCode(a)!] ?? "") : "";
+      const labelB = sectorCode(b) ? (sectorNames[sectorCode(b)!] ?? "") : "";
+      return compareStringsEmptyLast(labelA, labelB, factor, locale);
+    }
+    case "emissions":
+      return compareNullableNumber(
+        latestEmissions(a),
+        latestEmissions(b),
+        factor,
+      );
+    case "change":
+      return compareNullableNumber(
+        a.emissionsChangeFromBaseYear,
+        b.emissionsChangeFromBaseYear,
+        factor,
+      );
+    case "paris":
+      return factor * (parisScore(a) - parisScore(b));
+  }
+}
 
 function ParisBadge({ value }: { value: boolean | null | undefined }) {
   const { t } = useTranslation();
@@ -148,6 +229,12 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
   const [limit, setLimit] = useState(PAGE_SIZE);
 
+  const sourceIndex = useMemo(() => {
+    const map = new Map<string, number>();
+    companies.forEach((company, index) => map.set(company.id, index));
+    return map;
+  }, [companies]);
+
   const rows = useMemo(() => {
     const needle = query.trim().toLowerCase();
     const filtered = needle
@@ -155,20 +242,27 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
       : companies;
 
     const factor = direction === "asc" ? 1 : -1;
-    const score = (company: CompanyWithKPIs) => {
-      if (sortKey === "emissions") return latestEmissions(company);
-      // Unjudged companies sort below both verdicts rather than with "off".
-      if (company.meetsParis === true) return 1;
-      if (company.meetsParis === false) return 0;
-      return -1;
-    };
 
     return [...filtered].sort((a, b) =>
-      sortKey === "name"
-        ? factor * a.name.localeCompare(b.name, currentLanguage)
-        : factor * (score(a) - score(b)),
+      compareCompanies(
+        a,
+        b,
+        sortKey,
+        factor,
+        currentLanguage,
+        sectorNames,
+        sourceIndex,
+      ),
     );
-  }, [companies, query, sortKey, direction, currentLanguage]);
+  }, [
+    companies,
+    query,
+    sortKey,
+    direction,
+    currentLanguage,
+    sectorNames,
+    sourceIndex,
+  ]);
 
   const shown = rows.slice(0, limit);
 
@@ -211,7 +305,16 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
         <Table>
           <TableHeader>
             <TableRow className="border-white/10 hover:bg-transparent">
-              <TableHead className="w-10 text-white/40">#</TableHead>
+              <SortableColumnHead
+                columnKey="index"
+                activeKey={sortKey}
+                direction={direction}
+                onSort={toggleSort}
+                align="end"
+                className="w-10 text-white/40"
+              >
+                #
+              </SortableColumnHead>
               <SortableColumnHead
                 columnKey="name"
                 activeKey={sortKey}
@@ -221,9 +324,15 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
               >
                 {t("companiesOverviewPage.paris.colCompany")}
               </SortableColumnHead>
-              <TableHead className="hidden text-white/40 md:table-cell">
+              <SortableColumnHead
+                columnKey="industry"
+                activeKey={sortKey}
+                direction={direction}
+                onSort={toggleSort}
+                className="hidden text-white/40 md:table-cell"
+              >
                 {t("companiesOverviewPage.paris.colIndustry")}
-              </TableHead>
+              </SortableColumnHead>
               <SortableColumnHead
                 columnKey="emissions"
                 activeKey={sortKey}
@@ -234,9 +343,16 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
               >
                 {t("companiesOverviewPage.paris.colEmissions")}
               </SortableColumnHead>
-              <TableHead className="text-right text-white/40">
+              <SortableColumnHead
+                columnKey="change"
+                activeKey={sortKey}
+                direction={direction}
+                onSort={toggleSort}
+                align="end"
+                className="text-white/40"
+              >
                 {t("companiesOverviewPage.paris.colChange")}
-              </TableHead>
+              </SortableColumnHead>
               <SortableColumnHead
                 columnKey="paris"
                 activeKey={sortKey}
@@ -255,6 +371,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 | SectorCode
                 | undefined;
               const change = company.emissionsChangeFromBaseYear;
+              const emissions = latestEmissions(company);
 
               const detailPath = getCompanyDetailPath(company);
 
@@ -296,14 +413,25 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                       </span>
                     )}
                   </TableCell>
-                  <TableCell className="hidden py-3 text-right tabular-nums sm:table-cell">
-                    {formatEmissionsAbsoluteCompact(
-                      latestEmissions(company),
-                      currentLanguage,
+                  <TableCell
+                    className={cn(
+                      "hidden py-3 text-right tabular-nums sm:table-cell",
+                      emissions === null && "text-white/30",
                     )}
-                    <span className="ml-1 text-xs text-grey">
-                      {t("emissionsUnit")}
-                    </span>
+                  >
+                    {emissions === null ? (
+                      t("companiesOverviewPage.paris.noComparableData")
+                    ) : (
+                      <>
+                        {formatEmissionsAbsoluteCompact(
+                          emissions,
+                          currentLanguage,
+                        )}
+                        <span className="ml-1 text-xs text-grey">
+                          {t("emissionsUnit")}
+                        </span>
+                      </>
+                    )}
                   </TableCell>
                   <TableCell
                     className={cn(

@@ -11,9 +11,16 @@ export function isSwedishCompany(company: { tags?: string[] }): boolean {
   return (company.tags ?? []).includes(SWEDEN_TAG);
 }
 
-export function latestEmissions(company: CompanyWithKPIs): number {
+export function latestEmissions(company: CompanyWithKPIs): number | null {
+  const value =
+    company.reportingPeriods?.[0]?.emissions?.calculatedTotalEmissions;
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function isReducing(company: CompanyWithKPIs): boolean {
   return (
-    company.reportingPeriods?.[0]?.emissions?.calculatedTotalEmissions ?? 0
+    typeof company.emissionsChangeFromBaseYear === "number" &&
+    company.emissionsChangeFromBaseYear < 0
   );
 }
 
@@ -25,6 +32,8 @@ export interface ParisSummary {
   unknown: number;
   /** Companies whose emissions have fallen at all, on track or not. */
   reducing: number;
+  /** Companies not on track that are still cutting emissions. */
+  reducingNotOnTrack: number;
   /** On track as a share of every company in view, including the unjudged. */
   onTrackPercent: number;
 }
@@ -32,10 +41,9 @@ export interface ParisSummary {
 export function summariseParis(companies: CompanyWithKPIs[]): ParisSummary {
   const judged = companies.filter((c) => typeof c.meetsParis === "boolean");
   const onTrack = judged.filter((c) => c.meetsParis === true).length;
-  const reducing = companies.filter(
-    (c) =>
-      typeof c.emissionsChangeFromBaseYear === "number" &&
-      c.emissionsChangeFromBaseYear < 0,
+  const reducing = companies.filter(isReducing).length;
+  const reducingNotOnTrack = companies.filter(
+    (c) => c.meetsParis !== true && isReducing(c),
   ).length;
 
   return {
@@ -44,6 +52,7 @@ export function summariseParis(companies: CompanyWithKPIs[]): ParisSummary {
     offTrack: judged.length - onTrack,
     unknown: companies.length - judged.length,
     reducing,
+    reducingNotOnTrack,
     onTrackPercent: companies.length
       ? Math.round((onTrack / companies.length) * 100)
       : 0,
@@ -94,7 +103,10 @@ export function buildIndustryBreakdown(
     return {
       code,
       companyCount: rows.length,
-      emissions: rows.reduce((sum, c) => sum + latestEmissions(c), 0),
+      emissions: rows.reduce((sum, c) => {
+        const value = latestEmissions(c);
+        return value === null ? sum : sum + value;
+      }, 0),
       onTrackShare: judged.length
         ? (judged.filter((c) => c.meetsParis === true).length / judged.length) *
           100

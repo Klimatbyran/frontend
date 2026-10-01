@@ -6,7 +6,6 @@ import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/charts/sectorChart/SectorPieLegend";
-import { DetailPieSectorGrid } from "@/components/detail/DetailGrid";
 import {
   SHARE_RAMP_STOPS,
   shareRampColor,
@@ -62,54 +61,57 @@ export function IndustryEmissionsPie({
         {t("companiesOverviewPage.paris.industriesDescription")}
       </p>
 
-      <div className="mt-6">
-        <DetailPieSectorGrid stretchColumns>
-          <div className="min-w-0 w-full">
-            <SectorPieChart data={data} animationKey={pieAnimationKey} />
-            <div className="mt-6">
-              <div className="flex">
-                {SHARE_RAMP_STOPS.map((stop, index) => (
-                  <motion.i
-                    key={stop}
-                    className={`h-2.5 flex-1 ${
-                      index === 0
-                        ? "rounded-l-sm"
-                        : index === SHARE_RAMP_STOPS.length - 1
-                          ? "rounded-r-sm"
-                          : ""
-                    }`}
-                    style={{
-                      backgroundColor: stop,
-                      transformOrigin: "bottom",
-                    }}
-                    initial={reduceMotion ? false : { opacity: 0, scaleY: 0 }}
-                    animate={{ opacity: 1, scaleY: 1 }}
-                    transition={{
-                      duration: fadeDuration,
-                      delay: stagger(index, 0.05),
-                      ease,
-                    }}
-                  />
-                ))}
-              </div>
-              <div className="mt-1.5 flex justify-between text-[11px] text-grey">
-                <span>{t("companiesOverviewPage.paris.rampLow")}</span>
-                <span>{t("companiesOverviewPage.paris.rampHigh")}</span>
-              </div>
-            </div>
-          </div>
+      <div className="mt-6 grid grid-cols-1 gap-8 md:gap-16 lg:grid-cols-2 lg:items-stretch">
+        <div className="order-1 flex h-full min-h-[200px] min-w-0 items-center justify-center lg:min-h-0">
+          <SectorPieChart
+            data={data}
+            animationKey={pieAnimationKey}
+            fillContainer
+          />
+        </div>
 
-          <div className="flex min-h-0 w-full flex-col justify-start lg:h-full lg:min-h-0">
-            <SectorPieLegend
-              data={data}
-              total={total}
-              gridColumns={1}
-              compact
-              fillHeight
-              animationKey={pieAnimationKey}
-            />
+        <div className="order-3 flex h-full min-h-0 w-full flex-col justify-start lg:order-2 lg:min-h-0">
+          <SectorPieLegend
+            data={data}
+            total={total}
+            gridColumns={1}
+            compact
+            fillHeight
+            animationKey={pieAnimationKey}
+          />
+        </div>
+
+        <div className="order-2 min-w-0 w-full lg:order-3">
+          <div className="flex">
+            {SHARE_RAMP_STOPS.map((stop, index) => (
+              <motion.i
+                key={stop}
+                className={`h-2.5 flex-1 ${
+                  index === 0
+                    ? "rounded-l-sm"
+                    : index === SHARE_RAMP_STOPS.length - 1
+                      ? "rounded-r-sm"
+                      : ""
+                }`}
+                style={{
+                  backgroundColor: stop,
+                  transformOrigin: "bottom",
+                }}
+                initial={reduceMotion ? false : { opacity: 0, scaleY: 0 }}
+                animate={{ opacity: 1, scaleY: 1 }}
+                transition={{
+                  duration: fadeDuration,
+                  delay: stagger(index, 0.05),
+                  ease,
+                }}
+              />
+            ))}
           </div>
-        </DetailPieSectorGrid>
+          <div className="mt-1.5 flex justify-between text-[11px] text-grey">
+            <span>{t("companiesOverviewPage.paris.rampLow")}</span>
+            <span>{t("companiesOverviewPage.paris.rampHigh")}</span>
+          </div>
+        </div>
       </div>
     </section>
   );

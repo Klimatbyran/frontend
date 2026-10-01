@@ -166,7 +166,9 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   return (
     <div
       ref={containerRef}
-      className="w-full min-h-[200px] flex items-center justify-center"
+      className={`w-full flex items-center justify-center ${
+        fillContainer ? "h-full min-h-[200px]" : "min-h-[200px]"
+      }`}
     >
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>

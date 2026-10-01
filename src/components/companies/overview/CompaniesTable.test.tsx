@@ -21,17 +21,25 @@ vi.mock("@/components/LanguageProvider", () => ({
   useLanguage: () => ({ currentLanguage: "en" }),
 }));
 
+vi.mock("@/hooks/companies/useCompanySectors", () => ({
+  useSectorNames: () => ({
+    "15": "Materials",
+    "35": "Health Care",
+  }),
+}));
+
 function company(
   name: string,
   meetsParis: boolean | null,
   change: number | null,
   emissions: number,
+  sectorCode = "15",
 ): CompanyWithKPIs {
   return {
     id: name,
     name,
     wikidataId: `Q-${name}`,
-    industry: { industryGics: { sectorCode: "15" } },
+    industry: { industryGics: { sectorCode } },
     reportingPeriods: [{ emissions: { calculatedTotalEmissions: emissions } }],
     meetsParis,
     emissionsChangeFromBaseYear: change,
@@ -39,9 +47,9 @@ function company(
 }
 
 const companies = [
-  company("Alpha", false, 20, 900),
-  company("Bravo", true, -40, 100),
-  company("Charlie", null, null, 500),
+  company("Alpha", false, 20, 900, "35"),
+  company("Bravo", true, -40, 100, "15"),
+  company("Charlie", null, null, 500, "35"),
 ];
 
 function renderTable(list: CompanyWithKPIs[] = companies) {
@@ -88,6 +96,32 @@ describe("CompaniesTable", () => {
       }),
     );
     expect(rowNames()).toEqual(["Charlie", "Alpha", "Bravo"]);
+  });
+
+  it("sorts by industry name when the column header is clicked", () => {
+    renderTable();
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /companiesOverviewPage\.paris\.colIndustry/,
+      }),
+    );
+    expect(rowNames()).toEqual(["Alpha", "Charlie", "Bravo"]);
+  });
+
+  it("sorts by emissions change with missing values last", () => {
+    renderTable();
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /companiesOverviewPage\.paris\.colChange/,
+      }),
+    );
+    expect(rowNames()).toEqual(["Bravo", "Alpha", "Charlie"]);
+  });
+
+  it("sorts by source list order when # is clicked", () => {
+    renderTable();
+    fireEvent.click(screen.getByRole("button", { name: /^#$/ }));
+    expect(rowNames()).toEqual(["Alpha", "Bravo", "Charlie"]);
   });
 
   it("filters by search query", () => {
