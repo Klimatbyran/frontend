@@ -25,13 +25,7 @@ import { latestEmissions } from "@/hooks/companies/parisOverviewUtils";
 import type { CompanyWithKPIs } from "@/types/company";
 import { cn } from "@/lib/utils";
 
-type SortKey =
-  | "index"
-  | "name"
-  | "industry"
-  | "emissions"
-  | "change"
-  | "paris";
+type SortKey = "index" | "name" | "industry" | "emissions" | "change" | "paris";
 
 const PAGE_SIZE = 12;
 
