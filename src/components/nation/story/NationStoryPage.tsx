@@ -5,6 +5,7 @@ import { NationBathtub } from "@/components/nation/story/NationBathtub";
 import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationIntroHero } from "@/components/nation/story/NationIntroPunch";
+import { NationParisVerdict } from "@/components/nation/story/NationParisVerdict";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { StoryNavChrome } from "@/components/nation/story/StoryNavChrome";
 import { StoryScrollHint } from "@/components/nation/story/StoryScrollHint";
@@ -90,6 +91,8 @@ export function NationStoryPage({
       </FullScreenSection>
 
       <NationStackedChart data={metrics.stackData} />
+
+      <NationParisVerdict />
 
       <FullScreenSection chapter="bathtubBridge">
         <div className="max-w-2xl mx-auto text-center space-y-5 story-short:space-y-3 md:space-y-4 lg:space-y-5">

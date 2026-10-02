@@ -1709,6 +1709,7 @@
         "journey": "Löken",
         "interlude": "Perspektiv",
         "stacked": "Historik",
+        "parisVerdict": "Paris",
         "bathtubBridge": "Ackumulation",
         "bathtub": "Badkaret",
         "conclusion": "Slutsats"
@@ -1778,6 +1779,17 @@
         "layerCaption3": "Sedan lägger vi till de konsumtionsbaserade utsläppen utomlands, inklusive privat e-handelsimport.",
         "layerCaption4": "Och slutligen de biogena utsläppen för att ge hela bilden.",
         "scrubHint": "Svep över grafen för att se värden per år"
+      },
+      "parisVerdict": {
+        "eyebrow": "Sverige · {{from}}–{{to}}",
+        "title": "Är vi på väg att klara Parisavtalet?",
+        "verdictNo": "<0>Nej.</0> På nuvarande bana släpper vi ut <1>{{ratio}} gånger</1> mer än vi har kvar.",
+        "verdictYes": "<0>Ja.</0> På nuvarande bana håller vi oss inom det vi har kvar.",
+        "budgetBar": "Det Sverige fortfarande får släppa ut och hålla 1,5°C inom räck",
+        "trendBar": "Det vi kommer släppa ut om inget ändras",
+        "budgetSpentMarker": "budgeten slut {{year}}",
+        "bodyOffTrack": "På nuvarande bana minskar Sveriges utsläpp med ungefär {{trendRate}} % per år. För att hålla sig inom budgeten behöver de minska med cirka 12 % per år, varje år, från och med nu. I nuvarande takt är hela budgeten förbrukad {{budgetYear}} — och vi fortsätter släppa ut i ytterligare {{yearsAfter}} år efter det.",
+        "bodyOnTrack": "På nuvarande bana minskar Sveriges utsläpp med ungefär {{rate}} % per år — tillräckligt snabbt för att hålla sig inom den återstående budgeten till 2050."
       },
       "bathtubBridge": {
         "title": "Vissa utsläpp har minskat, andra har ökat. Sammantaget går utsläppsminskningarna för långsamt ner mot noll.",
