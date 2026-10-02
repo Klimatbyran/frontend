@@ -30,3 +30,4 @@ pnpm-debug.log*
 .eslint.config.ts
 .editorconfig
 *.tsbuildinfo
+.audit-screens/

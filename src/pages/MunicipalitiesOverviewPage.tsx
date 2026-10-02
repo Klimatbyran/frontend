@@ -24,6 +24,7 @@ import {
 } from "@/hooks/municipalities/useMunicipalityKPIs";
 import { RankedListItem, type KPIValue } from "@/types/rankings";
 import { createEntityClickHandler } from "@/utils/routing";
+import { MunicipalitiesOnTrackWaffle } from "@/components/municipalities/MunicipalitiesOnTrackWaffle";
 import { MunicipalityRankedList } from "@/components/municipalities/MunicipalityRankedList";
 import {
   normalizeMunicipalityKpiApiItem,
@@ -142,6 +143,10 @@ function MunicipalitiesOverviewContent({
         iconMap={MUNICIPALITY_KPI_ICONS}
         translationPrefix="municipalities.list"
       />
+
+      {String(selectedKPI.key) === "meetsParisGoal" && (
+        <MunicipalitiesOnTrackWaffle municipalities={municipalities} />
+      )}
 
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">

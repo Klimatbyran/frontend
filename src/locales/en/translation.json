@@ -1839,6 +1839,14 @@
       "noPlan": "No Plan",
       "adopted": "Adopted {{year}}"
     },
+    "onTrackWaffle": {
+      "ofTotal": " of {{total}}",
+      "headline": "Swedish municipalities are cutting emissions fast enough to stay inside their share of the Paris Agreement.",
+      "chartAria": "{{onTrack}} of {{total}} municipalities are on track for the Paris Agreement.",
+      "dotOnTrack": "on track",
+      "dotOffTrack": "not on track",
+      "onTrackListLabel": "The ones that are"
+    },
     "graph": {
       "noData": "No data available",
       "gap": "Gap",

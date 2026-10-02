@@ -1889,6 +1889,14 @@
       "noPlan": "Saknar plan",
       "adopted": "Antagen {{year}}"
     },
+    "onTrackWaffle": {
+      "ofTotal": " av {{total}}",
+      "headline": "Svenska kommuner minskar utsläppen tillräckligt snabbt för att hålla sig inom sin del av Parisavtalet.",
+      "chartAria": "{{onTrack}} av {{total}} kommuner är på väg att klara Parisavtalet.",
+      "dotOnTrack": "klarar Paris",
+      "dotOffTrack": "klarar inte Paris",
+      "onTrackListLabel": "De som klarar"
+    },
     "graph": {
       "noData": "Inga data tillgängliga",
       "gap": "Gap",
