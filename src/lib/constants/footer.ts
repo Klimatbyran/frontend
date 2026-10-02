@@ -36,6 +36,11 @@ export const socialLinks = [
 
 export const partners = [
   {
+    href: "https://postkodlotterietsstiftelse.se/projekt/ai-for-lokal-klimatpaverkan/",
+    src: "/logos/partners/postkodlotteriets-stiftelse-logo.png",
+    alt: "Postkodlotteriets Stiftelse logo",
+  },
+  {
     href: "https://ai-bridges.org/",
     src: "/logos/partners/ai-bridges-logo.png",
     alt: "AI Bridges logo",
