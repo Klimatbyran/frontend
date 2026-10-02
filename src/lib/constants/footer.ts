@@ -46,6 +46,11 @@ export const partners = [
     alt: "AI Bridges logo",
   },
   {
+    href: "https://www.climateview.global/",
+    src: "/logos/partners/climateview.svg",
+    alt: "ClimateView logo",
+  },
+  {
     href: "https://www.klimatklubben.se/",
     src: "/logos/partners/klimatklubben.svg",
     alt: "Klimatklubben logo",

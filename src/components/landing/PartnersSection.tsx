@@ -16,7 +16,7 @@ export const PartnersSection = () => {
           </Text>
         </div>
 
-        <div className="grid w-full grid-cols-4 gap-2 sm:gap-3 md:grid-cols-5 lg:grid-cols-9">
+        <div className="grid w-full grid-cols-4 gap-2 sm:gap-3 md:grid-cols-5 lg:grid-cols-10">
           {partners.map((logo, index) => {
             const isCenteredLastRowItem =
               mobileRemainder === 2 && index >= partners.length - 2;
