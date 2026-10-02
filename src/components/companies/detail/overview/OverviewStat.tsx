@@ -30,8 +30,10 @@ interface OverviewStatProps {
   reserveCaptionRow?: boolean;
 }
 
-const DETAIL_VALUE = "text-4xl font-light leading-none tracking-tighter tabular-nums xl:text-5xl";
-const DETAIL_VALUE_RELAXED = "text-4xl font-light leading-none tracking-tighter tabular-nums md:text-5xl";
+const DETAIL_VALUE =
+  "text-4xl font-light leading-none tracking-tighter tabular-nums xl:text-5xl";
+const DETAIL_VALUE_RELAXED =
+  "text-4xl font-light leading-none tracking-tighter tabular-nums md:text-5xl";
 const DETAIL_UNIT = "text-lg text-grey";
 
 export function OverviewStat({
@@ -131,7 +133,9 @@ export function OverviewStat({
         isDetailVariant && alignBenchmarks && "min-h-[2.75rem] md:min-h-[3rem]",
       )}
     >
-      <div className={isDetailVariant ? "" : "mb-1 md:mb-2"}>{renderLabel()}</div>
+      <div className={isDetailVariant ? "" : "mb-1 md:mb-2"}>
+        {renderLabel()}
+      </div>
     </div>
   );
 
@@ -171,7 +175,13 @@ export function OverviewStat({
 
   if (isDetailVariant && alignBenchmarks) {
     return (
-      <div className={cn(useFlex1 && "flex-1", "flex h-full min-w-0 flex-col", className)}>
+      <div
+        className={cn(
+          useFlex1 && "flex-1",
+          "flex h-full min-w-0 flex-col",
+          className,
+        )}
+      >
         {labelBlock}
         {valueBlock}
         {captionBlock}

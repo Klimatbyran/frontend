@@ -136,19 +136,19 @@ function BooleanBenchmark({
       <div role="img" aria-label={primary} className="px-1">
         <div className="relative flex h-3 items-center">
           <div className="flex h-1.5 w-full overflow-hidden rounded-full">
-        <div
-          style={{
-            width: `${view.trueShare * 100}%`,
-            background: yesColor,
-          }}
-        />
-        <div
-          style={{
-            width: `${(1 - view.trueShare) * 100}%`,
-            background: noColor,
-            opacity: 0.45,
-          }}
-        />
+            <div
+              style={{
+                width: `${view.trueShare * 100}%`,
+                background: yesColor,
+              }}
+            />
+            <div
+              style={{
+                width: `${(1 - view.trueShare) * 100}%`,
+                background: noColor,
+                opacity: 0.45,
+              }}
+            />
           </div>
         </div>
       </div>
