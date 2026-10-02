@@ -3,10 +3,7 @@ import {
   OVERVIEW_PANEL_MD_HEIGHT,
 } from "@/components/ranked/OverviewSplitLayout";
 
-export type OverviewPageSkeletonVariant =
-  | "municipalities"
-  | "regions"
-  | "companies";
+export type OverviewPageSkeletonVariant = "municipalities" | "regions";
 
 interface OverviewPageSkeletonProps {
   variant?: OverviewPageSkeletonVariant;
@@ -22,13 +19,7 @@ function SkeletonBlock({ className = "" }: { className?: string }) {
   return <div className={`${SHIMMER} ${className}`} />;
 }
 
-function DataChipSelectorSkeleton({
-  chipCount,
-  showActions = false,
-}: {
-  chipCount: number;
-  showActions?: boolean;
-}) {
+function DataChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
   return (
     <div className="mb-4 space-y-2">
       <SkeletonBlock className="h-3 w-36 mx-1" />
@@ -43,9 +34,6 @@ function DataChipSelectorSkeleton({
               />
             ))}
           </div>
-          {showActions && (
-            <SkeletonBlock className="h-9 w-24 rounded-md w-full md:w-auto" />
-          )}
         </div>
       </div>
     </div>
@@ -141,16 +129,13 @@ function DistributionPanelSkeleton() {
 /** Skeleton that mirrors the overview page layout while data loads. */
 export function OverviewPageSkeleton({
   variant = "municipalities",
-  chipCount = variant === "regions" ? 2 : variant === "companies" ? 2 : 7,
+  chipCount = variant === "regions" ? 2 : 7,
 }: OverviewPageSkeletonProps) {
   return (
     <>
       <SkeletonBlock className="h-9 w-56 md:w-72 mb-2 md:mb-3" />
 
-      <DataChipSelectorSkeleton
-        chipCount={chipCount}
-        showActions={variant === "companies"}
-      />
+      <DataChipSelectorSkeleton chipCount={chipCount} />
 
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">

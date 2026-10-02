@@ -1,4 +1,5 @@
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { useChartMotion } from "@/hooks/useChartMotion";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 function calcBarWidth(
@@ -52,6 +53,13 @@ function InsightsList<T>({
   showBars = false,
   colorItem,
 }: InsightsListProps<T>) {
+  const { reduceMotion, barDuration, ease } = useChartMotion();
+  const rowFadeMs = reduceMotion ? 0 : 350;
+  const rowStaggerMs = reduceMotion ? 0 : 35;
+  const barTransitionMs = reduceMotion ? 0 : barDuration * 1000;
+  const barStaggerMs = reduceMotion ? 0 : 40;
+  const barEase = `cubic-bezier(${ease.join(", ")})`;
+
   const numericValues = entities
     .map((e) => e[dataPointKey])
     .filter((v): v is number => typeof v === "number" && !isNaN(v));
@@ -78,18 +86,28 @@ function InsightsList<T>({
           const content = (
             <div
               className="relative overflow-hidden group"
-              style={{
-                animation: `fadeSlideIn 0.35s ease-out both`,
-                animationDelay: `${index * 35}ms`,
-              }}
+              style={
+                rowFadeMs
+                  ? {
+                      animation: `fadeSlideIn ${rowFadeMs}ms ease-out both`,
+                      animationDelay: `${index * rowStaggerMs}ms`,
+                    }
+                  : undefined
+              }
             >
               {showBars && barWidth > 0 && (
                 <div
                   className="absolute inset-y-0 left-0 rounded-lg opacity-20 group-hover:opacity-30"
                   style={{
-                    width: `${barWidth}%`,
+                    ["--insights-bar-width" as string]: `${barWidth}%`,
                     backgroundColor: color ?? "currentColor",
-                    transition: `width 0.6s ease-out ${index * 40}ms, opacity 0.3s ease`,
+                    ...(barTransitionMs
+                      ? {
+                          animation: `barGrowFromLeft ${barTransitionMs}ms ${barEase} both`,
+                          animationDelay: `${index * barStaggerMs}ms`,
+                        }
+                      : { width: `${barWidth}%` }),
+                    transition: "opacity 0.3s ease",
                   }}
                 />
               )}

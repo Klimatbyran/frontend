@@ -144,10 +144,6 @@ const SIMPLE_SEO_ROUTES: Record<
     titleKey: "companiesOverviewPage.title",
     descriptionKey: "companiesOverviewPage.description",
   },
-  "/sectors": {
-    titleKey: "sectorsOverviewPage.title",
-    descriptionKey: "sectorsOverviewPage.description",
-  },
   "/municipalities": {
     titleKey: "municipalitiesOverviewPage.title",
     descriptionKey: "municipalitiesOverviewPage.description",

@@ -1,279 +1,123 @@
-import { useState, useEffect, useMemo } from "react";
-import { Leaf, ArrowDownCircle, BarChart2, List } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { DataChipSelector } from "@/components/ranked/DataChipSelector";
-import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
-import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
+import { CompaniesOverviewSkeleton } from "@/components/companies/overview/CompaniesOverviewSkeleton";
+import InsightsList from "@/components/ranked/InsightsList";
+import { CompaniesTable } from "@/components/companies/overview/CompaniesTable";
+import { ParisAnswerCard } from "@/components/companies/overview/ParisAnswerCard";
+import { ParisExplainer } from "@/components/companies/overview/ParisExplainer";
+import { IndustryChipFilter } from "@/components/companies/overview/IndustryChipFilter";
+import { IndustryEmissionsPie } from "@/components/companies/overview/IndustryEmissionsPie";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { enrichCompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
+import type { CompanyWithKPIs } from "@/types/company";
+import type { SectorCode } from "@/lib/constants/sectors";
 import {
-  OverviewSplitLayout,
-  OVERVIEW_PANEL_MD_HEIGHT,
-  type OverviewViewMode,
-} from "@/components/ranked/OverviewSplitLayout";
-import RankedList from "@/components/ranked/RankedList";
-import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
-import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
-import { FilterPopover } from "@/components/explore/FilterPopover";
-import { FilterBadges } from "@/components/companies/list/FilterBadges";
-import { getAvailableCountryOptions } from "@/hooks/companies/companyCountryFilterUtils";
-import type { CompanyCountryTagSlug } from "@/lib/constants/companyCountryTags";
-import {
-  useCompanyKPIs,
-  CompanyKPIValue,
-  CompanyWithKPIs,
-} from "@/hooks/companies/useCompanyKPIs";
-import { getCompanyDetailPath } from "@/utils/companyRouting";
-import {
-  asCompanyDataPoint,
-  useCompaniesOverviewFilters,
-  useCompaniesOverviewUrlState,
-  useCompaniesWithKPIs,
-} from "./companiesOverviewPageUtils";
+  buildIndustryBreakdown,
+  fastestCutters,
+  furthestBehind,
+  isSwedishCompany,
+  summariseParis,
+} from "@/hooks/companies/parisOverviewUtils";
+import { useCompaniesOverviewUrlState } from "./companiesOverviewPageUtils";
 
-const COMPANY_KPI_ICONS: Record<string, React.ReactNode> = {
-  meetsParis: <Leaf className="w-4 h-4" />,
-  emissionsChangeFromBaseYear: <ArrowDownCircle className="w-4 h-4" />,
-};
-
-function CompaniesOverviewMainGrid({
-  companiesWithKPIs,
-  selectedKPI,
-  selectedSector,
-  viewMode,
-  onCompanyClick,
-  onViewModeChange,
-}: {
-  companiesWithKPIs: CompanyWithKPIs[];
-  selectedKPI: CompanyKPIValue;
-  selectedSector: string | null;
-  viewMode: OverviewViewMode;
-  onCompanyClick: (company: CompanyWithKPIs) => void;
-  onViewModeChange: (mode: OverviewViewMode) => void;
-}) {
+function VerdictLists({ companies }: { companies: CompanyWithKPIs[] }) {
   const { t } = useTranslation();
-  const { isMobile } = useScreenSize();
+  const doingWell = fastestCutters(companies);
+  const fallingBehind = furthestBehind(companies);
 
-  const viewToggle = (
-    <ViewModeToggle
-      viewMode={viewMode}
-      modes={["graph", "list"]}
-      onChange={onViewModeChange}
-      titles={{
-        graph: t("companiesOverviewPage.viewToggle.showGraph"),
-        list: t("companiesOverviewPage.viewToggle.showList"),
-      }}
-      showTitles
-      icons={{
-        graph: <BarChart2 className="w-4 h-4" />,
-        list: <List className="w-4 h-4" />,
-      }}
-    />
-  );
-
-  const colorItem = selectedKPI.createKPIColorGetter
-    ? selectedKPI.createKPIColorGetter(companiesWithKPIs)
-    : undefined;
+  if (doingWell.length === 0 && fallingBehind.length === 0) return null;
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
-        <OverviewSplitLayout
-          viewMode={viewMode}
-          visualizationMode="graph"
-          visualization={
-            <div className="h-full min-h-[500px] md:min-h-[620px]">
-              <CompanyKPIVisualization
-                companies={companiesWithKPIs}
-                selectedKPI={selectedKPI}
-                onCompanyClick={onCompanyClick}
-              />
-            </div>
-          }
-          list={
-            <RankedList
-              data={companiesWithKPIs}
-              selectedDataPoint={asCompanyDataPoint(selectedKPI, t)}
-              onItemClick={onCompanyClick}
-              searchKey="name"
-              searchPlaceholder={t("rankedList.search.placeholder")}
-              itemsPerPage={isMobile ? 6 : 8}
-              headerAction={viewToggle}
-              colorItem={colorItem}
-            />
-          }
-          toggle={viewToggle}
+    <div className="grid items-start gap-6 md:grid-cols-2">
+      {doingWell.length > 0 && (
+        <InsightsList<CompanyWithKPIs>
+          title={t("companiesOverviewPage.paris.doingWellTitle")}
+          entities={doingWell}
+          dataPointKey="emissionsChangeFromBaseYear"
+          unit="%"
+          totalCount={doingWell.length}
+          entityType="companies"
+          nameKey="name"
+          showBars
+          colorItem={() => "var(--blue-3)"}
         />
-        <div className={`min-h-0 h-full ${OVERVIEW_PANEL_MD_HEIGHT}`}>
-          <CompanyInsightsPanel
-            companyData={companiesWithKPIs}
-            selectedKPI={selectedKPI}
-            section="stats"
-          />
-        </div>
-      </div>
-
-      {!selectedKPI.isBoolean && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-          <CompanyInsightsPanel
-            companyData={companiesWithKPIs}
-            selectedKPI={selectedKPI}
-            section="top"
-            listKey={selectedSector ?? "all"}
-          />
-          <CompanyInsightsPanel
-            companyData={companiesWithKPIs}
-            selectedKPI={selectedKPI}
-            section="bottom"
-            listKey={selectedSector ?? "all"}
-          />
-          <CompanyInsightsPanel
-            companyData={companiesWithKPIs}
-            selectedKPI={selectedKPI}
-            section="distribution"
-          />
-        </div>
+      )}
+      {fallingBehind.length > 0 && (
+        <InsightsList<CompanyWithKPIs>
+          title={t("companiesOverviewPage.paris.fallingBehindTitle")}
+          entities={fallingBehind}
+          dataPointKey="emissionsChangeFromBaseYear"
+          unit="%"
+          totalCount={fallingBehind.length}
+          entityType="companies"
+          nameKey="name"
+          showBars
+          colorItem={() => "var(--pink-3)"}
+        />
       )}
     </div>
   );
 }
 
-function CompaniesOverviewContent({
-  companiesWithKPIs,
-  selectedKPI,
-  availableSectors,
-  selectedSector,
-  selectedCountries,
-  availableCountries,
-  viewMode,
-  filterOpen,
-  setFilterOpen,
-  onKPIChange,
-  onSectorChange,
-  onCountriesChange,
-  onViewModeChange,
-  onCompanyClick,
-}: {
-  companiesWithKPIs: CompanyWithKPIs[];
-  selectedKPI: CompanyKPIValue;
-  availableSectors: string[];
-  selectedSector: string | null;
-  selectedCountries: CompanyCountryTagSlug[];
-  availableCountries: CompanyCountryTagSlug[];
-  viewMode: OverviewViewMode;
-  filterOpen: boolean;
-  setFilterOpen: (open: boolean) => void;
-  onKPIChange: (kpi: CompanyKPIValue) => void;
-  onSectorChange: (sector: string) => void;
-  onCountriesChange: (countries: CompanyCountryTagSlug[]) => void;
-  onViewModeChange: (mode: OverviewViewMode) => void;
-  onCompanyClick: (company: CompanyWithKPIs) => void;
-}) {
-  const { t } = useTranslation();
-  const companyKPIs = useCompanyKPIs();
-  const { filterGroups, activeFilters } = useCompaniesOverviewFilters({
-    availableSectors,
-    selectedSector,
-    selectedCountries,
-    availableCountries,
-    onSectorChange,
-    onCountriesChange,
-  });
-
-  return (
-    <>
-      <PageHeader
-        variant="title-only"
-        title={t("companiesOverviewPage.title")}
-      />
-
-      <DataChipSelector<CompanyWithKPIs>
-        selectedKPI={selectedKPI}
-        kpis={companyKPIs}
-        onKPIChange={onKPIChange}
-        iconMap={COMPANY_KPI_ICONS}
-        translationPrefix="companies.list"
-        label={t("companies.list.dataSelector.label")}
-        actions={
-          <>
-            <FilterPopover
-              filterOpen={filterOpen}
-              setFilterOpen={setFilterOpen}
-              groups={filterGroups}
-            />
-            {activeFilters.length > 0 && (
-              <FilterBadges filters={activeFilters} view="graphs" />
-            )}
-          </>
-        }
-      />
-
-      <CompaniesOverviewMainGrid
-        companiesWithKPIs={companiesWithKPIs}
-        selectedKPI={selectedKPI}
-        selectedSector={selectedSector}
-        viewMode={viewMode}
-        onCompanyClick={onCompanyClick}
-        onViewModeChange={onViewModeChange}
-      />
-    </>
-  );
-}
-
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { companies, companiesLoading, companiesError } = useCompanies();
-  const companyKPIs = useCompanyKPIs();
-  const [filterOpen, setFilterOpen] = useState(false);
+  const sectorNames = useSectorNames();
 
-  const availableSectors = useMemo(() => {
-    if (!companies) return [];
-    const sectors = new Set<string>();
-    companies.forEach((company) => {
-      const sectorCode = company.industry?.industryGics?.sectorCode;
-      if (sectorCode) sectors.add(sectorCode);
-    });
-    return Array.from(sectors).sort();
-  }, [companies]);
-
-  const availableCountries = useMemo(
-    () => getAvailableCountryOptions(companies ?? []),
+  // Sweden-only page: scope once, so nothing downstream reasons about country.
+  const swedishCompanies = useMemo<CompanyWithKPIs[]>(
+    () =>
+      (companies ?? [])
+        .filter(isSwedishCompany)
+        .map((company) => enrichCompanyWithKPIs(company)),
     [companies],
   );
 
-  const urlState = useCompaniesOverviewUrlState(companyKPIs, availableSectors);
-  const [selectedKPI, setSelectedKPI] = useState(urlState.getKPIFromURL());
-  const selectedSector = urlState.getSectorFromURL();
-  const selectedCountries = urlState.getCountriesFromURL();
-  const viewMode = urlState.getViewModeFromURL();
-
-  useEffect(() => {
-    setSelectedKPI(urlState.getKPIFromURL());
-  }, [urlState]);
-
-  const companiesWithKPIs = useCompaniesWithKPIs(
-    companies,
-    selectedSector,
-    selectedCountries,
-    selectedKPI,
+  const availableSectors = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          swedishCompanies
+            .map((company) => company.industry?.industryGics?.sectorCode)
+            .filter((code): code is string => Boolean(code)),
+        ),
+      ).sort(),
+    [swedishCompanies],
   );
 
+  const urlState = useCompaniesOverviewUrlState(availableSectors);
+  const selectedSector = urlState.getSectorFromURL() as SectorCode | null;
+
+  // The industry breakdown ignores the industry filter so it stays usable as
+  // a selector after one has been picked.
+  const industryRows = useMemo(
+    () => buildIndustryBreakdown(swedishCompanies),
+    [swedishCompanies],
+  );
+
+  const inView = useMemo(
+    () =>
+      selectedSector
+        ? swedishCompanies.filter(
+            (company) =>
+              company.industry?.industryGics?.sectorCode === selectedSector,
+          )
+        : swedishCompanies,
+    [swedishCompanies, selectedSector],
+  );
+
+  const summary = useMemo(() => summariseParis(inView), [inView]);
+
   if (companiesLoading) {
-    return (
-      <OverviewPageSkeleton
-        variant="companies"
-        chipCount={companyKPIs.length}
-      />
-    );
+    return <CompaniesOverviewSkeleton />;
   }
 
   if (companiesError) {
     return (
-      <div className="text-center py-24">
-        <h3 className="text-red-500 mb-4 text-xl">
+      <div className="py-24 text-center">
+        <h3 className="mb-4 text-xl text-red-500">
           {t("companiesOverviewPage.errorTitle")}
         </h3>
         <p className="text-grey">
@@ -284,26 +128,39 @@ export function CompaniesOverviewPage() {
   }
 
   return (
-    <CompaniesOverviewContent
-      companiesWithKPIs={companiesWithKPIs}
-      selectedKPI={selectedKPI}
-      availableSectors={availableSectors}
-      selectedSector={selectedSector}
-      selectedCountries={selectedCountries}
-      availableCountries={availableCountries}
-      viewMode={viewMode}
-      filterOpen={filterOpen}
-      setFilterOpen={setFilterOpen}
-      onKPIChange={(kpi) => {
-        setSelectedKPI(kpi);
-        urlState.setKPIInURL(String(kpi.key));
-      }}
-      onSectorChange={(sector) => {
-        urlState.setSectorInURL(sector === "all" ? null : sector);
-      }}
-      onCountriesChange={urlState.setCountriesInURL}
-      onViewModeChange={urlState.setViewModeInURL}
-      onCompanyClick={(company) => navigate(getCompanyDetailPath(company))}
-    />
+    <div className="space-y-8 md:space-y-10">
+      <div className="space-y-5">
+        {/* Layout already applies `container mx-auto px-4`; PageHeader's own
+            max-width and padding would inset the title past the cards. */}
+        <PageHeader
+          className="mx-0 mb-0 max-w-none p-0 md:mb-0"
+          title={t("companiesOverviewPage.paris.title")}
+          description={t("companiesOverviewPage.paris.lead")}
+        />
+        <ParisExplainer />
+      </div>
+
+      <IndustryChipFilter
+        options={industryRows.map((row) => ({
+          code: row.code,
+          companyCount: row.companyCount,
+        }))}
+        selected={selectedSector}
+        totalCount={swedishCompanies.length}
+        onSelect={(code) => urlState.setSectorInURL(code)}
+      />
+
+      <ParisAnswerCard
+        key={selectedSector ?? "all"}
+        summary={summary}
+        industryLabel={selectedSector ? sectorNames[selectedSector] : null}
+      />
+
+      <VerdictLists companies={inView} />
+
+      <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
+
+      <CompaniesTable companies={inView} />
+    </div>
   );
 }

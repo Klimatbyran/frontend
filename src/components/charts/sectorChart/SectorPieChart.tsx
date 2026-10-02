@@ -32,6 +32,8 @@ interface SectorPieChartProps {
   onItemClick?: (data: PieChartItem) => void;
   customActionLabel?: string;
   desktopScale?: boolean;
+  fillContainer?: boolean;
+  maxOuterRadius?: number;
   animationKey?: string;
   restSliceOptions?: PieChartRestSliceOptions;
 }
@@ -49,13 +51,19 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   onItemClick,
   customActionLabel,
   desktopScale = false,
+  fillContainer = false,
+  maxOuterRadius,
   animationKey,
   restSliceOptions,
 }) => {
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { size, containerRef } = useResponsiveChartSize();
+  const { size, containerRef } = useResponsiveChartSize(
+    false,
+    maxOuterRadius,
+    fillContainer,
+  );
 
   const pieData: PieChartItem[] = data
     ? data
@@ -109,6 +117,8 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
     animationKey ??
     pieDataWithTotal.map((entry) => `${entry.key}-${entry.value}`).join("|");
 
+  const isInteractive = Boolean(onItemClick || onFilteredSectorsChange);
+
   const toggleFilter = (sectorName: string) => {
     if (!onFilteredSectorsChange) return;
     const newFiltered = new Set(filteredSectors);
@@ -156,7 +166,9 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   return (
     <div
       ref={containerRef}
-      className="w-full min-h-[200px] flex items-center justify-center"
+      className={`w-full flex items-center justify-center ${
+        fillContainer ? "h-full min-h-[200px]" : "min-h-[200px]"
+      }`}
     >
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>
@@ -171,7 +183,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             outerRadius={outerRadius}
             cornerRadius={PIE_CORNER_RADIUS}
             paddingAngle={2}
-            onClick={handleSectorClick}
+            onClick={isInteractive ? handleSectorClick : undefined}
             isAnimationActive={!reduceMotion}
             animationBegin={0}
             animationDuration={pieDuration}
@@ -182,7 +194,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
                 key={entry.key}
                 fill={entry.color}
                 stroke={entry.color}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: isInteractive ? "pointer" : "default" }}
               />
             ))}
           </Pie>
@@ -191,6 +203,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
               <PieTooltip
                 customActionLabel={customActionLabel}
                 showActionLabelForNull={false}
+                showActionHint={isInteractive}
               />
             }
             animationDuration={0}

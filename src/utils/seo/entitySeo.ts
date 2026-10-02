@@ -16,11 +16,10 @@ import { DEFAULT_OG_IMAGE } from "@/utils/seo";
  *   - Similar to municipalities, should include region name, emissions data, Paris Agreement status
  *   - See RegionDetailPage.tsx for data structure
  *
- * Note: Ranked list pages and sector pages use route-level SEO (handled in routes.ts):
+ * Note: Ranked list pages use route-level SEO (handled in routes.ts):
  * - /companies (companiesOverviewPage)
  * - /municipalities (MunicipalitiesOverviewPage)
  * - /regions (regionalOverviewPage)
- * - /companies/sectors (CompaniesSectorsPage)
  * These should be handled in routes.ts with getSeoForRoute() rather than entitySeo.ts
  */
 

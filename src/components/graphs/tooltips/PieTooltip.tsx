@@ -24,6 +24,7 @@ interface PieTooltipProps {
   label?: string;
   customActionLabel?: string;
   showActionLabelForNull?: boolean;
+  showActionHint?: boolean;
   showPercentage?: boolean;
   percentageLabel?: string;
 }
@@ -53,6 +54,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
   payload,
   customActionLabel,
   showActionLabelForNull = true,
+  showActionHint = true,
   showPercentage = true,
   percentageLabel,
 }) => {
@@ -75,6 +77,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
   const safeValue = value != null ? value : 0;
   const percentage = computePercent(safeValue, data?.total, currentLanguage);
   const actionHint =
+    showActionHint &&
     (data?.key !== null || showActionLabelForNull) &&
     getActionHint(customActionLabel, isMobile, t);
 
