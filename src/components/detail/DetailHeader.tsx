@@ -25,7 +25,7 @@ export interface DetailHeaderProps {
   headerChip?: ReactNode;
 }
 
-function DetailStatItem({ stat }: { stat: DetailStat }) {
+function DetailStatItem({ stat, dense }: { stat: DetailStat; dense: boolean }) {
   return (
     <OverviewStat
       variant="detail"
@@ -36,15 +36,23 @@ function DetailStatItem({ stat }: { stat: DetailStat }) {
       info={stat.info}
       infoText={stat.infoText}
       caption={stat.caption}
+      dense={dense}
       useFlex1={false}
     />
   );
 }
 
-function supportingGridClass(count: number) {
-  if (count >= 3) return "grid-cols-1 lg:grid-cols-3";
-  if (count === 2) return "grid-cols-1 md:grid-cols-2";
-  return "grid-cols-1";
+function statsGridClass(count: number) {
+  if (count >= 4) {
+    return "grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4 xl:gap-10";
+  }
+  if (count === 3) {
+    return "grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12";
+  }
+  if (count === 2) {
+    return "grid-cols-1 gap-8 md:grid-cols-2 md:gap-12";
+  }
+  return "grid-cols-1 gap-8";
 }
 
 export function DetailHeader({
@@ -55,7 +63,7 @@ export function DetailHeader({
   supplementalData,
   headerChip,
 }: DetailHeaderProps) {
-  const [primary, ...supporting] = stats;
+  const dense = stats.length >= 4;
 
   return (
     <SectionWithHelp helpItems={helpItems}>
@@ -72,21 +80,10 @@ export function DetailHeader({
           />
         )}
       </div>
-      {primary && (
-        <div className="mt-8 max-w-2xl">
-          <DetailStatItem stat={primary} />
-        </div>
-      )}
-      {supporting.length > 0 && (
-        <div
-          className={cn(
-            "grid gap-8 md:gap-16",
-            primary ? "mt-8 md:mt-12" : "mt-8",
-            supportingGridClass(supporting.length),
-          )}
-        >
-          {supporting.map((stat, index) => (
-            <DetailStatItem key={index} stat={stat} />
+      {stats.length > 0 && (
+        <div className={cn("mt-8 grid", statsGridClass(stats.length))}>
+          {stats.map((stat, index) => (
+            <DetailStatItem key={index} stat={stat} dense={dense} />
           ))}
         </div>
       )}

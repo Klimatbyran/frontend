@@ -17,6 +17,8 @@ interface OverviewStatProps {
   infoText?: string;
   /** Short plain-language line under the value. */
   caption?: string;
+  /** Slightly smaller type so four headline numbers fit on one desktop row. */
+  dense?: boolean;
   useFlex1?: boolean;
 }
 
@@ -31,6 +33,7 @@ export function OverviewStat({
   info = false,
   infoText,
   caption,
+  dense = false,
   useFlex1 = true,
 }: OverviewStatProps) {
   const isDetailVariant = variant === "detail";
@@ -41,7 +44,11 @@ export function OverviewStat({
       if (isDetailVariant) {
         return (
           <div className="flex gap-2">
-            <Text className="text-lg md:text-xl">{label}</Text>
+            <Text
+              className={dense ? "text-base md:text-lg" : "text-lg md:text-xl"}
+            >
+              {label}
+            </Text>
             {info && infoText && (
               <span className="text-grey">
                 <InfoTooltip ariaLabel="Additional information">
@@ -62,12 +69,24 @@ export function OverviewStat({
     if (isDetailVariant && unit) {
       // Detail variant: separate Text components in flex container
       return (
-        <div className="flex items-baseline space-x-2">
-          <Text className={cn("text-4xl md:text-6xl", valueClassName)}>
+        <div className="flex flex-wrap items-baseline gap-x-2">
+          <Text
+            className={cn(
+              dense ? "text-4xl xl:text-5xl" : "text-4xl md:text-6xl",
+              valueClassName,
+            )}
+          >
             {value}
           </Text>
           {unit && (
-            <Text className="text-md md:text-2xl text-grey">{unit}</Text>
+            <Text
+              className={cn(
+                "text-grey",
+                dense ? "text-lg" : "text-md md:text-2xl",
+              )}
+            >
+              {unit}
+            </Text>
           )}
         </div>
       );
@@ -101,9 +120,7 @@ export function OverviewStat({
       </div>
       {renderValue()}
       {caption && (
-        <Text className="mt-2 max-w-prose text-base text-grey md:text-lg">
-          {caption}
-        </Text>
+        <Text className="mt-2 text-sm text-grey md:text-base">{caption}</Text>
       )}
     </div>
   );

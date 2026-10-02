@@ -62,72 +62,58 @@ export function CompanyOverviewMainStats({
   const meetsParisDisplay = getMeetsParisDisplay(meetsParis, t);
 
   return (
-    <div className="mb-10 space-y-8 md:mb-16 md:space-y-12">
-      <div className="max-w-2xl">
-        <OverviewStat
-          label={t("detailPage.meetsParisGoal")}
-          value={meetsParisDisplay.value}
-          valueClassName={meetsParisDisplay.valueClassName}
-          caption={meetsParisDisplay.caption}
-        />
-      </div>
+    <div className="mb-8 grid grid-cols-1 gap-8 md:mb-12 md:grid-cols-3 md:items-start md:gap-12">
+      <OverviewStat
+        label={t("detailPage.meetsParisGoal")}
+        value={meetsParisDisplay.value}
+        valueClassName={meetsParisDisplay.valueClassName}
+        caption={meetsParisDisplay.caption}
+      />
+      <OverviewStat
+        label={
+          <div className="flex items-center gap-2">
+            <Text variant="body" className="lg:text-lg md:text-base text-sm">
+              {t("companies.overview.totalEmissions")} {periodYear}
+            </Text>
+            {sectorCode === "40" && <FinancialsTooltip />}
+          </div>
+        }
+        value={
+          !calculatedTotalEmissions
+            ? t("companies.overview.noData")
+            : formatEmissionsAbsolute(calculatedTotalEmissions, currentLanguage)
+        }
+        valueClassName={
+          !calculatedTotalEmissions ? "text-grey" : "text-orange-2"
+        }
+        unit={calculatedTotalEmissions ? t("emissionsUnit") : undefined}
+        showAiIcon={totalEmissionsAIGenerated}
+      />
 
-      <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-16">
-        <OverviewStat
-          label={
-            <div className="flex items-center gap-2">
-              <Text variant="body" className="lg:text-lg md:text-base text-sm">
-                {t("companies.overview.totalEmissions")} {periodYear}
-              </Text>
-              {sectorCode === "40" && <FinancialsTooltip />}
-            </div>
-          }
-          value={
-            !calculatedTotalEmissions
-              ? t("companies.overview.noData")
-              : formatEmissionsAbsolute(
-                  calculatedTotalEmissions,
-                  currentLanguage,
-                )
-          }
-          valueClassName={
-            !calculatedTotalEmissions ? "text-grey" : "text-orange-2"
-          }
-          unit={calculatedTotalEmissions ? t("emissionsUnit") : undefined}
-          showAiIcon={totalEmissionsAIGenerated}
-        />
-
-        <OverviewStat
-          label={
-            <div className="flex items-center gap-2">
-              <Text className="mb-1 md:mb-2 lg:text-lg md:text-base sm:text-sm">
-                {t("companies.overview.changeSinceLastYear")}
-              </Text>
-              <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
-            </div>
-          }
-          value={
-            yearOverYearChange !== null ? (
-              <span
-                className={
-                  yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
-                }
-              >
-                {formatPercentChange(
-                  yearOverYearChange,
-                  currentLanguage,
-                  false,
-                )}
-              </span>
-            ) : (
-              <span className="text-grey">
-                {t("companies.overview.noData")}
-              </span>
-            )
-          }
-          showAiIcon={yearOverYearAIGenerated}
-        />
-      </div>
+      <OverviewStat
+        label={
+          <div className="flex items-center gap-2">
+            <Text className="mb-1 md:mb-2 lg:text-lg md:text-base sm:text-sm">
+              {t("companies.overview.changeSinceLastYear")}
+            </Text>
+            <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
+          </div>
+        }
+        value={
+          yearOverYearChange !== null ? (
+            <span
+              className={
+                yearOverYearChange < 0 ? "text-orange-2" : "text-pink-3"
+              }
+            >
+              {formatPercentChange(yearOverYearChange, currentLanguage, false)}
+            </span>
+          ) : (
+            <span className="text-grey">{t("companies.overview.noData")}</span>
+          )
+        }
+        showAiIcon={yearOverYearAIGenerated}
+      />
     </div>
   );
 }
