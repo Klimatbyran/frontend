@@ -1712,6 +1712,7 @@
         "parisVerdict": "Paris",
         "bathtubBridge": "Ackumulation",
         "bathtub": "Badkaret",
+        "parisBudgetBathtub": "Parisbudget",
         "conclusion": "Slutsats"
       },
       "nav": {
@@ -1794,6 +1795,16 @@
       "bathtubBridge": {
         "title": "Vissa utsläpp har minskat, andra har ökat. Sammantaget går utsläppsminskningarna för långsamt ner mot noll.",
         "body": "Men årlig statistik döljer också en viktig detalj: utsläppen ackumuleras över tid i atmosfären."
+      },
+      "parisBudgetBathtub": {
+        "title": "Det här badkaret rymmer allt Sverige har kvar",
+        "intro": "{{budget}} — Sveriges andel av det världen fortfarande kan släppa ut och hålla 1,5°C inom räckhåll. Dra i året för att hälla i det vi är på väg att släppa ut.",
+        "parisLimitLabel": "Parisgräns",
+        "percentUsed": "av budgeten använd",
+        "yearSlider": "År",
+        "chartAria": "År {{year}}: Sveriges bana har använt {{percent}} procent av den återstående Parisbudgeten.",
+        "overflow": "Det flödade över {{year}}. Kranen står på till 2050.",
+        "withinBudget": "Fortfarande inom budgeten — men bara till {{year}}."
       },
       "conclusion": {
         "title": "Sveriges utsläpp är större än vad vi tror, de minskar för långsamt och våra ackumulerade utsläpp är stora",
