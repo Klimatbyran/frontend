@@ -20,13 +20,14 @@ import {
   ChartYearControls,
   EnhancedLegend,
   getChartContainerProps,
-  getResponsiveChartMargin,
   getXAxisProps,
-  getYAxisProps,
   type LegendItem,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import {
+  formatEmissionsAbsolute,
+  formatEmissionsAbsoluteCompact,
+} from "@/utils/formatting/localization";
 import {
   buildTwoFuturesRows,
   sumFutureOvershootTonnes,
@@ -87,8 +88,7 @@ function TwoFuturesTooltip({
                 {name}
               </span>
               <span className="text-white">
-                {formatEmissionsAbsolute(entry.value!, currentLanguage)}{" "}
-                {unit}
+                {formatEmissionsAbsolute(entry.value!, currentLanguage)} {unit}
               </span>
             </li>
           );
@@ -98,9 +98,7 @@ function TwoFuturesTooltip({
   );
 }
 
-function createTwoFuturesLegendItems(
-  t: (key: string) => string,
-): LegendItem[] {
+function createTwoFuturesLegendItems(t: (key: string) => string): LegendItem[] {
   return [
     {
       name: t("detailPage.graph.pastPath"),
@@ -169,15 +167,13 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
           <ComposedChart
             data={filteredRows}
             margin={{
-              ...getResponsiveChartMargin(isMobile),
-              left: isMobile ? 8 : 16,
+              top: 20,
               right: 12,
+              left: isMobile ? 0 : 4,
+              bottom: 8,
             }}
           >
-            <CartesianGrid
-              stroke="rgba(255,255,255,0.08)"
-              vertical={false}
-            />
+            <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
             <XAxis
               {...getXAxisProps(
                 "year",
@@ -188,14 +184,19 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               tickFormatter={(year) => String(year)}
             />
             <YAxis
-              {...getYAxisProps(currentLanguage, [0, "auto"])}
-              width={isMobile ? 48 : 56}
+              stroke="var(--grey)"
+              tickLine={false}
+              axisLine={false}
+              domain={[0, "auto"]}
+              width={isMobile ? 56 : 72}
+              tick={{ fill: "var(--grey)", fontSize: 11 }}
+              tickFormatter={(value: number) =>
+                formatEmissionsAbsoluteCompact(value, currentLanguage)
+              }
             />
 
             <Tooltip
-              content={
-                <TwoFuturesTooltip unit={unit} labels={tooltipLabels} />
-              }
+              content={<TwoFuturesTooltip unit={unit} labels={tooltipLabels} />}
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 

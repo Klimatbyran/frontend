@@ -18,6 +18,11 @@ export function buildTwoFuturesRows(
   data: DataPoint[],
   currentYear: number,
 ): TwoFuturesRow[] {
+  const lastReportedYear = data.reduce((max, point) => {
+    if (point.total == null) return max;
+    return Math.max(max, point.year);
+  }, 0);
+
   return [...data]
     .sort((a, b) => a.year - b.year)
     .map((point) => {
@@ -25,18 +30,20 @@ export function buildTwoFuturesRows(
 
       let history: number | undefined;
       if (isNowOrPast) {
-        history = point.total ?? point.approximated;
+        if (point.year <= lastReportedYear) {
+          history = point.total ?? undefined;
+        } else {
+          history = point.approximated ?? undefined;
+        }
       }
 
       const trend =
-        point.year >= currentYear ? point.trend ?? undefined : undefined;
+        point.year >= currentYear ? (point.trend ?? undefined) : undefined;
       const paris =
-        point.year >= currentYear ? point.carbonLaw ?? undefined : undefined;
+        point.year >= currentYear ? (point.carbonLaw ?? undefined) : undefined;
 
       const gap =
-        point.year >= currentYear &&
-        trend !== undefined &&
-        paris !== undefined
+        point.year >= currentYear && trend !== undefined && paris !== undefined
           ? Math.max(0, trend - paris)
           : undefined;
 
