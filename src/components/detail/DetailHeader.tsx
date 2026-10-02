@@ -27,7 +27,17 @@ export interface DetailHeaderProps {
   headerChip?: ReactNode;
 }
 
-function DetailStatItem({ stat, dense }: { stat: DetailStat; dense: boolean }) {
+function DetailStatItem({
+  stat,
+  dense,
+  alignBenchmarks,
+  reserveCaptionRow,
+}: {
+  stat: DetailStat;
+  dense: boolean;
+  alignBenchmarks: boolean;
+  reserveCaptionRow: boolean;
+}) {
   return (
     <OverviewStat
       variant="detail"
@@ -41,6 +51,8 @@ function DetailStatItem({ stat, dense }: { stat: DetailStat; dense: boolean }) {
       dense={dense}
       useFlex1={false}
       benchmark={stat.benchmark}
+      alignBenchmarks={alignBenchmarks}
+      reserveCaptionRow={reserveCaptionRow}
     />
   );
 }
@@ -67,6 +79,8 @@ export function DetailHeader({
   headerChip,
 }: DetailHeaderProps) {
   const dense = stats.length >= 4;
+  const alignBenchmarks = stats.some((stat) => stat.benchmark);
+  const reserveCaptionRow = stats.some((stat) => stat.caption);
 
   return (
     <SectionWithHelp helpItems={helpItems}>
@@ -84,9 +98,20 @@ export function DetailHeader({
         )}
       </div>
       {stats.length > 0 && (
-        <div className={cn("mt-8 grid", statsGridClass(stats.length))}>
+        <div
+          className={cn(
+            "mt-8 grid items-stretch",
+            statsGridClass(stats.length),
+          )}
+        >
           {stats.map((stat, index) => (
-            <DetailStatItem key={index} stat={stat} dense={dense} />
+            <DetailStatItem
+              key={index}
+              stat={stat}
+              dense={dense}
+              alignBenchmarks={alignBenchmarks}
+              reserveCaptionRow={reserveCaptionRow}
+            />
           ))}
         </div>
       )}

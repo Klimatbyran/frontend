@@ -24,7 +24,15 @@ interface OverviewStatProps {
   useFlex1?: boolean;
   /** Comparison that shows whether the number is high, low, good, or bad. */
   benchmark?: KpiBenchmarkView | null;
+  /** Reserve a caption row and pin benchmark bars to the same baseline in a grid row. */
+  alignBenchmarks?: boolean;
+  /** Keep caption row height even when this stat has no caption (for peer columns). */
+  reserveCaptionRow?: boolean;
 }
+
+const DETAIL_VALUE = "text-4xl font-light leading-none tracking-tighter tabular-nums xl:text-5xl";
+const DETAIL_VALUE_RELAXED = "text-4xl font-light leading-none tracking-tighter tabular-nums md:text-5xl";
+const DETAIL_UNIT = "text-lg text-grey";
 
 export function OverviewStat({
   label,
@@ -40,8 +48,13 @@ export function OverviewStat({
   dense = false,
   useFlex1 = true,
   benchmark,
+  alignBenchmarks = false,
+  reserveCaptionRow = false,
 }: OverviewStatProps) {
   const isDetailVariant = variant === "detail";
+  const valueSizeClass = dense ? DETAIL_VALUE : DETAIL_VALUE_RELAXED;
+  const showCaptionRow =
+    isDetailVariant && (caption || (alignBenchmarks && reserveCaptionRow));
 
   // Handle label with InfoTooltip support
   const renderLabel = () => {
@@ -55,7 +68,7 @@ export function OverviewStat({
               {label}
             </Text>
             {info && infoText && (
-              <span className="text-grey">
+              <span className="shrink-0 text-grey">
                 <InfoTooltip ariaLabel="Additional information">
                   <p>{infoText}</p>
                 </InfoTooltip>
@@ -72,27 +85,21 @@ export function OverviewStat({
   // Handle value and unit rendering
   const renderValue = () => {
     if (isDetailVariant && unit) {
-      // Detail variant: separate Text components in flex container
       return (
         <div className="flex flex-wrap items-baseline gap-x-2">
-          <Text
-            className={cn(
-              dense ? "text-4xl xl:text-5xl" : "text-4xl md:text-6xl",
-              valueClassName,
-            )}
-          >
-            {value}
+          <Text className={cn(valueSizeClass, valueClassName)}>{value}</Text>
+          <Text className={cn(DETAIL_UNIT, dense ? "" : "md:text-xl")}>
+            {unit}
           </Text>
-          {unit && (
-            <Text
-              className={cn(
-                "text-grey",
-                dense ? "text-lg" : "text-md md:text-2xl",
-              )}
-            >
-              {unit}
-            </Text>
-          )}
+        </div>
+      );
+    }
+
+    if (isDetailVariant) {
+      return (
+        <div className="flex items-end gap-2">
+          <Text className={cn(valueSizeClass, valueClassName)}>{value}</Text>
+          {showAiIcon && <AiIcon size="md" />}
         </div>
       );
     }
@@ -118,16 +125,67 @@ export function OverviewStat({
     );
   };
 
+  const labelBlock = (
+    <div
+      className={cn(
+        isDetailVariant && alignBenchmarks && "min-h-[2.75rem] md:min-h-[3rem]",
+      )}
+    >
+      <div className={isDetailVariant ? "" : "mb-1 md:mb-2"}>{renderLabel()}</div>
+    </div>
+  );
+
+  const valueBlock = (
+    <div
+      className={cn(
+        isDetailVariant &&
+          alignBenchmarks &&
+          "flex min-h-[3.25rem] items-end xl:min-h-[3.5rem]",
+      )}
+    >
+      {renderValue()}
+    </div>
+  );
+
+  const captionBlock = showCaptionRow ? (
+    <Text
+      className={cn(
+        "text-sm text-grey md:text-base",
+        alignBenchmarks && "min-h-[2.5rem] md:min-h-[2.75rem]",
+        !caption && "invisible",
+      )}
+      aria-hidden={!caption}
+    >
+      {caption || "\u00a0"}
+    </Text>
+  ) : caption ? (
+    <Text className="mt-2 text-sm text-grey md:text-base">{caption}</Text>
+  ) : null;
+
+  const benchmarkBlock = benchmark ? (
+    <KpiBenchmarkChart
+      benchmark={benchmark}
+      className={alignBenchmarks ? "mt-0" : undefined}
+    />
+  ) : null;
+
+  if (isDetailVariant && alignBenchmarks) {
+    return (
+      <div className={cn(useFlex1 && "flex-1", "flex h-full min-w-0 flex-col", className)}>
+        {labelBlock}
+        {valueBlock}
+        {captionBlock}
+        <div className="mt-auto min-h-[2.625rem]">{benchmarkBlock}</div>
+      </div>
+    );
+  }
+
   return (
     <div className={cn(useFlex1 && "flex-1", "min-w-0", className)}>
-      <div className={isDetailVariant ? "" : "mb-1 md:mb-2"}>
-        {renderLabel()}
-      </div>
-      {renderValue()}
-      {caption && (
-        <Text className="mt-2 text-sm text-grey md:text-base">{caption}</Text>
-      )}
-      {benchmark && <KpiBenchmarkChart benchmark={benchmark} />}
+      {labelBlock}
+      {valueBlock}
+      {captionBlock}
+      {benchmarkBlock}
     </div>
   );
 }

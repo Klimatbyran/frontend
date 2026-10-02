@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
 import { DataGuideItemId } from "@/data-guide/items";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { KpiBenchmarkChart } from "@/components/detail/KpiBenchmarkChart";
+import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import type { KpiBenchmarkView } from "@/utils/detail/kpiBenchmark";
+import { cn } from "@/lib/utils";
 
 interface DetailSectionProps {
   title: string;
@@ -18,20 +18,30 @@ interface DetailSectionProps {
 }
 
 export function DetailSection({ title, items, helpItems }: DetailSectionProps) {
+  const alignBenchmarks = items.some((item) => item.benchmark);
+
   return (
     <SectionWithHelp helpItems={helpItems}>
       <div className="gap-8 md:gap-16">
         <Text variant={"h3"}>{title}</Text>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-8">
+      <div
+        className={cn(
+          "mt-8 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-16",
+          alignBenchmarks && "items-stretch",
+        )}
+      >
         {items.map((item, index) => (
-          <div key={index}>
-            <Text className="text-lg md:text-xl">{item.title}</Text>
-            <Text className={cn("text-4xl md:text-6xl", item.valueClassName)}>
-              {item.value}
-            </Text>
-            {item.benchmark && <KpiBenchmarkChart benchmark={item.benchmark} />}
-          </div>
+          <OverviewStat
+            key={index}
+            variant="detail"
+            label={item.title}
+            value={item.value}
+            valueClassName={item.valueClassName}
+            benchmark={item.benchmark}
+            useFlex1={false}
+            alignBenchmarks={alignBenchmarks}
+          />
         ))}
       </div>
     </SectionWithHelp>

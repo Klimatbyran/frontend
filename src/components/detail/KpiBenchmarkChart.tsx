@@ -1,3 +1,4 @@
+import type React from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
@@ -51,14 +52,45 @@ function numericGradient(view: NumericBenchmarkView) {
   return `linear-gradient(to right, ${left} 0%, ${left} ${split}%, ${right} ${split}%, ${right} 100%)`;
 }
 
-function NumericBenchmark({ view }: { view: NumericBenchmarkView }) {
+function BenchmarkShell({
+  primary,
+  tone,
+  className,
+  children,
+}: {
+  primary: string;
+  tone: BenchmarkTone;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={cn("min-w-0", className ?? "mt-2")}>
+      <Text
+        className={cn(
+          "mb-1.5 line-clamp-1 min-h-[1.25rem] text-sm",
+          TONE_TEXT[tone],
+        )}
+      >
+        {primary}
+      </Text>
+      {children}
+    </div>
+  );
+}
+
+function NumericBenchmark({
+  view,
+  className,
+}: {
+  view: NumericBenchmarkView;
+  className?: string;
+}) {
   const { t } = useTranslation();
   const primary = phraseText(t, view.primary);
   const showMedian = view.higherIsBetter === null;
 
   return (
-    <div className="mt-2 min-w-0 space-y-1.5">
-      <Text className={cn("text-sm", TONE_TEXT[view.tone])}>{primary}</Text>
+    <BenchmarkShell primary={primary} tone={view.tone} className={className}>
       <div role="img" aria-label={primary} className="px-1">
         <div className="relative h-3">
           <div
@@ -82,11 +114,17 @@ function NumericBenchmark({ view }: { view: NumericBenchmarkView }) {
           />
         </div>
       </div>
-    </div>
+    </BenchmarkShell>
   );
 }
 
-function BooleanBenchmark({ view }: { view: BooleanBenchmarkView }) {
+function BooleanBenchmark({
+  view,
+  className,
+}: {
+  view: BooleanBenchmarkView;
+  className?: string;
+}) {
   const { t } = useTranslation();
   const primary = phraseText(t, view.primary);
   const yesIsGood = view.higherIsBetter;
@@ -94,13 +132,10 @@ function BooleanBenchmark({ view }: { view: BooleanBenchmarkView }) {
   const noColor = yesIsGood ? "var(--pink-3)" : "var(--green-3)";
 
   return (
-    <div className="mt-2 min-w-0 space-y-1.5">
-      <Text className={cn("text-sm", TONE_TEXT[view.tone])}>{primary}</Text>
-      <div
-        role="img"
-        aria-label={primary}
-        className="flex h-1.5 overflow-hidden rounded-full"
-      >
+    <BenchmarkShell primary={primary} tone={view.tone} className={className}>
+      <div role="img" aria-label={primary} className="px-1">
+        <div className="relative flex h-3 items-center">
+          <div className="flex h-1.5 w-full overflow-hidden rounded-full">
         <div
           style={{
             width: `${view.trueShare * 100}%`,
@@ -114,18 +149,22 @@ function BooleanBenchmark({ view }: { view: BooleanBenchmarkView }) {
             opacity: 0.45,
           }}
         />
+          </div>
+        </div>
       </div>
-    </div>
+    </BenchmarkShell>
   );
 }
 
 export function KpiBenchmarkChart({
   benchmark,
+  className,
 }: {
   benchmark: KpiBenchmarkView;
+  className?: string;
 }) {
   if (benchmark.kind === "boolean") {
-    return <BooleanBenchmark view={benchmark} />;
+    return <BooleanBenchmark view={benchmark} className={className} />;
   }
-  return <NumericBenchmark view={benchmark} />;
+  return <NumericBenchmark view={benchmark} className={className} />;
 }
