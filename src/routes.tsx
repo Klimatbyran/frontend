@@ -35,6 +35,7 @@ import {
   SupportPage,
   TrendAnalysisDashboard,
   UnauthorizedErrorPage,
+  UxReviewPage,
   ValidationDashboard,
 } from "./lazyPages";
 import { AuthCallback } from "./pages/AuthCallback";
@@ -155,6 +156,8 @@ function ContentRoutes({ basePath }: { basePath: string }) {
         element={<NewsLetterArchivePage />}
       />
       <Route path={`${basePath}/privacy`} element={<PrivacyPage />} />
+      {/* Design proposal deck, deliberately unlinked from navigation. */}
+      <Route path={`${basePath}/ux-review`} element={<UxReviewPage />} />
       <Route
         path={`${basePath}/data-download`}
         element={<DataDownloadPage />}
