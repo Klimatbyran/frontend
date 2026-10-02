@@ -88,9 +88,7 @@ export function MunicipalityParisBudgetPanel({
                   trendMt: formatMt(trendMton),
                   budgetMt: formatMt(budgetMton),
                 }}
-                components={[
-                  <span key="trend" className="text-green-2" />,
-                ]}
+                components={[<span key="trend" className="text-green-2" />]}
               />
             ) : (
               <Trans
