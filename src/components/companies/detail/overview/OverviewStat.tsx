@@ -3,6 +3,8 @@ import { Text } from "@/components/ui/text";
 import { AiIcon } from "@/components/ui/ai-icon";
 import { cn } from "@/lib/utils";
 import { InfoTooltip } from "@/components/layout/InfoTooltip";
+import { KpiBenchmarkChart } from "@/components/detail/KpiBenchmarkChart";
+import type { KpiBenchmarkView } from "@/utils/detail/kpiBenchmark";
 
 interface OverviewStatProps {
   label: ReactNode;
@@ -20,6 +22,8 @@ interface OverviewStatProps {
   /** Slightly smaller type so four headline numbers fit on one desktop row. */
   dense?: boolean;
   useFlex1?: boolean;
+  /** Comparison that shows whether the number is high, low, good, or bad. */
+  benchmark?: KpiBenchmarkView | null;
 }
 
 export function OverviewStat({
@@ -35,6 +39,7 @@ export function OverviewStat({
   caption,
   dense = false,
   useFlex1 = true,
+  benchmark,
 }: OverviewStatProps) {
   const isDetailVariant = variant === "detail";
 
@@ -122,6 +127,7 @@ export function OverviewStat({
       {caption && (
         <Text className="mt-2 text-sm text-grey md:text-base">{caption}</Text>
       )}
+      {benchmark && <KpiBenchmarkChart benchmark={benchmark} />}
     </div>
   );
 }

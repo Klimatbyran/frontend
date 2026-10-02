@@ -1183,6 +1183,58 @@
       "noData": "Inga data tillgängliga"
     }
   },
+  "kpiBenchmark": {
+    "amongTheBest": "Bland de bästa",
+    "amongTheWorst": "Bland de sämsta",
+    "bestOfPeers": "Bäst av {{peers}}",
+    "worstOfPeers": "Sämst av {{peers}}",
+    "betterThanReference": "Bättre än {{reference}}",
+    "worseThanReference": "Sämre än {{reference}}",
+    "similarToReference": "Nära {{reference}}",
+    "betterThanShare": "Bättre än {{percent}} % av {{peers}}",
+    "worseThanShare": "Sämre än {{percent}} % av {{peers}}",
+    "amongTheHighest": "Bland de högsta",
+    "amongTheLowest": "Bland de lägsta",
+    "highestOfPeers": "Högst av {{peers}}",
+    "lowestOfPeers": "Lägst av {{peers}}",
+    "higherThanReference": "Högre än {{reference}}",
+    "lowerThanReference": "Lägre än {{reference}}",
+    "higherThanShare": "Högre än {{percent}} % av {{peers}}",
+    "lowerThanShare": "Lägre än {{percent}} % av {{peers}}",
+    "booleanAhead": "Ja — före de flesta {{peers}}",
+    "booleanWithMost": "Ja, som de flesta {{peers}}",
+    "booleanBehind": "Nej — efter de flesta {{peers}}",
+    "booleanWithFew": "Nej, som de flesta {{peers}}",
+    "booleanUnknown": "Inte tillräckligt med data. {{percent}} % av {{peers}} är ja",
+    "shareOfPeers": "{{percent}} % av {{peers}}",
+    "tiedForBest": "Delar förstaplatsen bland {{peers}}",
+    "tiedForWorst": "Delar sistaplatsen bland {{peers}}",
+    "legendYou": "Här",
+    "legendAverage": "Median",
+    "legendAll": "Alla",
+    "smallest": "Minst",
+    "largest": "Störst",
+    "peers": {
+      "municipalities": "kommunerna",
+      "municipalitiesInRegion": "kommunerna i länet",
+      "regions": "länen",
+      "companies": "företagen",
+      "companiesInIndustry": "företagen i branschen",
+      "companiesInSector": "företagen i sektorn"
+    },
+    "reference": {
+      "region": "regionens median",
+      "industry": "branschmedianen",
+      "sector": "sektormedianen",
+      "all": "medianen"
+    },
+    "referenceShort": {
+      "region": "Län",
+      "industry": "Bransch",
+      "sector": "Sektor",
+      "all": "Alla"
+    }
+  },
   "municipalitiesOverviewPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",

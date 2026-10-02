@@ -4,6 +4,7 @@ import { OverviewStat } from "@/components/companies/detail/overview/OverviewSta
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
 import { cn } from "@/lib/utils";
+import type { KpiBenchmarkView } from "@/utils/detail/kpiBenchmark";
 
 export interface DetailStat {
   label: string | ReactNode;
@@ -13,6 +14,7 @@ export interface DetailStat {
   info?: boolean;
   infoText?: string;
   caption?: string;
+  benchmark?: KpiBenchmarkView | null;
 }
 
 export interface DetailHeaderProps {
@@ -38,6 +40,7 @@ function DetailStatItem({ stat, dense }: { stat: DetailStat; dense: boolean }) {
       caption={stat.caption}
       dense={dense}
       useFlex1={false}
+      benchmark={stat.benchmark}
     />
   );
 }

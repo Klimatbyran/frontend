@@ -1132,6 +1132,58 @@
       "noData": "No data available"
     }
   },
+  "kpiBenchmark": {
+    "amongTheBest": "Among the best",
+    "amongTheWorst": "Among the worst",
+    "bestOfPeers": "Best of these {{peers}}",
+    "worstOfPeers": "Worst of these {{peers}}",
+    "betterThanReference": "Better than {{reference}}",
+    "worseThanReference": "Worse than {{reference}}",
+    "similarToReference": "Close to {{reference}}",
+    "betterThanShare": "Better than {{percent}}% of {{peers}}",
+    "worseThanShare": "Worse than {{percent}}% of {{peers}}",
+    "amongTheHighest": "Among the highest",
+    "amongTheLowest": "Among the lowest",
+    "highestOfPeers": "Highest of these {{peers}}",
+    "lowestOfPeers": "Lowest of these {{peers}}",
+    "higherThanReference": "Higher than {{reference}}",
+    "lowerThanReference": "Lower than {{reference}}",
+    "higherThanShare": "Higher than {{percent}}% of {{peers}}",
+    "lowerThanShare": "Lower than {{percent}}% of {{peers}}",
+    "booleanAhead": "Yes — ahead of most {{peers}}",
+    "booleanWithMost": "Yes, like most {{peers}}",
+    "booleanBehind": "No — behind most {{peers}}",
+    "booleanWithFew": "No, like most {{peers}}",
+    "booleanUnknown": "Not enough data. {{percent}}% of {{peers}} are yes",
+    "shareOfPeers": "{{percent}}% of {{peers}}",
+    "tiedForBest": "Tied for best among {{peers}}",
+    "tiedForWorst": "Tied for worst among {{peers}}",
+    "legendYou": "Here",
+    "legendAverage": "Median",
+    "legendAll": "All",
+    "smallest": "Smallest",
+    "largest": "Largest",
+    "peers": {
+      "municipalities": "municipalities",
+      "municipalitiesInRegion": "municipalities in the region",
+      "regions": "regions",
+      "companies": "companies",
+      "companiesInIndustry": "companies in the industry",
+      "companiesInSector": "companies in the sector"
+    },
+    "reference": {
+      "region": "the regional median",
+      "industry": "the industry median",
+      "sector": "the sector median",
+      "all": "the median"
+    },
+    "referenceShort": {
+      "region": "Region",
+      "industry": "Industry",
+      "sector": "Sector",
+      "all": "All"
+    }
+  },
   "municipalitiesOverviewPage": {
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",

@@ -24,6 +24,7 @@ import {
   CompanyOverviewActions,
   CompanyOverviewMainStats,
 } from "./CompanyOverviewParts";
+import { useCompanyDetailBenchmarks } from "@/hooks/companies/useCompanyDetailBenchmarks";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
@@ -75,6 +76,14 @@ export function CompanyOverview({
   const meetsParis = trendAnalysis
     ? calculateMeetsParis(company, trendAnalysis)
     : null;
+  const benchmarks = useCompanyDetailBenchmarks(
+    company,
+    meetsParis,
+    calculatedTotalEmissions,
+    yearOverYearChange,
+    selectedPeriod.economy?.turnover?.value ?? null,
+    selectedPeriod.economy?.employees?.value ?? null,
+  );
 
   return (
     <SectionWithHelp
@@ -109,6 +118,7 @@ export function CompanyOverview({
         yearOverYearChange={yearOverYearChange}
         yearOverYearAIGenerated={!!yearOverYearAIGenerated}
         meetsParis={meetsParis}
+        benchmarks={benchmarks}
       />
 
       <OverviewStatistics
@@ -119,6 +129,7 @@ export function CompanyOverview({
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}
+        benchmarks={benchmarks}
         className="lg:flex lg:justify-between"
       />
     </SectionWithHelp>

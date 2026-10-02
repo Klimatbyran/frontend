@@ -3,6 +3,8 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import { DataGuideItemId } from "@/data-guide/items";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
+import { KpiBenchmarkChart } from "@/components/detail/KpiBenchmarkChart";
+import type { KpiBenchmarkView } from "@/utils/detail/kpiBenchmark";
 
 interface DetailSectionProps {
   title: string;
@@ -10,6 +12,7 @@ interface DetailSectionProps {
     title: string;
     value: ReactNode;
     valueClassName?: string;
+    benchmark?: KpiBenchmarkView | null;
   }>;
   helpItems: DataGuideItemId[];
 }
@@ -27,6 +30,7 @@ export function DetailSection({ title, items, helpItems }: DetailSectionProps) {
             <Text className={cn("text-4xl md:text-6xl", item.valueClassName)}>
               {item.value}
             </Text>
+            {item.benchmark && <KpiBenchmarkChart benchmark={item.benchmark} />}
           </div>
         ))}
       </div>

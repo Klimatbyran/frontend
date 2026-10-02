@@ -6,6 +6,8 @@ import {
   useMunicipalityDetails,
   useMunicipalityDetailHeaderStats,
 } from "@/hooks/municipalities/useMunicipalityDetails";
+import { useMunicipalityBenchmarks } from "@/hooks/municipalities/useMunicipalityBenchmarks";
+import type { MunicipalityBenchmarkSet } from "@/utils/detail/municipalityBenchmarks";
 import { Municipality, transformEmissionsData } from "@/types/municipality";
 import {
   formatEmissionsAbsolute,
@@ -22,6 +24,7 @@ import { PageNoData } from "@/components/pageStates/NoData";
 import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
+import { KpiBenchmarkChart } from "@/components/detail/KpiBenchmarkChart";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
@@ -41,10 +44,12 @@ import { getEntityDetailPath } from "@/utils/routing";
 function MunicipalityLinkCards({
   municipality,
   requirementsInProcurement,
+  benchmarks,
   t,
 }: {
   municipality: Municipality;
   requirementsInProcurement: string;
+  benchmarks: MunicipalityBenchmarkSet | null;
   t: TFunction;
 }) {
   return (
@@ -66,7 +71,11 @@ function MunicipalityLinkCards({
         descriptionClassName={
           municipality.climatePlanYear ? "text-green-3" : "text-pink-3"
         }
-      />
+      >
+        {benchmarks?.climatePlan && (
+          <KpiBenchmarkChart benchmark={benchmarks.climatePlan} />
+        )}
+      </LinkCard>
       <LinkCard
         title={t("municipalityDetailPage.procurementRequirements")}
         description={requirementsInProcurement}
@@ -78,7 +87,11 @@ function MunicipalityLinkCards({
               ? "text-orange-2"
               : "text-pink-3"
         }
-      />
+      >
+        {benchmarks?.procurement && (
+          <KpiBenchmarkChart benchmark={benchmarks.procurement} />
+        )}
+      </LinkCard>
     </DetailLinkCardGrid>
   );
 }
@@ -86,6 +99,7 @@ function MunicipalityLinkCards({
 function getSustainableTransportItems(
   municipality: Municipality,
   currentLanguage: SupportedLanguage,
+  benchmarks: MunicipalityBenchmarkSet | null,
   t: TFunction,
 ) {
   const evcp = municipality.electricVehiclePerChargePoints;
@@ -98,6 +112,7 @@ function getSustainableTransportItems(
         true,
       )}`,
       valueClassName: "text-orange-2",
+      benchmark: benchmarks?.electricCarChange,
     },
     {
       title: t("municipalityDetailPage.electricCarsPerChargePoint"),
@@ -105,11 +120,13 @@ function getSustainableTransportItems(
         ? localizeUnit(evcp, currentLanguage)
         : t("municipalityDetailPage.noChargePoints"),
       valueClassName: evcp && evcp > 10 ? "text-pink-3" : "text-green-3",
+      benchmark: benchmarks?.chargePoints,
     },
     {
       title: t("municipalityDetailPage.bicycleMetrePerCapita"),
       value: localizeUnit(municipality.bicycleMetrePerCapita, currentLanguage),
       valueClassName: "text-orange-2",
+      benchmark: benchmarks?.bicycle,
     },
   ];
 }
@@ -133,10 +150,12 @@ function useMunicipalityPageData(id: string | undefined) {
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : t("noData");
 
+  const benchmarks = useMunicipalityBenchmarks(municipality);
   const headerStats = useMunicipalityDetailHeaderStats(
     municipality,
     lastYear,
     lastYearEmissionsTon,
+    benchmarks,
   );
 
   const requirementsInProcurement = municipality
@@ -165,6 +184,7 @@ function useMunicipalityPageData(id: string | undefined) {
     lastYear,
     lastYearEmissionsTon,
     headerStats,
+    benchmarks,
     requirementsInProcurement,
     emissionsData,
     availableYears,
@@ -205,6 +225,7 @@ export function MunicipalityDetailPage() {
     lastYear,
     lastYearEmissionsTon,
     headerStats,
+    benchmarks,
     requirementsInProcurement,
     emissionsData,
     availableYears,
@@ -277,12 +298,18 @@ export function MunicipalityDetailPage() {
         <MunicipalityLinkCards
           municipality={municipality}
           requirementsInProcurement={requirementsInProcurement}
+          benchmarks={benchmarks}
           t={t}
         />
 
         <DetailSection
           title={t("municipalityDetailPage.sustainableTransport")}
-          items={getSustainableTransportItems(municipality, currentLanguage, t)}
+          items={getSustainableTransportItems(
+            municipality,
+            currentLanguage,
+            benchmarks,
+            t,
+          )}
           helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
         />
       </DetailWrapper>

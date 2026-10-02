@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import {
   formatEmissionsAbsolute,
+  formatEmissionsAbsoluteCompact,
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -8,11 +9,21 @@ import { DetailStat } from "@/components/detail/DetailHeader";
 import { createMeetsParisStat } from "@/components/detail/meetsParisStat";
 import type { EmissionDataPoint } from "@/types/municipality";
 import type { SupportedLanguage } from "@/lib/languageDetection";
+import {
+  buildBooleanBenchmark,
+  buildNumericBenchmark,
+} from "@/utils/detail/kpiBenchmark";
 
 export type TerritoryDetailStatsSource = {
   meetsParis: boolean;
   historicalEmissionChangePercent: number;
   emissions: (EmissionDataPoint | null)[];
+};
+
+export type TerritoryBenchmarkPeer = {
+  historicalEmissionChangePercent: number | null;
+  meetsParis: boolean | null;
+  totalEmissions: number | null;
 };
 
 function createChangeSince2015Stat(
@@ -47,9 +58,21 @@ function createTotalEmissionsStat(
   };
 }
 
+function finiteNumbers(values: Array<number | null | undefined>): number[] {
+  return values.filter(
+    (value): value is number =>
+      typeof value === "number" && Number.isFinite(value),
+  );
+}
+
 export function useTerritoryDetailHeaderStats(
   territory: TerritoryDetailStatsSource | null,
   lastYear: number | undefined,
+  options?: {
+    peers?: TerritoryBenchmarkPeer[];
+    /** Absolute totals are only compared when the peers are the same kind of place. */
+    compareTotalEmissions?: boolean;
+  },
 ) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -58,16 +81,54 @@ export function useTerritoryDetailHeaderStats(
     return [];
   }
 
+  const peers = options?.peers ?? [];
   const lastYearEmissions =
     territory.emissions.find((d) => d?.year === lastYear)?.value ?? 0;
+  const compareTotalEmissions = options?.compareTotalEmissions !== false;
 
-  return [
-    createMeetsParisStat(territory.meetsParis, t),
-    createChangeSince2015Stat(
+  const meetsParis = {
+    ...createMeetsParisStat(territory.meetsParis, t),
+    benchmark: buildBooleanBenchmark({
+      value: territory.meetsParis,
+      peers: peers.map((peer) => peer.meetsParis),
+      higherIsBetter: true,
+      peerGroup: "regions",
+    }),
+  };
+  const change = {
+    ...createChangeSince2015Stat(
       territory.historicalEmissionChangePercent,
       currentLanguage,
       t,
     ),
-    createTotalEmissionsStat(lastYearEmissions, lastYear, currentLanguage, t),
-  ];
+    benchmark: buildNumericBenchmark({
+      value: territory.historicalEmissionChangePercent,
+      peers: finiteNumbers(
+        peers.map((peer) => peer.historicalEmissionChangePercent),
+      ),
+      higherIsBetter: false,
+      peerGroup: "regions",
+      format: (value) => formatPercentChange(value, currentLanguage),
+    }),
+  };
+  const total = {
+    ...createTotalEmissionsStat(
+      lastYearEmissions,
+      lastYear,
+      currentLanguage,
+      t,
+    ),
+    benchmark: compareTotalEmissions
+      ? buildNumericBenchmark({
+          value: lastYearEmissions,
+          peers: finiteNumbers(peers.map((peer) => peer.totalEmissions)),
+          higherIsBetter: null,
+          peerGroup: "regions",
+          format: (value) =>
+            formatEmissionsAbsoluteCompact(value, currentLanguage),
+        })
+      : null,
+  };
+
+  return [meetsParis, change, total];
 }
