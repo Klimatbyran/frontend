@@ -5,6 +5,7 @@ import { NationBathtub } from "@/components/nation/story/NationBathtub";
 import { NationConclusion } from "@/components/nation/story/NationConclusion";
 import { NationEmissionsJourney } from "@/components/nation/story/NationEmissionsJourney";
 import { NationIntroHero } from "@/components/nation/story/NationIntroPunch";
+import { NationParisBudgetBathtub } from "@/components/nation/story/NationParisBudgetBathtub";
 import { NationParisVerdict } from "@/components/nation/story/NationParisVerdict";
 import { NationStackedChart } from "@/components/nation/story/NationStackedChart";
 import { StoryNavChrome } from "@/components/nation/story/StoryNavChrome";
@@ -118,6 +119,8 @@ export function NationStoryPage({
       </FullScreenSection>
 
       <NationBathtub data={metrics.bathtubData} />
+
+      <NationParisBudgetBathtub />
 
       <section
         ref={conclusionRef}

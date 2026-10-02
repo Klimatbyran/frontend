@@ -1662,6 +1662,7 @@
         "parisVerdict": "Paris",
         "bathtubBridge": "Accumulation",
         "bathtub": "The Bathtub",
+        "parisBudgetBathtub": "Paris budget",
         "conclusion": "Conclusion"
       },
       "nav": {
@@ -1744,6 +1745,16 @@
       "bathtubBridge": {
         "title": "Some emissions have fallen, others have risen. Overall, emission reductions are slowing too gradually towards zero.",
         "body": "But annual statistics also hide an important detail: emissions accumulate in the atmosphere over time."
+      },
+      "parisBudgetBathtub": {
+        "title": "This tub holds everything Sweden has left",
+        "intro": "{{budget}} — Sweden's share of what the world can still emit and keep 1.5°C in reach. Drag the year to pour in what we are on track to emit.",
+        "parisLimitLabel": "Paris limit",
+        "percentUsed": "of the budget used",
+        "yearSlider": "Year",
+        "chartAria": "By {{year}}, Sweden's trajectory has used {{percent}} percent of its remaining Paris budget.",
+        "overflow": "It overflowed in {{year}}. The tap stays on until 2050.",
+        "withinBudget": "Still inside the budget — but only until {{year}}."
       },
       "conclusion": {
         "title": "Sweden's emissions are larger than we think, they are falling too slowly, and our accumulated emissions are large",
