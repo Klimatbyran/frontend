@@ -133,7 +133,7 @@
     },
     "esbuild": "0.28.2",
     "linkify-it": "5.0.2",
-    "markdown-it": "14.3.0"
+    "markdown-it": "14.3.1"
   },
   "optionalDependencies": {
     "@unrs/resolver-binding-darwin-arm64": "1.11.1"
