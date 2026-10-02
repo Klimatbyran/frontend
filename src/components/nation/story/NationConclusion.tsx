@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { NATION_STORY_TYPE } from "@/components/nation/story/nationStoryColors";
 import { StoryPreviousSectionButton } from "@/components/nation/story/StoryNavChrome";
 import { StoryShareLinks } from "@/components/nation/story/StoryShareLinks";
@@ -36,6 +37,32 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
       <div className="w-full pt-8 pb-4 story-short:pt-7 story-short:pb-4 md:pt-12 md:pb-2 lg:pt-24">
         <ConclusionStoryRecap metrics={metrics} />
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.4, delay: 0.18 }}
+        className="mx-auto mt-8 max-w-3xl space-y-4 px-4 text-center md:mt-6 md:px-0 lg:mt-8"
+      >
+        <p className={`${NATION_STORY_TYPE.body} text-white`}>
+          {t("nation.story.conclusion.ctaLead")}
+        </p>
+        <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <LocalizedLink
+            to="/data-download"
+            className="rounded-full border border-white/25 px-5 py-2.5 text-sm text-white transition-colors hover:border-white/50 hover:bg-white/5"
+          >
+            {t("nation.story.conclusion.ctaNation")}
+          </LocalizedLink>
+          <LocalizedLink
+            to="/municipalities?kpi=meetsParisGoal"
+            className="rounded-full border border-green-3/40 bg-green-5/20 px-5 py-2.5 text-sm text-green-2 transition-colors hover:border-green-2/60 hover:bg-green-5/30"
+          >
+            {t("nation.story.conclusion.ctaMunicipalities")}
+          </LocalizedLink>
+        </div>
+      </motion.div>
 
       <motion.p
         initial={{ opacity: 0, y: 12 }}
