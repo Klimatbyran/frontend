@@ -1598,7 +1598,8 @@
       "visualisation": "Visualisation",
       "data": "Data",
       "historicalDevelopment": "Historical Development",
-      "ofTotal": "of total"
+      "ofTotal": "of total",
+      "followOnDescription": "Explore the full Scope 3 category breakdown below — a deeper look at where value-chain emissions come from."
     },
     "scopeReportingList": {
       "category": "Category"
@@ -1627,6 +1628,48 @@
         "dark": "Dark"
       },
       "generate": "Generate"
+    },
+    "understandingEmissions": {
+      "title": "Understanding emissions",
+      "subtitle": "A plain-language walkthrough of {{companyName}}'s reported climate footprint for {{year}} — from the total down through each scope.",
+      "notReported": "Not reported",
+      "breakdownAria": "Share of reported emissions by scope",
+      "tabs": {
+        "overview": "The big picture",
+        "scope1": "Scope 1",
+        "scope2": "Scope 2",
+        "scope3": "Scope 3"
+      },
+      "center": {
+        "total": "Total {{year}}",
+        "scope1": "Scope 1",
+        "scope2": "Scope 2",
+        "scope3": "Scope 3"
+      },
+      "overview": {
+        "headline": "One total, three scopes",
+        "body": "Companies break their greenhouse gas footprint into three scopes so you can see what they control directly, what they buy as energy, and what happens across the rest of their value chain. For {{companyName}} in {{year}}, that total is the starting point — then each scope explains a different part of the story.",
+        "bulletScope1": "Scope 1 — emissions from things the company owns or controls, like company vehicles or on-site fuel use.",
+        "bulletScope2": "Scope 2 — emissions from purchased electricity, heat, steam, or cooling.",
+        "bulletScope3": "Scope 3 — everything else in the value chain, often the largest share: suppliers, transport, product use, and more."
+      },
+      "scope1": {
+        "headline": "Direct emissions the company creates",
+        "body": "Scope 1 is the climate impact from sources {{companyName}} owns or controls. In {{year}}, that figure is {{value}}.",
+        "examples": "Typical examples include fuel burned in company vehicles, boilers or furnaces on company sites, and manufacturing processes that release greenhouse gases on the spot."
+      },
+      "scope2": {
+        "headline": "Emissions from purchased energy",
+        "body": "Scope 2 covers the pollution created when producing the energy {{companyName}} buys and uses. In {{year}}, that figure is {{value}}.",
+        "examples": "Think of electricity for offices, stores, or factories, plus purchased heating or cooling — even when the emissions happen at a power plant rather than on site."
+      },
+      "scope3": {
+        "headline": "The wider value chain",
+        "body": "Scope 3 is usually the broadest part of the footprint: emissions linked to suppliers, logistics, product use, investments, and more. For {{companyName}} in {{year}}, the reported Scope 3 total is {{value}}.",
+        "driversTitle": "Largest reported Scope 3 drivers",
+        "driversHint": "These are the biggest category totals this company reported — scroll further down the page for the full interactive breakdown.",
+        "noCategories": "This company has not published a Scope 3 category breakdown for this year, so we can only show the Scope 3 total."
+      }
     }
   },
   "nation": {

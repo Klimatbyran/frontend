@@ -45,8 +45,11 @@ export function Scope3Data({ emissions, className }: Scope3DataProps) {
 
   return (
     <div className={className}>
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8 space-y-2">
         <Text variant="h3">{t("companies.scope3Data.categories")}</Text>
+        <Text className="text-grey md:text-lg">
+          {t("companies.scope3Data.followOnDescription")}
+        </Text>
       </div>
 
       <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
