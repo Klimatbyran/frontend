@@ -1659,6 +1659,7 @@
         "journey": "The Onion",
         "interlude": "Perspective",
         "stacked": "History",
+        "parisVerdict": "Paris",
         "bathtubBridge": "Accumulation",
         "bathtub": "The Bathtub",
         "conclusion": "Conclusion"
@@ -1728,6 +1729,17 @@
         "layerCaption3": "Then we add consumption-based emissions abroad, including private e-commerce imports.",
         "layerCaption4": "And finally the biogenic emissions to show the full picture.",
         "scrubHint": "Swipe across the chart to see values by year"
+      },
+      "parisVerdict": {
+        "eyebrow": "Sweden · {{from}}–{{to}}",
+        "title": "Are we on track for the Paris Agreement?",
+        "verdictNo": "<0>No.</0> We are on course to emit <1>{{ratio}} times</1> what we have left.",
+        "verdictYes": "<0>Yes.</0> At today's pace we stay inside what we have left.",
+        "budgetBar": "What Sweden can still emit and keep 1.5°C in reach",
+        "trendBar": "What we will emit if nothing changes",
+        "budgetSpentMarker": "budget gone by {{year}}",
+        "bodyOffTrack": "On the current path Sweden's emissions fall by roughly {{trendRate}}% a year. To stay inside the budget they would have to fall by about 12% a year, every year, starting now. At today's pace the whole budget is spent by {{budgetYear}} — and we keep emitting for another {{yearsAfter}} years after that.",
+        "bodyOnTrack": "On the current path Sweden's emissions fall by roughly {{rate}}% a year — fast enough to stay inside the remaining budget through 2050."
       },
       "bathtubBridge": {
         "title": "Some emissions have fallen, others have risen. Overall, emission reductions are slowing too gradually towards zero.",
