@@ -51,6 +51,11 @@ export const partners = [
     alt: "ClimateView logo",
   },
   {
+    href: "https://researchersdesk.se/",
+    src: "/logos/partners/researchersdesk-logo.svg",
+    alt: "Researchers desk logo",
+  },
+  {
     href: "https://www.klimatklubben.se/",
     src: "/logos/partners/klimatklubben.svg",
     alt: "Klimatklubben logo",
