@@ -34,130 +34,146 @@
         <section class="hero">
           <p class="entity-type">Municipality in Västerbotten</p>
           <h1 class="entity-name">Umeå</h1>
+          <p class="politics-line">
+            Run by S + MP + V · Climate plan from 2022 · ~132,000 residents
+          </p>
           <div class="verdict verdict-off">
-            <p class="verdict-kicker">The short answer</p>
-            <p class="verdict-answer">Not on track for Paris</p>
+            <p class="verdict-kicker">Paris goal</p>
+            <p class="verdict-answer">Not aligned</p>
             <p class="verdict-explain">
-              Emissions need to fall by about <strong>12% every year</strong>.
-              Umeå is closer to <strong>3% a year</strong> — progress, but too
-              slow for the remaining allowance to 2050.
+              The Paris goal, on this site, means emissions fall by about
+              <strong>12% a year</strong> from 2025. Umeå’s recent trend is
+              closer to <strong>3% a year</strong>.
             </p>
           </div>
-          <div class="snapshots" aria-label="The three questions">
-            <a class="snapshot snapshot-warn" href="#past">
-              <span class="snapshot-q">In the past?</span>
-              <span class="snapshot-a">Down 28% since 2015</span>
-            </a>
-            <a class="snapshot snapshot-warn" href="#future">
-              <span class="snapshot-q">In the future?</span>
-              <span class="snapshot-a">Still far from −12%/year</span>
-            </a>
-            <a class="snapshot snapshot-off" href="#paris">
-              <span class="snapshot-q">Paris aligned?</span>
-              <span class="snapshot-a">No</span>
-            </a>
-          </div>
-        </section>
-
-        <section class="block" id="story-chart">
-          <header class="block-head">
-            <p class="question">The whole picture</p>
-            <h2 class="answer">History, today’s path, and the Paris path — on one timeline</h2>
-            <p class="support">
-              Orange is what actually happened, then “if we keep going.”
-              Green is the Paris path: about <strong>12% less each year</strong> from 2025.
-              The space between the lines is extra emissions.
-            </p>
-          </header>
-          <div class="viz-panel">
-            <div class="legend">
-              <span><i class="swatch orange"></i> Emissions so far, then current trend</span>
-              <span><i class="swatch green dashed"></i> Paris path (−12%/year)</span>
-              <span class="legend-unit">thousand tonnes a year</span>
-            </div>
-            <div class="chart story" data-chart="story" data-series="muni-story"></div>
-            <p class="chart-caption">
-              The grey line marks today. After that, two futures split apart.
-            </p>
-          </div>
+          <nav class="q-nav" aria-label="The three questions">
+            <a href="#past">1. Historically?</a>
+            <a href="#future">2. According to the trend?</a>
+            <a href="#paris">3. Paris goal?</a>
+          </nav>
         </section>
 
         <section class="block" id="past">
           <header class="block-head">
-            <p class="question">How has it gone with emissions?</p>
-            <h2 class="answer">They have come down — slowly</h2>
+            <p class="question">How has it gone with emissions historically?</p>
+            <h2 class="answer">Down about 28% since 2015 — a real cut, not a steep one</h2>
             <p class="support">
-              Local emissions fell from about <strong>290,000 tonnes a year</strong>
-              in 2015 to about <strong>210,000 tonnes</strong> in 2023.
-              That is real progress. It is not a steep drop.
+              Local emissions (produced in Umeå) fell from about
+              <strong>290,000 to 210,000 tonnes a year</strong>.
+              That is faster than Sweden’s municipalities on average — and still
+              a gentle slope.
             </p>
           </header>
-          <div class="callout-grid">
+          <div class="viz-panel">
+            <div class="legend">
+              <span><i class="swatch orange"></i> Emissions produced in Umeå</span>
+              <span class="legend-unit">tonnes a year</span>
+            </div>
+            <div class="chart" data-series="muni-history"></div>
+          </div>
+          <div class="context-grid">
             <div class="stat-card">
-              <span class="callout-label">2015</span>
-              <span class="callout-value">290,000 t</span>
-              <span class="callout-hint">tonnes of CO₂ a year</span>
+              <span class="callout-label">Per resident, produced here</span>
+              <span class="callout-value">1.6 t</span>
+              <span class="callout-hint">210,000 tonnes ÷ 132,000 people</span>
             </div>
             <div class="stat-card">
-              <span class="callout-label">2023</span>
-              <span class="callout-value accent-orange">210,000 t</span>
-              <span class="callout-hint">latest year we have</span>
+              <span class="callout-label">Per resident, from consumption</span>
+              <span class="callout-value accent-orange">~9 t</span>
+              <span class="callout-hint">Swedish average lifestyle footprint</span>
             </div>
             <div class="stat-card">
-              <span class="callout-label">Change</span>
-              <span class="callout-value accent-orange">−28%</span>
-              <span class="callout-hint">over eight years</span>
+              <span class="callout-label">What local politics can touch</span>
+              <span class="callout-value">Transport</span>
+              <span class="callout-hint">~4 in 10 tonnes come from traffic</span>
             </div>
+          </div>
+          <div class="viz-panel compare-panel">
+            <p class="budget-intro">Yearly change since 2015 — Umeå vs Sweden</p>
+            <div class="compare-rows">
+              <div class="compare-row">
+                <span>Umeå</span>
+                <div class="compare-track">
+                  <div class="bar-fill orange" style="--w: 64%"></div>
+                </div>
+                <b class="accent-orange">−3.2%/year</b>
+              </div>
+              <div class="compare-row">
+                <span>Swedish municipalities</span>
+                <div class="compare-track">
+                  <div class="bar-fill grey" style="--w: 44%"></div>
+                </div>
+                <b>−2.2%/year</b>
+              </div>
+            </div>
+            <p class="chart-caption">
+              Better than the average municipality. Still far from the Paris pace.
+            </p>
           </div>
         </section>
 
         <section class="block" id="future">
           <header class="block-head">
-            <p class="question">How is it going in the future?</p>
-            <h2 class="answer">If nothing changes, Umeå stays well above the Paris path</h2>
+            <p class="question">How will it go in the future according to trends?</p>
+            <h2 class="answer">If the last years continue, Umeå stays well above the Paris path</h2>
             <p class="support">
-              Think of it as speed. Paris asks for a fast yearly cut.
-              Umeå’s current speed is much slower.
+              This is <strong>not a political target</strong>. It is the recent
+              trend drawn forward. Green is what about <strong>−12% a year</strong>
+              would look like from 2025.
             </p>
           </header>
-          <div class="pace-grid">
-            <div class="pace-card">
-              <p class="pace-label">Umeå is doing about</p>
-              <p class="pace-value accent-orange">−3%</p>
-              <p class="pace-unit">per year</p>
-              <div class="pace-bar"><span style="--w: 25%" class="fill-orange"></span></div>
+          <div class="viz-panel">
+            <div class="legend">
+              <span><i class="swatch orange"></i> If the trend continues</span>
+              <span><i class="swatch green dashed"></i> Paris path (−12%/year)</span>
+              <span class="legend-unit">tonnes a year</span>
             </div>
-            <div class="pace-card">
-              <p class="pace-label">Paris needs about</p>
-              <p class="pace-value accent-green">−12%</p>
-              <p class="pace-unit">per year</p>
-              <div class="pace-bar"><span style="--w: 100%" class="fill-green"></span></div>
+            <div class="chart tall" data-series="muni-future"></div>
+            <p class="chart-caption">
+              The shaded gap is extra emissions beyond the Paris path.
+            </p>
+          </div>
+          <div class="context-grid">
+            <div class="stat-card">
+              <span class="callout-label">In 2030, on today’s trend</span>
+              <span class="callout-value accent-orange">~168,000 t</span>
+              <span class="callout-hint">still most of today’s level</span>
+            </div>
+            <div class="stat-card">
+              <span class="callout-label">In 2030, on the Paris path</span>
+              <span class="callout-value accent-green">~85,000 t</span>
+              <span class="callout-hint">about half of today</span>
+            </div>
+            <div class="stat-card">
+              <span class="callout-label">The 2030 Paris level arrives</span>
+              <span class="callout-value accent-pink">around 2044</span>
+              <span class="callout-hint">if the current trend holds</span>
             </div>
           </div>
         </section>
 
         <section class="block" id="paris">
           <header class="block-head">
-            <p class="question">Is Umeå Paris aligned?</p>
-            <h2 class="answer accent-pink">No — the remaining allowance would be overspent</h2>
+            <p class="question">Is it aligned with the Paris goal?</p>
+            <h2 class="answer accent-pink">No. The trend overshoots the allowance by more than 2×</h2>
             <p class="support">
-              Alignment is not “does every year match −12%?” It is: if today’s
-              trend continues to 2050, does the <strong>total</strong> fit in
-              the allowance from a 12% yearly cut?
+              We add up 2025–2050 on the trend, and compare that total with the
+              allowance from a <strong>12% yearly cut</strong>. Matching −12%
+              every single year is not required — staying inside the total is.
             </p>
           </header>
           <div class="viz-panel budget">
             <p class="budget-intro">Total emissions 2025–2050</p>
             <div class="budget-bars">
               <div class="budget-row">
-                <span class="budget-label">Allowed (Paris)</span>
+                <span class="budget-label">Paris goal allows</span>
                 <div class="bar-track">
                   <div class="bar-fill green" style="--w: 42%"></div>
                 </div>
                 <span class="budget-num">1.8 million t</span>
               </div>
               <div class="budget-row">
-                <span class="budget-label">If we continue</span>
+                <span class="budget-label">If the trend continues</span>
                 <div class="bar-track">
                   <div class="bar-fill pink" style="--w: 100%"></div>
                 </div>
@@ -165,42 +181,23 @@
               </div>
             </div>
             <p class="budget-verdict">
-              Umeå is heading for <strong>more than twice</strong> what Paris allows,
-              unless cuts get faster.
+              4.3 million tonnes is about <strong>20 years of today’s Umeå
+              emissions</strong>. Paris only leaves room for about
+              <strong>8½ years</strong> at today’s level.
             </p>
           </div>
-        </section>
-
-        <section class="block secondary">
-          <header class="block-head">
-            <p class="question">Where do the emissions come from?</p>
-            <h2 class="answer">Mostly from transport</h2>
-            <p class="support">
-              This is the latest year, split by source. Bigger bar = bigger share.
-            </p>
-          </header>
-          <div class="viz-panel">
-            <div class="source-bars">
-              <div class="source-bar">
-                <span>Transport</span>
-                <div class="mini-track"><div style="--w: 41%; --c: var(--orange-3)"></div></div>
-                <b>41%</b>
-              </div>
-              <div class="source-bar">
-                <span>Industry</span>
-                <div class="mini-track"><div style="--w: 24%; --c: var(--blue-3)"></div></div>
-                <b>24%</b>
-              </div>
-              <div class="source-bar">
-                <span>Agriculture</span>
-                <div class="mini-track"><div style="--w: 18%; --c: var(--blue-2)"></div></div>
-                <b>18%</b>
-              </div>
-              <div class="source-bar">
-                <span>Everything else</span>
-                <div class="mini-track"><div style="--w: 17%; --c: var(--grey)"></div></div>
-                <b>17%</b>
-              </div>
+          <div class="pace-grid">
+            <div class="pace-card">
+              <p class="pace-label">Recent trend</p>
+              <p class="pace-value accent-orange">−3%</p>
+              <p class="pace-unit">per year</p>
+              <div class="pace-bar"><span style="--w: 25%" class="fill-orange"></span></div>
+            </div>
+            <div class="pace-card">
+              <p class="pace-label">Paris goal</p>
+              <p class="pace-value accent-green">−12%</p>
+              <p class="pace-unit">per year</p>
+              <div class="pace-bar"><span style="--w: 100%" class="fill-green"></span></div>
             </div>
           </div>
         </section>
@@ -210,133 +207,119 @@
     <template id="tpl-region">
       <article class="story" data-status="on">
         <section class="hero">
-          <p class="entity-type">Region</p>
+          <p class="entity-type">Region · 49 municipalities</p>
           <h1 class="entity-name">Västra Götaland</h1>
+          <p class="politics-line">
+            ~1.8 million residents · about one fifth of Sweden’s population
+          </p>
           <div class="verdict verdict-on">
-            <p class="verdict-kicker">The short answer</p>
-            <p class="verdict-answer">On track for Paris</p>
+            <p class="verdict-kicker">Paris goal</p>
+            <p class="verdict-answer">Aligned — if the trend holds</p>
             <p class="verdict-explain">
-              Emissions have fallen fast enough that the projected path still
-              fits inside the Paris allowance — a cut of about
-              <strong>12% a year</strong> from 2025.
+              Emissions have fallen fast enough that the projected total still
+              fits the Paris allowance: about <strong>12% a year</strong> from 2025.
             </p>
           </div>
-          <div class="snapshots" aria-label="The three questions">
-            <a class="snapshot snapshot-ok" href="#past">
-              <span class="snapshot-q">In the past?</span>
-              <span class="snapshot-a">Down 41% since 1990</span>
-            </a>
-            <a class="snapshot snapshot-ok" href="#future">
-              <span class="snapshot-q">In the future?</span>
-              <span class="snapshot-a">Pace is close enough</span>
-            </a>
-            <a class="snapshot snapshot-on" href="#paris">
-              <span class="snapshot-q">Paris aligned?</span>
-              <span class="snapshot-a">Yes</span>
-            </a>
-          </div>
-        </section>
-
-        <section class="block" id="story-chart">
-          <header class="block-head">
-            <p class="question">The whole picture</p>
-            <h2 class="answer">A long decline — and a future that still fits the allowance</h2>
-            <p class="support">
-              Green does not have to sit on top of orange every year.
-              What counts is whether the <strong>total</strong> from 2025 to 2050
-              stays inside the Paris allowance.
-            </p>
-          </header>
-          <div class="viz-panel">
-            <div class="legend">
-              <span><i class="swatch orange"></i> Emissions so far, then current trend</span>
-              <span><i class="swatch green dashed"></i> Paris path (−12%/year)</span>
-              <span class="legend-unit">million tonnes a year</span>
-            </div>
-            <div class="chart story" data-chart="story" data-series="region-story"></div>
-            <p class="chart-caption">
-              The two futures both fall. The orange path is high enough in early
-              years, but the total still fits.
-            </p>
-          </div>
+          <nav class="q-nav" aria-label="The three questions">
+            <a href="#past">1. Historically?</a>
+            <a href="#future">2. According to the trend?</a>
+            <a href="#paris">3. Paris goal?</a>
+          </nav>
         </section>
 
         <section class="block" id="past">
           <header class="block-head">
-            <p class="question">How has it gone with emissions?</p>
-            <h2 class="answer">Almost halved since 1990</h2>
+            <p class="question">How has it gone with emissions historically?</p>
+            <h2 class="answer">Almost halved since 1990 — a long, visible decline</h2>
             <p class="support">
-              From about <strong>18 million tonnes a year</strong> down to about
-              <strong>11 million</strong>. The hard part now is keeping that
-              pace as the easy wins run out.
+              From about <strong>18 million to 11 million tonnes a year</strong>.
+              That is a bigger drop than Sweden as a whole over the same period.
             </p>
           </header>
-          <div class="callout-grid">
+          <div class="viz-panel">
+            <div class="legend">
+              <span><i class="swatch orange"></i> Regional emissions</span>
+              <span class="legend-unit">million tonnes a year</span>
+            </div>
+            <div class="chart" data-series="region-history"></div>
+          </div>
+          <div class="context-grid">
             <div class="stat-card">
-              <span class="callout-label">1990</span>
-              <span class="callout-value">18 million t</span>
-              <span class="callout-hint">tonnes of CO₂ a year</span>
+              <span class="callout-label">Share of Sweden’s emissions</span>
+              <span class="callout-value">~20%</span>
+              <span class="callout-hint">in line with its share of population</span>
             </div>
             <div class="stat-card">
-              <span class="callout-label">2023</span>
-              <span class="callout-value accent-green">11 million t</span>
-              <span class="callout-hint">latest year we have</span>
+              <span class="callout-label">Per resident, produced here</span>
+              <span class="callout-value accent-green">6 t</span>
+              <span class="callout-hint">11 million tonnes ÷ 1.8 million people</span>
             </div>
             <div class="stat-card">
-              <span class="callout-label">Change</span>
+              <span class="callout-label">Vs 1990</span>
               <span class="callout-value accent-green">−41%</span>
-              <span class="callout-hint">over three decades</span>
+              <span class="callout-hint">Sweden overall is closer to −35%</span>
             </div>
           </div>
         </section>
 
         <section class="block" id="future">
           <header class="block-head">
-            <p class="question">How is it going in the future?</p>
-            <h2 class="answer">The yearly % is lower than 12% — and that can still be enough</h2>
+            <p class="question">How will it go in the future according to trends?</p>
+            <h2 class="answer">The trend keeps falling. It does not have to hug the green line.</h2>
             <p class="support">
-              A steady cut in tonnes can still clear the allowance, even if the
-              early percentage looks smaller than 12%. The chart above is the
-              picture; these numbers are the speed.
+              Again: this is the recent trend, not a regional climate plan.
+              The green line is the −12%/year reference. What matters later is
+              the <strong>total</strong>, not whether every year matches 12%.
             </p>
           </header>
-          <div class="pace-grid">
-            <div class="pace-card">
-              <p class="pace-label">Region is doing about</p>
-              <p class="pace-value accent-green">−6%</p>
-              <p class="pace-unit">per year</p>
-              <div class="pace-bar"><span style="--w: 50%" class="fill-green"></span></div>
+          <div class="viz-panel">
+            <div class="legend">
+              <span><i class="swatch orange"></i> If the trend continues</span>
+              <span><i class="swatch green dashed"></i> Paris path (−12%/year)</span>
+              <span class="legend-unit">million tonnes a year</span>
             </div>
-            <div class="pace-card">
-              <p class="pace-label">Paris needs about</p>
-              <p class="pace-value accent-green">−12%</p>
-              <p class="pace-unit">per year</p>
-              <div class="pace-bar"><span style="--w: 100%" class="fill-green"></span></div>
+            <div class="chart tall" data-series="region-future"></div>
+          </div>
+          <div class="context-grid">
+            <div class="stat-card">
+              <span class="callout-label">In 2030, on today’s trend</span>
+              <span class="callout-value accent-green">~6.9 Mt</span>
+              <span class="callout-hint">down from 10.7 today</span>
+            </div>
+            <div class="stat-card">
+              <span class="callout-label">In 2030, on the Paris path</span>
+              <span class="callout-value">~4.4 Mt</span>
+              <span class="callout-hint">the reference curve is steeper</span>
+            </div>
+            <div class="stat-card">
+              <span class="callout-label">Why it can still be aligned</span>
+              <span class="callout-value">The total</span>
+              <span class="callout-hint">steady tonne-cuts can still fit the allowance</span>
             </div>
           </div>
         </section>
 
         <section class="block" id="paris">
           <header class="block-head">
-            <p class="question">Is Västra Götaland Paris aligned?</p>
-            <h2 class="answer accent-green">Yes — the projected total fits the allowance</h2>
+            <p class="question">Is it aligned with the Paris goal?</p>
+            <h2 class="answer accent-green">Yes — the projected total fits inside the allowance</h2>
             <p class="support">
-              Add up emissions from 2025 to 2050 on the current trend.
-              That total is still under the Paris allowance.
+              Same test as for municipalities: sum 2025–2050 on the trend, compare
+              with the 12%/year allowance.
             </p>
           </header>
           <div class="viz-panel budget">
             <p class="budget-intro">Total emissions 2025–2050</p>
             <div class="budget-bars">
               <div class="budget-row">
-                <span class="budget-label">Allowed (Paris)</span>
+                <span class="budget-label">Paris goal allows</span>
                 <div class="bar-track">
                   <div class="bar-fill green" style="--w: 100%"></div>
                 </div>
                 <span class="budget-num">95 million t</span>
               </div>
               <div class="budget-row">
-                <span class="budget-label">If we continue</span>
+                <span class="budget-label">If the trend continues</span>
                 <div class="bar-track">
                   <div class="bar-fill orange" style="--w: 78%"></div>
                 </div>
@@ -344,38 +327,31 @@
               </div>
             </div>
             <p class="budget-verdict">
-              About <strong>one fifth of room</strong> remains under the
-              allowance if today’s pace continues.
+              About <strong>21 million tonnes of room</strong> left — roughly
+              <strong>two years</strong> of today’s regional emissions.
             </p>
           </div>
-        </section>
-
-        <section class="block secondary">
-          <header class="block-head">
-            <p class="question">How do municipalities compare?</p>
-            <h2 class="answer">Most are cutting — a few are still rising</h2>
-            <p class="support">Yearly change in local emissions. Green means falling.</p>
-          </header>
-          <div class="viz-panel">
-            <div class="source-bars">
-              <div class="source-bar">
+          <div class="viz-panel compare-panel">
+            <p class="budget-intro">Municipalities: yearly change (a few examples)</p>
+            <div class="compare-rows">
+              <div class="compare-row">
                 <span>Göteborg</span>
-                <div class="mini-track"><div style="--w: 80%; --c: var(--green-3)"></div></div>
+                <div class="compare-track"><div class="bar-fill green" style="--w: 80%"></div></div>
                 <b class="accent-green">−4.8%</b>
               </div>
-              <div class="source-bar">
+              <div class="compare-row">
                 <span>Borås</span>
-                <div class="mini-track"><div style="--w: 52%; --c: var(--green-3)"></div></div>
+                <div class="compare-track"><div class="bar-fill green" style="--w: 52%"></div></div>
                 <b class="accent-green">−3.1%</b>
               </div>
-              <div class="source-bar">
+              <div class="compare-row">
                 <span>Trollhättan</span>
-                <div class="mini-track"><div style="--w: 23%; --c: var(--orange-2)"></div></div>
+                <div class="compare-track"><div class="bar-fill orange" style="--w: 23%"></div></div>
                 <b class="accent-orange">−1.4%</b>
               </div>
-              <div class="source-bar">
+              <div class="compare-row">
                 <span>Skövde</span>
-                <div class="mini-track"><div style="--w: 10%; --c: var(--pink-3)"></div></div>
+                <div class="compare-track"><div class="bar-fill pink" style="--w: 10%"></div></div>
                 <b class="accent-pink">+0.6%</b>
               </div>
             </div>
@@ -387,81 +363,59 @@
     <template id="tpl-company">
       <article class="story" data-status="off">
         <section class="hero">
-          <p class="entity-type">Company · vehicles and machinery</p>
+          <p class="entity-type">Company · vehicles and machinery · listed in Sweden</p>
           <h1 class="entity-name">Volvo Group</h1>
+          <p class="politics-line">
+            The climate debate here is often about trucks on the road — not the factories.
+          </p>
           <div class="verdict verdict-off">
-            <p class="verdict-kicker">The short answer</p>
-            <p class="verdict-answer">Not on track for Paris</p>
+            <p class="verdict-kicker">Paris goal</p>
+            <p class="verdict-answer">Not aligned</p>
             <p class="verdict-explain">
-              Same rule as for cities: future emissions need to fall about
-              <strong>12% every year</strong>. Volvo’s reported trend does not
-              yet fit that allowance through 2050.
+              Same rule as for cities: the future trend should fit a
+              <strong>12% yearly cut</strong> through 2050. Volvo’s reported
+              trend does not.
             </p>
           </div>
-          <div class="snapshots" aria-label="The three questions">
-            <a class="snapshot snapshot-warn" href="#past">
-              <span class="snapshot-q">In the past?</span>
-              <span class="snapshot-a">Dipped, then flattened</span>
-            </a>
-            <a class="snapshot snapshot-off" href="#future">
-              <span class="snapshot-q">In the future?</span>
-              <span class="snapshot-a">Trend barely falls</span>
-            </a>
-            <a class="snapshot snapshot-off" href="#paris">
-              <span class="snapshot-q">Paris aligned?</span>
-              <span class="snapshot-a">No</span>
-            </a>
-          </div>
-        </section>
-
-        <section class="block" id="story-chart">
-          <header class="block-head">
-            <p class="question">The whole picture</p>
-            <h2 class="answer">Today’s path stays high. The Paris path falls away.</h2>
-            <p class="support">
-              Orange after today = keep reporting like this.
-              Green = about <strong>12% less each year</strong>.
-              The gap is the extra climate impact still to cut.
-            </p>
-          </header>
-          <div class="viz-panel">
-            <div class="legend">
-              <span><i class="swatch orange"></i> Reported emissions, then current trend</span>
-              <span><i class="swatch green dashed"></i> Paris path (−12%/year)</span>
-              <span class="legend-unit">million tonnes a year</span>
-            </div>
-            <div class="chart story" data-chart="story" data-series="company-story"></div>
-          </div>
+          <nav class="q-nav" aria-label="The three questions">
+            <a href="#past">1. Historically?</a>
+            <a href="#future">2. According to the trend?</a>
+            <a href="#paris">3. Paris goal?</a>
+          </nav>
         </section>
 
         <section class="block" id="past">
           <header class="block-head">
-            <p class="question">How has it gone with emissions?</p>
-            <h2 class="answer">Almost all of it sits outside the factory gates</h2>
+            <p class="question">How has it gone with emissions historically?</p>
+            <h2 class="answer">Totals dipped, then flattened — and almost all of it is the value chain</h2>
             <p class="support">
-              The thin orange slice is Volvo’s own operations.
-              The tall blue bars are the value chain — mostly the vehicles in use.
-              Looking only at “own” emissions hides most of the story.
+              Latest year: about <strong>38 million tonnes</strong>.
+              That is in the same order of magnitude as
+              <strong>all of Sweden’s territorial emissions</strong> (~45 million t) —
+              because it includes trucks sold and driven worldwide.
             </p>
           </header>
           <div class="viz-panel">
             <div class="legend">
-              <span><i class="swatch orange"></i> Own operations</span>
-              <span><i class="swatch blue"></i> Value chain (suppliers + products in use)</span>
+              <span><i class="swatch orange"></i> Own operations (factories, offices)</span>
+              <span><i class="swatch blue"></i> Value chain (mostly vehicles in use)</span>
             </div>
-            <div class="chart" data-chart="scopes" data-series="company-past"></div>
-            <div class="callout-grid compact">
+            <div class="chart" data-series="company-past"></div>
+            <div class="context-grid compact">
               <div class="stat-card">
                 <span class="callout-label">Latest total</span>
                 <span class="callout-value accent-orange">38 million t</span>
+                <span class="callout-hint">≈ Sweden’s yearly territorial emissions</span>
               </div>
               <div class="stat-card">
                 <span class="callout-label">Vs last year</span>
                 <span class="callout-value accent-pink">+1.2%</span>
+                <span class="callout-hint">a rise, not a cut</span>
               </div>
               <div class="stat-card">
                 <span class="callout-label">From the value chain</span>
                 <span class="callout-value">~97%</span>
+                <span class="callout-hint">own operations are the thin orange slice</span>
               </div>
             </div>
           </div>
@@ -469,46 +423,60 @@
 
         <section class="block" id="future">
           <header class="block-head">
-            <p class="question">How is it going in the future?</p>
-            <h2 class="answer">The needed cut is many times faster than today’s trend</h2>
+            <p class="question">How will it go in the future according to trends?</p>
+            <h2 class="answer">The reported trend barely falls. The Paris path drops away.</h2>
+            <p class="support">
+              Orange after today = continue the last years’ pattern.
+              Not Volvo’s official target — the <strong>observed trend</strong>.
+            </p>
           </header>
-          <div class="pace-grid">
-            <div class="pace-card">
-              <p class="pace-label">Reported trend is about</p>
-              <p class="pace-value accent-pink">−1%</p>
-              <p class="pace-unit">per year</p>
-              <div class="pace-bar"><span style="--w: 8%" class="fill-pink"></span></div>
+          <div class="viz-panel">
+            <div class="legend">
+              <span><i class="swatch orange"></i> If the trend continues</span>
+              <span><i class="swatch green dashed"></i> Paris path (−12%/year)</span>
+              <span class="legend-unit">million tonnes a year</span>
             </div>
-            <div class="pace-card">
-              <p class="pace-label">Paris needs about</p>
-              <p class="pace-value accent-green">−12%</p>
-              <p class="pace-unit">per year</p>
-              <div class="pace-bar"><span style="--w: 100%" class="fill-green"></span></div>
+            <div class="chart tall" data-series="company-future"></div>
+          </div>
+          <div class="context-grid">
+            <div class="stat-card">
+              <span class="callout-label">In 2030, on today’s trend</span>
+              <span class="callout-value accent-pink">~36 Mt</span>
+              <span class="callout-hint">almost unchanged</span>
+            </div>
+            <div class="stat-card">
+              <span class="callout-label">In 2030, on the Paris path</span>
+              <span class="callout-value accent-green">~18 Mt</span>
+              <span class="callout-hint">about half of today</span>
+            </div>
+            <div class="stat-card">
+              <span class="callout-label">Last year’s rise, in context</span>
+              <span class="callout-value">4,500</span>
+              <span class="callout-hint">round-trips Stockholm–New York</span>
             </div>
           </div>
         </section>
 
         <section class="block" id="paris">
           <header class="block-head">
-            <p class="question">Is Volvo Paris aligned?</p>
-            <h2 class="answer accent-pink">No — the projected total overshoots the allowance</h2>
+            <p class="question">Is it aligned with the Paris goal?</p>
+            <h2 class="answer accent-pink">No — about three times the allowance</h2>
             <p class="support">
-              Same test as for cities: add up 2025–2050 on the current trend,
-              and compare with the allowance from a 12% yearly cut.
+              Add up 2025–2050 on the trend. Compare with a 12% yearly-cut allowance.
             </p>
           </header>
           <div class="viz-panel budget">
             <p class="budget-intro">Total emissions 2025–2050</p>
             <div class="budget-bars">
               <div class="budget-row">
-                <span class="budget-label">Allowed (Paris)</span>
+                <span class="budget-label">Paris goal allows</span>
                 <div class="bar-track">
                   <div class="bar-fill green" style="--w: 35%"></div>
                 </div>
                 <span class="budget-num">210 million t</span>
               </div>
               <div class="budget-row">
-                <span class="budget-label">If we continue</span>
+                <span class="budget-label">If the trend continues</span>
                 <div class="bar-track">
                   <div class="bar-fill pink" style="--w: 100%"></div>
                 </div>
@@ -516,29 +484,23 @@
               </div>
             </div>
             <p class="budget-verdict">
-              Roughly <strong>three times</strong> the Paris allowance on the
-              current path.
+              610 million tonnes is about <strong>16 years of today’s Volvo
+              emissions</strong>. The Paris goal leaves room for about
+              <strong>5½ years</strong> at today’s level.
             </p>
           </div>
-        </section>
-
-        <section class="block secondary">
-          <header class="block-head">
-            <p class="question">What does last year’s rise feel like?</p>
-            <h2 class="answer">Tonnes are hard to picture. These comparisons help.</h2>
-          </header>
-          <div class="relate-grid">
-            <div class="relate-card">
-              <p class="relate-value">4,500</p>
-              <p class="relate-text">round-trip flights Stockholm–New York</p>
+          <div class="pace-grid">
+            <div class="pace-card">
+              <p class="pace-label">Reported trend</p>
+              <p class="pace-value accent-pink">−1%</p>
+              <p class="pace-unit">per year</p>
+              <div class="pace-bar"><span style="--w: 8%" class="fill-pink"></span></div>
             </div>
-            <div class="relate-card">
-              <p class="relate-value">1 year</p>
-              <p class="relate-text">of heating for a small Swedish town</p>
-            </div>
-            <div class="relate-card">
-              <p class="relate-value">Not exact</p>
-              <p class="relate-text">A feel for the size — not a precise conversion</p>
+            <div class="pace-card">
+              <p class="pace-label">Paris goal</p>
+              <p class="pace-value accent-green">−12%</p>
+              <p class="pace-unit">per year</p>
+              <div class="pace-bar"><span style="--w: 100%" class="fill-green"></span></div>
             </div>
           </div>
         </section>

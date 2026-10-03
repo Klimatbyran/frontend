@@ -1,39 +1,40 @@
 const SERIES = {
-  "muni-story": {
-    type: "story",
-    historyYears: [2015, 2017, 2019, 2021, 2023],
-    history: [290, 268, 245, 228, 210],
-    futureYears: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
+  "muni-history": {
+    type: "history",
+    years: [2015, 2017, 2019, 2021, 2023],
+    values: [290000, 268000, 245000, 228000, 210000],
+  },
+  "muni-future": {
+    type: "future",
+    years: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
     trend: [210, 197, 168, 143, 122, 104, 88],
     paris: [210, 162, 85, 45, 24, 12, 7],
-    unit: "thousand tonnes / year",
-    todayLabel: "Today",
+    markerYear: 2030,
   },
-  "region-story": {
-    type: "story",
-    historyYears: [1990, 2000, 2010, 2015, 2020, 2023],
-    history: [18.2, 16.1, 14.0, 12.8, 11.4, 10.7],
-    futureYears: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
+  "region-history": {
+    type: "history",
+    years: [1990, 2000, 2010, 2015, 2020, 2023],
+    values: [18.2, 16.1, 14.0, 12.8, 11.4, 10.7],
+  },
+  "region-future": {
+    type: "future",
+    years: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
     trend: [10.7, 9.4, 6.9, 5.1, 3.7, 2.7, 2.0],
     paris: [10.7, 8.3, 4.4, 2.3, 1.2, 0.65, 0.35],
-    unit: "million tonnes / year",
-    todayLabel: "Today",
-  },
-  "company-story": {
-    type: "story",
-    historyYears: [2019, 2020, 2021, 2022, 2023, 2024],
-    history: [43.4, 37.2, 35.1, 38.15, 37.55, 38],
-    futureYears: [2024, 2025, 2030, 2035, 2040, 2045, 2050],
-    trend: [38, 37.5, 36, 34.5, 33, 31.5, 30],
-    paris: [38, 33.4, 17.6, 9.3, 4.9, 2.6, 1.4],
-    unit: "million tonnes / year",
-    todayLabel: "Today",
+    markerYear: 2030,
   },
   "company-past": {
     type: "stacked",
     years: [2019, 2020, 2021, 2022, 2023, 2024],
     scope12: [1.4, 1.2, 1.1, 1.15, 1.05, 1.0],
     scope3: [42, 36, 34, 37, 36.5, 37],
+  },
+  "company-future": {
+    type: "future",
+    years: [2024, 2025, 2030, 2035, 2040, 2045, 2050],
+    trend: [38, 37.5, 36, 34.5, 33, 31.5, 30],
+    paris: [38, 33.4, 17.6, 9.3, 4.9, 2.6, 1.4],
+    markerYear: 2030,
   },
 };
 
@@ -55,95 +56,110 @@ function areaPath(points, baselineY) {
 }
 
 function bandPath(topPts, bottomPts) {
-  if (!topPts.length) return "";
   const bottom = [...bottomPts].reverse();
-  return `${linePath(topPts)} ${bottom
-    .map((p) => `L${pad(p.x)} ${pad(p.y)}`)
-    .join(" ")} Z`;
+  return `${linePath(topPts)} ${bottom.map((p) => `L${pad(p.x)} ${pad(p.y)}`).join(" ")} Z`;
 }
 
-function yearToX(year, start, end, box) {
-  return box.x + ((year - start) / (end - start)) * box.w;
+function mapPts(values, years, box, max) {
+  return values.map((v, i) => ({
+    x: box.x + (i / Math.max(years.length - 1, 1)) * box.w,
+    y: box.y + box.h - (v / max) * box.h,
+    year: years[i],
+    value: v,
+  }));
 }
 
-function valueToY(value, max, box) {
-  return box.y + box.h - (value / max) * box.h;
-}
-
-function renderStory(el, data) {
-  const box = { x: 52, y: 28, w: 620, h: 250 };
-  const start = data.historyYears[0];
-  const end = data.futureYears[data.futureYears.length - 1];
-  const today = data.historyYears[data.historyYears.length - 1];
-  const max = Math.max(...data.history, ...data.trend, ...data.paris) * 1.12;
-  const toPts = (years, values) =>
-    years.map((year, i) => ({
-      x: yearToX(year, start, end, box),
-      y: valueToY(values[i], max, box),
-      year,
-      value: values[i],
-    }));
-
-  const histPts = toPts(data.historyYears, data.history);
-  const trendPts = toPts(data.futureYears, data.trend);
-  const parisPts = toPts(data.futureYears, data.paris);
-  const todayX = yearToX(today, start, end, box);
-  const ticks = [start, today, 2040, end].filter(
-    (year, i, arr) => arr.indexOf(year) === i,
-  );
-
-  const grids = [0.25, 0.5, 0.75, 1]
+function gridLines(box) {
+  return [0.25, 0.5, 0.75, 1]
     .map((frac) => {
       const y = box.y + box.h - frac * box.h;
       return `<line x1="${box.x}" y1="${pad(y)}" x2="${box.x + box.w}" y2="${pad(y)}" stroke="rgba(255,255,255,0.05)"/>`;
     })
     .join("");
+}
+
+function renderHistory(el, data) {
+  const box = { x: 28, y: 16, w: 650, h: 210 };
+  const max = Math.max(...data.values) * 1.12;
+  const pts = mapPts(data.values, data.years, box, max);
+  const labels = data.years
+    .map((year, i) => {
+      const p = pts[i];
+      return `<text class="axis-label" x="${pad(p.x)}" y="${box.y + box.h + 22}" text-anchor="middle">${year}</text>`;
+    })
+    .join("");
 
   el.innerHTML = `
-    <svg viewBox="0 0 720 330" role="img" aria-label="Emissions from the past through 2050, compared with the Paris path">
+    <svg viewBox="0 0 700 250" role="img" aria-label="Historical emissions">
       <defs>
         <linearGradient id="histFill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#FDB768" stop-opacity="0.35"/>
+          <stop offset="0%" stop-color="#FDB768" stop-opacity="0.4"/>
           <stop offset="100%" stop-color="#FDB768" stop-opacity="0"/>
         </linearGradient>
       </defs>
-      ${grids}
+      ${gridLines(box)}
       <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.12)"/>
-      <path d="${areaPath(histPts, box.y + box.h)}" fill="url(#histFill)"/>
+      <path d="${areaPath(pts, box.y + box.h)}" fill="url(#histFill)"/>
+      <path class="chart-line" d="${linePath(pts)}" stroke="#FDB768" stroke-width="3"/>
+      ${pts.map((p) => `<circle cx="${pad(p.x)}" cy="${pad(p.y)}" r="3.6" fill="#FDB768"/>`).join("")}
+      ${labels}
+    </svg>
+  `;
+}
+
+function renderFuture(el, data) {
+  const box = { x: 28, y: 28, w: 650, h: 250 };
+  const max = Math.max(...data.trend, ...data.paris) * 1.1;
+  const trendPts = mapPts(data.trend, data.years, box, max);
+  const parisPts = mapPts(data.paris, data.years, box, max);
+  const markerIndex = data.years.indexOf(data.markerYear);
+  const marker = markerIndex >= 0 ? trendPts[markerIndex] : null;
+  const parisMarker = markerIndex >= 0 ? parisPts[markerIndex] : null;
+  const ticks = data.years.filter(
+    (year, i) => i === 0 || year === data.markerYear || year === 2040 || i === data.years.length - 1,
+  );
+
+  el.innerHTML = `
+    <svg viewBox="0 0 700 310" role="img" aria-label="Trend versus Paris path">
+      ${gridLines(box)}
+      <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.12)"/>
       <path d="${bandPath(trendPts, parisPts)}" fill="#F0759A" opacity="0.16"/>
-      <path class="chart-line" d="${linePath(histPts)}" stroke="#FDB768" stroke-width="3"/>
-      <path class="chart-line" d="${linePath(trendPts)}" stroke="#FDB768" stroke-width="2.4"/>
+      <path class="chart-line" d="${linePath(trendPts)}" stroke="#FDB768" stroke-width="2.8"/>
       <path class="chart-line" d="${linePath(parisPts)}" stroke="#AAE506" stroke-width="2.8" stroke-dasharray="8 7"/>
-      <line x1="${pad(todayX)}" y1="${box.y}" x2="${pad(todayX)}" y2="${box.y + box.h}" stroke="rgba(247,247,247,0.28)" stroke-dasharray="3 5"/>
-      <text class="chart-note" x="${pad(todayX + 8)}" y="${box.y + 14}">${data.todayLabel}</text>
+      ${
+        marker
+          ? `<line x1="${pad(marker.x)}" y1="${box.y}" x2="${pad(marker.x)}" y2="${box.y + box.h}" stroke="rgba(247,247,247,0.22)" stroke-dasharray="3 5"/>
+             <text class="chart-note" x="${pad(marker.x + 6)}" y="${box.y + 12}">2030</text>
+             <circle cx="${pad(marker.x)}" cy="${pad(marker.y)}" r="4" fill="#FDB768"/>
+             <circle cx="${pad(parisMarker.x)}" cy="${pad(parisMarker.y)}" r="4" fill="#AAE506"/>`
+          : ""
+      }
       ${ticks
         .map((year) => {
-          const x = yearToX(year, start, end, box);
-          return `<text class="axis-label" x="${pad(x)}" y="${box.y + box.h + 22}" text-anchor="middle">${year}</text>`;
+          const i = data.years.indexOf(year);
+          return `<text class="axis-label" x="${pad(trendPts[i].x)}" y="${box.y + box.h + 22}" text-anchor="middle">${year}</text>`;
         })
         .join("")}
-      <text class="chart-note" x="${pad(trendPts[trendPts.length - 1].x - 4)}" y="${pad(trendPts[trendPts.length - 1].y - 12)}" text-anchor="end">If we continue</text>
-      <text class="chart-note" fill="#AAE506" x="${pad(parisPts[parisPts.length - 1].x - 4)}" y="${pad(Math.max(parisPts[parisPts.length - 1].y - 12, box.y + 16))}" text-anchor="end">Paris path</text>
+      <text class="chart-note" x="${pad(trendPts.at(-1).x - 4)}" y="${pad(trendPts.at(-1).y - 10)}" text-anchor="end">Trend</text>
+      <text class="chart-note" fill="#AAE506" x="${pad(parisPts.at(-1).x - 4)}" y="${pad(Math.max(parisPts.at(-1).y - 10, box.y + 14))}" text-anchor="end">Paris</text>
     </svg>
   `;
 }
 
 function renderStacked(el, data) {
-  const box = { x: 36, y: 16, w: 640, h: 200 };
+  const box = { x: 28, y: 16, w: 650, h: 200 };
   const totals = data.scope12.map((v, i) => v + data.scope3[i]);
   const max = Math.max(...totals) * 1.08;
   const barW = box.w / data.years.length - 18;
-      const bars = data.years
+  const bars = data.years
     .map((year, i) => {
       const x = box.x + i * (box.w / data.years.length) + 8;
       const h3 = (data.scope3[i] / max) * box.h;
       const h12 = (data.scope12[i] / max) * box.h;
-      const y3 = box.y + box.h - h3 - h12;
-      const y12 = box.y + box.h - h12;
       return `
         <g>
-          <rect x="${pad(x)}" y="${pad(y3)}" width="${pad(barW)}" height="${pad(h3)}" fill="#59A0E1" rx="4"/>
-          <rect x="${pad(x)}" y="${pad(y12)}" width="${pad(barW)}" height="${pad(Math.max(h12, 4))}" fill="#FDB768" rx="3"/>
+          <rect x="${pad(x)}" y="${pad(box.y + box.h - h3 - h12)}" width="${pad(barW)}" height="${pad(h3)}" fill="#59A0E1" rx="4"/>
+          <rect x="${pad(x)}" y="${pad(box.y + box.h - h12)}" width="${pad(barW)}" height="${pad(Math.max(h12, 4))}" fill="#FDB768" rx="3"/>
           <text class="axis-label" x="${pad(x + barW / 2)}" y="${box.y + box.h + 22}" text-anchor="middle">${year}</text>
         </g>
       `;
@@ -151,7 +167,7 @@ function renderStacked(el, data) {
     .join("");
 
   el.innerHTML = `
-    <svg viewBox="0 0 700 250" role="img" aria-label="Company emissions from own operations versus the value chain">
+    <svg viewBox="0 0 700 250" role="img" aria-label="Own operations versus value chain">
       <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.08)"/>
       ${bars}
     </svg>
@@ -159,7 +175,8 @@ function renderStacked(el, data) {
 }
 
 const renderers = {
-  story: renderStory,
+  history: renderHistory,
+  future: renderFuture,
   stacked: renderStacked,
 };
 
