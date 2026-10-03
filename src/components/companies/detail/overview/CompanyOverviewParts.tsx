@@ -71,10 +71,8 @@ export function CompanyOverviewMainStats({
         label={t("detailPage.meetsParisGoal")}
         value={meetsParisDisplay.value}
         valueClassName={meetsParisDisplay.valueClassName}
-        caption={meetsParisDisplay.caption}
         benchmark={benchmarks?.meetsParis}
         alignBenchmarks={Boolean(benchmarks)}
-        reserveCaptionRow
         useFlex1={false}
       />
       <OverviewStat
@@ -99,7 +97,6 @@ export function CompanyOverviewMainStats({
         benchmark={benchmarks?.totalEmissions}
         variant="detail"
         alignBenchmarks={Boolean(benchmarks)}
-        reserveCaptionRow
         useFlex1={false}
       />
 
@@ -129,7 +126,6 @@ export function CompanyOverviewMainStats({
         benchmark={benchmarks?.yearOverYearChange}
         variant="detail"
         alignBenchmarks={Boolean(benchmarks)}
-        reserveCaptionRow
         useFlex1={false}
       />
     </div>

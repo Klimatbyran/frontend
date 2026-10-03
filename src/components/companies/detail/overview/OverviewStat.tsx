@@ -17,17 +17,15 @@ interface OverviewStatProps {
   variant?: "overview" | "detail";
   info?: boolean;
   infoText?: string;
-  /** Short plain-language line under the value. */
+  /** Short plain-language line under the value. Hidden when a benchmark is shown. */
   caption?: string;
   /** Slightly smaller type so four headline numbers fit on one desktop row. */
   dense?: boolean;
   useFlex1?: boolean;
   /** Comparison that shows whether the number is high, low, good, or bad. */
   benchmark?: KpiBenchmarkView | null;
-  /** Reserve a caption row and pin benchmark bars to the same baseline in a grid row. */
+  /** Pin value rows and comparison bars to the same baseline in a grid row. */
   alignBenchmarks?: boolean;
-  /** Keep caption row height even when this stat has no caption (for peer columns). */
-  reserveCaptionRow?: boolean;
 }
 
 const DETAIL_VALUE =
@@ -51,12 +49,10 @@ export function OverviewStat({
   useFlex1 = true,
   benchmark,
   alignBenchmarks = false,
-  reserveCaptionRow = false,
 }: OverviewStatProps) {
   const isDetailVariant = variant === "detail";
   const valueSizeClass = dense ? DETAIL_VALUE : DETAIL_VALUE_RELAXED;
-  const showCaptionRow =
-    isDetailVariant && (caption || (alignBenchmarks && reserveCaptionRow));
+  const showCaption = Boolean(caption) && !(isDetailVariant && benchmark);
 
   // Handle label with InfoTooltip support
   const renderLabel = () => {
@@ -151,25 +147,14 @@ export function OverviewStat({
     </div>
   );
 
-  const captionBlock = showCaptionRow ? (
-    <Text
-      className={cn(
-        "text-sm text-grey md:text-base",
-        alignBenchmarks && "min-h-[2.5rem] md:min-h-[2.75rem]",
-        !caption && "invisible",
-      )}
-      aria-hidden={!caption}
-    >
-      {caption || "\u00a0"}
-    </Text>
-  ) : caption ? (
+  const captionBlock = showCaption ? (
     <Text className="mt-2 text-sm text-grey md:text-base">{caption}</Text>
   ) : null;
 
   const benchmarkBlock = benchmark ? (
     <KpiBenchmarkChart
       benchmark={benchmark}
-      className={alignBenchmarks ? "mt-0" : undefined}
+      className={alignBenchmarks ? "mt-2" : undefined}
     />
   ) : null;
 
@@ -185,7 +170,7 @@ export function OverviewStat({
         {labelBlock}
         {valueBlock}
         {captionBlock}
-        <div className="mt-auto min-h-[2.625rem]">{benchmarkBlock}</div>
+        {benchmarkBlock}
       </div>
     );
   }

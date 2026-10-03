@@ -65,15 +65,15 @@ function BenchmarkShell({
 }) {
   return (
     <div className={cn("min-w-0", className ?? "mt-2")}>
+      {children}
       <Text
         className={cn(
-          "mb-1.5 line-clamp-1 min-h-[1.25rem] text-sm",
+          "mt-1.5 line-clamp-1 min-h-[1.25rem] text-sm",
           TONE_TEXT[tone],
         )}
       >
         {primary}
       </Text>
-      {children}
     </div>
   );
 }

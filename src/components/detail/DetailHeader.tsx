@@ -31,12 +31,10 @@ function DetailStatItem({
   stat,
   dense,
   alignBenchmarks,
-  reserveCaptionRow,
 }: {
   stat: DetailStat;
   dense: boolean;
   alignBenchmarks: boolean;
-  reserveCaptionRow: boolean;
 }) {
   return (
     <OverviewStat
@@ -47,12 +45,11 @@ function DetailStatItem({
       valueClassName={stat.valueClassName}
       info={stat.info}
       infoText={stat.infoText}
-      caption={stat.caption}
+      caption={stat.benchmark ? undefined : stat.caption}
       dense={dense}
       useFlex1={false}
       benchmark={stat.benchmark}
       alignBenchmarks={alignBenchmarks}
-      reserveCaptionRow={reserveCaptionRow}
     />
   );
 }
@@ -80,7 +77,6 @@ export function DetailHeader({
 }: DetailHeaderProps) {
   const dense = stats.length >= 4;
   const alignBenchmarks = stats.some((stat) => stat.benchmark);
-  const reserveCaptionRow = stats.some((stat) => stat.caption);
 
   return (
     <SectionWithHelp helpItems={helpItems}>
@@ -110,7 +106,6 @@ export function DetailHeader({
               stat={stat}
               dense={dense}
               alignBenchmarks={alignBenchmarks}
-              reserveCaptionRow={reserveCaptionRow}
             />
           ))}
         </div>
