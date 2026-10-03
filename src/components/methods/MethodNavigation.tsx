@@ -8,13 +8,11 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 interface MethodologyNavigationProps {
   selectedMethod: string;
   onMethodChange: (method: string) => void;
-  contentRef: React.RefObject<HTMLDivElement>;
 }
 
 export function MethodologyNavigation({
   selectedMethod,
   onMethodChange,
-  contentRef,
 }: MethodologyNavigationProps) {
   const { t } = useTranslation();
   const [expandedCategories, setExpandedCategories] = useState<string[]>(
@@ -43,15 +41,6 @@ export function MethodologyNavigation({
   const handleMethodChange = (method: string) => {
     navigate(`?view=${method}`);
     onMethodChange(method);
-    if (isMobile && contentRef?.current) {
-      setTimeout(() => {
-        if (!contentRef.current) return;
-        const headerHeight = window.innerWidth >= 1024 ? 48 : 40; // 48px for lg, 40px for mobile
-        const rect = contentRef.current.getBoundingClientRect();
-        const scrollTo = rect.top + window.scrollY - headerHeight;
-        window.scrollTo({ top: scrollTo, behavior: "smooth" });
-      }, 350);
-    }
   };
 
   return (
