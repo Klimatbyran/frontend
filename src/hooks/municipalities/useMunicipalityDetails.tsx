@@ -10,6 +10,7 @@ import { DetailStat } from "@/components/detail/DetailHeader";
 import { createMeetsParisStat } from "@/components/detail/meetsParisStat";
 import { getMunicipalityDetails } from "@/lib/api";
 import { Municipality } from "@/types/municipality";
+import type { MunicipalityBenchmarkSet } from "@/utils/detail/municipalityBenchmarks";
 
 export function useMunicipalityDetails(id: string) {
   const {
@@ -41,13 +42,17 @@ export function useMunicipalityDetailHeaderStats(
   municipality: Municipality | null,
   lastYear: number | undefined,
   lastYearEmissionsTon: string,
+  benchmarks?: MunicipalityBenchmarkSet | null,
 ) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
   const stats: DetailStat[] = municipality
     ? [
-        createMeetsParisStat(municipality.meetsParisGoal, t),
+        {
+          ...createMeetsParisStat(municipality.meetsParisGoal, t),
+          benchmark: benchmarks?.meetsParis,
+        },
         {
           label: t("detailPage.totalEmissions", {
             year: lastYear,
@@ -57,6 +62,7 @@ export function useMunicipalityDetailHeaderStats(
           valueClassName: "text-orange-2",
           info: true,
           infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
+          benchmark: benchmarks?.totalEmissions,
         },
         {
           label: t("municipalityDetailPage.annualChangeSince2015"),
@@ -69,6 +75,7 @@ export function useMunicipalityDetailHeaderStats(
               ? "text-pink-3"
               : "text-orange-2",
           ),
+          benchmark: benchmarks?.changeSince2015,
         },
         {
           label: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
@@ -78,6 +85,7 @@ export function useMunicipalityDetailHeaderStats(
           ),
           valueClassName: "text-orange-2",
           unit: t("emissionsUnit"),
+          benchmark: benchmarks?.consumption,
         },
       ]
     : [];

@@ -5,8 +5,13 @@ import { useSectors } from "@/hooks/territories/useSectors";
 import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import {
   useTerritoryDetailHeaderStats,
+  type TerritoryBenchmarkPeer,
   type TerritoryDetailStatsSource,
 } from "@/hooks/territories/useTerritoryDetailHeaderStats";
+import {
+  useRegionsForExplore,
+  type RegionForExplore,
+} from "@/hooks/regions/useRegionsForExplore";
 import {
   transformTerritoryEmissionsData,
   type TerritoryEmissionsSource,
@@ -17,6 +22,16 @@ type TerritoryDetailPageEntity = TerritoryEmissionsSource &
 
 type SectorTerritoryType = "regions" | "nation";
 
+function latestRegionEmission(region: RegionForExplore): number | null {
+  const years = Object.keys(region.emissions)
+    .map(Number)
+    .filter((year) => !Number.isNaN(year));
+  if (!years.length) return null;
+  const latestYear = Math.max(...years);
+  const value = region.emissions[String(latestYear)];
+  return Number.isFinite(value) ? value : null;
+}
+
 export function useTerritoryDetailPageData(
   entity: TerritoryDetailPageEntity | null,
   sectorTerritoryType: SectorTerritoryType,
@@ -25,6 +40,16 @@ export function useTerritoryDetailPageData(
   const { sectorEmissions } = useSectorEmissions(
     sectorTerritoryType,
     sectorTerritoryId,
+  );
+  const { regions } = useRegionsForExplore();
+  const peers = useMemo<TerritoryBenchmarkPeer[]>(
+    () =>
+      regions.map((region) => ({
+        historicalEmissionChangePercent: region.historicalEmissionChangePercent,
+        meetsParis: region.meetsParis,
+        totalEmissions: latestRegionEmission(region),
+      })),
+    [regions],
   );
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
@@ -42,7 +67,10 @@ export function useTerritoryDetailPageData(
   }, [emissionsData]);
 
   const lastYear = lastYearEmissions?.year;
-  const headerStats = useTerritoryDetailHeaderStats(entity, lastYear);
+  const headerStats = useTerritoryDetailHeaderStats(entity, lastYear, {
+    peers,
+    compareTotalEmissions: sectorTerritoryType !== "nation",
+  });
 
   const { availableYears, currentYear } = useSectorYearSelection(
     sectorEmissions,

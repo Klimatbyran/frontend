@@ -11,6 +11,7 @@ import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAsse
 import { OverviewStat } from "./OverviewStat";
 import { FinancialsTooltip } from "./FinancialsTooltip";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
+import type { CompanyBenchmarkSet } from "@/utils/detail/companyBenchmarks";
 
 interface CompanyOverviewActionsProps {
   companyId: string;
@@ -46,6 +47,7 @@ interface CompanyOverviewMainStatsProps {
   yearOverYearChange: number | null;
   yearOverYearAIGenerated: boolean;
   meetsParis: boolean | null;
+  benchmarks?: CompanyBenchmarkSet | null;
 }
 
 export function CompanyOverviewMainStats({
@@ -57,17 +59,21 @@ export function CompanyOverviewMainStats({
   yearOverYearChange,
   yearOverYearAIGenerated,
   meetsParis,
+  benchmarks,
 }: CompanyOverviewMainStatsProps) {
   const { t } = useTranslation();
   const meetsParisDisplay = getMeetsParisDisplay(meetsParis, t);
 
   return (
-    <div className="mb-8 grid grid-cols-1 gap-8 md:mb-12 md:grid-cols-3 md:items-start md:gap-12">
+    <div className="mb-8 grid grid-cols-1 gap-8 md:mb-12 md:grid-cols-3 md:items-stretch md:gap-12">
       <OverviewStat
+        variant="detail"
         label={t("detailPage.meetsParisGoal")}
         value={meetsParisDisplay.value}
         valueClassName={meetsParisDisplay.valueClassName}
-        caption={meetsParisDisplay.caption}
+        benchmark={benchmarks?.meetsParis}
+        alignBenchmarks={Boolean(benchmarks)}
+        useFlex1={false}
       />
       <OverviewStat
         label={
@@ -88,6 +94,10 @@ export function CompanyOverviewMainStats({
         }
         unit={calculatedTotalEmissions ? t("emissionsUnit") : undefined}
         showAiIcon={totalEmissionsAIGenerated}
+        benchmark={benchmarks?.totalEmissions}
+        variant="detail"
+        alignBenchmarks={Boolean(benchmarks)}
+        useFlex1={false}
       />
 
       <OverviewStat
@@ -113,6 +123,10 @@ export function CompanyOverviewMainStats({
           )
         }
         showAiIcon={yearOverYearAIGenerated}
+        benchmark={benchmarks?.yearOverYearChange}
+        variant="detail"
+        alignBenchmarks={Boolean(benchmarks)}
+        useFlex1={false}
       />
     </div>
   );
