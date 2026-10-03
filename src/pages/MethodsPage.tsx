@@ -6,15 +6,28 @@ import { MethodologyContent } from "@/components/methods/MethodContent";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { getAllMethods } from "@/lib/methods/methodologyData";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 export function MethodsPage() {
   const { t } = useTranslation();
   const [selectedMethod, setSelectedMethod] = useState<string>("");
   const contentRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const { isMobile, isTablet } = useScreenSize();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const content = contentRef.current;
+    if (
+      content &&
+      (content.getBoundingClientRect().top < 0 || isMobile || isTablet)
+    ) {
+      setTimeout(
+        () => {
+          content.scrollIntoView({ behavior: "smooth", block: "start" });
+        },
+        isMobile || isTablet ? 350 : 0,
+      );
+    }
   }, [selectedMethod]);
 
   useEffect(() => {
@@ -84,7 +97,6 @@ export function MethodsPage() {
               <MethodologyNavigation
                 selectedMethod={selectedMethod}
                 onMethodChange={setSelectedMethod}
-                contentRef={contentRef}
               />
             </div>
           </div>
