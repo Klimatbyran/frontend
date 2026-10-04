@@ -38,6 +38,9 @@ const SERIES = {
   },
 };
 
+const BOX = { x: 2, y: 8, w: 996, h: 360 };
+const VIEW = "0 0 1000 400";
+
 function pad(n) {
   return Number(n.toFixed(2));
 }
@@ -49,7 +52,6 @@ function linePath(points) {
 }
 
 function areaPath(points, baselineY) {
-  if (!points.length) return "";
   const last = points[points.length - 1];
   const first = points[0];
   return `${linePath(points)} L${pad(last.x)} ${pad(baselineY)} L${pad(first.x)} ${pad(baselineY)} Z`;
@@ -73,102 +75,106 @@ function gridLines(box) {
   return [0.25, 0.5, 0.75, 1]
     .map((frac) => {
       const y = box.y + box.h - frac * box.h;
-      return `<line x1="${box.x}" y1="${pad(y)}" x2="${box.x + box.w}" y2="${pad(y)}" stroke="rgba(255,255,255,0.05)"/>`;
+      return `<line x1="${box.x}" y1="${pad(y)}" x2="${box.x + box.w}" y2="${pad(y)}" stroke="rgba(255,255,255,0.06)"/>`;
     })
     .join("");
 }
 
-function renderHistory(el, data) {
-  const box = { x: 28, y: 16, w: 650, h: 210 };
-  const max = Math.max(...data.values) * 1.12;
+function renderHistory(el, data, id) {
+  const box = BOX;
+  const max = Math.max(...data.values) * 1.08;
   const pts = mapPts(data.values, data.years, box, max);
   const labels = data.years
     .map((year, i) => {
       const p = pts[i];
-      return `<text class="axis-label" x="${pad(p.x)}" y="${box.y + box.h + 22}" text-anchor="middle">${year}</text>`;
+      const anchor = i === 0 ? "start" : i === data.years.length - 1 ? "end" : "middle";
+      return `<text class="axis-label" x="${pad(p.x)}" y="${box.y + box.h + 20}" text-anchor="${anchor}">${year}</text>`;
     })
     .join("");
 
   el.innerHTML = `
-    <svg viewBox="0 0 700 250" role="img" aria-label="Historical emissions">
+    <svg viewBox="${VIEW}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Historical emissions">
       <defs>
-        <linearGradient id="histFill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#FDB768" stop-opacity="0.4"/>
+        <linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#FDB768" stop-opacity="0.38"/>
           <stop offset="100%" stop-color="#FDB768" stop-opacity="0"/>
         </linearGradient>
       </defs>
       ${gridLines(box)}
-      <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.12)"/>
-      <path d="${areaPath(pts, box.y + box.h)}" fill="url(#histFill)"/>
-      <path class="chart-line" d="${linePath(pts)}" stroke="#FDB768" stroke-width="3"/>
-      ${pts.map((p) => `<circle cx="${pad(p.x)}" cy="${pad(p.y)}" r="3.6" fill="#FDB768"/>`).join("")}
+      <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.14)"/>
+      <path d="${areaPath(pts, box.y + box.h)}" fill="url(#${id})"/>
+      <path class="chart-line" d="${linePath(pts)}" stroke="#FDB768" stroke-width="2.6"/>
+      ${pts.map((p) => `<circle cx="${pad(p.x)}" cy="${pad(p.y)}" r="3.2" fill="#FDB768"/>`).join("")}
       ${labels}
     </svg>
   `;
 }
 
 function renderFuture(el, data) {
-  const box = { x: 28, y: 28, w: 650, h: 250 };
-  const max = Math.max(...data.trend, ...data.paris) * 1.1;
+  const box = BOX;
+  const max = Math.max(...data.trend, ...data.paris) * 1.06;
   const trendPts = mapPts(data.trend, data.years, box, max);
   const parisPts = mapPts(data.paris, data.years, box, max);
   const markerIndex = data.years.indexOf(data.markerYear);
   const marker = markerIndex >= 0 ? trendPts[markerIndex] : null;
   const parisMarker = markerIndex >= 0 ? parisPts[markerIndex] : null;
   const ticks = data.years.filter(
-    (year, i) => i === 0 || year === data.markerYear || year === 2040 || i === data.years.length - 1,
+    (year, i) =>
+      i === 0 || year === data.markerYear || year === 2040 || i === data.years.length - 1,
   );
 
   el.innerHTML = `
-    <svg viewBox="0 0 700 310" role="img" aria-label="Trend versus Paris path">
+    <svg viewBox="${VIEW}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Trend versus Paris path">
       ${gridLines(box)}
-      <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.12)"/>
-      <path d="${bandPath(trendPts, parisPts)}" fill="#F0759A" opacity="0.16"/>
-      <path class="chart-line" d="${linePath(trendPts)}" stroke="#FDB768" stroke-width="2.8"/>
-      <path class="chart-line" d="${linePath(parisPts)}" stroke="#AAE506" stroke-width="2.8" stroke-dasharray="8 7"/>
+      <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.14)"/>
+      <path d="${bandPath(trendPts, parisPts)}" fill="#F0759A" opacity="0.18"/>
+      <path class="chart-line" d="${linePath(trendPts)}" stroke="#FDB768" stroke-width="2.6"/>
+      <path class="chart-line" d="${linePath(parisPts)}" stroke="#AAE506" stroke-width="2.6" stroke-dasharray="7 6"/>
       ${
         marker
-          ? `<line x1="${pad(marker.x)}" y1="${box.y}" x2="${pad(marker.x)}" y2="${box.y + box.h}" stroke="rgba(247,247,247,0.22)" stroke-dasharray="3 5"/>
-             <text class="chart-note" x="${pad(marker.x + 6)}" y="${box.y + 12}">2030</text>
-             <circle cx="${pad(marker.x)}" cy="${pad(marker.y)}" r="4" fill="#FDB768"/>
-             <circle cx="${pad(parisMarker.x)}" cy="${pad(parisMarker.y)}" r="4" fill="#AAE506"/>`
+          ? `<line x1="${pad(marker.x)}" y1="${box.y}" x2="${pad(marker.x)}" y2="${box.y + box.h}" stroke="rgba(247,247,247,0.2)" stroke-dasharray="3 5"/>
+             <text class="chart-note" x="${pad(marker.x + 8)}" y="${box.y + 16}">2030</text>
+             <circle cx="${pad(marker.x)}" cy="${pad(marker.y)}" r="3.5" fill="#FDB768"/>
+             <circle cx="${pad(parisMarker.x)}" cy="${pad(parisMarker.y)}" r="3.5" fill="#AAE506"/>`
           : ""
       }
       ${ticks
         .map((year) => {
           const i = data.years.indexOf(year);
-          return `<text class="axis-label" x="${pad(trendPts[i].x)}" y="${box.y + box.h + 22}" text-anchor="middle">${year}</text>`;
+          const anchor = i === 0 ? "start" : i === data.years.length - 1 ? "end" : "middle";
+          return `<text class="axis-label" x="${pad(trendPts[i].x)}" y="${box.y + box.h + 20}" text-anchor="${anchor}">${year}</text>`;
         })
         .join("")}
-      <text class="chart-note" x="${pad(trendPts.at(-1).x - 4)}" y="${pad(trendPts.at(-1).y - 10)}" text-anchor="end">Trend</text>
-      <text class="chart-note" fill="#AAE506" x="${pad(parisPts.at(-1).x - 4)}" y="${pad(Math.max(parisPts.at(-1).y - 10, box.y + 14))}" text-anchor="end">Paris</text>
     </svg>
   `;
 }
 
 function renderStacked(el, data) {
-  const box = { x: 28, y: 16, w: 650, h: 200 };
+  const box = BOX;
   const totals = data.scope12.map((v, i) => v + data.scope3[i]);
-  const max = Math.max(...totals) * 1.08;
-  const barW = box.w / data.years.length - 18;
+  const max = Math.max(...totals) * 1.05;
+  const gap = 18;
+  const barW = box.w / data.years.length - gap;
   const bars = data.years
     .map((year, i) => {
-      const x = box.x + i * (box.w / data.years.length) + 8;
+      const x = box.x + i * (box.w / data.years.length) + gap / 2;
       const h3 = (data.scope3[i] / max) * box.h;
       const h12 = (data.scope12[i] / max) * box.h;
+      const anchor = i === 0 ? "start" : i === data.years.length - 1 ? "end" : "middle";
+      const labelX = i === 0 ? x : i === data.years.length - 1 ? x + barW : x + barW / 2;
       return `
         <g>
-          <rect x="${pad(x)}" y="${pad(box.y + box.h - h3 - h12)}" width="${pad(barW)}" height="${pad(h3)}" fill="#59A0E1" rx="4"/>
-          <rect x="${pad(x)}" y="${pad(box.y + box.h - h12)}" width="${pad(barW)}" height="${pad(Math.max(h12, 4))}" fill="#FDB768" rx="3"/>
-          <text class="axis-label" x="${pad(x + barW / 2)}" y="${box.y + box.h + 22}" text-anchor="middle">${year}</text>
+          <rect x="${pad(x)}" y="${pad(box.y + box.h - h3 - h12)}" width="${pad(barW)}" height="${pad(h3)}" fill="#59A0E1"/>
+          <rect x="${pad(x)}" y="${pad(box.y + box.h - h12)}" width="${pad(barW)}" height="${pad(Math.max(h12, 5))}" fill="#FDB768"/>
+          <text class="axis-label" x="${pad(labelX)}" y="${box.y + box.h + 20}" text-anchor="${anchor}">${year}</text>
         </g>
       `;
     })
     .join("");
 
   el.innerHTML = `
-    <svg viewBox="0 0 700 250" role="img" aria-label="Own operations versus value chain">
-      <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.08)"/>
+    <svg viewBox="${VIEW}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Own operations versus value chain">
+      <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.14)"/>
       ${bars}
     </svg>
   `;
@@ -182,9 +188,10 @@ const renderers = {
 
 function mountCharts(root) {
   root.querySelectorAll("[data-series]").forEach((el) => {
-    const data = SERIES[el.getAttribute("data-series")];
+    const key = el.getAttribute("data-series");
+    const data = SERIES[key];
     if (!data) return;
-    renderers[data.type](el, data);
+    renderers[data.type](el, data, `fill-${key}`);
   });
 }
 
