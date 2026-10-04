@@ -1,27 +1,27 @@
 const SERIES = {
-  "muni-history": {
-    type: "history",
-    years: [2015, 2017, 2019, 2021, 2023],
-    values: [290000, 268000, 245000, 228000, 210000],
-  },
-  "muni-future": {
-    type: "future",
-    years: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
+  "muni-combined": {
+    type: "combined",
+    historyYears: [2015, 2017, 2019, 2021, 2023],
+    history: [290, 268, 245, 228, 210],
+    futureYears: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
     trend: [210, 197, 168, 143, 122, 104, 88],
     paris: [210, 162, 85, 45, 24, 12, 7],
-    markerYear: 2030,
   },
-  "region-history": {
-    type: "history",
-    years: [1990, 2000, 2010, 2015, 2020, 2023],
-    values: [18.2, 16.1, 14.0, 12.8, 11.4, 10.7],
-  },
-  "region-future": {
-    type: "future",
-    years: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
+  "region-combined": {
+    type: "combined",
+    historyYears: [1990, 2000, 2010, 2015, 2020, 2023],
+    history: [18.2, 16.1, 14.0, 12.8, 11.4, 10.7],
+    futureYears: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
     trend: [10.7, 9.4, 6.9, 5.1, 3.7, 2.7, 2.0],
     paris: [10.7, 8.3, 4.4, 2.3, 1.2, 0.65, 0.35],
-    markerYear: 2030,
+  },
+  "company-combined": {
+    type: "combined",
+    historyYears: [2019, 2020, 2021, 2022, 2023, 2024],
+    history: [43.4, 37.2, 35.1, 38.2, 37.6, 38],
+    futureYears: [2024, 2025, 2030, 2035, 2040, 2045, 2050],
+    trend: [38, 37.5, 36, 34.5, 33, 31.5, 30],
+    paris: [38, 33.4, 17.6, 9.3, 4.9, 2.6, 1.4],
   },
   "company-past": {
     type: "stacked",
@@ -29,17 +29,10 @@ const SERIES = {
     scope12: [1.4, 1.2, 1.1, 1.15, 1.05, 1.0],
     scope3: [42, 36, 34, 37, 36.5, 37],
   },
-  "company-future": {
-    type: "future",
-    years: [2024, 2025, 2030, 2035, 2040, 2045, 2050],
-    trend: [38, 37.5, 36, 34.5, 33, 31.5, 30],
-    paris: [38, 33.4, 17.6, 9.3, 4.9, 2.6, 1.4],
-    markerYear: 2030,
-  },
 };
 
-const BOX = { x: 2, y: 8, w: 996, h: 360 };
-const VIEW = "0 0 1000 400";
+const BOX = { x: 4, y: 32, w: 992, h: 348 };
+const VIEW = "0 0 1000 410";
 
 function pad(n) {
   return Number(n.toFixed(2));
@@ -62,12 +55,20 @@ function bandPath(topPts, bottomPts) {
   return `${linePath(topPts)} ${bottom.map((p) => `L${pad(p.x)} ${pad(p.y)}`).join(" ")} Z`;
 }
 
-function mapPts(values, years, box, max) {
-  return values.map((v, i) => ({
-    x: box.x + (i / Math.max(years.length - 1, 1)) * box.w,
-    y: box.y + box.h - (v / max) * box.h,
-    year: years[i],
-    value: v,
+function yearToX(year, start, end, box) {
+  return box.x + ((year - start) / (end - start)) * box.w;
+}
+
+function valueToY(value, max, box) {
+  return box.y + box.h - (value / max) * box.h;
+}
+
+function toPts(years, values, start, end, max, box) {
+  return years.map((year, i) => ({
+    x: yearToX(year, start, end, box),
+    y: valueToY(values[i], max, box),
+    year,
+    value: values[i],
   }));
 }
 
@@ -80,20 +81,22 @@ function gridLines(box) {
     .join("");
 }
 
-function renderHistory(el, data, id) {
+function renderCombined(el, data, id) {
   const box = BOX;
-  const max = Math.max(...data.values) * 1.08;
-  const pts = mapPts(data.values, data.years, box, max);
-  const labels = data.years
-    .map((year, i) => {
-      const p = pts[i];
-      const anchor = i === 0 ? "start" : i === data.years.length - 1 ? "end" : "middle";
-      return `<text class="axis-label" x="${pad(p.x)}" y="${box.y + box.h + 20}" text-anchor="${anchor}">${year}</text>`;
-    })
-    .join("");
+  const start = data.historyYears[0];
+  const end = data.futureYears[data.futureYears.length - 1];
+  const today = data.historyYears[data.historyYears.length - 1];
+  const max = Math.max(...data.history, ...data.trend, ...data.paris) * 1.08;
+  const histPts = toPts(data.historyYears, data.history, start, end, max, box);
+  const trendPts = toPts(data.futureYears, data.trend, start, end, max, box);
+  const parisPts = toPts(data.futureYears, data.paris, start, end, max, box);
+  const todayX = yearToX(today, start, end, box);
+  const ticks = [start, today, 2030, 2040, end].filter(
+    (year, i, arr) => arr.indexOf(year) === i && year >= start && year <= end,
+  );
 
   el.innerHTML = `
-    <svg viewBox="${VIEW}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Historical emissions">
+    <svg viewBox="${VIEW}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Historical emissions, then the trend versus the Paris path">
       <defs>
         <linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#FDB768" stop-opacity="0.38"/>
@@ -102,47 +105,26 @@ function renderHistory(el, data, id) {
       </defs>
       ${gridLines(box)}
       <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.14)"/>
-      <path d="${areaPath(pts, box.y + box.h)}" fill="url(#${id})"/>
-      <path class="chart-line" d="${linePath(pts)}" stroke="#FDB768" stroke-width="2.6"/>
-      ${pts.map((p) => `<circle cx="${pad(p.x)}" cy="${pad(p.y)}" r="3.2" fill="#FDB768"/>`).join("")}
-      ${labels}
-    </svg>
-  `;
-}
-
-function renderFuture(el, data) {
-  const box = BOX;
-  const max = Math.max(...data.trend, ...data.paris) * 1.06;
-  const trendPts = mapPts(data.trend, data.years, box, max);
-  const parisPts = mapPts(data.paris, data.years, box, max);
-  const markerIndex = data.years.indexOf(data.markerYear);
-  const marker = markerIndex >= 0 ? trendPts[markerIndex] : null;
-  const parisMarker = markerIndex >= 0 ? parisPts[markerIndex] : null;
-  const ticks = data.years.filter(
-    (year, i) =>
-      i === 0 || year === data.markerYear || year === 2040 || i === data.years.length - 1,
-  );
-
-  el.innerHTML = `
-    <svg viewBox="${VIEW}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Trend versus Paris path">
-      ${gridLines(box)}
-      <line x1="${box.x}" y1="${box.y + box.h}" x2="${box.x + box.w}" y2="${box.y + box.h}" stroke="rgba(255,255,255,0.14)"/>
+      <rect x="${box.x}" y="${box.y}" width="${pad(todayX - box.x)}" height="${box.h}" fill="rgba(255,255,255,0.03)"/>
+      <path d="${areaPath(histPts, box.y + box.h)}" fill="url(#${id})"/>
       <path d="${bandPath(trendPts, parisPts)}" fill="#F0759A" opacity="0.18"/>
-      <path class="chart-line" d="${linePath(trendPts)}" stroke="#FDB768" stroke-width="2.6"/>
+      <path class="chart-line" d="${linePath(histPts)}" stroke="#FDB768" stroke-width="2.8"/>
+      <path class="chart-line" d="${linePath(trendPts)}" stroke="#FDB768" stroke-width="2.4"/>
       <path class="chart-line" d="${linePath(parisPts)}" stroke="#AAE506" stroke-width="2.6" stroke-dasharray="7 6"/>
-      ${
-        marker
-          ? `<line x1="${pad(marker.x)}" y1="${box.y}" x2="${pad(marker.x)}" y2="${box.y + box.h}" stroke="rgba(247,247,247,0.2)" stroke-dasharray="3 5"/>
-             <text class="chart-note" x="${pad(marker.x + 8)}" y="${box.y + 16}">2030</text>
-             <circle cx="${pad(marker.x)}" cy="${pad(marker.y)}" r="3.5" fill="#FDB768"/>
-             <circle cx="${pad(parisMarker.x)}" cy="${pad(parisMarker.y)}" r="3.5" fill="#AAE506"/>`
-          : ""
-      }
+      <line x1="${pad(todayX)}" y1="${box.y}" x2="${pad(todayX)}" y2="${box.y + box.h}" stroke="rgba(247,247,247,0.45)"/>
+      <text class="chart-note" x="${pad(todayX - 10)}" y="${box.y - 10}" text-anchor="end">So far</text>
+      <text class="chart-note" x="${pad(todayX + 10)}" y="${box.y - 10}">From now</text>
+      <text class="axis-label" x="${pad(todayX)}" y="${box.y + 14}" text-anchor="middle">Now</text>
+      ${histPts.map((p) => `<circle cx="${pad(p.x)}" cy="${pad(p.y)}" r="3.2" fill="#FDB768"/>`).join("")}
       ${ticks
         .map((year) => {
-          const i = data.years.indexOf(year);
-          const anchor = i === 0 ? "start" : i === data.years.length - 1 ? "end" : "middle";
-          return `<text class="axis-label" x="${pad(trendPts[i].x)}" y="${box.y + box.h + 20}" text-anchor="${anchor}">${year}</text>`;
+          const x = yearToX(year, start, end, box);
+          const anchor = year === start ? "start" : year === end ? "end" : "middle";
+          const label = year === today ? "Now" : String(year);
+          if (year === today) {
+            return `<text class="axis-label" x="${pad(x)}" y="${box.y + box.h + 20}" text-anchor="middle">${today}</text>`;
+          }
+          return `<text class="axis-label" x="${pad(x)}" y="${box.y + box.h + 20}" text-anchor="${anchor}">${label}</text>`;
         })
         .join("")}
     </svg>
@@ -150,7 +132,7 @@ function renderFuture(el, data) {
 }
 
 function renderStacked(el, data) {
-  const box = BOX;
+  const box = { x: 4, y: 8, w: 992, h: 348 };
   const totals = data.scope12.map((v, i) => v + data.scope3[i]);
   const max = Math.max(...totals) * 1.05;
   const gap = 18;
@@ -181,8 +163,7 @@ function renderStacked(el, data) {
 }
 
 const renderers = {
-  history: renderHistory,
-  future: renderFuture,
+  combined: renderCombined,
   stacked: renderStacked,
 };
 

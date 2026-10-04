@@ -238,7 +238,7 @@ body {
 }
 
 .chart.tall {
-  aspect-ratio: 1000 / 420;
+  aspect-ratio: 1000 / 430;
 }
 
 .chart svg {
