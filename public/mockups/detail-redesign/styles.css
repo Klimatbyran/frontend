@@ -257,13 +257,19 @@ body {
 
 .map-stage svg {
   display: block;
-  width: 100%;
+  width: min(100%, 28rem);
   height: auto;
+  max-height: 32rem;
 }
 
 .map-stage-small {
   max-width: 13.5rem;
   margin-top: 1.1rem;
+}
+
+.map-stage-small svg {
+  width: 100%;
+  max-height: none;
 }
 
 .map-area {
