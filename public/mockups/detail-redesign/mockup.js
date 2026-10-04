@@ -251,9 +251,11 @@ function fillReadout(el, kind, id) {
   const verdict = onTrack ? "On track for Paris" : "Not on track for Paris";
   const change =
     typeof info.change === "number" ? `${formatChange(info.change)} a year.` : "";
-  const link = info.go
-    ? `<p class="map-readout-link"><a class="place-link" href="#${info.go}" data-go="${info.go}">Open ${id}</a></p>`
-    : "";
+  const current = location.hash.replace("#", "");
+  const link =
+    info.go && info.go !== current
+      ? `<p class="map-readout-link"><a class="place-link" href="#${info.go}" data-go="${info.go}">Open ${id}</a></p>`
+      : "";
   const note = info.note ? `<p class="map-readout-note">${info.note}</p>` : "";
   el.innerHTML = `
     <p class="map-readout-name">${id}</p>
