@@ -10,10 +10,10 @@ const SERIES = {
   "region-combined": {
     type: "combined",
     historyYears: [1990, 2000, 2010, 2015, 2020, 2023],
-    history: [18.2, 16.1, 14.0, 12.8, 11.4, 10.7],
+    history: [3.1, 2.7, 2.35, 2.15, 1.92, 1.8],
     futureYears: [2023, 2025, 2030, 2035, 2040, 2045, 2050],
-    trend: [10.7, 9.4, 6.9, 5.1, 3.7, 2.7, 2.0],
-    paris: [10.7, 8.3, 4.4, 2.3, 1.2, 0.65, 0.35],
+    trend: [1.8, 1.58, 1.16, 0.85, 0.63, 0.46, 0.34],
+    paris: [1.8, 1.4, 0.74, 0.39, 0.2, 0.11, 0.06],
   },
   "company-combined": {
     type: "combined",
@@ -186,10 +186,18 @@ function setEntity(entity) {
     btn.classList.toggle("is-active", btn.dataset.entity === entity);
   });
   history.replaceState(null, "", `#${entity}`);
+  window.scrollTo(0, 0);
 }
 
 document.querySelectorAll(".entity-tab").forEach((btn) => {
   btn.addEventListener("click", () => setEntity(btn.dataset.entity));
+});
+
+document.getElementById("app").addEventListener("click", (event) => {
+  const go = event.target.closest("[data-go]");
+  if (!go) return;
+  event.preventDefault();
+  setEntity(go.dataset.go);
 });
 
 const initial = location.hash.replace("#", "") || "municipality";
