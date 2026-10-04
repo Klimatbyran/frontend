@@ -100,7 +100,6 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/react-mailchimp-subscribe": "^2.1.4",
-    "@types/testing-library__jest-dom": "^5.14.9",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^4.1.11",
     "@vitest/ui": "^4.1.11",
@@ -131,6 +130,7 @@
       "js-yaml": "4.3.2",
       "minimatch": "5.1.8"
     },
+    "chokidar": "4.0.3",
     "esbuild": "0.28.2",
     "linkify-it": "5.0.2",
     "markdown-it": "14.3.1"
