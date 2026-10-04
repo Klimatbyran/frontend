@@ -158,25 +158,15 @@ export function OverviewStat({
     />
   ) : null;
 
-  if (isDetailVariant && alignBenchmarks) {
-    return (
-      <div
-        className={cn(
-          useFlex1 && "flex-1",
-          "flex h-full min-w-0 flex-col",
-          className,
-        )}
-      >
-        {labelBlock}
-        {valueBlock}
-        {captionBlock}
-        {benchmarkBlock}
-      </div>
-    );
-  }
-
   return (
-    <div className={cn(useFlex1 && "flex-1", "min-w-0", className)}>
+    <div
+      className={cn(
+        useFlex1 && "flex-1",
+        "min-w-0",
+        isDetailVariant && alignBenchmarks && "flex h-full flex-col",
+        className,
+      )}
+    >
       {labelBlock}
       {valueBlock}
       {captionBlock}

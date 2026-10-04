@@ -164,11 +164,8 @@ export function buildCompanyBenchmarks(
     meetsParis: buildBooleanBenchmark({
       value: values.meetsParis,
       peers: peers.map((peer) => peer.meetsParis),
-      groupPeers: group?.peers.map((peer) => peer.meetsParis),
       higherIsBetter: true,
       peerGroup: "companies",
-      groupPeerGroup: group?.groupPeerGroup,
-      minGroupSize: MIN_INDUSTRY_PEERS,
     }),
     totalEmissions: numeric(
       positiveOrNull(values.totalEmissions),

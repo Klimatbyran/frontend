@@ -1191,29 +1191,18 @@
     "betterThanReference": "Bättre än {{reference}}",
     "worseThanReference": "Sämre än {{reference}}",
     "similarToReference": "Nära {{reference}}",
-    "betterThanShare": "Bättre än {{percent}} % av {{peers}}",
-    "worseThanShare": "Sämre än {{percent}} % av {{peers}}",
     "amongTheHighest": "Bland de högsta",
     "amongTheLowest": "Bland de lägsta",
     "highestOfPeers": "Högst {{place}}",
     "lowestOfPeers": "Lägst {{place}}",
     "higherThanReference": "Högre än {{reference}}",
     "lowerThanReference": "Lägre än {{reference}}",
-    "higherThanShare": "Högre än {{percent}} % av {{peers}}",
-    "lowerThanShare": "Lägre än {{percent}} % av {{peers}}",
     "booleanAhead": "Före de flesta",
     "booleanWithMost": "Som de flesta",
     "booleanBehind": "Efter de flesta",
     "booleanWithFew": "Som de flesta",
     "booleanUnknown": "Inte tillräckligt med data",
-    "shareOfPeers": "{{percent}} % av {{peers}}",
     "tiedForBest": "Delad förstaplats",
-    "tiedForWorst": "Delad sistaplats",
-    "legendYou": "Här",
-    "legendAverage": "Median",
-    "legendAll": "Alla",
-    "smallest": "Minst",
-    "largest": "Störst",
     "peers": {
       "municipalities": "kommunerna",
       "municipalitiesInRegion": "kommunerna i länet",
@@ -1235,12 +1224,6 @@
       "companies": "av alla",
       "companiesInIndustry": "i branschen",
       "companiesInSector": "i sektorn"
-    },
-    "referenceShort": {
-      "region": "Län",
-      "industry": "Bransch",
-      "sector": "Sektor",
-      "all": "Alla"
     }
   },
   "municipalitiesOverviewPage": {

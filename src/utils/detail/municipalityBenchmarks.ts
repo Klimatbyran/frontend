@@ -67,10 +67,8 @@ export function buildMunicipalityBenchmarks(
     meetsParis: buildBooleanBenchmark({
       value: municipality.meetsParisGoal,
       peers: peers.map((peer) => peer.meetsParisGoal),
-      groupPeers: inRegion.map((peer) => peer.meetsParisGoal),
       higherIsBetter: true,
       peerGroup: "municipalities",
-      groupPeerGroup: "municipalitiesInRegion",
     }),
     totalEmissions:
       emissions === null
@@ -115,10 +113,8 @@ export function buildMunicipalityBenchmarks(
     climatePlan: buildBooleanBenchmark({
       value: municipality.climatePlan,
       peers: peers.map((peer) => peer.climatePlan),
-      groupPeers: inRegion.map((peer) => peer.climatePlan),
       higherIsBetter: true,
       peerGroup: "municipalities",
-      groupPeerGroup: "municipalitiesInRegion",
     }),
     procurement: buildNumericBenchmark({
       value: municipality.procurementScore,

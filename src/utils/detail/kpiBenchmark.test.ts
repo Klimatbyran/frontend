@@ -32,7 +32,6 @@ describe("buildNumericBenchmark", () => {
       key: "kpiBenchmark.bestOfPeers",
       peerGroup: "municipalities",
     });
-    expect(view?.secondary).toBeNull();
     expect(view?.position).toBe(0);
   });
 
@@ -68,8 +67,6 @@ describe("buildNumericBenchmark", () => {
       key: "kpiBenchmark.betterThanReference",
       reference: "region",
     });
-    expect(view?.secondary?.peerGroup).toBe("municipalitiesInRegion");
-    expect(view?.overallAverageLabel).not.toBeNull();
     expect(view?.primaryReference).toBe("region");
   });
 
@@ -86,8 +83,6 @@ describe("buildNumericBenchmark", () => {
     });
 
     expect(view?.primaryReference).toBe("all");
-    expect(view?.overallAveragePosition).toBeNull();
-    expect(view?.secondary?.peerGroup).toBe("municipalities");
   });
 
   it("describes size metrics as higher or lower, without a good or bad tone", () => {
@@ -121,7 +116,6 @@ describe("buildNumericBenchmark", () => {
       key: "kpiBenchmark.tiedForBest",
       peerGroup: "municipalities",
     });
-    expect(view?.secondary).toBeNull();
   });
 
   it("returns nothing when there is nobody to compare with", () => {
@@ -157,18 +151,10 @@ describe("buildBooleanBenchmark", () => {
       peers: [false, true, true, true, true],
       higherIsBetter: true,
       peerGroup: "companies",
-      groupPeers: [true, true, false, false],
-      groupPeerGroup: "companiesInIndustry",
-      minGroupSize: 3,
     });
 
     expect(view?.tone).toBe("bad");
     expect(view?.primary.key).toBe("kpiBenchmark.booleanBehind");
-    expect(view?.secondary).toMatchObject({
-      key: "kpiBenchmark.shareOfPeers",
-      peerGroup: "companiesInIndustry",
-      percent: 50,
-    });
   });
 
   it("explains a missing value with the peer share", () => {

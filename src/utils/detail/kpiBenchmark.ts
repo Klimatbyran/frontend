@@ -24,15 +24,10 @@ export interface NumericBenchmarkView {
   /** 0 = smallest, 1 = largest, in rank space. */
   position: number;
   averagePosition: number;
-  overallAveragePosition: number | null;
-  minLabel: string;
-  maxLabel: string;
   averageLabel: string;
-  overallAverageLabel: string | null;
-  /** Which average the colour split and primary sentence use. */
+  /** Which median the colour split and primary sentence use. */
   primaryReference: BenchmarkReference;
   primary: BenchmarkPhrase;
-  secondary: BenchmarkPhrase | null;
 }
 
 export interface BooleanBenchmarkView {
@@ -43,7 +38,6 @@ export interface BooleanBenchmarkView {
   higherIsBetter: boolean;
   peerGroup: BenchmarkPeerGroup;
   primary: BenchmarkPhrase;
-  secondary: BenchmarkPhrase | null;
 }
 
 export type KpiBenchmarkView = NumericBenchmarkView | BooleanBenchmarkView;
@@ -67,13 +61,9 @@ export interface NumericBenchmarkInput {
 export interface BooleanBenchmarkInput {
   value: boolean | null;
   peers: Array<boolean | null | undefined>;
-  groupPeers?: Array<boolean | null | undefined>;
   /** true when "yes" is the good outcome. */
   higherIsBetter: boolean;
   peerGroup: BenchmarkPeerGroup;
-  groupPeerGroup?: BenchmarkPeerGroup;
-  groupReference?: BenchmarkReference;
-  minGroupSize?: number;
 }
 
 const EXTREME_SHARE = 0.8;
@@ -236,47 +226,6 @@ function positionPrimary(
   return { key: "kpiBenchmark.lowerThanReference", reference };
 }
 
-function sharePhrase(
-  parts: ShareSplit,
-  peerGroup: BenchmarkPeerGroup,
-  higherIsBetter: boolean | null,
-): BenchmarkPhrase | null {
-  if (!parts.total) return null;
-  // Ties are not "worse". A top score shared with others is still a top score.
-  if (higherIsBetter !== null && parts.unfavorable === 0 && parts.equal > 0) {
-    return { key: "kpiBenchmark.tiedForBest", peerGroup };
-  }
-  if (
-    higherIsBetter !== null &&
-    parts.favorable === 0 &&
-    parts.equal > 0 &&
-    parts.unfavorable > 0
-  ) {
-    return { key: "kpiBenchmark.tiedForWorst", peerGroup };
-  }
-
-  const favorableShare = parts.favorable / parts.total;
-  const unfavorableShare = parts.unfavorable / parts.total;
-  if (higherIsBetter === null) {
-    const higher = favorableShare >= unfavorableShare;
-    return {
-      key: higher
-        ? "kpiBenchmark.higherThanShare"
-        : "kpiBenchmark.lowerThanShare",
-      percent: percent(higher ? favorableShare : unfavorableShare),
-      peerGroup,
-    };
-  }
-  const better = favorableShare >= unfavorableShare;
-  return {
-    key: better
-      ? "kpiBenchmark.betterThanShare"
-      : "kpiBenchmark.worseThanShare",
-    percent: percent(better ? favorableShare : unfavorableShare),
-    peerGroup,
-  };
-}
-
 function toneFor(relation: Relation): Exclude<BenchmarkTone, "unknown"> {
   if (relation === "better") return "good";
   if (relation === "worse") return "bad";
@@ -299,21 +248,11 @@ export function buildNumericBenchmark(
     ? scaleSource
     : [...scaleSource, input.value];
   const sorted = [...scale].sort((a, b) => a - b);
-  const min = sorted[0];
-  const max = sorted[sorted.length - 1];
-  const span = max - min;
+  const span = sorted[sorted.length - 1] - sorted[0];
 
   const referenceValue = median(scaleSource);
   const position = rankPosition(input.value, scale);
   const averagePosition = rankPosition(referenceValue, scale);
-
-  const showOverall = useGroup && all.length >= 2;
-  const overallAverage = showOverall ? median(all) : null;
-  const overallAveragePosition =
-    overallAverage === null ? null : rankPosition(overallAverage, scale);
-  const hideOverall =
-    overallAveragePosition !== null &&
-    Math.abs(overallAveragePosition - averagePosition) <= 0.025;
 
   const peerGroup =
     useGroup && input.groupPeerGroup ? input.groupPeerGroup : input.peerGroup;
@@ -344,9 +283,8 @@ export function buildNumericBenchmark(
       ? positionPrimary(relation, favorableShare, others.length, reference)
       : directionalPrimary(relation, favorableShare, others.length, reference);
 
-  const extreme = tiedForBest
-    ? null
-    : relation === "similar"
+  const extreme =
+    tiedForBest || relation === "similar"
       ? null
       : extremePhrase(
           favorableShare,
@@ -361,20 +299,9 @@ export function buildNumericBenchmark(
     higherIsBetter: input.higherIsBetter,
     position,
     averagePosition,
-    overallAveragePosition: hideOverall ? null : overallAveragePosition,
-    minLabel: input.format(min),
-    maxLabel: input.format(max),
     averageLabel: input.format(referenceValue),
-    overallAverageLabel:
-      overallAverage === null || hideOverall
-        ? null
-        : input.format(overallAverage),
     primaryReference: reference,
-    primary: extreme?.primary ?? primary,
-    secondary:
-      tiedForBest || extreme
-        ? null
-        : sharePhrase(parts, peerGroup, input.higherIsBetter),
+    primary: extreme ?? primary,
   };
 }
 
@@ -383,30 +310,24 @@ function extremePhrase(
   peerGroup: BenchmarkPeerGroup,
   higherIsBetter: boolean | null,
   othersCount: number,
-): { primary: BenchmarkPhrase; secondary: null } | null {
+): BenchmarkPhrase | null {
   if (othersCount < 1) return null;
   if (share >= 0.995) {
     return {
-      primary: {
-        key:
-          higherIsBetter === null
-            ? "kpiBenchmark.highestOfPeers"
-            : "kpiBenchmark.bestOfPeers",
-        peerGroup,
-      },
-      secondary: null,
+      key:
+        higherIsBetter === null
+          ? "kpiBenchmark.highestOfPeers"
+          : "kpiBenchmark.bestOfPeers",
+      peerGroup,
     };
   }
   if (share <= 0.005) {
     return {
-      primary: {
-        key:
-          higherIsBetter === null
-            ? "kpiBenchmark.lowestOfPeers"
-            : "kpiBenchmark.worstOfPeers",
-        peerGroup,
-      },
-      secondary: null,
+      key:
+        higherIsBetter === null
+          ? "kpiBenchmark.lowestOfPeers"
+          : "kpiBenchmark.worstOfPeers",
+      peerGroup,
     };
   }
   return null;
@@ -466,18 +387,6 @@ export function buildBooleanBenchmark(
     };
   }
 
-  const minGroupSize = input.minGroupSize ?? 3;
-  const group = decisiveCounts(input.groupPeers ?? []);
-  const secondary =
-    group.total >= minGroupSize && input.groupPeerGroup
-      ? {
-          key: "kpiBenchmark.shareOfPeers",
-          percent: percent(group.yes / group.total),
-          peerGroup: input.groupPeerGroup,
-          reference: input.groupReference,
-        }
-      : null;
-
   return {
     kind: "boolean",
     tone,
@@ -485,6 +394,5 @@ export function buildBooleanBenchmark(
     higherIsBetter: input.higherIsBetter,
     peerGroup: input.peerGroup,
     primary,
-    secondary,
   };
 }
