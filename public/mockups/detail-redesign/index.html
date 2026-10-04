@@ -29,36 +29,32 @@
 
     <template id="tpl-municipality">
       <article class="story">
-        <section class="hero">
-          <p class="entity-type">Municipality in Västerbotten</p>
-          <h1 class="entity-name">Umeå</h1>
-          <p class="meta">S + MP + V. Climate plan from 2022. About 132,000 residents.</p>
-          <p class="verdict accent-pink">Not on track for Paris</p>
-          <p class="lede">
-            On Klimatkollen the Paris goal means about 12% less each year, from 2025.
-            Umeå is closer to 3%.
-          </p>
-          <nav class="q-nav">
-            <a href="#past">Historically</a>
-            <a href="#future">The trend</a>
-            <a href="#paris">Paris goal</a>
-          </nav>
-        </section>
-
-        <section class="block" id="past">
-          <p class="question">How has it gone historically, and how will it go on the trend?</p>
-          <h2 class="answer">Down 28% since 2015. If the trend holds, Umeå stays above the Paris path.</h2>
-          <p class="support">
-            Left of the line is what has happened. Right is the last years, drawn forward.
-            Green is about 12% less each year from 2025. Not a political target.
-            The gap is extra emissions.
-          </p>
+        <section class="fold" id="past">
+          <div class="fold-top">
+            <div>
+              <p class="entity-type">Municipality in Västerbotten</p>
+              <h1 class="entity-name">Umeå</h1>
+              <p class="meta">S + MP + V. Climate plan from 2022. About 132,000 residents.</p>
+            </div>
+            <div class="fold-verdict">
+              <p class="verdict accent-pink">Not on track for Paris</p>
+              <p class="lede">
+                Paris means about 12% less each year from 2025. Umeå is closer to 3%.
+                History left of Now. Trend versus Paris on the right.
+              </p>
+              <nav class="q-nav">
+                <a href="#past">Historically</a>
+                <a href="#future">The trend</a>
+                <a href="#paris">Paris goal</a>
+              </nav>
+            </div>
+          </div>
           <div class="legend">
             <span><i class="swatch orange"></i> So far, then if the trend continues</span>
             <span><i class="swatch green dashed"></i> Paris path (12% less a year)</span>
             <span class="legend-unit">tonnes a year</span>
           </div>
-          <div class="chart tall" data-series="muni-combined"></div>
+          <div class="chart fold-chart" data-series="muni-combined"></div>
           <div class="stats">
             <div>
               <p class="stat-label">2015</p>
@@ -144,35 +140,32 @@
 
     <template id="tpl-region">
       <article class="story">
-        <section class="hero">
-          <p class="entity-type">Region. 49 municipalities.</p>
-          <h1 class="entity-name">Västra Götaland</h1>
-          <p class="meta">About 1.8 million residents. One fifth of Sweden’s population.</p>
-          <p class="verdict accent-green">On track for Paris, if the trend holds</p>
-          <p class="lede">
-            Emissions have fallen fast enough. The projected total still fits
-            the Paris budget: about 12% less each year from 2025.
-          </p>
-          <nav class="q-nav">
-            <a href="#past">Historically</a>
-            <a href="#future">The trend</a>
-            <a href="#paris">Paris goal</a>
-          </nav>
-        </section>
-
-        <section class="block" id="past">
-          <p class="question">How has it gone historically, and how will it go on the trend?</p>
-          <h2 class="answer">Almost halved since 1990. The trend keeps falling.</h2>
-          <p class="support">
-            Left of the line is history. Right is the trend versus Paris.
-            The green line is steeper. What counts later is the total, not 12% every year.
-          </p>
+        <section class="fold" id="past">
+          <div class="fold-top">
+            <div>
+              <p class="entity-type">Region. 49 municipalities.</p>
+              <h1 class="entity-name">Västra Götaland</h1>
+              <p class="meta">About 1.8 million residents. One fifth of Sweden’s population.</p>
+            </div>
+            <div class="fold-verdict">
+              <p class="verdict accent-green">On track for Paris, if the trend holds</p>
+              <p class="lede">
+                Emissions have fallen fast enough. History left of Now.
+                Trend versus Paris on the right.
+              </p>
+              <nav class="q-nav">
+                <a href="#past">Historically</a>
+                <a href="#future">The trend</a>
+                <a href="#paris">Paris goal</a>
+              </nav>
+            </div>
+          </div>
           <div class="legend">
             <span><i class="swatch orange"></i> So far, then if the trend continues</span>
             <span><i class="swatch green dashed"></i> Paris path (12% less a year)</span>
             <span class="legend-unit">million tonnes a year</span>
           </div>
-          <div class="chart tall" data-series="region-combined"></div>
+          <div class="chart fold-chart" data-series="region-combined"></div>
           <div class="stats">
             <div>
               <p class="stat-label">1990</p>
@@ -266,35 +259,32 @@
 
     <template id="tpl-company">
       <article class="story">
-        <section class="hero">
-          <p class="entity-type">Company. Vehicles and machinery.</p>
-          <h1 class="entity-name">Volvo Group</h1>
-          <p class="meta">Listed in Sweden. Most of the climate impact sits in the trucks on the road.</p>
-          <p class="verdict accent-pink">Not on track for Paris</p>
-          <p class="lede">
-            Same rule as for cities. The trend should fit a 12% yearly cut through 2050.
-            Volvo’s reported trend does not.
-          </p>
-          <nav class="q-nav">
-            <a href="#past">Historically</a>
-            <a href="#future">The trend</a>
-            <a href="#paris">Paris goal</a>
-          </nav>
-        </section>
-
-        <section class="block" id="past">
-          <p class="question">How has it gone historically, and how will it go on the trend?</p>
-          <h2 class="answer">Totals dipped, then flattened. The trend barely falls.</h2>
-          <p class="support">
-            Left of the line is reported emissions. Right is that pattern, drawn forward.
-            Green is 12% less a year. Not Volvo’s official target. The gap is extra to cut.
-          </p>
+        <section class="fold" id="past">
+          <div class="fold-top">
+            <div>
+              <p class="entity-type">Company. Vehicles and machinery.</p>
+              <h1 class="entity-name">Volvo Group</h1>
+              <p class="meta">Listed in Sweden. Most of the impact sits in trucks on the road.</p>
+            </div>
+            <div class="fold-verdict">
+              <p class="verdict accent-pink">Not on track for Paris</p>
+              <p class="lede">
+                Same rule as for cities: about 12% less a year. The reported trend does not fit.
+                History left of Now. Trend versus Paris on the right.
+              </p>
+              <nav class="q-nav">
+                <a href="#past">Historically</a>
+                <a href="#future">The trend</a>
+                <a href="#paris">Paris goal</a>
+              </nav>
+            </div>
+          </div>
           <div class="legend">
             <span><i class="swatch orange"></i> So far, then if the trend continues</span>
             <span><i class="swatch green dashed"></i> Paris path (12% less a year)</span>
             <span class="legend-unit">million tonnes a year</span>
           </div>
-          <div class="chart tall" data-series="company-combined"></div>
+          <div class="chart fold-chart" data-series="company-combined"></div>
           <div class="stats">
             <div>
               <p class="stat-label">Latest total</p>
@@ -312,10 +302,15 @@
               <p class="stat-cap">Mostly trucks in use, worldwide</p>
             </div>
           </div>
-          <p class="compare-title">Where the latest year comes from</p>
+        </section>
+
+        <section class="block">
+          <p class="question">Where the latest year comes from</p>
+          <h2 class="answer">Almost all of it is trucks in use</h2>
           <div class="legend">
             <span><i class="swatch orange"></i> Own operations</span>
             <span><i class="swatch blue"></i> Value chain</span>
+            <span class="legend-unit">million tonnes a year</span>
           </div>
           <div class="chart" data-series="company-past"></div>
         </section>
