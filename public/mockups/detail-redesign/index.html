@@ -49,6 +49,7 @@
                 <a href="#past">Historically</a>
                 <a href="#future">The trend</a>
                 <a href="#paris">Paris goal</a>
+                <a href="#places">On the map</a>
               </nav>
             </div>
           </div>
@@ -138,6 +139,38 @@
             </div>
           </div>
         </section>
+
+        <section class="block" id="places">
+          <p class="question">Where Umeå sits</p>
+          <h2 class="answer">In Västerbotten. The region is on track. Umeå is not.</h2>
+          <p class="support">
+            Colour is Paris alignment. Hover a neighbour. Umeå is outlined.
+          </p>
+          <div class="map-panel">
+            <div
+              class="map-stage"
+              data-map="municipalities"
+              data-focus="Umeå"
+              data-label="Umeå,Skellefteå"
+            ></div>
+            <div class="map-aside">
+              <div class="legend">
+                <span><i class="swatch green"></i> On track</span>
+                <span><i class="swatch pink map-swatch"></i> Not on track</span>
+              </div>
+              <div class="map-readout" data-default="Umeå" data-kind="municipalities"></div>
+              <div
+                class="map-stage map-stage-small"
+                data-map="regions"
+                data-focus="Västerbotten"
+              ></div>
+              <p class="stat-cap">
+                Sweden. Västerbotten is green. Most regions are not.
+                Click it to open the region.
+              </p>
+            </div>
+          </div>
+        </section>
       </article>
     </template>
 
@@ -160,7 +193,7 @@
                 <a href="#past">Historically</a>
                 <a href="#future">The trend</a>
                 <a href="#paris">Paris goal</a>
-                <a href="#places">Municipalities</a>
+                <a href="#places">On the map</a>
               </nav>
             </div>
           </div>
@@ -240,48 +273,33 @@
 
         <section class="block" id="places">
           <p class="question">Municipalities in this region</p>
-          <h2 class="answer">15 in total. Umeå is the largest.</h2>
+          <h2 class="answer">The region can be on track even if Umeå is not.</h2>
           <p class="support">
-            Yearly change for a few of them. Umeå opens the municipality page.
+            Colour is Paris alignment. Skellefteå has fallen faster. Hover a name.
+            Umeå opens its page.
           </p>
-          <p class="compare-title">Yearly change</p>
-          <div class="compare-row">
-            <a class="place-link" href="#municipality" data-go="municipality">Umeå</a>
-            <div class="compare-track"><div class="bar-fill orange" style="--w: 53%"></div></div>
-            <b class="accent-orange">−3.2%</b>
+          <div class="map-panel">
+            <div
+              class="map-stage"
+              data-map="municipalities"
+              data-label="Umeå,Skellefteå"
+            ></div>
+            <div class="map-aside">
+              <div class="legend">
+                <span><i class="swatch green"></i> On track</span>
+                <span><i class="swatch pink map-swatch"></i> Not on track</span>
+              </div>
+              <div class="map-readout" data-default="Skellefteå" data-kind="municipalities"></div>
+              <div
+                class="map-stage map-stage-small"
+                data-map="regions"
+                data-focus="Västerbotten"
+              ></div>
+              <p class="stat-cap">
+                Sweden. Green regions fit the Paris budget. Pink ones do not.
+              </p>
+            </div>
           </div>
-          <div class="compare-row">
-            <span>Skellefteå</span>
-            <div class="compare-track"><div class="bar-fill green" style="--w: 80%"></div></div>
-            <b class="accent-green">−4.8%</b>
-          </div>
-          <div class="compare-row">
-            <span>Lycksele</span>
-            <div class="compare-track"><div class="bar-fill orange" style="--w: 33%"></div></div>
-            <b class="accent-orange">−2.0%</b>
-          </div>
-          <div class="compare-row">
-            <span>Dorotea</span>
-            <div class="compare-track"><div class="bar-fill pink" style="--w: 10%"></div></div>
-            <b class="accent-pink">+0.4%</b>
-          </div>
-          <ul class="place-list">
-            <li><a class="place-link" href="#municipality" data-go="municipality">Umeå</a></li>
-            <li>Bjurholm</li>
-            <li>Dorotea</li>
-            <li>Lycksele</li>
-            <li>Malå</li>
-            <li>Nordmaling</li>
-            <li>Norsjö</li>
-            <li>Robertsfors</li>
-            <li>Skellefteå</li>
-            <li>Sorsele</li>
-            <li>Storuman</li>
-            <li>Vilhelmina</li>
-            <li>Vindeln</li>
-            <li>Vännäs</li>
-            <li>Åsele</li>
-          </ul>
         </section>
       </article>
     </template>
@@ -406,6 +424,7 @@
       </article>
     </template>
 
+    <script src="./maps.js"></script>
     <script src="./mockup.js"></script>
   </body>
 </html>

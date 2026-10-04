@@ -247,6 +247,93 @@ body {
   font-size: inherit;
 }
 
+.map-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(15rem, 0.85fr);
+  gap: 1.25rem 2.5rem;
+  align-items: start;
+  margin-top: 1.25rem;
+}
+
+.map-stage svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.map-stage-small {
+  max-width: 13.5rem;
+  margin-top: 1.1rem;
+}
+
+.map-area {
+  stroke: var(--black-3);
+  stroke-width: 1;
+  cursor: pointer;
+  vector-effect: non-scaling-stroke;
+}
+
+.map-area.is-on {
+  fill: var(--green-3);
+  fill-opacity: 0.55;
+}
+
+.map-area.is-off {
+  fill: var(--pink-3);
+  fill-opacity: 0.5;
+}
+
+.map-area.is-focus {
+  fill-opacity: 0.88;
+  stroke: var(--white);
+  stroke-width: 1.7;
+}
+
+.map-area.is-hover {
+  fill-opacity: 0.95;
+}
+
+.map-label {
+  fill: var(--white);
+  font-size: 13px;
+  font-family: var(--font);
+  pointer-events: none;
+}
+
+.map-readout-name {
+  margin: 0.85rem 0 0.25rem;
+  font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.map-readout-stat {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.map-readout-note,
+.map-readout-link {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  color: var(--grey);
+}
+
+.map-aside .legend {
+  margin: 0 0 0.15rem;
+}
+
+@media (max-width: 900px) {
+  .map-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .map-stage-small {
+    max-width: 12rem;
+  }
+}
+
 .block {
   padding: 3.25rem 0 0;
 }
@@ -311,6 +398,10 @@ body {
 
 .swatch.blue {
   background: var(--blue-3);
+}
+
+.swatch.pink {
+  background: var(--pink-3);
 }
 
 .swatch.dashed {

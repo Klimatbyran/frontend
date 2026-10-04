@@ -176,12 +176,167 @@ function mountCharts(root) {
   });
 }
 
+const PLACE_INFO = {
+  municipalities: {
+    Umeå: {
+      change: -3.2,
+      paris: false,
+      go: "municipality",
+      note: "Largest in the region. About 210,000 t a year.",
+    },
+    Skellefteå: {
+      change: -4.8,
+      paris: true,
+      note: "Industry has fallen fast. A big part of the regional cut.",
+    },
+    Lycksele: { change: -2.0, paris: false },
+    Dorotea: { change: 0.4, paris: false },
+    Vännäs: { change: -2.8, paris: false },
+    Nordmaling: { change: -3.5, paris: false },
+    Vindeln: { change: -2.4, paris: false },
+    Robertsfors: { change: -3.8, paris: false },
+    Bjurholm: { change: -1.5, paris: false },
+    Malå: { change: -5.1, paris: true },
+    Norsjö: { change: -4.2, paris: true },
+    Sorsele: { change: -1.1, paris: false },
+    Storuman: { change: -2.2, paris: false },
+    Vilhelmina: { change: -1.8, paris: false },
+    Åsele: { change: -0.6, paris: false },
+  },
+  regions: {
+    Västerbotten: {
+      change: -4.1,
+      paris: true,
+      go: "region",
+      note: "On track if the trend holds.",
+    },
+    Norrbotten: { change: -1.4, paris: false },
+    Västernorrland: { change: -1.8, paris: false },
+    Jämtland: { change: -4.6, paris: true },
+    Gävleborg: { change: -2.1, paris: false },
+    Dalarna: { change: -2.4, paris: false },
+    Värmland: { change: -2.0, paris: false },
+    Örebro: { change: -2.7, paris: false },
+    Västmanland: { change: -2.3, paris: false },
+    Uppsala: { change: -1.9, paris: false },
+    Stockholm: { change: -1.6, paris: false },
+    Södermanland: { change: -2.2, paris: false },
+    Östergötland: { change: -2.8, paris: false },
+    Jönköping: { change: -2.5, paris: false },
+    Kronoberg: { change: -3.9, paris: true },
+    Kalmar: { change: -2.0, paris: false },
+    Gotland: { change: -5.0, paris: true },
+    Blekinge: { change: -3.6, paris: true },
+    Skåne: { change: -1.7, paris: false },
+    Halland: { change: -4.4, paris: true },
+    "Västra Götaland": { change: -3.8, paris: true },
+  },
+};
+
+function formatChange(value) {
+  if (value > 0) return `+${value.toFixed(1)}%`;
+  if (value < 0) return `−${Math.abs(value).toFixed(1)}%`;
+  return "0%";
+}
+
+function placeRecord(kind, id) {
+  return PLACE_INFO[kind]?.[id] || { change: null, paris: false };
+}
+
+function fillReadout(el, kind, id) {
+  if (!el || !id) return;
+  const info = placeRecord(kind, id);
+  const onTrack = info.paris;
+  const statClass = onTrack ? "accent-green" : "accent-pink";
+  const verdict = onTrack ? "On track for Paris" : "Not on track for Paris";
+  const change =
+    typeof info.change === "number" ? `${formatChange(info.change)} a year.` : "";
+  const link = info.go
+    ? `<p class="map-readout-link"><a class="place-link" href="#${info.go}" data-go="${info.go}">Open ${id}</a></p>`
+    : "";
+  const note = info.note ? `<p class="map-readout-note">${info.note}</p>` : "";
+  el.innerHTML = `
+    <p class="map-readout-name">${id}</p>
+    <p class="map-readout-stat ${statClass}">${verdict} ${change}</p>
+    ${note}
+    ${link}
+  `;
+}
+
+function renderMap(el) {
+  const kind = el.dataset.map;
+  const map = window.MOCKUP_MAPS?.[kind];
+  if (!map) return;
+  const focus = el.dataset.focus || "";
+  const labels = (el.dataset.label || "")
+    .split(",")
+    .map((name) => name.trim())
+    .filter(Boolean);
+  const labelSet = new Set(labels);
+
+  el.innerHTML = `
+    <svg viewBox="${map.viewBox}" role="img" aria-label="${kind === "regions" ? "Swedish regions" : "Municipalities in Västerbotten"}">
+      ${map.areas
+        .map((area) => {
+          const info = placeRecord(kind, area.id);
+          const classes = [
+            "map-area",
+            info.paris ? "is-on" : "is-off",
+            area.id === focus ? "is-focus" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          const go = info.go ? `data-go="${info.go}"` : "";
+          return `<path class="${classes}" data-place="${area.id}" data-kind="${kind}" ${go} d="${area.d}"/>`;
+        })
+        .join("")}
+      ${map.areas
+        .filter((area) => labelSet.has(area.id))
+        .map(
+          (area) =>
+            `<text class="map-label" x="${area.c[0]}" y="${area.c[1]}" text-anchor="middle">${area.id}</text>`,
+        )
+        .join("")}
+    </svg>
+  `;
+}
+
+function bindMapPanel(panel) {
+  const readout = panel.querySelector(".map-readout");
+  const defaultId = readout?.dataset.default;
+  const defaultKind = readout?.dataset.kind || "municipalities";
+  fillReadout(readout, defaultKind, defaultId);
+
+  panel.addEventListener("pointerover", (event) => {
+    const area = event.target.closest(".map-area");
+    if (!area || !panel.contains(area)) return;
+    panel.querySelectorAll(".map-area.is-hover").forEach((node) => {
+      node.classList.remove("is-hover");
+    });
+    area.classList.add("is-hover");
+    fillReadout(readout, area.dataset.kind, area.dataset.place);
+  });
+
+  panel.addEventListener("pointerleave", () => {
+    panel.querySelectorAll(".map-area.is-hover").forEach((node) => {
+      node.classList.remove("is-hover");
+    });
+    fillReadout(readout, defaultKind, defaultId);
+  });
+}
+
+function mountMaps(root) {
+  root.querySelectorAll("[data-map]").forEach(renderMap);
+  root.querySelectorAll(".map-panel").forEach(bindMapPanel);
+}
+
 function setEntity(entity) {
   const app = document.getElementById("app");
   const tpl = document.getElementById(`tpl-${entity}`);
   app.innerHTML = "";
   app.appendChild(tpl.content.cloneNode(true));
   mountCharts(app);
+  mountMaps(app);
   document.querySelectorAll(".entity-tab").forEach((btn) => {
     btn.classList.toggle("is-active", btn.dataset.entity === entity);
   });
