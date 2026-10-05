@@ -1,6 +1,7 @@
 import { FC, useMemo } from "react";
 import {
-  LineChart,
+  Area,
+  ComposedChart,
   Line,
   ReferenceLine,
   ResponsiveContainer,
@@ -35,7 +36,10 @@ import {
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
-import { compareFuturePathTotals } from "@/components/territories/emissionsGraph/twoFuturesChartData";
+import {
+  buildTwoFuturesRows,
+  compareFuturePathTotals,
+} from "@/components/territories/emissionsGraph/twoFuturesChartData";
 import type { DataPoint } from "@/types/emissions";
 
 interface OverviewChartProps {
@@ -93,19 +97,42 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     return createOverviewLegendItems(t, hiddenItems, false);
   }, [t, approximatedData]);
 
+  const asDataPoints: DataPoint[] = useMemo(
+    () =>
+      chartData.map((point) => ({
+        year: point.year,
+        total: point.total,
+        trend: point.trend,
+        approximated: point.approximated,
+        carbonLaw: point.carbonLaw,
+      })),
+    [chartData],
+  );
+
+  const chartDataWithBand = useMemo(() => {
+    if (!approximatedData) return chartData;
+    const bandByYear = new Map(
+      buildTwoFuturesRows(asDataPoints, currentYear).map((row) => [
+        row.year,
+        row,
+      ]),
+    );
+    return chartData.map((point) => {
+      const band = bandByYear.get(point.year);
+      return {
+        ...point,
+        parisBase: band?.parisBase,
+        gap: band?.gap,
+      };
+    });
+  }, [approximatedData, asDataPoints, chartData, currentYear]);
+
   const pathComparison = useMemo(() => {
     if (!approximatedData) {
       return { totalTrend: 0, totalParis: 0 };
     }
-    const asDataPoints: DataPoint[] = chartData.map((point) => ({
-      year: point.year,
-      total: point.total,
-      trend: point.trend,
-      approximated: point.approximated,
-      carbonLaw: point.carbonLaw,
-    }));
     return compareFuturePathTotals(asDataPoints, currentYear, chartEndYear);
-  }, [approximatedData, chartData, currentYear, chartEndYear]);
+  }, [approximatedData, asDataPoints, currentYear, chartEndYear]);
 
   const ticks = generateChartTicks(
     firstDataYear,
@@ -133,9 +160,9 @@ export const OverviewChart: FC<OverviewChartProps> = ({
         className={yearControlsPlacement === "top-right" ? "pt-14" : ""}
       >
         <ResponsiveContainer {...getChartContainerProps()}>
-          <LineChart
+          <ComposedChart
             {...getLineChartProps(
-              chartData,
+              chartDataWithBand,
               handleClick,
               getResponsiveChartMargin(isMobile),
             )}
@@ -192,6 +219,29 @@ export const OverviewChart: FC<OverviewChartProps> = ({
               connectNulls={false}
             />
 
+            {/* Paris overshoot band (trend above carbon law) */}
+            {approximatedData && (
+              <>
+                <Area
+                  dataKey="parisBase"
+                  stackId="overshoot"
+                  stroke="none"
+                  fill="transparent"
+                  isAnimationActive={false}
+                  legendType="none"
+                />
+                <Area
+                  dataKey="gap"
+                  stackId="overshoot"
+                  stroke="none"
+                  fill="var(--pink-3)"
+                  fillOpacity={0.22}
+                  isAnimationActive={false}
+                  legendType="none"
+                />
+              </>
+            )}
+
             {/* Approximated data lines */}
             {approximatedData && (
               <>
@@ -225,7 +275,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
                 />
               </>
             )}
-          </LineChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </ChartArea>
 
