@@ -1182,9 +1182,25 @@
       "trendPath": "Vart dagens takt leder",
       "parisPath": "Det 1,5-gradersmålet kräver",
       "todayMarker": "idag",
-      "twoFuturesOvershoot": "Räknar man ihop till {{year}} ligger dagens takt <0>{{share}}</0> över Parisbanan.",
-      "twoFuturesUndershoot": "Räknar man ihop till {{year}} ligger dagens takt <0>{{share}}</0> under Parisbanan.",
-      "twoFuturesAligned": "Räknar man ihop till {{year}} ligger dagens takt i linje med Parisbanan."
+      "twoFuturesOvershoot": "Räknar man ihop till {{year}} är dagens takt <0>{{comparison}}</0> Parisbanan.",
+      "twoFuturesUndershoot": "Räknar man ihop till {{year}} är dagens takt <0>{{comparison}}</0> Parisbanan.",
+      "twoFuturesAligned": "Räknar man ihop till {{year}} ligger dagens takt i linje med Parisbanan.",
+      "comparison": {
+        "eighthMore": "en åttondel mer än",
+        "quarterMore": "en fjärdedel mer än",
+        "thirdMore": "en tredjedel mer än",
+        "halfMore": "hälften mer än",
+        "twoThirdsMore": "två tredjedelar mer än",
+        "threeQuartersMore": "tre fjärdedelar mer än",
+        "double": "dubbelt så mycket som",
+        "triple": "tre gånger så mycket som",
+        "eighthLess": "en åttondel mindre än",
+        "quarterLess": "en fjärdedel mindre än",
+        "thirdLess": "en tredjedel mindre än",
+        "halfLess": "hälften så mycket som",
+        "twoThirdsLess": "två tredjedelar mindre än",
+        "threeQuartersLess": "tre fjärdedelar mindre än"
+      }
     }
   },
   "municipalitiesOverviewPage": {

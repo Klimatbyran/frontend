@@ -24,21 +24,18 @@ import {
   type LegendItem,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
-import type { SupportedLanguage } from "@/lib/languageDetection";
 import {
   formatEmissionsAbsolute,
   formatEmissionsAbsoluteCompact,
-  formatPercent,
 } from "@/utils/formatting/localization";
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
 } from "@/components/territories/emissionsGraph/twoFuturesChartData";
+import { pickTrendVsParisPhraseKey } from "@/components/territories/emissionsGraph/twoFuturesComparisonPhrase";
 
 /** Same dash as the existing trend and Paris lines. */
 const FUTURE_LINE_DASH = "4 4";
-/** Treat a gap smaller than half a percentage point as aligned. */
-const ALIGNED_SHARE = 0.005;
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
@@ -115,31 +112,34 @@ function TwoFuturesTooltip({
 function FutureTotalsCaption({
   year,
   gapShareOfParis,
-  language,
 }: {
   year: number;
   gapShareOfParis: number | null;
-  language: SupportedLanguage;
 }) {
+  const { t } = useTranslation();
   if (gapShareOfParis == null) return null;
 
-  const aligned = Math.abs(gapShareOfParis) < ALIGNED_SHARE;
+  const phraseKey = pickTrendVsParisPhraseKey(gapShareOfParis);
+  if (phraseKey == null) {
+    return (
+      <p className="max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
+        {t("detailPage.graph.twoFuturesAligned", { year })}
+      </p>
+    );
+  }
+
   const overshoot = gapShareOfParis > 0;
-  const i18nKey = aligned
-    ? "detailPage.graph.twoFuturesAligned"
-    : overshoot
-      ? "detailPage.graph.twoFuturesOvershoot"
-      : "detailPage.graph.twoFuturesUndershoot";
+  const i18nKey = overshoot
+    ? "detailPage.graph.twoFuturesOvershoot"
+    : "detailPage.graph.twoFuturesUndershoot";
   const accent = overshoot ? "text-pink-3" : "text-green-2";
+  const comparison = t(`detailPage.graph.comparison.${phraseKey}`);
 
   return (
     <p className="max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
       <Trans
         i18nKey={i18nKey}
-        values={{
-          year,
-          share: formatPercent(Math.abs(gapShareOfParis), language, false, 0),
-        }}
+        values={{ year, comparison }}
         components={[<span key="0" className={accent} />]}
       />
     </p>
@@ -319,7 +319,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <FutureTotalsCaption
           year={chartEndYear}
           gapShareOfParis={pathComparison.gapShareOfParis}
-          language={currentLanguage}
         />
         <ChartYearControls
           chartEndYear={chartEndYear}

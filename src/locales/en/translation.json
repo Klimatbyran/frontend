@@ -1131,9 +1131,25 @@
       "trendPath": "Where today's pace leads",
       "parisPath": "What the 1.5°C target requires",
       "todayMarker": "today",
-      "twoFuturesOvershoot": "Add it up to {{year}}, and today's pace is <0>{{share}}</0> above the Paris path.",
-      "twoFuturesUndershoot": "Add it up to {{year}}, and today's pace is <0>{{share}}</0> below the Paris path.",
-      "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path."
+      "twoFuturesOvershoot": "Add it up to {{year}} — today's pace is <0>{{comparison}}</0> the Paris path.",
+      "twoFuturesUndershoot": "Add it up to {{year}} — today's pace is <0>{{comparison}}</0> the Paris path.",
+      "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path.",
+      "comparison": {
+        "eighthMore": "an eighth more than",
+        "quarterMore": "a quarter more than",
+        "thirdMore": "a third more than",
+        "halfMore": "half again as much as",
+        "twoThirdsMore": "two thirds more than",
+        "threeQuartersMore": "three quarters more than",
+        "double": "twice as much as",
+        "triple": "three times as much as",
+        "eighthLess": "one eighth less than",
+        "quarterLess": "a quarter less than",
+        "thirdLess": "a third less than",
+        "halfLess": "half as much as",
+        "twoThirdsLess": "two thirds less than",
+        "threeQuartersLess": "three quarters less than"
+      }
     }
   },
   "municipalitiesOverviewPage": {
