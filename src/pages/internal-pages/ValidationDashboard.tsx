@@ -79,7 +79,7 @@ const IssueView = ({ issues, className, error }: IssueViewProps) => {
             target="_blank"
             className={cn(
               "mr-2",
-              issue.state == "open" ? "text-green-3" : "text-gray-500",
+              issue.state == "open" ? "text-blue-3" : "text-gray-500",
             )}
           >
             {issues.length > 1 ? `#${issue.number} ` : ""}
@@ -141,7 +141,7 @@ export const ValidationDashboard = () => {
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold">
-        Validation status for <span className="text-green-3">{year}</span>
+        Validation status for <span className="text-blue-3">{year}</span>
       </h1>
 
       <div className="my-6 flex items-center gap-2">

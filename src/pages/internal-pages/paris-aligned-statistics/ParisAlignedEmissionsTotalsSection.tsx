@@ -48,7 +48,7 @@ export function ParisAlignedEmissionsTotalsSection({
             className={`font-bold ${
               statistics.totalTonnesDiffFromBudget >= 0
                 ? "text-red-400"
-                : "text-green-400"
+                : "text-green-3"
             }`}
           >
             {formatTonnes(statistics.totalTonnesDiffFromBudget)} tonnes CO₂

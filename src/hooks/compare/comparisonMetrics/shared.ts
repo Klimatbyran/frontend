@@ -36,7 +36,7 @@ export function getClimatePlanStatus(
     hasPlan === true ? t("yes") : hasPlan === false ? t("no") : t("unknown");
   const colorClass =
     hasPlan === true
-      ? "text-green-3"
+      ? "text-blue-3"
       : hasPlan === false
         ? "text-pink-3"
         : "text-grey";
@@ -216,7 +216,7 @@ export function createCompanyReportingSection(t: TFunction): ComparisonSection {
         label: t("companies.card.scope3Coverage"),
         getValue: (item, translate) => ({
           text: item.hasScope3Coverage ? translate("yes") : translate("no"),
-          colorClass: item.hasScope3Coverage ? "text-green-3" : "text-pink-3",
+          colorClass: item.hasScope3Coverage ? "text-blue-3" : "text-pink-3",
           displayAsBadge: true,
         }),
       },

@@ -80,12 +80,12 @@ export function TrendAnalysisSummaryCards({
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <TrendingDown className="w-4 h-4 text-green-500" />
+                <TrendingDown className="w-4 h-4 text-blue-3" />
                 <Text variant="small" className="text-gray-300">
                   Decreasing
                 </Text>
               </div>
-              <Text variant="h3" className="text-green-400">
+              <Text variant="h3" className="text-blue-3">
                 {decreasingTrendCount}
               </Text>
             </div>
@@ -118,7 +118,7 @@ export function TrendAnalysisSummaryCards({
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-green-500" />
+            <CheckCircle className="w-4 h-4 text-green-3" />
             Meets Carbon Law
           </CardTitle>
         </CardHeader>
@@ -130,7 +130,7 @@ export function TrendAnalysisSummaryCards({
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-blue-500" />
+            <CheckCircle className="w-4 h-4 text-green-3" />
             Meets Paris
           </CardTitle>
         </CardHeader>

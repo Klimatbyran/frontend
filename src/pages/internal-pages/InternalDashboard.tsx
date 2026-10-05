@@ -133,7 +133,7 @@ const companyChangeRate = (company: RankedCompany) =>
   );
 
 function getChangeColor(company: RankedCompany): string {
-  if (company.metrics.emissionsReduction > 0) return "text-green-600";
+  if (company.metrics.emissionsReduction > 0) return "text-blue-3";
   if (company.metrics.emissionsReduction < 0) return "text-red-600";
   return "text-gray-600";
 }

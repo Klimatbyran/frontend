@@ -215,7 +215,7 @@ function TrendInfo({
       })}
       <br />
       <span
-        className={cn(trendData.slope >= 0 ? "text-pink-3" : "text-green-3")}
+        className={cn(trendData.slope >= 0 ? "text-pink-3" : "text-blue-3")}
       >
         Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
       </span>

@@ -178,7 +178,7 @@ export function TrendAnalysisCompaniesTable({
                             analysis.yearlyPercentageChange > 0
                               ? "text-pink-3"
                               : analysis.yearlyPercentageChange < 0
-                                ? "text-green-3"
+                                ? "text-blue-3"
                                 : "text-grey"
                           }
                         >
