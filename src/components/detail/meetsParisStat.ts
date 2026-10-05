@@ -14,7 +14,7 @@ export function getMeetsParisDisplay(
   if (meetsParis === true) {
     return {
       value: t("yes"),
-      valueClassName: "text-blue-3",
+      valueClassName: "text-green-3",
       caption: t("detailPage.meetsParisOnTrack"),
     };
   }

@@ -51,7 +51,7 @@ export function ListCardHeader({
           <div
             className={cn(
               "w-full text-xl font-light border-b border-black-1 pb-6",
-              meetsParisIsYes ? "text-blue-3" : "text-pink-3",
+              meetsParisIsYes ? "text-green-3" : "text-pink-3",
             )}
           >
             {meetsParisAnswer}

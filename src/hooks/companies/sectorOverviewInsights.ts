@@ -129,7 +129,7 @@ function buildParisSegments(
     {
       label: t("sectorsOverviewPage.filteringOptions.meetsParisYes"),
       count: meetsParisYes,
-      color: "var(--blue-3)",
+      color: "var(--green-3)",
     },
     {
       label: t("sectorsOverviewPage.filteringOptions.meetsParisNo"),

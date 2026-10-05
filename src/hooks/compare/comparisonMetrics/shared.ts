@@ -19,7 +19,7 @@ export function getMeetsParisValue(
 
   const colorClass =
     item.meetsParis === true
-      ? "text-blue-3"
+      ? "text-green-3"
       : item.meetsParis === false
         ? "text-pink-3"
         : "text-grey";

@@ -26,7 +26,7 @@ export const LEGEND_CONFIGS = {
   },
   paris: {
     nameKey: "companies.emissionsHistory.carbonLaw", // Will be overridden for municipalities
-    color: "var(--blue-3)",
+    color: "var(--green-3)",
     isClickable: false,
     isHidden: false,
     isDashed: true,

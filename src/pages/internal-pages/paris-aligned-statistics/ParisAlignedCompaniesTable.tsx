@@ -84,7 +84,7 @@ export function ParisAlignedCompaniesTable({
                     className={`py-3 px-4 text-right font-semibold ${
                       company.diffFromBudget >= 0
                         ? "text-red-400"
-                        : "text-blue-3"
+                        : "text-green-3"
                     }`}
                   >
                     {formatTonnes(company.diffFromBudget)} tonnes CO₂

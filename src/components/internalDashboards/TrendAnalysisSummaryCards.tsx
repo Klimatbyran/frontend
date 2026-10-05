@@ -118,7 +118,7 @@ export function TrendAnalysisSummaryCards({
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-blue-3" />
+            <CheckCircle className="w-4 h-4 text-green-3" />
             Meets Carbon Law
           </CardTitle>
         </CardHeader>
@@ -130,7 +130,7 @@ export function TrendAnalysisSummaryCards({
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-blue-500" />
+            <CheckCircle className="w-4 h-4 text-green-3" />
             Meets Paris
           </CardTitle>
         </CardHeader>

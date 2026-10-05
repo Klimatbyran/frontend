@@ -42,6 +42,7 @@ interface KPIDetailsPanelProps {
 const STAT_COLOR_MAP: Record<string, string> = {
   "text-blue-3": COLORS.blue3,
   "text-pink-3": COLORS.pink3,
+  "text-green-3": COLORS.green3,
   "text-orange-2": COLORS.orange2,
   "text-grey": COLORS.grey,
 };

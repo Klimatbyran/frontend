@@ -25,6 +25,9 @@ import {
 import {
   DEFAULT_BOOLEAN_DATA_COLORS,
   DEFAULT_NULL_DATA_COLOR,
+  getPositiveIndicatorClass,
+  getPositiveIndicatorColor,
+  isMeetsParisKpiKey,
 } from "../ui/colors";
 
 export function isMissingRankedValue(
@@ -81,18 +84,20 @@ function buildDistributionStats<T, KPI extends KPIValue<T>>(
   const aboveAverageLabel = t("rankedInsights.aboveAverage", { entityPlural });
   const belowAverageLabel = t("rankedInsights.belowAverage", { entityPlural });
   const kpiKey = String(selectedKPI.key);
+  const meetsParisKpi = isMeetsParisKpiKey(kpiKey);
+  const goodClass = getPositiveIndicatorClass(meetsParisKpi);
 
   const distributionStats = [
     {
       count: aboveAverageCount,
-      colorClass: selectedKPI.higherIsBetter ? "text-blue-3" : "text-pink-3",
+      colorClass: selectedKPI.higherIsBetter ? goodClass : "text-pink-3",
       label: selectedKPI.isBoolean
         ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.true`)
         : aboveAverageLabel,
     },
     {
       count: belowAverageCount,
-      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : "text-blue-3",
+      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : goodClass,
       label: selectedKPI.isBoolean
         ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.false`)
         : belowAverageLabel,
@@ -258,8 +263,9 @@ export function createDefaultColorGetter<T>(
       return DEFAULT_NULL_DATA_COLOR;
 
     if (dataPointIsBoolean) {
+      const meetsParisKpi = isMeetsParisKpiKey(String(dataPointKey));
       return value == dataPointHigherIsBetter
-        ? DEFAULT_BOOLEAN_DATA_COLORS.positive
+        ? getPositiveIndicatorColor(meetsParisKpi)
         : DEFAULT_BOOLEAN_DATA_COLORS.negative;
     }
 
