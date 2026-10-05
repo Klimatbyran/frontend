@@ -28,6 +28,7 @@ export interface NumericBenchmarkView {
   /** Which median the colour split and primary sentence use. */
   primaryReference: BenchmarkReference;
   primary: BenchmarkPhrase;
+  visual?: BenchmarkVisual;
 }
 
 export interface BooleanBenchmarkView {
@@ -38,9 +39,24 @@ export interface BooleanBenchmarkView {
   higherIsBetter: boolean;
   peerGroup: BenchmarkPeerGroup;
   primary: BenchmarkPhrase;
+  visual?: BenchmarkVisual;
 }
 
 export type KpiBenchmarkView = NumericBenchmarkView | BooleanBenchmarkView;
+
+export type BenchmarkGoodAccent = "blue" | "green";
+
+export interface BenchmarkVisual {
+  /** Warm orange bar scale instead of blue/pink comparative. */
+  neutralBar?: boolean;
+  /** Highlight for a positive tone. Defaults to blue. */
+  goodAccent?: BenchmarkGoodAccent;
+}
+
+export const BENCHMARK_VISUAL = {
+  neutralBar: { neutralBar: true } satisfies BenchmarkVisual,
+  paris: { goodAccent: "green" } satisfies BenchmarkVisual,
+} as const;
 
 export interface NumericBenchmarkInput {
   value: number;
@@ -56,6 +72,7 @@ export interface NumericBenchmarkInput {
   reference?: BenchmarkReference;
   minGroupSize?: number;
   format: (value: number) => string;
+  visual?: BenchmarkVisual;
 }
 
 export interface BooleanBenchmarkInput {
@@ -64,6 +81,7 @@ export interface BooleanBenchmarkInput {
   /** true when "yes" is the good outcome. */
   higherIsBetter: boolean;
   peerGroup: BenchmarkPeerGroup;
+  visual?: BenchmarkVisual;
 }
 
 const EXTREME_SHARE = 0.8;
@@ -302,6 +320,7 @@ export function buildNumericBenchmark(
     averageLabel: input.format(referenceValue),
     primaryReference: reference,
     primary: extreme ?? primary,
+    visual: input.visual,
   };
 }
 
@@ -394,5 +413,6 @@ export function buildBooleanBenchmark(
     higherIsBetter: input.higherIsBetter,
     peerGroup: input.peerGroup,
     primary,
+    visual: input.visual,
   };
 }

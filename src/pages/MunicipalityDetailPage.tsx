@@ -69,7 +69,7 @@ function MunicipalityLinkCards({
             : undefined
         }
         descriptionClassName={
-          municipality.climatePlanYear ? "text-green-3" : "text-pink-3"
+          municipality.climatePlanYear ? "text-blue-3" : "text-pink-3"
         }
       >
         {benchmarks?.climatePlan && (

@@ -1,5 +1,6 @@
 import type { Municipality, EmissionDataPoint } from "@/types/municipality";
 import {
+  BENCHMARK_VISUAL,
   buildBooleanBenchmark,
   buildNumericBenchmark,
   type BooleanBenchmarkView,
@@ -69,6 +70,7 @@ export function buildMunicipalityBenchmarks(
       peers: peers.map((peer) => peer.meetsParisGoal),
       higherIsBetter: true,
       peerGroup: "municipalities",
+      visual: BENCHMARK_VISUAL.paris,
     }),
     totalEmissions:
       emissions === null
@@ -97,6 +99,7 @@ export function buildMunicipalityBenchmarks(
       ),
       higherIsBetter: false,
       format: formatters.changePercent,
+      visual: BENCHMARK_VISUAL.neutralBar,
       ...REGION_COMPARISON,
     }),
     consumption: buildNumericBenchmark({
@@ -133,6 +136,7 @@ export function buildMunicipalityBenchmarks(
       ),
       higherIsBetter: true,
       format: formatters.sharePercent,
+      visual: BENCHMARK_VISUAL.neutralBar,
       ...REGION_COMPARISON,
     }),
     chargePoints:
@@ -158,6 +162,7 @@ export function buildMunicipalityBenchmarks(
       groupPeers: numericValues(inRegion, (peer) => peer.bicycleMetrePerCapita),
       higherIsBetter: true,
       format: formatters.plain,
+      visual: BENCHMARK_VISUAL.neutralBar,
       ...REGION_COMPARISON,
     }),
   };

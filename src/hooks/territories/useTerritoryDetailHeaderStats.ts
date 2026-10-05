@@ -10,6 +10,7 @@ import { createMeetsParisStat } from "@/components/detail/meetsParisStat";
 import type { EmissionDataPoint } from "@/types/municipality";
 import type { SupportedLanguage } from "@/lib/languageDetection";
 import {
+  BENCHMARK_VISUAL,
   buildBooleanBenchmark,
   buildNumericBenchmark,
 } from "@/utils/detail/kpiBenchmark";
@@ -93,6 +94,7 @@ export function useTerritoryDetailHeaderStats(
       peers: peers.map((peer) => peer.meetsParis),
       higherIsBetter: true,
       peerGroup: "regions",
+      visual: BENCHMARK_VISUAL.paris,
     }),
   };
   const change = {
@@ -109,6 +111,7 @@ export function useTerritoryDetailHeaderStats(
       higherIsBetter: false,
       peerGroup: "regions",
       format: (value) => formatPercentChange(value, currentLanguage),
+      visual: BENCHMARK_VISUAL.neutralBar,
     }),
   };
   const total = {

@@ -13,20 +13,11 @@ import {
   buildComparativeBarGradient,
   buildNeutralBarGradient,
 } from "@/utils/detail/kpiBenchmarkBarGradient";
-
-const TONE_TEXT: Record<BenchmarkTone, string> = {
-  good: "text-blue-3",
-  bad: "text-pink-3",
-  neutral: "text-orange-2",
-  unknown: "text-grey",
-};
-
-const TONE_FILL: Record<BenchmarkTone, string> = {
-  good: "var(--blue-3)",
-  bad: "var(--pink-3)",
-  neutral: "var(--orange-2)",
-  unknown: "var(--grey)",
-};
+import {
+  benchmarkToneFill,
+  benchmarkToneTextClass,
+  buildBooleanBarBackground,
+} from "@/components/detail/kpiBenchmarkColors";
 
 function phraseText(
   t: (key: string, options?: Record<string, unknown>) => string,
@@ -47,7 +38,7 @@ function phraseText(
 }
 
 function numericGradient(view: NumericBenchmarkView) {
-  if (view.tone === "neutral") {
+  if (view.visual?.neutralBar || view.tone === "neutral") {
     return buildNeutralBarGradient(view.averagePosition);
   }
   return buildComparativeBarGradient(
@@ -59,11 +50,13 @@ function numericGradient(view: NumericBenchmarkView) {
 function BenchmarkShell({
   primary,
   tone,
+  visual,
   className,
   children,
 }: {
   primary: string;
   tone: BenchmarkTone;
+  visual?: NumericBenchmarkView["visual"];
   className?: string;
   children: React.ReactNode;
 }) {
@@ -73,7 +66,7 @@ function BenchmarkShell({
       <Text
         className={cn(
           "mt-1.5 line-clamp-1 min-h-[1.25rem] text-sm",
-          TONE_TEXT[tone],
+          benchmarkToneTextClass(tone, visual),
         )}
       >
         {primary}
@@ -94,7 +87,12 @@ function NumericBenchmark({
   const showMedian = view.higherIsBetter === null;
 
   return (
-    <BenchmarkShell primary={primary} tone={view.tone} className={className}>
+    <BenchmarkShell
+      primary={primary}
+      tone={view.tone}
+      visual={view.visual}
+      className={className}
+    >
       <div role="img" aria-label={primary} className="px-1">
         <div className="relative h-3">
           <div
@@ -112,7 +110,7 @@ function NumericBenchmark({
             className="absolute top-1/2 z-[2] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               left: `${view.position * 100}%`,
-              background: TONE_FILL[view.tone],
+              background: benchmarkToneFill(view.tone, view.visual),
               boxShadow: "0 0 0 2px rgba(255,255,255,0.9)",
             }}
           />
@@ -131,16 +129,19 @@ function BooleanBenchmark({
 }) {
   const { t } = useTranslation();
   const primary = phraseText(t, view.primary);
-  const yesIsGood = view.higherIsBetter;
-  const share = view.trueShare * 100;
-  const favorableStart = yesIsGood ? "var(--blue-4)" : "var(--pink-4)";
-  const favorableEnd = yesIsGood ? "var(--blue-3)" : "var(--pink-3)";
-  const unfavorableStart = yesIsGood ? "var(--pink-4)" : "var(--blue-4)";
-  const unfavorableEnd = yesIsGood ? "var(--pink-3)" : "var(--blue-3)";
-  const barBackground = `linear-gradient(to right, ${favorableStart} 0%, ${favorableEnd} ${share}%, ${unfavorableStart} ${share}%, ${unfavorableEnd} 100%)`;
+  const barBackground = buildBooleanBarBackground(
+    view.trueShare,
+    view.higherIsBetter,
+    view.visual,
+  );
 
   return (
-    <BenchmarkShell primary={primary} tone={view.tone} className={className}>
+    <BenchmarkShell
+      primary={primary}
+      tone={view.tone}
+      visual={view.visual}
+      className={className}
+    >
       <div role="img" aria-label={primary} className="px-1">
         <div className="relative flex h-3 items-center">
           <div

@@ -1,11 +1,13 @@
 import type { RankedCompany } from "@/types/company";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import {
+  BENCHMARK_VISUAL,
   buildBooleanBenchmark,
   buildNumericBenchmark,
   type BooleanBenchmarkView,
   type BenchmarkPeerGroup,
   type BenchmarkReference,
+  type BenchmarkVisual,
   type NumericBenchmarkView,
 } from "./kpiBenchmark";
 
@@ -138,6 +140,7 @@ export function buildCompanyBenchmarks(
     read: (peer: CompanyPeerSnapshot) => number | null,
     higherIsBetter: boolean | null,
     format: (value: number) => string,
+    visual?: BenchmarkVisual,
   ) => {
     if (value === null || !Number.isFinite(value)) return null;
     return buildNumericBenchmark({
@@ -146,6 +149,7 @@ export function buildCompanyBenchmarks(
       groupPeers: group ? readNumbers(group.peers, read) : undefined,
       higherIsBetter,
       format,
+      visual,
       ...labels,
     });
   };
@@ -156,6 +160,7 @@ export function buildCompanyBenchmarks(
       peers: peers.map((peer) => peer.meetsParis),
       higherIsBetter: true,
       peerGroup: "companies",
+      visual: BENCHMARK_VISUAL.paris,
     }),
     totalEmissions: numeric(
       positiveOrNull(values.totalEmissions),
@@ -168,6 +173,7 @@ export function buildCompanyBenchmarks(
       (peer) => saneYearlyChange(peer.yearOverYearChange),
       false,
       formatters.changePercent,
+      BENCHMARK_VISUAL.neutralBar,
     ),
   };
 }
