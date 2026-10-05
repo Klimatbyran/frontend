@@ -50,16 +50,16 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
         </p>
         <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <LocalizedLink
-            to="/data-download"
-            className="rounded-full border border-white/25 px-5 py-2.5 text-sm text-white transition-colors hover:border-white/50 hover:bg-white/5"
-          >
-            {t("nation.story.conclusion.ctaNation")}
-          </LocalizedLink>
-          <LocalizedLink
             to="/municipalities?kpi=meetsParisGoal"
             className="rounded-full border border-green-3/40 bg-green-5/20 px-5 py-2.5 text-sm text-green-2 transition-colors hover:border-green-2/60 hover:bg-green-5/30"
           >
             {t("nation.story.conclusion.ctaMunicipalities")}
+          </LocalizedLink>
+          <LocalizedLink
+            to="/regions?kpi=meetsParis"
+            className="rounded-full border border-green-3/40 bg-green-5/20 px-5 py-2.5 text-sm text-green-2 transition-colors hover:border-green-2/60 hover:bg-green-5/30"
+          >
+            {t("nation.story.conclusion.ctaRegions")}
           </LocalizedLink>
         </div>
       </motion.div>
