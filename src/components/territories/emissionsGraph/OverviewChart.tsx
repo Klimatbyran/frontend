@@ -215,8 +215,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
   const unit = t("emissionsUnit");
 
   return (
-    <ChartWrapper>
-      <ChartArea>
+    <ChartWrapper className="h-auto">
+      <ChartArea className="h-[300px] min-h-0 flex-none sm:h-[380px]">
         <ResponsiveContainer {...getChartContainerProps()}>
           <ComposedChart
             data={filteredRows}
