@@ -1131,7 +1131,9 @@
       "trendPath": "Where today's pace leads",
       "parisPath": "What Paris asks for",
       "todayMarker": "today",
-      "twoFuturesCaption": "The pink area is emissions beyond the Paris path from today onward — about <0>{{overshoot}} {{unit}}</0> in total. Closing the gap means bending the pink line down onto the green one, starting this year."
+      "twoFuturesOvershoot": "From today through {{year}}, the overshoot is <0>{{ofParis}}</0> of the Paris total and <1>{{ofTrend}}</1> of the trend total.",
+      "twoFuturesUndershoot": "From today through {{year}}, the undershoot is <0>{{ofParis}}</0> of the Paris total and <1>{{ofTrend}}</1> of the trend total.",
+      "twoFuturesAligned": "From today through {{year}}, the trend total matches the Paris total."
     }
   },
   "municipalitiesOverviewPage": {

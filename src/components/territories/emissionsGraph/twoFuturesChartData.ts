@@ -61,15 +61,57 @@ export function buildTwoFuturesRows(
     });
 }
 
-/** Sum of (trend − Paris) for each future year — a readable overshoot proxy. */
-export function sumFutureOvershootTonnes(
+export type FutureTotalsComparison = {
+  totalParis: number;
+  totalTrend: number;
+  /**
+   * (trend total − Paris total) / Paris total.
+   * Positive is overshoot, negative is undershoot.
+   */
+  gapShareOfParis: number | null;
+  /**
+   * (trend total − Paris total) / trend total.
+   * Positive is overshoot, negative is undershoot.
+   */
+  gapShareOfTrend: number | null;
+};
+
+/**
+ * Compare the summed Paris path and the summed trend path from today
+ * through endYear. The gap is a share of each total, not absolute tonnes.
+ */
+export function compareFuturePathTotals(
   data: DataPoint[],
   currentYear: number,
-): number {
-  return data
-    .filter((point) => point.year >= currentYear)
-    .reduce((sum, point) => {
-      if (point.trend == null || point.carbonLaw == null) return sum;
-      return sum + Math.max(0, point.trend - point.carbonLaw);
-    }, 0);
+  endYear: number,
+): FutureTotalsComparison {
+  let totalParis = 0;
+  let totalTrend = 0;
+  let counted = 0;
+
+  for (const point of data) {
+    if (point.year < currentYear || point.year > endYear) continue;
+    if (point.trend == null || point.carbonLaw == null) continue;
+    totalParis += point.carbonLaw;
+    totalTrend += point.trend;
+    counted += 1;
+  }
+
+  if (counted === 0) {
+    return {
+      totalParis: 0,
+      totalTrend: 0,
+      gapShareOfParis: null,
+      gapShareOfTrend: null,
+    };
+  }
+
+  const gap = totalTrend - totalParis;
+
+  return {
+    totalParis,
+    totalTrend,
+    gapShareOfParis: totalParis > 0 ? gap / totalParis : null,
+    gapShareOfTrend: totalTrend > 0 ? gap / totalTrend : null,
+  };
 }

@@ -1182,7 +1182,9 @@
       "trendPath": "Vart dagens takt leder",
       "parisPath": "Det Paris kräver",
       "todayMarker": "idag",
-      "twoFuturesCaption": "Det rosa fältet är utsläpp utöver Parisbanan från och med i år — ungefär <0>{{overshoot}} {{unit}}</0> totalt. Att stänga gapet innebär att böja den rosa linjen ned mot den gröna, och börja i år."
+      "twoFuturesOvershoot": "Från och med i år till {{year}} är överskridandet <0>{{ofParis}}</0> av Paristotalen och <1>{{ofTrend}}</1> av trendtotalen.",
+      "twoFuturesUndershoot": "Från och med i år till {{year}} är underskridandet <0>{{ofParis}}</0> av Paristotalen och <1>{{ofTrend}}</1> av trendtotalen.",
+      "twoFuturesAligned": "Från och med i år till {{year}} ligger trendtotalen i linje med Paristotalen."
     }
   },
   "municipalitiesOverviewPage": {

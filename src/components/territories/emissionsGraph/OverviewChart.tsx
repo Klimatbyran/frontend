@@ -24,14 +24,21 @@ import {
   type LegendItem,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
+import type { SupportedLanguage } from "@/lib/languageDetection";
 import {
   formatEmissionsAbsolute,
   formatEmissionsAbsoluteCompact,
+  formatPercent,
 } from "@/utils/formatting/localization";
 import {
   buildTwoFuturesRows,
-  sumFutureOvershootTonnes,
+  compareFuturePathTotals,
 } from "@/components/territories/emissionsGraph/twoFuturesChartData";
+
+/** Same dash as the existing trend and Paris lines. */
+const FUTURE_LINE_DASH = "4 4";
+/** Treat a gap smaller than half a percentage point as aligned. */
+const ALIGNED_SHARE = 0.005;
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
@@ -81,8 +88,15 @@ function TwoFuturesTooltip({
             >
               <span className="flex items-center gap-2 text-grey">
                 <span
-                  className="h-0.5 w-4 rounded-full"
-                  style={{ background: entry.color }}
+                  className="h-0.5 w-4"
+                  style={
+                    entry.dataKey === "history"
+                      ? { background: entry.color }
+                      : {
+                          background: "transparent",
+                          borderTop: `2px dashed ${entry.color}`,
+                        }
+                  }
                   aria-hidden
                 />
                 {name}
@@ -95,6 +109,46 @@ function TwoFuturesTooltip({
         })}
       </ul>
     </div>
+  );
+}
+
+function FutureTotalsCaption({
+  year,
+  gapShareOfParis,
+  gapShareOfTrend,
+  language,
+}: {
+  year: number;
+  gapShareOfParis: number | null;
+  gapShareOfTrend: number | null;
+  language: SupportedLanguage;
+}) {
+  if (gapShareOfParis == null || gapShareOfTrend == null) return null;
+
+  const aligned = Math.abs(gapShareOfParis) < ALIGNED_SHARE;
+  const overshoot = gapShareOfParis > 0;
+  const i18nKey = aligned
+    ? "detailPage.graph.twoFuturesAligned"
+    : overshoot
+      ? "detailPage.graph.twoFuturesOvershoot"
+      : "detailPage.graph.twoFuturesUndershoot";
+  const accent = overshoot ? "text-pink-3" : "text-green-2";
+
+  return (
+    <p className="max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
+      <Trans
+        i18nKey={i18nKey}
+        values={{
+          year,
+          ofParis: formatPercent(Math.abs(gapShareOfParis), language),
+          ofTrend: formatPercent(Math.abs(gapShareOfTrend), language),
+        }}
+        components={[
+          <span key="0" className={accent} />,
+          <span key="1" className={accent} />,
+        ]}
+      />
+    </p>
   );
 }
 
@@ -112,14 +166,14 @@ function createTwoFuturesLegendItems(t: (key: string) => string): LegendItem[] {
       color: "var(--pink-3)",
       isClickable: false,
       isHidden: false,
-      isDashed: false,
+      isDashed: true,
     },
     {
       name: t("detailPage.graph.parisPath"),
       color: "var(--green-2)",
       isClickable: false,
       isHidden: false,
-      isDashed: false,
+      isDashed: true,
     },
   ];
 }
@@ -144,9 +198,9 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
 
   const legendItems = useMemo(() => createTwoFuturesLegendItems(t), [t]);
 
-  const overshootTonnes = useMemo(
-    () => sumFutureOvershootTonnes(projectedData, currentYear),
-    [projectedData, currentYear],
+  const pathComparison = useMemo(
+    () => compareFuturePathTotals(projectedData, currentYear, chartEndYear),
+    [projectedData, currentYear, chartEndYear],
   );
 
   const tooltipLabels = useMemo(
@@ -245,6 +299,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               dataKey="trend"
               stroke="var(--pink-3)"
               strokeWidth={2.5}
+              strokeDasharray={FUTURE_LINE_DASH}
               dot={false}
               connectNulls={false}
               isAnimationActive={false}
@@ -255,6 +310,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               dataKey="paris"
               stroke="var(--green-2)"
               strokeWidth={2.5}
+              strokeDasharray={FUTURE_LINE_DASH}
               dot={false}
               connectNulls={false}
               isAnimationActive={false}
@@ -264,24 +320,14 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         </ResponsiveContainer>
       </ChartArea>
 
-      {overshootTonnes > 0 && (
-        <p className="max-w-3xl px-1 text-sm leading-relaxed text-white/80 md:text-base">
-          <Trans
-            i18nKey="detailPage.graph.twoFuturesCaption"
-            values={{
-              overshoot: formatEmissionsAbsolute(
-                overshootTonnes,
-                currentLanguage,
-              ),
-              unit,
-            }}
-            components={[<span key="0" className="text-pink-3" />]}
-          />
-        </p>
-      )}
-
       <ChartFooter>
         <EnhancedLegend items={legendItems} />
+        <FutureTotalsCaption
+          year={chartEndYear}
+          gapShareOfParis={pathComparison.gapShareOfParis}
+          gapShareOfTrend={pathComparison.gapShareOfTrend}
+          language={currentLanguage}
+        />
         <ChartYearControls
           chartEndYear={chartEndYear}
           setChartEndYear={setChartEndYear}
