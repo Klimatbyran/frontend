@@ -36,7 +36,10 @@ import {
   FUTURE_LINE_DASH,
   TwoFuturesTooltip,
 } from "@/components/charts/twoFutures/TwoFuturesTooltip";
-import { getTwoFuturesYAxisProps } from "@/components/charts/twoFutures/twoFuturesChartAxis";
+import {
+  getTwoFuturesChartMargin,
+  getTwoFuturesYAxisProps,
+} from "@/components/charts/twoFutures/twoFuturesChartAxis";
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
