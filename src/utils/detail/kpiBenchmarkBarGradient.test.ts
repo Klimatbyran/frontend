@@ -15,12 +15,12 @@ describe("kpiBenchmarkBarGradient", () => {
   it("flips ends when higher is better", () => {
     const lowerIsBetter = buildComparativeBarGradient(0.4, false);
     const higherIsBetter = buildComparativeBarGradient(0.4, true);
-    expect(lowerIsBetter.startsWith("linear-gradient(to right, var(--blue-4)")).toBe(
-      true,
-    );
-    expect(higherIsBetter.startsWith("linear-gradient(to right, var(--pink-4)")).toBe(
-      true,
-    );
+    expect(
+      lowerIsBetter.startsWith("linear-gradient(to right, var(--blue-4)"),
+    ).toBe(true);
+    expect(
+      higherIsBetter.startsWith("linear-gradient(to right, var(--pink-4)"),
+    ).toBe(true);
   });
 
   it("uses an orange scale for neutral KPIs", () => {

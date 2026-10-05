@@ -50,10 +50,7 @@ function numericGradient(view: NumericBenchmarkView) {
   if (view.higherIsBetter === null) {
     return buildNeutralBarGradient(view.averagePosition);
   }
-  return buildComparativeBarGradient(
-    view.averagePosition,
-    view.higherIsBetter,
-  );
+  return buildComparativeBarGradient(view.averagePosition, view.higherIsBetter);
 }
 
 function BenchmarkShell({
