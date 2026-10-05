@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { DataPoint } from "@/types/emissions";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import {
@@ -32,7 +32,7 @@ import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
 } from "@/components/territories/emissionsGraph/twoFuturesChartData";
-import { pickTrendVsParisPhraseKey } from "@/components/territories/emissionsGraph/twoFuturesComparisonPhrase";
+import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
 
 /** Same dash as the existing trend and Paris lines. */
 const FUTURE_LINE_DASH = "4 4";
@@ -106,43 +106,6 @@ function TwoFuturesTooltip({
         })}
       </ul>
     </div>
-  );
-}
-
-function FutureTotalsCaption({
-  year,
-  gapShareOfParis,
-}: {
-  year: number;
-  gapShareOfParis: number | null;
-}) {
-  const { t } = useTranslation();
-  if (gapShareOfParis == null) return null;
-
-  const phraseKey = pickTrendVsParisPhraseKey(gapShareOfParis);
-  if (phraseKey == null) {
-    return (
-      <p className="max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
-        {t("detailPage.graph.twoFuturesAligned", { year })}
-      </p>
-    );
-  }
-
-  const overshoot = gapShareOfParis > 0;
-  const i18nKey = overshoot
-    ? "detailPage.graph.twoFuturesOvershoot"
-    : "detailPage.graph.twoFuturesUndershoot";
-  const accent = overshoot ? "text-pink-3" : "text-green-2";
-  const comparison = t(`detailPage.graph.comparison.${phraseKey}`);
-
-  return (
-    <p className="max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
-      <Trans
-        i18nKey={i18nKey}
-        values={{ year, comparison }}
-        components={[<span key="0" className={accent} />]}
-      />
-    </p>
   );
 }
 
@@ -319,6 +282,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <FutureTotalsCaption
           year={chartEndYear}
           gapShareOfParis={pathComparison.gapShareOfParis}
+          translationPrefix="detailPage.graph"
         />
         <ChartYearControls
           chartEndYear={chartEndYear}

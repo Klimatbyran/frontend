@@ -34,6 +34,9 @@ import {
   ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
+import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
+import { compareFuturePathTotals } from "@/components/territories/emissionsGraph/twoFuturesChartData";
+import type { DataPoint } from "@/types/emissions";
 
 interface OverviewChartProps {
   data: ChartData[];
@@ -90,6 +93,20 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     return createOverviewLegendItems(t, hiddenItems, false);
   }, [t, approximatedData]);
 
+  const pathComparison = useMemo(() => {
+    if (!approximatedData) {
+      return { gapShareOfParis: null as number | null };
+    }
+    const asDataPoints: DataPoint[] = chartData.map((point) => ({
+      year: point.year,
+      total: point.total,
+      trend: point.trend,
+      approximated: point.approximated,
+      carbonLaw: point.carbonLaw,
+    }));
+    return compareFuturePathTotals(asDataPoints, currentYear, chartEndYear);
+  }, [approximatedData, chartData, currentYear, chartEndYear]);
+
   const ticks = generateChartTicks(
     firstDataYear,
     chartEndYear,
@@ -100,7 +117,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const handleClick = createChartClickHandler(onYearSelect);
 
   return (
-    <ChartWrapper className="relative">
+    <ChartWrapper className="relative h-auto">
       {yearControlsPlacement === "top-right" && (
         <div className="absolute right-0 top-0 z-20">
           <ChartYearControls
@@ -214,6 +231,13 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
       <ChartFooter>
         <EnhancedLegend items={legendItems} />
+        {approximatedData && (
+          <FutureTotalsCaption
+            year={chartEndYear}
+            gapShareOfParis={pathComparison.gapShareOfParis}
+            translationPrefix="companies.emissionsHistory"
+          />
+        )}
         {yearControlsPlacement === "footer" && (
           <ChartYearControls
             chartEndYear={chartEndYear}

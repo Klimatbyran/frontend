@@ -14,8 +14,8 @@ export const createOverviewLegendItems = (
   const items: LegendItem[] = [
     {
       name: isMunicipality
-        ? t("detailPage.graph.historical")
-        : t("companies.emissionsHistory.totalEmissions"),
+        ? t("detailPage.graph.pastPath")
+        : t("companies.emissionsHistory.pastPath"),
       color: LEGEND_CONFIGS.historical.color,
       isClickable: LEGEND_CONFIGS.historical.isClickable,
       isHidden: hiddenItems.has("historical"),
@@ -37,8 +37,8 @@ export const createOverviewLegendItems = (
   // Add trend line (both municipalities and companies now)
   items.push({
     name: isMunicipality
-      ? t("detailPage.graph.trend")
-      : t("companies.emissionsHistory.trend"),
+      ? t("detailPage.graph.trendPath")
+      : t("companies.emissionsHistory.trendPath"),
     color: LEGEND_CONFIGS.trend.color,
     isClickable: LEGEND_CONFIGS.trend.isClickable,
     isHidden: hiddenItems.has("trend"),
@@ -48,8 +48,8 @@ export const createOverviewLegendItems = (
   // Add Paris/carbon law line
   items.push({
     name: isMunicipality
-      ? t("detailPage.graph.carbonLaw")
-      : t("companies.emissionsHistory.carbonLaw"),
+      ? t("detailPage.graph.parisPath")
+      : t("companies.emissionsHistory.parisPath"),
     color: LEGEND_CONFIGS.paris.color,
     isClickable: LEGEND_CONFIGS.paris.isClickable,
     isHidden: hiddenItems.has(isMunicipality ? "paris" : "carbonLaw"),
