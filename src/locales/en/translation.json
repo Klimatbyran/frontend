@@ -1167,7 +1167,20 @@
     "electricCarChange": "Increase in electric car share",
     "electricCarsPerChargePoint": "Electric cars per charging point",
     "noChargePoints": "No charging points",
-    "bicycleMetrePerCapita": "Bicycle path metres per capita"
+    "bicycleMetrePerCapita": "Bicycle path metres per capita",
+    "parisBudgetPanel": {
+      "title": "Paris Agreement budget",
+      "onTrack": "On track for the Paris Agreement",
+      "offTrack": "Not on track for the Paris Agreement",
+      "narrativeOnTrack": "If {{name}} keeps cutting at today's pace it will emit <0>{{trendMt}} Mt</0> between now and 2050 — inside its {{budgetMt}} Mt share of what the world can still emit.",
+      "narrativeOffTrack": "At today's pace {{name}} will emit <0>{{trendMt}} Mt</0> between now and 2050. Its fair share is {{budgetMt}} Mt — that is <1>{{ratio}}×</1> too much.",
+      "cumulativeEmissionsLabel": "Emissions between now and 2050",
+      "trendValueLabel": "{{value}} Mt on today's pace",
+      "budgetValueLabel": "{{value}} Mt allowed",
+      "consumptionLabel": "What each resident's consumption adds up to",
+      "consumptionToday": "{{value}} t per person today",
+      "consumptionTarget": "1 t by 2050"
+    }
   },
   "sector": {
     "energy": {

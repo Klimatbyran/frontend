@@ -1218,7 +1218,20 @@
     "electricCarChange": "Ökning av andel elbilar",
     "electricCarsPerChargePoint": "Elbilar per laddpunkt",
     "noChargePoints": "Saknar laddpunkter",
-    "bicycleMetrePerCapita": "Cykelvägsmeter per invånare"
+    "bicycleMetrePerCapita": "Cykelvägsmeter per invånare",
+    "parisBudgetPanel": {
+      "title": "Budget för Parisavtalet",
+      "onTrack": "På väg att klara Parisavtalet",
+      "offTrack": "Inte på väg att klara Parisavtalet",
+      "narrativeOnTrack": "Om {{name}} fortsätter minska i samma takt kommer kommunen att släppa ut <0>{{trendMt}} Mt</0> fram till 2050 — inom sin andel på {{budgetMt}} Mt av det världen fortfarande kan släppa ut.",
+      "narrativeOffTrack": "I nuvarande takt kommer {{name}} att släppa ut <0>{{trendMt}} Mt</0> fram till 2050. En rättvis andel är {{budgetMt}} Mt — det är <1>{{ratio}}×</1> för mycket.",
+      "cumulativeEmissionsLabel": "Utsläpp mellan nu och 2050",
+      "trendValueLabel": "{{value}} Mt i nuvarande takt",
+      "budgetValueLabel": "{{value}} Mt tillåtet",
+      "consumptionLabel": "Vad invånarnas konsumtion motsvarar",
+      "consumptionToday": "{{value}} t per person i dag",
+      "consumptionTarget": "1 t år 2050"
+    }
   },
   "sector": {
     "energy": {

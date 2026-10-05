@@ -30,6 +30,7 @@ import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useSectors } from "@/hooks/territories/useSectors";
 import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
+import { MunicipalityParisBudgetPanel } from "@/components/municipalities/MunicipalityParisBudgetPanel";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 import type { SupportedLanguage } from "@/lib/languageDetection";
 import type { DataGuideItemId } from "@/data-guide/items";
@@ -257,6 +258,7 @@ export function MunicipalityDetailPage() {
               politicalKSO={municipality.politicalKSO}
             />
           }
+          lead={<MunicipalityParisBudgetPanel municipality={municipality} />}
         />
 
         <TerritoryEmissions

@@ -23,6 +23,8 @@ export interface DetailHeaderProps {
   supplementalData?: ReactNode;
   /** Compare chip or other actions shown below the title (keeps logo unobstructed). */
   headerChip?: ReactNode;
+  /** Verdict or other story content shown before the stat row. */
+  lead?: ReactNode;
 }
 
 function DetailStatItem({ stat, dense }: { stat: DetailStat; dense: boolean }) {
@@ -62,6 +64,7 @@ export function DetailHeader({
   stats,
   supplementalData,
   headerChip,
+  lead,
 }: DetailHeaderProps) {
   const dense = stats.length >= 4;
 
@@ -80,6 +83,7 @@ export function DetailHeader({
           />
         )}
       </div>
+      {lead}
       {stats.length > 0 && (
         <div className={cn("mt-8 grid", statsGridClass(stats.length))}>
           {stats.map((stat, index) => (
