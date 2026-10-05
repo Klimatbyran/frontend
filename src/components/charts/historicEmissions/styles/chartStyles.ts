@@ -30,7 +30,7 @@ export const CHART_COLORS = {
   primary: "white", // Historical/solid white
   secondary: "var(--grey)", // Estimated/dashed grey
   trend: "var(--pink-3)", // Trend/dashed pink
-  paris: "var(--green-2)", // Paris/dashed green
+  paris: "var(--blue-3)", // Paris / carbon law target line
 } as const;
 
 // Chart dimensions

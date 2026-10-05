@@ -31,7 +31,7 @@ export function ParisAlignedSummarySection({
           <Text variant="small" className="text-gray-300 mb-1">
             Companies "Yes" on Track for Paris
           </Text>
-          <Text variant="h3" className="font-bold text-green-400">
+          <Text variant="h3" className="font-bold text-blue-3">
             {formatNumber(statistics.totalCompaniesMeetsParisYes)}
           </Text>
           <Text variant="small" className="text-gray-400 mt-1">

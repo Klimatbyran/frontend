@@ -7,7 +7,7 @@ describe("getMeetsParisDisplay", () => {
   it("describes an on-track result in plain language", () => {
     expect(getMeetsParisDisplay(true, t)).toEqual({
       value: "yes",
-      valueClassName: "text-green-3",
+      valueClassName: "text-blue-3",
       caption: "detailPage.meetsParisOnTrack",
     });
   });

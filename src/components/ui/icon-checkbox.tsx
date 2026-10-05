@@ -16,7 +16,7 @@ const IconCheckbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      "peer h-9 w-9 shrink-0 rounded-sm border flex items-center justify-center text-grey shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-green-2",
+      "peer h-9 w-9 shrink-0 rounded-sm border flex items-center justify-center text-grey shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-blue-2",
       className,
     )}
     {...props}

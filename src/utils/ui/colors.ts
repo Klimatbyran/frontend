@@ -12,7 +12,7 @@ export function getDataQualityColor(
 ): string {
   switch (quality) {
     case "high":
-      return "var(--green-3)";
+      return "var(--blue-3)";
     case "medium":
       return "var(--orange-3)";
     case "low":

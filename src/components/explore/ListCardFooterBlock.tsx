@@ -36,7 +36,7 @@ export function ListCardFooterBlock({
   const row2Color = isMunicipality
     ? climatePlanAdoptedColor
     : hasScope3Coverage
-      ? "text-green-3"
+      ? "text-blue-3"
       : "text-pink-3";
 
   return (

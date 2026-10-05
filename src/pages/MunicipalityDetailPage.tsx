@@ -64,7 +64,7 @@ function MunicipalityLinkCards({
             : undefined
         }
         descriptionClassName={
-          municipality.climatePlanYear ? "text-green-3" : "text-pink-3"
+          municipality.climatePlanYear ? "text-blue-3" : "text-pink-3"
         }
       />
       <LinkCard
@@ -73,7 +73,7 @@ function MunicipalityLinkCards({
         link={municipality.procurementLink || undefined}
         descriptionClassName={
           municipality.procurementScore === 2
-            ? "text-green-3"
+            ? "text-blue-3"
             : municipality.procurementScore === 1
               ? "text-orange-2"
               : "text-pink-3"
@@ -104,7 +104,7 @@ function getSustainableTransportItems(
       value: evcp
         ? localizeUnit(evcp, currentLanguage)
         : t("municipalityDetailPage.noChargePoints"),
-      valueClassName: evcp && evcp > 10 ? "text-pink-3" : "text-green-3",
+      valueClassName: evcp && evcp > 10 ? "text-pink-3" : "text-blue-3",
     },
     {
       title: t("municipalityDetailPage.bicycleMetrePerCapita"),

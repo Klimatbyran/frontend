@@ -137,7 +137,7 @@ export function BlogDetailPage() {
           onClick={handleShare}
         >
           {copied ? (
-            <Check className="w-4 h-4 text-green-500" />
+            <Check className="w-4 h-4 text-blue-3" />
           ) : (
             <Share2 className="w-4 h-4" />
           )}

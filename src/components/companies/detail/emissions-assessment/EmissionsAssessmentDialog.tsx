@@ -38,7 +38,7 @@ export function EmissionsAssessmentDialog({
           <div className="space-y-6 overflow-y-auto pr-4">
             <div className="flex items-center gap-2">
               <div
-                className={`w-3 h-3 rounded-full ${assessment.isReasonable ? "bg-green-500" : "bg-red-500"}`}
+                className={`w-3 h-3 rounded-full ${assessment.isReasonable ? "bg-blue-3" : "bg-red-500"}`}
               />
               <Text className="text-lg">
                 {assessment.isReasonable ? "Reasonable" : "Unreasonable"}

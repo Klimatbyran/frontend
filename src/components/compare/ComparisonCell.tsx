@@ -15,7 +15,7 @@ function getValueClassName(
 ) {
   const showBadge = value.displayAsBadge;
   const badgeColorClasses: Record<string, string> = {
-    "text-green-3": "bg-green-3/15 text-green-3",
+    "text-blue-3": "bg-blue-3/15 text-blue-3",
     "text-pink-3": "bg-pink-3/15 text-pink-3",
     "text-grey": "bg-white/10 text-grey",
   };

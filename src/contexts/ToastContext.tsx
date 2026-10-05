@@ -35,7 +35,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
           onOpenChange={setOpen}
           className="bg-black-1 border p-4 w-80 rounded-lg shadow-lg"
         >
-          <Toast.Title className="font-bold text-green-3">{title}</Toast.Title>
+          <Toast.Title className="font-bold text-blue-3">{title}</Toast.Title>
           <Toast.Description className="mt-2">{message}</Toast.Description>
         </Toast.Root>
         <Toast.Viewport className="fixed top-[60px] right-4 flex flex-col gap-3 z-100" />

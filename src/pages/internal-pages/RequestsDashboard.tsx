@@ -91,7 +91,7 @@ export const RequestsDashboard = () => {
                 rowClass += "bg-orange-5/30 border-l-4 border-l-orange-3";
               else if (status === "finished")
                 rowClass +=
-                  "bg-green-5/30 border-l-4 border-l-green-3 text-grey";
+                  "bg-blue-5/30 border-l-4 border-l-blue-3 text-grey";
               return (
                 <tr key={issue.number} className={rowClass}>
                   <td className="px-4 py-2 text-left">{issue.number}</td>
@@ -106,7 +106,7 @@ export const RequestsDashboard = () => {
                       </span>
                     )}
                     {status === "finished" && (
-                      <span style={{ color: "var(--green-3)" }}>Finished</span>
+                      <span style={{ color: "var(--blue-3)" }}>Finished</span>
                     )}
                   </td>
                   <td className="px-4 py-2 text-left">
