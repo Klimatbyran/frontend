@@ -1132,7 +1132,11 @@
       "parisPath": "What the Paris Agreement requires",
       "todayMarker": "today",
       "twoFuturesOvershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times higher than the Paris path.",
+      "twoFuturesOvershootMoreThan": "Add it up to {{year}} — at today's pace, emissions are more than <0>{{factor}}</0> times higher than the Paris path.",
+      "twoFuturesOvershootMild": "Add it up to {{year}} — at today's pace, emissions are higher than the Paris path.",
       "twoFuturesUndershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times lower than the Paris path.",
+      "twoFuturesUndershootMoreThan": "Add it up to {{year}} — at today's pace, emissions are more than <0>{{factor}}</0> times lower than the Paris path.",
+      "twoFuturesUndershootMild": "Add it up to {{year}} — at today's pace, emissions are lower than the Paris path.",
       "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path."
     }
   },
@@ -1453,7 +1457,11 @@
       "parisPath": "What the Paris Agreement requires",
       "todayMarker": "today",
       "twoFuturesOvershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times higher than the Paris path.",
+      "twoFuturesOvershootMoreThan": "Add it up to {{year}} — at today's pace, emissions are more than <0>{{factor}}</0> times higher than the Paris path.",
+      "twoFuturesOvershootMild": "Add it up to {{year}} — at today's pace, emissions are higher than the Paris path.",
       "twoFuturesUndershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times lower than the Paris path.",
+      "twoFuturesUndershootMoreThan": "Add it up to {{year}} — at today's pace, emissions are more than <0>{{factor}}</0> times lower than the Paris path.",
+      "twoFuturesUndershootMild": "Add it up to {{year}} — at today's pace, emissions are lower than the Paris path.",
       "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path.",
       "scope1": "Scope 1 - Direct Emissions",
       "scope2": "Scope 2 - Indirect Emissions",

@@ -7,28 +7,52 @@ describe("captionFromPathTotals", () => {
     expect(captionFromPathTotals(100.4, 100)).toEqual({ kind: "aligned" });
   });
 
-  it("returns overshoot times as rounded trend/Paris ratio", () => {
+  it("returns an exact multiple when the ratio is a whole number", () => {
     expect(captionFromPathTotals(200, 100)).toEqual({
       kind: "overshoot",
       times: 2,
+      moreThan: false,
     });
+    expect(captionFromPathTotals(300, 100)).toEqual({
+      kind: "overshoot",
+      times: 3,
+      moreThan: false,
+    });
+  });
+
+  it("keeps a ratio above a whole number as more than that number", () => {
     expect(captionFromPathTotals(340, 100)).toEqual({
       kind: "overshoot",
       times: 3,
+      moreThan: true,
     });
-  });
-
-  it("uses at least 2× for small overshoots", () => {
-    expect(captionFromPathTotals(112, 100)).toEqual({
+    // Göteborg's chart area is just over 3× the Paris path, not 3×.
+    expect(captionFromPathTotals(305.8, 100)).toEqual({
       kind: "overshoot",
-      times: 2,
+      times: 3,
+      moreThan: true,
     });
   });
 
-  it("returns undershoot times from Paris/trend ratio", () => {
+  it("does not call a small gap twice as much", () => {
+    expect(captionFromPathTotals(112, 100)).toEqual({
+      kind: "overshootMild",
+    });
     expect(captionFromPathTotals(70, 100)).toEqual({
+      kind: "undershootMild",
+    });
+  });
+
+  it("returns undershoot times from the Paris/trend ratio", () => {
+    expect(captionFromPathTotals(50, 100)).toEqual({
       kind: "undershoot",
       times: 2,
+      moreThan: false,
+    });
+    expect(captionFromPathTotals(30, 100)).toEqual({
+      kind: "undershoot",
+      times: 3,
+      moreThan: true,
     });
   });
 });

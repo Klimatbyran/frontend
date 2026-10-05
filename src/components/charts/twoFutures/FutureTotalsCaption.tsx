@@ -31,10 +31,26 @@ export function FutureTotalsCaption({
     );
   }
 
+  if (caption.kind === "overshootMild" || caption.kind === "undershootMild") {
+    const i18nKey =
+      caption.kind === "overshootMild"
+        ? `${translationPrefix}.twoFuturesOvershootMild`
+        : `${translationPrefix}.twoFuturesUndershootMild`;
+    return (
+      <p className="mb-0 max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
+        {t(i18nKey, { year })}
+      </p>
+    );
+  }
+
   const overshoot = caption.kind === "overshoot";
   const i18nKey = overshoot
-    ? `${translationPrefix}.twoFuturesOvershoot`
-    : `${translationPrefix}.twoFuturesUndershoot`;
+    ? caption.moreThan
+      ? `${translationPrefix}.twoFuturesOvershootMoreThan`
+      : `${translationPrefix}.twoFuturesOvershoot`
+    : caption.moreThan
+      ? `${translationPrefix}.twoFuturesUndershootMoreThan`
+      : `${translationPrefix}.twoFuturesUndershoot`;
   const accent = overshoot ? "text-pink-3" : "text-green-2";
   const factor = formatEmissionsAbsolute(caption.times, currentLanguage);
 

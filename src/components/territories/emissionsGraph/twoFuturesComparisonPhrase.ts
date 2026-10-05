@@ -1,19 +1,37 @@
 /** |trend/Paris − 1| below this → treated as aligned. */
 export const PARIS_PATH_ALIGNED_SHARE = 0.005;
 
+/** Closer than this to a whole number → say that many times, not "more than". */
+const NEAR_WHOLE_TIMES = 0.03;
+
 export type TrendVsParisCaption =
   | { kind: "aligned" }
-  | { kind: "overshoot"; times: number }
-  | { kind: "undershoot"; times: number };
+  | { kind: "overshootMild" }
+  | { kind: "undershootMild" }
+  | { kind: "overshoot"; times: number; moreThan: boolean }
+  | { kind: "undershoot"; times: number; moreThan: boolean };
 
-function wholeTimesFactor(ratio: number): number {
-  const rounded = Math.round(ratio);
-  return rounded >= 2 ? rounded : 2;
+/**
+ * Whole-number “times” for a ratio above 1.
+ * 3.4 is more than 3, not 3. 1.1 is not yet 2.
+ */
+function describeMultiple(
+  ratio: number,
+): { times: number; moreThan: boolean } | "mild" {
+  const nearest = Math.round(ratio);
+  if (nearest >= 2 && Math.abs(ratio - nearest) <= NEAR_WHOLE_TIMES) {
+    return { times: nearest, moreThan: false };
+  }
+
+  const times = Math.floor(ratio);
+  if (times < 2) return "mild";
+  return { times, moreThan: true };
 }
 
 /**
- * Whole-number “times more / less emissions” caption from summed path totals.
- * Uses totalTrend / totalParis (same basis as gapShareOfParis).
+ * “Times more / less” caption from the areas under the trend and Paris paths.
+ * A ratio above a whole number stays “more than” that number — it is not
+ * rounded back down.
  */
 export function captionFromPathTotals(
   totalTrend: number,
@@ -27,8 +45,12 @@ export function captionFromPathTotals(
   }
 
   if (ratio > 1) {
-    return { kind: "overshoot", times: wholeTimesFactor(ratio) };
+    const described = describeMultiple(ratio);
+    if (described === "mild") return { kind: "overshootMild" };
+    return { kind: "overshoot", ...described };
   }
 
-  return { kind: "undershoot", times: wholeTimesFactor(1 / ratio) };
+  const described = describeMultiple(1 / ratio);
+  if (described === "mild") return { kind: "undershootMild" };
+  return { kind: "undershoot", ...described };
 }

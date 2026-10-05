@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { captionFromPathTotals } from "./twoFuturesComparisonPhrase";
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
@@ -71,6 +72,8 @@ describe("compareFuturePathTotals", () => {
     const comparison = compareFuturePathTotals(data, currentYear, 2028);
     expect(comparison.totalParis).toBe(170);
     expect(comparison.totalTrend).toBe(200);
+    expect(comparison.areaParis).toBe(120);
+    expect(comparison.areaTrend).toBe(135);
     expect(comparison.gapShareOfParis).toBeCloseTo(30 / 170);
     expect(comparison.gapShareOfTrend).toBeCloseTo(30 / 200);
   });
@@ -101,6 +104,32 @@ describe("compareFuturePathTotals", () => {
     const comparison = compareFuturePathTotals(data, currentYear, currentYear);
     expect(comparison.totalParis).toBe(60);
     expect(comparison.totalTrend).toBe(80);
+    expect(comparison.areaParis).toBe(60);
+    expect(comparison.areaTrend).toBe(80);
     expect(comparison.gapShareOfParis).toBeCloseTo(20 / 60);
+  });
+
+  it("reads a flat trend against a carbon-law path as more than 3 times the drawn area", () => {
+    const reduction = 0.1172;
+    const flat = 2_242_227;
+    const series: DataPoint[] = [];
+    for (let year = currentYear; year <= 2050; year++) {
+      const decline =
+        ((flat - 2_116_472) / (2050 - currentYear)) * (year - currentYear);
+      series.push({
+        year,
+        total: undefined,
+        approximated: undefined,
+        trend: flat - decline,
+        carbonLaw: flat * (1 - reduction) ** (year - currentYear),
+      });
+    }
+
+    const comparison = compareFuturePathTotals(series, currentYear, 2050);
+    expect(comparison.totalTrend / comparison.totalParis).toBeLessThan(3);
+    expect(comparison.areaTrend / comparison.areaParis).toBeGreaterThan(3);
+    expect(
+      captionFromPathTotals(comparison.areaTrend, comparison.areaParis),
+    ).toEqual({ kind: "overshoot", times: 3, moreThan: true });
   });
 });
