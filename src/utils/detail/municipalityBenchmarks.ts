@@ -105,6 +105,7 @@ export function buildMunicipalityBenchmarks(
       ),
       higherIsBetter: false,
       peersIncludeSubject: false,
+      visual: BENCHMARK_VISUAL.neutralBar,
       ...REGION_COMPARISON,
     }),
     climatePlan: buildBooleanBenchmark({
