@@ -47,10 +47,13 @@ function phraseText(
 }
 
 function numericGradient(view: NumericBenchmarkView) {
-  if (view.higherIsBetter === null) {
+  if (view.tone === "neutral") {
     return buildNeutralBarGradient(view.averagePosition);
   }
-  return buildComparativeBarGradient(view.averagePosition, view.higherIsBetter);
+  return buildComparativeBarGradient(
+    view.averagePosition,
+    view.higherIsBetter ?? false,
+  );
 }
 
 function BenchmarkShell({
@@ -100,7 +103,7 @@ function NumericBenchmark({
           />
           {showMedian && (
             <span
-              className="absolute top-1/2 z-[1] h-3 w-px -translate-x-1/2 -translate-y-1/2 bg-grey"
+              className="absolute top-1/2 z-[1] h-3 w-px -translate-x-1/2 -translate-y-1/2 bg-orange-3"
               style={{ left: `${view.averagePosition * 100}%` }}
               title={`${t(`kpiBenchmark.reference.${view.primaryReference}`)} ${view.averageLabel}`}
             />
