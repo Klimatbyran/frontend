@@ -1129,7 +1129,7 @@
       "noData": "No data available",
       "pastPath": "What has happened",
       "trendPath": "Where today's pace leads",
-      "parisPath": "What Paris asks for",
+      "parisPath": "What the 1.5°C target requires",
       "todayMarker": "today",
       "twoFuturesOvershoot": "Add it up to {{year}}, and the pink line is <0>{{ofParis}}</0> above the green one. That difference is <1>{{ofTrend}}</1> of the pink line.",
       "twoFuturesUndershoot": "Add it up to {{year}}, and the pink line is <0>{{ofParis}}</0> below the green one. That difference is <1>{{ofTrend}}</1> of the pink line.",

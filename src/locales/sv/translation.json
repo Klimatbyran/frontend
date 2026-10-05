@@ -1180,7 +1180,7 @@
       "noData": "Inga data tillgängliga",
       "pastPath": "Det som hänt",
       "trendPath": "Vart dagens takt leder",
-      "parisPath": "Det Paris kräver",
+      "parisPath": "Det 1,5-gradersmålet kräver",
       "todayMarker": "idag",
       "twoFuturesOvershoot": "Räknar man ihop till {{year}} ligger den rosa linjen <0>{{ofParis}}</0> över den gröna. Skillnaden är <1>{{ofTrend}}</1> av den rosa linjen.",
       "twoFuturesUndershoot": "Räknar man ihop till {{year}} ligger den rosa linjen <0>{{ofParis}}</0> under den gröna. Skillnaden är <1>{{ofTrend}}</1> av den rosa linjen.",
