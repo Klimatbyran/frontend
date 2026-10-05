@@ -84,11 +84,12 @@ export function OverviewStat({
   const renderValue = () => {
     if (isDetailVariant && unit) {
       return (
-        <div className="flex flex-wrap items-baseline gap-x-2">
+        <div className="flex flex-wrap items-end gap-x-2">
           <Text className={cn(valueSizeClass, valueClassName)}>{value}</Text>
           <Text className={cn(DETAIL_UNIT, dense ? "" : "md:text-xl")}>
             {unit}
           </Text>
+          {showAiIcon && <AiIcon size="md" />}
         </div>
       );
     }

@@ -1208,14 +1208,6 @@
     "booleanWithFew": "Som de flesta",
     "booleanUnknown": "Inte tillräckligt med data",
     "tiedForBest": "Delad förstaplats",
-    "peers": {
-      "municipalities": "kommunerna",
-      "municipalitiesInRegion": "kommunerna i länet",
-      "regions": "länen",
-      "companies": "företagen",
-      "companiesInIndustry": "företagen i branschen",
-      "companiesInSector": "företagen i sektorn"
-    },
     "reference": {
       "region": "länet",
       "industry": "branschen",

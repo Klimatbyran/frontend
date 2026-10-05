@@ -81,6 +81,7 @@ export function CompanyOverview({
     meetsParis,
     calculatedTotalEmissions,
     yearOverYearChange,
+    periodYear,
   );
 
   return (

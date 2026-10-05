@@ -12,7 +12,6 @@ export type BenchmarkReference = "region" | "industry" | "sector" | "all";
 
 export interface BenchmarkPhrase {
   key: string;
-  percent?: number;
   peerGroup?: BenchmarkPeerGroup;
   reference?: BenchmarkReference;
 }
@@ -24,9 +23,6 @@ export interface NumericBenchmarkView {
   /** 0 = smallest, 1 = largest, in rank space. */
   position: number;
   averagePosition: number;
-  averageLabel: string;
-  /** Which median the colour split and primary sentence use. */
-  primaryReference: BenchmarkReference;
   primary: BenchmarkPhrase;
   visual?: BenchmarkVisual;
 }
@@ -37,7 +33,6 @@ export interface BooleanBenchmarkView {
   /** Share of decisive peers that are true, including this entity. */
   trueShare: number;
   higherIsBetter: boolean;
-  peerGroup: BenchmarkPeerGroup;
   primary: BenchmarkPhrase;
   visual?: BenchmarkVisual;
 }
@@ -71,7 +66,11 @@ export interface NumericBenchmarkInput {
   groupPeerGroup?: BenchmarkPeerGroup;
   reference?: BenchmarkReference;
   minGroupSize?: number;
-  format: (value: number) => string;
+  /**
+   * True when `peers` already contains this entity. A matching value is then
+   * removed once. False when the caller already left this entity out.
+   */
+  peersIncludeSubject?: boolean;
   visual?: BenchmarkVisual;
 }
 
@@ -81,6 +80,8 @@ export interface BooleanBenchmarkInput {
   /** true when "yes" is the good outcome. */
   higherIsBetter: boolean;
   peerGroup: BenchmarkPeerGroup;
+  /** True when `peers` already contains this entity. Defaults to true. */
+  peersIncludeSubject?: boolean;
   visual?: BenchmarkVisual;
 }
 
@@ -106,10 +107,6 @@ function excludeOne(values: number[], value: number): number[] {
   const index = values.findIndex((item) => item === value);
   if (index === -1) return values;
   return values.filter((_, itemIndex) => itemIndex !== index);
-}
-
-function percent(share: number): number {
-  return Math.round(share * 100);
 }
 
 /** Rank position from 0 (smallest) to 1 (largest). */
@@ -277,7 +274,10 @@ export function buildNumericBenchmark(
   const reference: BenchmarkReference = useGroup
     ? (input.reference ?? "all")
     : "all";
-  const others = excludeOne(scaleSource, input.value);
+  const others =
+    input.peersIncludeSubject === false
+      ? scaleSource
+      : excludeOne(scaleSource, input.value);
   const relation = relate(
     input.value,
     referenceValue,
@@ -317,8 +317,6 @@ export function buildNumericBenchmark(
     higherIsBetter: input.higherIsBetter,
     position,
     averagePosition,
-    averageLabel: input.format(referenceValue),
-    primaryReference: reference,
     primary: extreme ?? primary,
     visual: input.visual,
   };
@@ -365,15 +363,21 @@ function decisiveCounts(values: Array<boolean | null | undefined>) {
 export function buildBooleanBenchmark(
   input: BooleanBenchmarkInput,
 ): BooleanBenchmarkView | null {
-  const peers = decisiveCounts(input.peers);
-  if (peers.total < 2) return null;
+  const counted = decisiveCounts(input.peers);
+  const others = { ...counted };
+  if (input.peersIncludeSubject !== false) {
+    if (input.value === true && others.yes > 0) others.yes -= 1;
+    if (input.value === false && others.no > 0) others.no -= 1;
+    others.total = others.yes + others.no;
+  }
 
-  const others = { ...peers };
-  if (input.value === true && others.yes > 0) others.yes -= 1;
-  if (input.value === false && others.no > 0) others.no -= 1;
-  others.total = others.yes + others.no;
+  const subjectCounts =
+    input.value === true || input.value === false ? 1 : 0;
+  const population = others.total + subjectCounts;
+  if (population < 2) return null;
 
-  const trueShare = peers.yes / peers.total;
+  const trueShare =
+    (others.yes + (input.value === true ? 1 : 0)) / population;
   const othersYesShare =
     others.total > 0 ? others.yes / others.total : trueShare;
   const yesIsGood = input.higherIsBetter;
@@ -385,7 +389,6 @@ export function buildBooleanBenchmark(
   if (input.value === null || input.value === undefined) {
     primary = {
       key: "kpiBenchmark.booleanUnknown",
-      percent: percent(trueShare),
       peerGroup: input.peerGroup,
     };
   } else if (input.value === true) {
@@ -411,7 +414,6 @@ export function buildBooleanBenchmark(
     tone,
     trueShare,
     higherIsBetter: input.higherIsBetter,
-    peerGroup: input.peerGroup,
     primary,
     visual: input.visual,
   };

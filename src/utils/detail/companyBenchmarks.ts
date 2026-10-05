@@ -1,5 +1,6 @@
 import type { RankedCompany } from "@/types/company";
 import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
+import { yearFromIsoDate } from "@/utils/date";
 import {
   BENCHMARK_VISUAL,
   buildBooleanBenchmark,
@@ -14,6 +15,7 @@ import {
 const MIN_INDUSTRY_PEERS = 5;
 
 export interface CompanyPeerSnapshot {
+  wikidataId: string;
   groupCode: string | null;
   sectorCode: string | null;
   meetsParis: boolean | null;
@@ -27,17 +29,13 @@ export interface CompanyBenchmarkValues {
   yearOverYearChange: number | null;
   groupCode: string | null;
   sectorCode: string | null;
+  wikidataId: string;
 }
 
 export interface CompanyBenchmarkSet {
   meetsParis: BooleanBenchmarkView | null;
   totalEmissions: NumericBenchmarkView | null;
   yearOverYearChange: NumericBenchmarkView | null;
-}
-
-export interface CompanyBenchmarkFormatters {
-  emissions: (value: number) => string;
-  changePercent: (value: number) => string;
 }
 
 function finiteOrNull(value: number | null | undefined): number | null {
@@ -65,19 +63,28 @@ function positiveOrNull(value: number | null | undefined): number | null {
 export function companyPeerSnapshot(
   company: RankedCompany,
   meetsParis: boolean | null,
+  reportingYear: string,
 ): CompanyPeerSnapshot {
   const periods = [...(company.reportingPeriods ?? [])].sort(
     (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
   );
-  const latest = periods[0];
-  const previous = periods[1];
+  const index = periods.findIndex(
+    (period) => yearFromIsoDate(period.endDate) === reportingYear,
+  );
+  const current = index >= 0 ? periods[index] : undefined;
+  const previous = index >= 0 ? periods[index + 1] : undefined;
 
   return {
+    wikidataId: company.wikidataId,
     groupCode: company.industry?.industryGics?.groupCode ?? null,
     sectorCode: company.industry?.industryGics?.sectorCode ?? null,
     meetsParis,
-    totalEmissions: positiveOrNull(latest?.emissions?.calculatedTotalEmissions),
-    yearOverYearChange: calculateEmissionsChange(latest, previous),
+    totalEmissions: positiveOrNull(
+      current?.emissions?.calculatedTotalEmissions,
+    ),
+    yearOverYearChange: current
+      ? calculateEmissionsChange(current, previous)
+      : null,
   };
 }
 
@@ -125,9 +132,11 @@ function readNumbers(
 export function buildCompanyBenchmarks(
   values: CompanyBenchmarkValues,
   peers: CompanyPeerSnapshot[],
-  formatters: CompanyBenchmarkFormatters,
 ): CompanyBenchmarkSet {
-  const group = comparisonGroup(peers, values.groupCode, values.sectorCode);
+  const others = peers.filter(
+    (peer) => peer.wikidataId !== values.wikidataId,
+  );
+  const group = comparisonGroup(others, values.groupCode, values.sectorCode);
   const labels = {
     peerGroup: "companies" as const,
     groupPeerGroup: group?.groupPeerGroup,
@@ -139,16 +148,15 @@ export function buildCompanyBenchmarks(
     value: number | null,
     read: (peer: CompanyPeerSnapshot) => number | null,
     higherIsBetter: boolean | null,
-    format: (value: number) => string,
     visual?: BenchmarkVisual,
   ) => {
     if (value === null || !Number.isFinite(value)) return null;
     return buildNumericBenchmark({
       value,
-      peers: readNumbers(peers, read),
+      peers: readNumbers(others, read),
       groupPeers: group ? readNumbers(group.peers, read) : undefined,
       higherIsBetter,
-      format,
+      peersIncludeSubject: false,
       visual,
       ...labels,
     });
@@ -157,22 +165,21 @@ export function buildCompanyBenchmarks(
   return {
     meetsParis: buildBooleanBenchmark({
       value: values.meetsParis,
-      peers: peers.map((peer) => peer.meetsParis),
+      peers: others.map((peer) => peer.meetsParis),
       higherIsBetter: true,
       peerGroup: "companies",
+      peersIncludeSubject: false,
       visual: BENCHMARK_VISUAL.paris,
     }),
     totalEmissions: numeric(
       positiveOrNull(values.totalEmissions),
       (peer) => peer.totalEmissions,
       null,
-      formatters.emissions,
     ),
     yearOverYearChange: numeric(
       saneYearlyChange(finiteOrNull(values.yearOverYearChange)),
       (peer) => saneYearlyChange(peer.yearOverYearChange),
       false,
-      formatters.changePercent,
       BENCHMARK_VISUAL.neutralBar,
     ),
   };

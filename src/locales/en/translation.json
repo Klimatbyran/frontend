@@ -1157,14 +1157,6 @@
     "booleanWithFew": "Like most",
     "booleanUnknown": "Not enough data",
     "tiedForBest": "Tied for best",
-    "peers": {
-      "municipalities": "municipalities",
-      "municipalitiesInRegion": "municipalities in the region",
-      "regions": "regions",
-      "companies": "companies",
-      "companiesInIndustry": "companies in the industry",
-      "companiesInSector": "companies in the sector"
-    },
     "reference": {
       "region": "the region",
       "industry": "the industry",

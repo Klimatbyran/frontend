@@ -1,12 +1,7 @@
 import { useMemo } from "react";
-import { useLanguage } from "@/components/LanguageProvider";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { enrichCompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import type { CompanyDetails } from "@/types/company";
-import {
-  formatEmissionsAbsoluteCompact,
-  formatPercentChange,
-} from "@/utils/formatting/localization";
 import {
   buildCompanyBenchmarks,
   companyPeerSnapshot,
@@ -17,9 +12,9 @@ export function useCompanyDetailBenchmarks(
   meetsParis: boolean | null,
   totalEmissions: number | null,
   yearOverYearChange: number | null,
+  reportingYear: string,
 ) {
   const { companies } = useCompanies();
-  const { currentLanguage } = useLanguage();
 
   const peers = useMemo(
     () =>
@@ -27,9 +22,10 @@ export function useCompanyDetailBenchmarks(
         companyPeerSnapshot(
           item,
           enrichCompanyWithKPIs(item).meetsParis ?? null,
+          reportingYear,
         ),
       ),
-    [companies],
+    [companies, reportingYear],
   );
 
   return useMemo(
@@ -41,13 +37,9 @@ export function useCompanyDetailBenchmarks(
           yearOverYearChange,
           groupCode: company.industry?.industryGics?.groupCode ?? null,
           sectorCode: company.industry?.industryGics?.sectorCode ?? null,
+          wikidataId: company.wikidataId,
         },
         peers,
-        {
-          emissions: (value) =>
-            formatEmissionsAbsoluteCompact(value, currentLanguage),
-          changePercent: (value) => formatPercentChange(value, currentLanguage),
-        },
       ),
     [
       company,
@@ -55,7 +47,6 @@ export function useCompanyDetailBenchmarks(
       totalEmissions,
       yearOverYearChange,
       peers,
-      currentLanguage,
     ],
   );
 }

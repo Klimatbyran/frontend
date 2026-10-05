@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import {
   formatEmissionsAbsolute,
-  formatEmissionsAbsoluteCompact,
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -94,6 +93,7 @@ export function useTerritoryDetailHeaderStats(
       peers: peers.map((peer) => peer.meetsParis),
       higherIsBetter: true,
       peerGroup: "regions",
+      peersIncludeSubject: false,
       visual: BENCHMARK_VISUAL.paris,
     }),
   };
@@ -110,7 +110,7 @@ export function useTerritoryDetailHeaderStats(
       ),
       higherIsBetter: false,
       peerGroup: "regions",
-      format: (value) => formatPercentChange(value, currentLanguage),
+      peersIncludeSubject: false,
       visual: BENCHMARK_VISUAL.neutralBar,
     }),
   };
@@ -127,8 +127,7 @@ export function useTerritoryDetailHeaderStats(
           peers: finiteNumbers(peers.map((peer) => peer.totalEmissions)),
           higherIsBetter: null,
           peerGroup: "regions",
-          format: (value) =>
-            formatEmissionsAbsoluteCompact(value, currentLanguage),
+          peersIncludeSubject: false,
         })
       : null,
   };

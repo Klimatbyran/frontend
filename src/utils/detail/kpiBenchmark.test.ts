@@ -4,8 +4,6 @@ import {
   rankPosition,
 } from "./kpiBenchmark";
 
-const format = (value: number) => String(Math.round(value));
-
 describe("rankPosition", () => {
   it("places the smallest value at the start and the largest at the end", () => {
     const values = [1, 2, 3, 4, 5];
@@ -24,7 +22,6 @@ describe("buildNumericBenchmark", () => {
       peers,
       higherIsBetter: false,
       peerGroup: "municipalities",
-      format,
     });
 
     expect(view?.tone).toBe("good");
@@ -41,7 +38,6 @@ describe("buildNumericBenchmark", () => {
       peers,
       higherIsBetter: false,
       peerGroup: "municipalities",
-      format,
     });
 
     expect(view?.tone).toBe("bad");
@@ -60,29 +56,27 @@ describe("buildNumericBenchmark", () => {
       peerGroup: "municipalities",
       groupPeerGroup: "municipalitiesInRegion",
       reference: "region",
-      format,
     });
 
     expect(view?.primary).toMatchObject({
       key: "kpiBenchmark.betterThanReference",
       reference: "region",
     });
-    expect(view?.primaryReference).toBe("region");
+    expect(view?.primary.reference).toBe("region");
   });
 
   it("falls back to the full peer set when the group is too small", () => {
     const view = buildNumericBenchmark({
-      value: 2,
+      value: 4,
       peers,
       groupPeers: [8, 9],
       higherIsBetter: false,
       peerGroup: "municipalities",
       groupPeerGroup: "municipalitiesInRegion",
       reference: "region",
-      format,
     });
 
-    expect(view?.primaryReference).toBe("all");
+    expect(view?.primary.reference).toBe("all");
   });
 
   it("describes size metrics as higher or lower, without a good or bad tone", () => {
@@ -91,7 +85,6 @@ describe("buildNumericBenchmark", () => {
       peers,
       higherIsBetter: null,
       peerGroup: "companies",
-      format,
     });
 
     expect(view?.tone).toBe("neutral");
@@ -108,7 +101,6 @@ describe("buildNumericBenchmark", () => {
       peers: [2, 2, 2, 2, 1, 0],
       higherIsBetter: true,
       peerGroup: "municipalities",
-      format,
     });
 
     expect(view?.tone).toBe("good");
@@ -125,9 +117,20 @@ describe("buildNumericBenchmark", () => {
         peers: [4],
         higherIsBetter: false,
         peerGroup: "regions",
-        format,
       }),
     ).toBeNull();
+  });
+
+  it("keeps a peer who shares the top score when the subject is already excluded", () => {
+    const view = buildNumericBenchmark({
+      value: 5,
+      peers: [5, 1, 2, 3, 4],
+      higherIsBetter: true,
+      peerGroup: "companies",
+      peersIncludeSubject: false,
+    });
+
+    expect(view?.primary.key).toBe("kpiBenchmark.tiedForBest");
   });
 });
 
@@ -166,9 +169,19 @@ describe("buildBooleanBenchmark", () => {
     });
 
     expect(view?.tone).toBe("unknown");
-    expect(view?.primary).toMatchObject({
-      key: "kpiBenchmark.booleanUnknown",
-      percent: 50,
+    expect(view?.primary.key).toBe("kpiBenchmark.booleanUnknown");
+  });
+
+  it("does not drop another yes when the subject is already excluded", () => {
+    const view = buildBooleanBenchmark({
+      value: true,
+      peers: [true],
+      higherIsBetter: true,
+      peerGroup: "regions",
+      peersIncludeSubject: false,
     });
+
+    expect(view?.trueShare).toBeCloseTo(1);
+    expect(view?.primary.key).toBe("kpiBenchmark.booleanWithMost");
   });
 });

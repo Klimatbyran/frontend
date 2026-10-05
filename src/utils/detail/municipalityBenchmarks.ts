@@ -19,13 +19,6 @@ export interface MunicipalityBenchmarkSet {
   bicycle: NumericBenchmarkView | null;
 }
 
-export interface MunicipalityBenchmarkFormatters {
-  emissions: (value: number) => string;
-  changePercent: (value: number) => string;
-  sharePercent: (value: number) => string;
-  plain: (value: number) => string;
-}
-
 const REGION_COMPARISON = {
   peerGroup: "municipalities" as const,
   groupPeerGroup: "municipalitiesInRegion" as const,
@@ -58,18 +51,19 @@ function numericValues(
 export function buildMunicipalityBenchmarks(
   municipality: Municipality,
   peers: Municipality[],
-  formatters: MunicipalityBenchmarkFormatters,
 ): MunicipalityBenchmarkSet {
-  const inRegion = peers.filter((peer) => peer.region === municipality.region);
+  const others = peers.filter((peer) => peer.name !== municipality.name);
+  const inRegion = others.filter((peer) => peer.region === municipality.region);
   const emissions = latestEmissionValue(municipality.emissions);
   const chargePoints = municipality.electricVehiclePerChargePoints;
 
   return {
     meetsParis: buildBooleanBenchmark({
       value: municipality.meetsParisGoal,
-      peers: peers.map((peer) => peer.meetsParisGoal),
+      peers: others.map((peer) => peer.meetsParisGoal),
       higherIsBetter: true,
       peerGroup: "municipalities",
+      peersIncludeSubject: false,
       visual: BENCHMARK_VISUAL.paris,
     }),
     totalEmissions:
@@ -77,20 +71,20 @@ export function buildMunicipalityBenchmarks(
         ? null
         : buildNumericBenchmark({
             value: emissions,
-            peers: numericValues(peers, (peer) =>
+            peers: numericValues(others, (peer) =>
               latestEmissionValue(peer.emissions),
             ),
             groupPeers: numericValues(inRegion, (peer) =>
               latestEmissionValue(peer.emissions),
             ),
             higherIsBetter: null,
-            format: formatters.emissions,
+            peersIncludeSubject: false,
             ...REGION_COMPARISON,
           }),
     changeSince2015: buildNumericBenchmark({
       value: municipality.historicalEmissionChangePercent,
       peers: numericValues(
-        peers,
+        others,
         (peer) => peer.historicalEmissionChangePercent,
       ),
       groupPeers: numericValues(
@@ -98,44 +92,45 @@ export function buildMunicipalityBenchmarks(
         (peer) => peer.historicalEmissionChangePercent,
       ),
       higherIsBetter: false,
-      format: formatters.changePercent,
+      peersIncludeSubject: false,
       visual: BENCHMARK_VISUAL.neutralBar,
       ...REGION_COMPARISON,
     }),
     consumption: buildNumericBenchmark({
       value: municipality.totalConsumptionEmission,
-      peers: numericValues(peers, (peer) => peer.totalConsumptionEmission),
+      peers: numericValues(others, (peer) => peer.totalConsumptionEmission),
       groupPeers: numericValues(
         inRegion,
         (peer) => peer.totalConsumptionEmission,
       ),
       higherIsBetter: false,
-      format: formatters.plain,
+      peersIncludeSubject: false,
       ...REGION_COMPARISON,
     }),
     climatePlan: buildBooleanBenchmark({
       value: municipality.climatePlan,
-      peers: peers.map((peer) => peer.climatePlan),
+      peers: others.map((peer) => peer.climatePlan),
       higherIsBetter: true,
       peerGroup: "municipalities",
+      peersIncludeSubject: false,
     }),
     procurement: buildNumericBenchmark({
       value: municipality.procurementScore,
-      peers: numericValues(peers, (peer) => peer.procurementScore),
+      peers: numericValues(others, (peer) => peer.procurementScore),
       groupPeers: numericValues(inRegion, (peer) => peer.procurementScore),
       higherIsBetter: true,
-      format: formatters.plain,
+      peersIncludeSubject: false,
       ...REGION_COMPARISON,
     }),
     electricCarChange: buildNumericBenchmark({
       value: municipality.electricCarChangePercent,
-      peers: numericValues(peers, (peer) => peer.electricCarChangePercent),
+      peers: numericValues(others, (peer) => peer.electricCarChangePercent),
       groupPeers: numericValues(
         inRegion,
         (peer) => peer.electricCarChangePercent,
       ),
       higherIsBetter: true,
-      format: formatters.sharePercent,
+      peersIncludeSubject: false,
       visual: BENCHMARK_VISUAL.neutralBar,
       ...REGION_COMPARISON,
     }),
@@ -145,7 +140,7 @@ export function buildMunicipalityBenchmarks(
         : buildNumericBenchmark({
             value: chargePoints,
             peers: numericValues(
-              peers,
+              others,
               (peer) => peer.electricVehiclePerChargePoints,
             ),
             groupPeers: numericValues(
@@ -153,15 +148,15 @@ export function buildMunicipalityBenchmarks(
               (peer) => peer.electricVehiclePerChargePoints,
             ),
             higherIsBetter: false,
-            format: formatters.plain,
+            peersIncludeSubject: false,
             ...REGION_COMPARISON,
           }),
     bicycle: buildNumericBenchmark({
       value: municipality.bicycleMetrePerCapita,
-      peers: numericValues(peers, (peer) => peer.bicycleMetrePerCapita),
+      peers: numericValues(others, (peer) => peer.bicycleMetrePerCapita),
       groupPeers: numericValues(inRegion, (peer) => peer.bicycleMetrePerCapita),
       higherIsBetter: true,
-      format: formatters.plain,
+      peersIncludeSubject: false,
       visual: BENCHMARK_VISUAL.neutralBar,
       ...REGION_COMPARISON,
     }),

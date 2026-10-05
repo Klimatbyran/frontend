@@ -27,8 +27,6 @@ describe("kpiBenchmarkColors", () => {
         higherIsBetter: false,
         position: 0.2,
         averagePosition: 0.5,
-        averageLabel: "0",
-        primaryReference: "all",
         primary: { key: "kpiBenchmark.betterThanReference" },
         visual: BENCHMARK_VISUAL.neutralBar,
       }),

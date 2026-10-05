@@ -56,14 +56,6 @@ export function numericBenchmarkAccent(view: NumericBenchmarkView): {
   };
 }
 
-/** Text color aligned with the boolean bar accent for this entity. */
-export function booleanBenchmarkTextClass(
-  tone: BenchmarkTone,
-  visual?: BenchmarkVisual,
-): string {
-  return benchmarkToneTextClass(tone, visual);
-}
-
 export function buildBooleanBarBackground(
   trueShare: number,
   higherIsBetter: boolean,

@@ -13,8 +13,9 @@ import {
   buildNeutralBarGradient,
 } from "@/utils/detail/kpiBenchmarkBarGradient";
 import {
-  booleanBenchmarkTextClass,
+  benchmarkToneTextClass,
   buildBooleanBarBackground,
+  numericBarUsesNeutralGradient,
   numericBenchmarkAccent,
 } from "@/components/detail/kpiBenchmarkColors";
 
@@ -23,10 +24,6 @@ function phraseText(
   phrase: BenchmarkPhrase,
 ) {
   return t(phrase.key, {
-    percent: phrase.percent,
-    peers: phrase.peerGroup
-      ? t(`kpiBenchmark.peers.${phrase.peerGroup}`)
-      : undefined,
     place: phrase.peerGroup
       ? t(`kpiBenchmark.place.${phrase.peerGroup}`)
       : undefined,
@@ -37,7 +34,7 @@ function phraseText(
 }
 
 function numericGradient(view: NumericBenchmarkView) {
-  if (view.visual?.neutralBar || view.tone === "neutral") {
+  if (numericBarUsesNeutralGradient(view)) {
     return buildNeutralBarGradient(view.averagePosition);
   }
   return buildComparativeBarGradient(
@@ -127,7 +124,7 @@ function BooleanBenchmark({
   return (
     <BenchmarkShell
       primary={primary}
-      textClassName={booleanBenchmarkTextClass(view.tone, view.visual)}
+      textClassName={benchmarkToneTextClass(view.tone, view.visual)}
       className={className}
     >
       <div role="img" aria-label={primary} className="px-1">

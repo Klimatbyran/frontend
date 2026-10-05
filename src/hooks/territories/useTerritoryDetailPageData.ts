@@ -42,14 +42,21 @@ export function useTerritoryDetailPageData(
     sectorTerritoryId,
   );
   const { regions } = useRegionsForExplore();
+  const selfName =
+    entity && "name" in entity && typeof entity.name === "string"
+      ? entity.name
+      : null;
   const peers = useMemo<TerritoryBenchmarkPeer[]>(
     () =>
-      regions.map((region) => ({
-        historicalEmissionChangePercent: region.historicalEmissionChangePercent,
-        meetsParis: region.meetsParis,
-        totalEmissions: latestRegionEmission(region),
-      })),
-    [regions],
+      regions
+        .filter((region) => region.name !== selfName)
+        .map((region) => ({
+          historicalEmissionChangePercent:
+            region.historicalEmissionChangePercent,
+          meetsParis: region.meetsParis,
+          totalEmissions: latestRegionEmission(region),
+        })),
+    [regions, selfName],
   );
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
