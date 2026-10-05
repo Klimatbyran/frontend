@@ -17,16 +17,12 @@ export interface CompanyPeerSnapshot {
   meetsParis: boolean | null;
   totalEmissions: number | null;
   yearOverYearChange: number | null;
-  turnover: number | null;
-  employees: number | null;
 }
 
 export interface CompanyBenchmarkValues {
   meetsParis: boolean | null;
   totalEmissions: number | null;
   yearOverYearChange: number | null;
-  turnover: number | null;
-  employees: number | null;
   groupCode: string | null;
   sectorCode: string | null;
 }
@@ -35,15 +31,11 @@ export interface CompanyBenchmarkSet {
   meetsParis: BooleanBenchmarkView | null;
   totalEmissions: NumericBenchmarkView | null;
   yearOverYearChange: NumericBenchmarkView | null;
-  turnover: NumericBenchmarkView | null;
-  employees: NumericBenchmarkView | null;
 }
 
 export interface CompanyBenchmarkFormatters {
   emissions: (value: number) => string;
   changePercent: (value: number) => string;
-  turnover: (value: number) => string;
-  employees: (value: number) => string;
 }
 
 function finiteOrNull(value: number | null | undefined): number | null {
@@ -84,8 +76,6 @@ export function companyPeerSnapshot(
     meetsParis,
     totalEmissions: positiveOrNull(latest?.emissions?.calculatedTotalEmissions),
     yearOverYearChange: calculateEmissionsChange(latest, previous),
-    turnover: positiveOrNull(latest?.economy?.turnover?.value),
-    employees: positiveOrNull(latest?.economy?.employees?.value),
   };
 }
 
@@ -178,18 +168,6 @@ export function buildCompanyBenchmarks(
       (peer) => saneYearlyChange(peer.yearOverYearChange),
       false,
       formatters.changePercent,
-    ),
-    turnover: numeric(
-      positiveOrNull(values.turnover),
-      (peer) => peer.turnover,
-      null,
-      formatters.turnover,
-    ),
-    employees: numeric(
-      positiveOrNull(values.employees),
-      (peer) => peer.employees,
-      null,
-      formatters.employees,
     ),
   };
 }

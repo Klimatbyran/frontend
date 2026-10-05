@@ -8,8 +8,6 @@ import {
 } from "@/components/detail/SupplementalDataPanel";
 import { ReportingPeriod } from "@/types/company";
 import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
-import { KpiBenchmarkChart } from "@/components/detail/KpiBenchmarkChart";
-import type { CompanyBenchmarkSet } from "@/utils/detail/companyBenchmarks";
 
 interface OverviewStatisticProps {
   selectedPeriod: ReportingPeriod;
@@ -19,7 +17,6 @@ interface OverviewStatisticProps {
   formattedEmployeeCount: string;
   turnoverAIGenerated: boolean;
   employeesAIGenerated: boolean;
-  benchmarks?: CompanyBenchmarkSet | null;
   className?: string;
 }
 
@@ -31,7 +28,6 @@ export function OverviewStatistics({
   formattedEmployeeCount,
   turnoverAIGenerated,
   employeesAIGenerated,
-  benchmarks,
   className,
 }: OverviewStatisticProps) {
   const formattedTurnover = selectedPeriod.economy?.turnover?.value
@@ -58,9 +54,6 @@ export function OverviewStatistics({
           <Text>{formattedTurnover}</Text>
           {turnoverAIGenerated && <AiIcon size="md" />}
         </span>
-        {benchmarks?.turnover && (
-          <KpiBenchmarkChart benchmark={benchmarks.turnover} />
-        )}
       </SupplementalDataField>
 
       <SupplementalDataField label={t("companies.overview.employees")}>
@@ -68,9 +61,6 @@ export function OverviewStatistics({
           <Text>{formattedEmployeeCount}</Text>
           {employeesAIGenerated && <AiIcon size="md" />}
         </span>
-        {benchmarks?.employees && (
-          <KpiBenchmarkChart benchmark={benchmarks.employees} />
-        )}
       </SupplementalDataField>
 
       {selectedPeriod?.reportURL && (

@@ -81,8 +81,6 @@ export function CompanyOverview({
     meetsParis,
     calculatedTotalEmissions,
     yearOverYearChange,
-    selectedPeriod.economy?.turnover?.value ?? null,
-    selectedPeriod.economy?.employees?.value ?? null,
   );
 
   return (
@@ -129,7 +127,6 @@ export function CompanyOverview({
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}
-        benchmarks={benchmarks}
         className="lg:flex lg:justify-between"
       />
     </SectionWithHelp>
