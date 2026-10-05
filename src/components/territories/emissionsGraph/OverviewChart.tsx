@@ -140,8 +140,18 @@ function FutureTotalsCaption({
         i18nKey={i18nKey}
         values={{
           year,
-          ofParis: formatPercent(Math.abs(gapShareOfParis), language),
-          ofTrend: formatPercent(Math.abs(gapShareOfTrend), language),
+          ofParis: formatPercent(
+            Math.abs(gapShareOfParis),
+            language,
+            false,
+            0,
+          ),
+          ofTrend: formatPercent(
+            Math.abs(gapShareOfTrend),
+            language,
+            false,
+            0,
+          ),
         }}
         components={[
           <span key="0" className={accent} />,
