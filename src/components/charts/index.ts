@@ -30,7 +30,6 @@ export {
   createChartClickHandler,
   createCustomTickRenderer,
   filterValidTotalData,
-  filterValidScopeData,
   filterValidCategoryData,
   filterDataByYearRange,
   createReferenceLine,

@@ -1430,12 +1430,6 @@
       "scope1": "Scope 1",
       "scope2": "Scope 2"
     },
-    "dataView": {
-      "overview": "Overview",
-      "scopes": "Scopes 1-3",
-      "categories": "Scope 3 Categories",
-      "selectView": "Select View"
-    },
     "emissionsHistory": {
       "noReportingPeriods": "No reporting periods available",
       "title": "Emissions development",

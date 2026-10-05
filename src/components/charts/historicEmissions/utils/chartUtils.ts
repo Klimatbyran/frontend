@@ -289,12 +289,11 @@ export const getLegendContainerHeight = (
     return isMobile ? "180px" : "150px";
   }
 
-  // Sectors view needs slightly more height than overview/scopes
+  // Sectors view needs slightly more height than overview
   if (dataView === "sectors") {
     return isMobile ? "140px" : "120px";
   }
 
-  // Default heights for overview and scopes
   return isMobile ? "120px" : "100px";
 };
 

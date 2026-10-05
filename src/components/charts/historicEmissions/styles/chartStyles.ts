@@ -75,11 +75,6 @@ export const LINE_CONFIGS = {
     color: CHART_COLORS.paris,
     style: LINE_STYLES.trend,
   },
-  scope: {
-    type: "primary" as const,
-    color: "var(--pink-3)", // Will be overridden by stroke prop
-    style: LINE_STYLES.primary,
-  },
   category: {
     type: "primary" as const,
     color: "var(--pink-3)", // Will be overridden by stroke prop

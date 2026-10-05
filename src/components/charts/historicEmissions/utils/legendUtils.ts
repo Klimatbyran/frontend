@@ -59,36 +59,6 @@ export const createOverviewLegendItems = (
   return items;
 };
 
-// Utility function to create legend items for scope charts
-export const createScopeLegendItems = (
-  t: (key: string) => string,
-  hiddenScopes: Set<string> = new Set(),
-): LegendItem[] => {
-  return [
-    {
-      name: t("companies.emissionsHistory.scope1"),
-      color: LEGEND_CONFIGS.scope1.color,
-      isClickable: LEGEND_CONFIGS.scope1.isClickable,
-      isHidden: hiddenScopes.has("scope1"),
-      isDashed: LEGEND_CONFIGS.scope1.isDashed,
-    },
-    {
-      name: t("companies.emissionsHistory.scope2"),
-      color: LEGEND_CONFIGS.scope2.color,
-      isClickable: LEGEND_CONFIGS.scope2.isClickable,
-      isHidden: hiddenScopes.has("scope2"),
-      isDashed: LEGEND_CONFIGS.scope2.isDashed,
-    },
-    {
-      name: t("companies.emissionsHistory.scope3"),
-      color: LEGEND_CONFIGS.scope3.color,
-      isClickable: LEGEND_CONFIGS.scope3.isClickable,
-      isHidden: hiddenScopes.has("scope3"),
-      isDashed: LEGEND_CONFIGS.scope3.isDashed,
-    },
-  ];
-};
-
 // Utility function to create legend items for category charts
 export const createCategoryLegendItems = (
   categoryKeys: string[],

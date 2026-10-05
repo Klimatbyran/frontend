@@ -1480,12 +1480,6 @@
       "scope1": "Scope 1",
       "scope2": "Scope 2"
     },
-    "dataView": {
-      "overview": "Översikt",
-      "scopes": "Scope 1-3",
-      "categories": "Scope 3-kategorier",
-      "selectView": "Välj visning"
-    },
     "emissionsHistory": {
       "noReportingPeriods": "Inga rapporteringsperioder tillgängliga",
       "title": "Utsläppsutveckling",

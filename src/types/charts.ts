@@ -57,7 +57,7 @@ export interface ReferenceLineConfig {
 }
 
 // Chart view types
-export type ChartView = "overview" | "sectors" | "scopes" | "categories";
+export type ChartView = "overview" | "sectors" | "categories";
 
 // Chart interaction types
 export interface ChartInteractionHandlers {
