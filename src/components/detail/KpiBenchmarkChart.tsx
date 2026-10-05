@@ -9,16 +9,20 @@ import type {
   KpiBenchmarkView,
   NumericBenchmarkView,
 } from "@/utils/detail/kpiBenchmark";
+import {
+  buildComparativeBarGradient,
+  buildNeutralBarGradient,
+} from "@/utils/detail/kpiBenchmarkBarGradient";
 
 const TONE_TEXT: Record<BenchmarkTone, string> = {
-  good: "text-green-3",
+  good: "text-blue-3",
   bad: "text-pink-3",
   neutral: "text-orange-2",
   unknown: "text-grey",
 };
 
 const TONE_FILL: Record<BenchmarkTone, string> = {
-  good: "var(--green-3)",
+  good: "var(--blue-3)",
   bad: "var(--pink-3)",
   neutral: "var(--orange-2)",
   unknown: "var(--grey)",
@@ -43,13 +47,13 @@ function phraseText(
 }
 
 function numericGradient(view: NumericBenchmarkView) {
-  if (view.higherIsBetter === null) return "var(--black-1)";
-  const split = Math.min(100, Math.max(0, view.averagePosition * 100));
-  const good = "var(--green-3)";
-  const bad = "var(--pink-3)";
-  const left = view.higherIsBetter ? bad : good;
-  const right = view.higherIsBetter ? good : bad;
-  return `linear-gradient(to right, ${left} 0%, ${left} ${split}%, ${right} ${split}%, ${right} 100%)`;
+  if (view.higherIsBetter === null) {
+    return buildNeutralBarGradient(view.averagePosition);
+  }
+  return buildComparativeBarGradient(
+    view.averagePosition,
+    view.higherIsBetter,
+  );
 }
 
 function BenchmarkShell({
@@ -128,28 +132,21 @@ function BooleanBenchmark({
   const { t } = useTranslation();
   const primary = phraseText(t, view.primary);
   const yesIsGood = view.higherIsBetter;
-  const yesColor = yesIsGood ? "var(--green-3)" : "var(--pink-3)";
-  const noColor = yesIsGood ? "var(--pink-3)" : "var(--green-3)";
+  const share = view.trueShare * 100;
+  const favorableStart = yesIsGood ? "var(--blue-4)" : "var(--pink-4)";
+  const favorableEnd = yesIsGood ? "var(--blue-3)" : "var(--pink-3)";
+  const unfavorableStart = yesIsGood ? "var(--pink-4)" : "var(--blue-4)";
+  const unfavorableEnd = yesIsGood ? "var(--pink-3)" : "var(--blue-3)";
+  const barBackground = `linear-gradient(to right, ${favorableStart} 0%, ${favorableEnd} ${share}%, ${unfavorableStart} ${share}%, ${unfavorableEnd} 100%)`;
 
   return (
     <BenchmarkShell primary={primary} tone={view.tone} className={className}>
       <div role="img" aria-label={primary} className="px-1">
         <div className="relative flex h-3 items-center">
-          <div className="flex h-1.5 w-full overflow-hidden rounded-full">
-            <div
-              style={{
-                width: `${view.trueShare * 100}%`,
-                background: yesColor,
-              }}
-            />
-            <div
-              style={{
-                width: `${(1 - view.trueShare) * 100}%`,
-                background: noColor,
-                opacity: 0.45,
-              }}
-            />
-          </div>
+          <div
+            className="h-1.5 w-full rounded-full"
+            style={{ background: barBackground }}
+          />
         </div>
       </div>
     </BenchmarkShell>
