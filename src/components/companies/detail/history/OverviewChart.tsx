@@ -114,8 +114,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const hasFuturePaths = Boolean(approximatedData);
 
   const legendItems = useMemo(
-    () =>
-      createTwoFuturesLegendItems(t, TRANSLATION_PREFIX, hasFuturePaths),
+    () => createTwoFuturesLegendItems(t, TRANSLATION_PREFIX, hasFuturePaths),
     [t, hasFuturePaths],
   );
 
@@ -123,11 +122,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     if (!hasFuturePaths) {
       return { totalTrend: 0, totalParis: 0 };
     }
-    return compareFuturePathTotals(
-      projectedData,
-      currentYear,
-      chartEndYear,
-    );
+    return compareFuturePathTotals(projectedData, currentYear, chartEndYear);
   }, [hasFuturePaths, projectedData, currentYear, chartEndYear]);
 
   const tooltipLabels = useMemo(
@@ -195,9 +190,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             )}
 
             <Tooltip
-              content={
-                <TwoFuturesTooltip unit={unit} labels={tooltipLabels} />
-              }
+              content={<TwoFuturesTooltip unit={unit} labels={tooltipLabels} />}
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 
