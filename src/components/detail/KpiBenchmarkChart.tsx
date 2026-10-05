@@ -4,7 +4,6 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type {
   BenchmarkPhrase,
-  BenchmarkTone,
   BooleanBenchmarkView,
   KpiBenchmarkView,
   NumericBenchmarkView,
@@ -14,9 +13,9 @@ import {
   buildNeutralBarGradient,
 } from "@/utils/detail/kpiBenchmarkBarGradient";
 import {
-  benchmarkToneFill,
-  benchmarkToneTextClass,
+  booleanBenchmarkTextClass,
   buildBooleanBarBackground,
+  numericBenchmarkAccent,
 } from "@/components/detail/kpiBenchmarkColors";
 
 function phraseText(
@@ -49,14 +48,12 @@ function numericGradient(view: NumericBenchmarkView) {
 
 function BenchmarkShell({
   primary,
-  tone,
-  visual,
+  textClassName,
   className,
   children,
 }: {
   primary: string;
-  tone: BenchmarkTone;
-  visual?: NumericBenchmarkView["visual"];
+  textClassName: string;
   className?: string;
   children: React.ReactNode;
 }) {
@@ -66,7 +63,7 @@ function BenchmarkShell({
       <Text
         className={cn(
           "mt-1.5 line-clamp-1 min-h-[1.25rem] text-sm",
-          benchmarkToneTextClass(tone, visual),
+          textClassName,
         )}
       >
         {primary}
@@ -84,13 +81,12 @@ function NumericBenchmark({
 }) {
   const { t } = useTranslation();
   const primary = phraseText(t, view.primary);
-  const showMedian = view.higherIsBetter === null;
+  const accent = numericBenchmarkAccent(view);
 
   return (
     <BenchmarkShell
       primary={primary}
-      tone={view.tone}
-      visual={view.visual}
+      textClassName={accent.textClass}
       className={className}
     >
       <div role="img" aria-label={primary} className="px-1">
@@ -99,18 +95,11 @@ function NumericBenchmark({
             className="absolute top-1/2 h-1.5 w-full -translate-y-1/2 rounded-full"
             style={{ background: numericGradient(view) }}
           />
-          {showMedian && (
-            <span
-              className="absolute top-1/2 z-[1] h-3 w-px -translate-x-1/2 -translate-y-1/2 bg-orange-3"
-              style={{ left: `${view.averagePosition * 100}%` }}
-              title={`${t(`kpiBenchmark.reference.${view.primaryReference}`)} ${view.averageLabel}`}
-            />
-          )}
           <span
             className="absolute top-1/2 z-[2] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               left: `${view.position * 100}%`,
-              background: benchmarkToneFill(view.tone, view.visual),
+              background: accent.fill,
               boxShadow: "0 0 0 2px rgba(255,255,255,0.9)",
             }}
           />
@@ -138,8 +127,7 @@ function BooleanBenchmark({
   return (
     <BenchmarkShell
       primary={primary}
-      tone={view.tone}
-      visual={view.visual}
+      textClassName={booleanBenchmarkTextClass(view.tone, view.visual)}
       className={className}
     >
       <div role="img" aria-label={primary} className="px-1">
