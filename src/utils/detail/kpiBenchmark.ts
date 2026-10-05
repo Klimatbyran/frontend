@@ -22,6 +22,7 @@ export interface NumericBenchmarkView {
   higherIsBetter: boolean | null;
   /** 0 = smallest, 1 = largest, in rank space. */
   position: number;
+  /** Rank of the peer median on the same 0–1 scale as `position`. */
   averagePosition: number;
   primary: BenchmarkPhrase;
   visual?: BenchmarkVisual;
@@ -259,9 +260,13 @@ export function buildNumericBenchmark(
   const scaleSource = useGroup ? group : all;
   if (scaleSource.length < 2) return null;
 
-  const scale = scaleSource.includes(input.value)
-    ? scaleSource
-    : [...scaleSource, input.value];
+  // Rank this entity on a scale that includes it once. Callers that already
+  // removed it still need its value appended, even when a peer matches it.
+  // Otherwise that peer would occupy this entity's slot.
+  const scale =
+    input.peersIncludeSubject === false || !scaleSource.includes(input.value)
+      ? [...scaleSource, input.value]
+      : scaleSource;
   const sorted = [...scale].sort((a, b) => a - b);
   const span = sorted[sorted.length - 1] - sorted[0];
 
