@@ -1182,9 +1182,9 @@
       "trendPath": "Vart dagens takt leder",
       "parisPath": "Det Paris kräver",
       "todayMarker": "idag",
-      "twoFuturesOvershoot": "Från och med i år till {{year}} är överskridandet <0>{{ofParis}}</0> av Paristotalen och <1>{{ofTrend}}</1> av trendtotalen.",
-      "twoFuturesUndershoot": "Från och med i år till {{year}} är underskridandet <0>{{ofParis}}</0> av Paristotalen och <1>{{ofTrend}}</1> av trendtotalen.",
-      "twoFuturesAligned": "Från och med i år till {{year}} ligger trendtotalen i linje med Paristotalen."
+      "twoFuturesOvershoot": "Räknar man ihop till {{year}} ligger den rosa linjen <0>{{ofParis}}</0> över den gröna. Skillnaden är <1>{{ofTrend}}</1> av den rosa linjen.",
+      "twoFuturesUndershoot": "Räknar man ihop till {{year}} ligger den rosa linjen <0>{{ofParis}}</0> under den gröna. Skillnaden är <1>{{ofTrend}}</1> av den rosa linjen.",
+      "twoFuturesAligned": "Räknar man ihop till {{year}} är den rosa och den gröna linjen lika stora."
     }
   },
   "municipalitiesOverviewPage": {
