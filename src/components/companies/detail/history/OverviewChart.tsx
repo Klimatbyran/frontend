@@ -1,7 +1,6 @@
 import { FC, useMemo } from "react";
 import {
   Area,
-  CartesianGrid,
   ComposedChart,
   Line,
   ReferenceLine,
@@ -20,7 +19,6 @@ import {
   getBaseYearReferenceLineProps,
   getChartContainerProps,
   getLineChartProps,
-  getResponsiveChartMargin,
   ChartWrapper,
   ChartArea,
   ChartFooter,
@@ -31,7 +29,6 @@ import {
   mergeChartDataWithApproximated,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
 import { createTwoFuturesLegendItems } from "@/components/charts/twoFutures/createTwoFuturesLegendItems";
 import { getTodayReferenceLineProps } from "@/components/charts/twoFutures/getTodayReferenceLineProps";
@@ -39,6 +36,7 @@ import {
   FUTURE_LINE_DASH,
   TwoFuturesTooltip,
 } from "@/components/charts/twoFutures/TwoFuturesTooltip";
+import { getTwoFuturesYAxisProps } from "@/components/charts/twoFutures/twoFuturesChartAxis";
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
@@ -165,11 +163,9 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             {...getLineChartProps(
               filteredRows,
               handleClick,
-              getResponsiveChartMargin(isMobile),
+              getTwoFuturesChartMargin(isMobile),
             )}
           >
-            <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
-
             {companyBaseYear && (
               <ReferenceLine
                 {...getBaseYearReferenceLineProps(
@@ -204,17 +200,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
               type="number"
             />
 
-            <YAxis
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
-              domain={[0, "auto"]}
-              width={isMobile ? 56 : 72}
-              tick={{ fill: "var(--grey)", fontSize: 11 }}
-              tickFormatter={(value: number) =>
-                formatEmissionsAbsoluteCompact(value, currentLanguage)
-              }
-            />
+            <YAxis {...getTwoFuturesYAxisProps(currentLanguage, isMobile)} />
 
             {hasFuturePaths && (
               <>

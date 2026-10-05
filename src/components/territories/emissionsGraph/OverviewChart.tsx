@@ -1,7 +1,6 @@
 import { FC, useMemo, useState } from "react";
 import {
   Area,
-  CartesianGrid,
   ComposedChart,
   Line,
   ReferenceLine,
@@ -23,7 +22,6 @@ import {
   getXAxisProps,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
-import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
@@ -35,6 +33,10 @@ import {
   FUTURE_LINE_DASH,
   TwoFuturesTooltip,
 } from "@/components/charts/twoFutures/TwoFuturesTooltip";
+import {
+  getTwoFuturesChartMargin,
+  getTwoFuturesYAxisProps,
+} from "@/components/charts/twoFutures/twoFuturesChartAxis";
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
@@ -85,14 +87,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <ResponsiveContainer {...getChartContainerProps()}>
           <ComposedChart
             data={filteredRows}
-            margin={{
-              top: 20,
-              right: 12,
-              left: isMobile ? 0 : 4,
-              bottom: 8,
-            }}
+            margin={getTwoFuturesChartMargin(isMobile)}
           >
-            <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
             <XAxis
               {...getXAxisProps(
                 "year",
@@ -102,17 +98,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               allowDuplicatedCategory
               tickFormatter={(year) => String(year)}
             />
-            <YAxis
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
-              domain={[0, "auto"]}
-              width={isMobile ? 56 : 72}
-              tick={{ fill: "var(--grey)", fontSize: 11 }}
-              tickFormatter={(value: number) =>
-                formatEmissionsAbsoluteCompact(value, currentLanguage)
-              }
-            />
+            <YAxis {...getTwoFuturesYAxisProps(currentLanguage, isMobile)} />
 
             <Tooltip
               content={<TwoFuturesTooltip unit={unit} labels={tooltipLabels} />}
