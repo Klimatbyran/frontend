@@ -37,10 +37,7 @@ export function EmissionsHistory({
     [processedPeriods, isAIGenerated, isEmissionsAIGenerated],
   );
 
-  const trendAnalysis = useMemo(
-    () => calculateTrendline(company),
-    [company],
-  );
+  const trendAnalysis = useMemo(() => calculateTrendline(company), [company]);
 
   const handleYearSelect = (year: number) => {
     onYearSelect?.(year.toString());
