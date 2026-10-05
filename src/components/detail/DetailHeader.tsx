@@ -3,6 +3,7 @@ import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
+import { cn } from "@/lib/utils";
 
 export interface DetailStat {
   label: string | ReactNode;
@@ -11,6 +12,7 @@ export interface DetailStat {
   valueClassName?: string;
   info?: boolean;
   infoText?: string;
+  caption?: string;
 }
 
 export interface DetailHeaderProps {
@@ -23,6 +25,36 @@ export interface DetailHeaderProps {
   headerChip?: ReactNode;
 }
 
+function DetailStatItem({ stat, dense }: { stat: DetailStat; dense: boolean }) {
+  return (
+    <OverviewStat
+      variant="detail"
+      label={stat.label}
+      value={stat.value}
+      unit={stat.unit}
+      valueClassName={stat.valueClassName}
+      info={stat.info}
+      infoText={stat.infoText}
+      caption={stat.caption}
+      dense={dense}
+      useFlex1={false}
+    />
+  );
+}
+
+function statsGridClass(count: number) {
+  if (count >= 4) {
+    return "grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4 xl:gap-10";
+  }
+  if (count === 3) {
+    return "grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12";
+  }
+  if (count === 2) {
+    return "grid-cols-1 gap-8 md:grid-cols-2 md:gap-12";
+  }
+  return "grid-cols-1 gap-8";
+}
+
 export function DetailHeader({
   name,
   logoUrl,
@@ -31,6 +63,8 @@ export function DetailHeader({
   supplementalData,
   headerChip,
 }: DetailHeaderProps) {
+  const dense = stats.length >= 4;
+
   return (
     <SectionWithHelp helpItems={helpItems}>
       <div className="flex items-start justify-between gap-4">
@@ -46,21 +80,13 @@ export function DetailHeader({
           />
         )}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-16 mt-8">
-        {stats.map((stat, index) => (
-          <OverviewStat
-            key={index}
-            variant="detail"
-            label={stat.label}
-            value={stat.value}
-            unit={stat.unit}
-            valueClassName={stat.valueClassName}
-            info={stat.info}
-            infoText={stat.infoText}
-            useFlex1={false}
-          />
-        ))}
-      </div>
+      {stats.length > 0 && (
+        <div className={cn("mt-8 grid", statsGridClass(stats.length))}>
+          {stats.map((stat, index) => (
+            <DetailStatItem key={index} stat={stat} dense={dense} />
+          ))}
+        </div>
+      )}
       {supplementalData}
     </SectionWithHelp>
   );

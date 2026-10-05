@@ -7,6 +7,7 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
+import { createMeetsParisStat } from "@/components/detail/meetsParisStat";
 import { getMunicipalityDetails } from "@/lib/api";
 import { Municipality } from "@/types/municipality";
 
@@ -46,6 +47,7 @@ export function useMunicipalityDetailHeaderStats(
 
   const stats: DetailStat[] = municipality
     ? [
+        createMeetsParisStat(municipality.meetsParisGoal, t),
         {
           label: t("detailPage.totalEmissions", {
             year: lastYear,
