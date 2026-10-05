@@ -135,7 +135,16 @@ export function EmissionsHistory({
           dataViewOptions={dataViewOptions}
           dataViewPlaceholder={t("companies.dataView.selectView")}
         />
-        <div style={{ height: getDynamicChartHeight(dataView, isMobile) }}>
+        <div
+          style={{
+            height:
+              dataView === "overview"
+                ? isMobile
+                  ? "560px"
+                  : "580px"
+                : getDynamicChartHeight(dataView, isMobile),
+          }}
+        >
           {dataView === "overview" && (
             <OverviewChart
               data={chartData}

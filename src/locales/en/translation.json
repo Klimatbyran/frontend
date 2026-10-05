@@ -1133,23 +1133,7 @@
       "todayMarker": "today",
       "twoFuturesOvershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times higher than the Paris path.",
       "twoFuturesUndershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times lower than the Paris path.",
-      "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path.",
-      "comparison": {
-        "eighthMore": "an eighth more than",
-        "quarterMore": "a quarter more than",
-        "thirdMore": "a third more than",
-        "halfMore": "half again as much as",
-        "twoThirdsMore": "two thirds more than",
-        "threeQuartersMore": "three quarters more than",
-        "double": "twice as much as",
-        "triple": "three times as much as",
-        "eighthLess": "one eighth less than",
-        "quarterLess": "a quarter less than",
-        "thirdLess": "a third less than",
-        "halfLess": "half as much as",
-        "twoThirdsLess": "two thirds less than",
-        "threeQuartersLess": "three quarters less than"
-      }
+      "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path."
     }
   },
   "municipalitiesOverviewPage": {
@@ -1470,22 +1454,6 @@
       "twoFuturesOvershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times higher than the Paris path.",
       "twoFuturesUndershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times lower than the Paris path.",
       "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path.",
-      "comparison": {
-        "eighthMore": "an eighth more than",
-        "quarterMore": "a quarter more than",
-        "thirdMore": "a third more than",
-        "halfMore": "half again as much as",
-        "twoThirdsMore": "two thirds more than",
-        "threeQuartersMore": "three quarters more than",
-        "double": "twice as much as",
-        "triple": "three times as much as",
-        "eighthLess": "one eighth less than",
-        "quarterLess": "a quarter less than",
-        "thirdLess": "a third less than",
-        "halfLess": "half as much as",
-        "twoThirdsLess": "two thirds less than",
-        "threeQuartersLess": "three quarters less than"
-      },
       "scope1": "Scope 1 - Direct Emissions",
       "scope2": "Scope 2 - Indirect Emissions",
       "scope3": "Scope 3 - Attributed Supply Chain and Product Lifecycle Emissions",

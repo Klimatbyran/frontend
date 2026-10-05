@@ -117,7 +117,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const handleClick = createChartClickHandler(onYearSelect);
 
   return (
-    <ChartWrapper className="relative h-auto">
+    <ChartWrapper className="relative">
       {yearControlsPlacement === "top-right" && (
         <div className="absolute right-0 top-0 z-20">
           <ChartYearControls
