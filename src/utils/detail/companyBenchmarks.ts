@@ -133,9 +133,7 @@ export function buildCompanyBenchmarks(
   values: CompanyBenchmarkValues,
   peers: CompanyPeerSnapshot[],
 ): CompanyBenchmarkSet {
-  const others = peers.filter(
-    (peer) => peer.wikidataId !== values.wikidataId,
-  );
+  const others = peers.filter((peer) => peer.wikidataId !== values.wikidataId);
   const group = comparisonGroup(others, values.groupCode, values.sectorCode);
   const labels = {
     peerGroup: "companies" as const,

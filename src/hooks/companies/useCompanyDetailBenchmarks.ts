@@ -41,12 +41,6 @@ export function useCompanyDetailBenchmarks(
         },
         peers,
       ),
-    [
-      company,
-      meetsParis,
-      totalEmissions,
-      yearOverYearChange,
-      peers,
-    ],
+    [company, meetsParis, totalEmissions, yearOverYearChange, peers],
   );
 }

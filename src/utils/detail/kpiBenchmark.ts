@@ -371,13 +371,11 @@ export function buildBooleanBenchmark(
     others.total = others.yes + others.no;
   }
 
-  const subjectCounts =
-    input.value === true || input.value === false ? 1 : 0;
+  const subjectCounts = input.value === true || input.value === false ? 1 : 0;
   const population = others.total + subjectCounts;
   if (population < 2) return null;
 
-  const trueShare =
-    (others.yes + (input.value === true ? 1 : 0)) / population;
+  const trueShare = (others.yes + (input.value === true ? 1 : 0)) / population;
   const othersYesShare =
     others.total > 0 ? others.yes / others.total : trueShare;
   const yesIsGood = input.higherIsBetter;
