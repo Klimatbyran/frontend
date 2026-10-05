@@ -13,6 +13,9 @@ type NationConclusionProps = {
   metrics: NationStoryMetrics;
 };
 
+const CONCLUSION_CTA_BASE =
+  "rounded-full px-5 py-2.5 text-sm font-medium transition-colors";
+
 export function NationConclusion({ metrics }: NationConclusionProps) {
   const { t } = useTranslation();
   const { getLocalizedPath } = useLanguage();
@@ -43,21 +46,21 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.4, delay: 0.18 }}
-        className="mx-auto mt-8 max-w-3xl space-y-4 px-4 text-center md:mt-6 md:px-0 lg:mt-8"
+        className="mx-auto max-w-3xl space-y-5 px-4 py-10 text-center story-short:py-8 md:px-0 md:py-12 lg:py-16"
       >
         <p className={`${NATION_STORY_TYPE.body} text-white`}>
           {t("nation.story.conclusion.ctaLead")}
         </p>
-        <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
           <LocalizedLink
             to="/municipalities?kpi=meetsParisGoal"
-            className="rounded-full border border-green-3/40 bg-green-5/20 px-5 py-2.5 text-sm text-green-2 transition-colors hover:border-green-2/60 hover:bg-green-5/30"
+            className={`${CONCLUSION_CTA_BASE} bg-orange-3/25 text-orange-3 hover:bg-orange-3/35`}
           >
             {t("nation.story.conclusion.ctaMunicipalities")}
           </LocalizedLink>
           <LocalizedLink
             to="/regions?kpi=meetsParis"
-            className="rounded-full border border-green-3/40 bg-green-5/20 px-5 py-2.5 text-sm text-green-2 transition-colors hover:border-green-2/60 hover:bg-green-5/30"
+            className={`${CONCLUSION_CTA_BASE} bg-blue-2/25 text-blue-2 hover:bg-blue-2/35`}
           >
             {t("nation.story.conclusion.ctaRegions")}
           </LocalizedLink>
