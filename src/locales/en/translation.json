@@ -1129,7 +1129,12 @@
       "estimated": "Estimated",
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",
-      "noData": "No data available"
+      "noData": "No data available",
+      "pastPath": "What has happened",
+      "trendPath": "Where today's pace leads",
+      "parisPath": "What Paris asks for",
+      "todayMarker": "today",
+      "twoFuturesCaption": "The pink area is emissions beyond the Paris path from today onward — about <0>{{overshoot}} {{unit}}</0> in total. Closing the gap means bending the pink line down onto the green one, starting this year."
     }
   },
   "kpiBenchmark": {
@@ -1784,7 +1789,8 @@
         "methodologyLink": "Read more about how we calculate Sweden’s emissions",
         "ctaLead": "Want to dig deeper into the numbers?",
         "ctaNation": "Explore Sweden's data",
-        "ctaMunicipalities": "How does your municipality compare?",
+        "ctaMunicipalities": "How does it look in your municipality?",
+        "ctaRegions": "How does it look in your region?",
         "shareCta": "Feel free to share on your social channels",
         "shareText": "A story about Sweden's emissions ahead of the 2026 election – from territorial figures to the full picture.",
         "shareNative": "Share this page",

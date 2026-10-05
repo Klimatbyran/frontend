@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import type { NationStoryMetrics } from "@/utils/data/nationStoryMetrics";
 import { useLanguage } from "@/components/LanguageProvider";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { NATION_STORY_TYPE } from "@/components/nation/story/nationStoryColors";
 import { StoryPreviousSectionButton } from "@/components/nation/story/StoryNavChrome";
 import { StoryShareLinks } from "@/components/nation/story/StoryShareLinks";
@@ -11,6 +12,9 @@ import { ConclusionStoryRecap } from "@/components/nation/story/ConclusionStoryR
 type NationConclusionProps = {
   metrics: NationStoryMetrics;
 };
+
+const CONCLUSION_CTA_BASE =
+  "rounded-full px-5 py-2.5 text-sm font-medium transition-colors";
 
 export function NationConclusion({ metrics }: NationConclusionProps) {
   const { t } = useTranslation();
@@ -36,6 +40,32 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
       <div className="w-full pt-8 pb-4 story-short:pt-7 story-short:pb-4 md:pt-12 md:pb-2 lg:pt-24">
         <ConclusionStoryRecap metrics={metrics} />
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.4, delay: 0.18 }}
+        className="mx-auto max-w-3xl space-y-5 px-4 py-10 text-center story-short:py-8 md:px-0 md:py-12 lg:py-16"
+      >
+        <p className={`${NATION_STORY_TYPE.body} text-white`}>
+          {t("nation.story.conclusion.ctaLead")}
+        </p>
+        <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
+          <LocalizedLink
+            to="/municipalities?kpi=meetsParisGoal"
+            className={`${CONCLUSION_CTA_BASE} bg-orange-3/25 text-orange-3 hover:bg-orange-3/35`}
+          >
+            {t("nation.story.conclusion.ctaMunicipalities")}
+          </LocalizedLink>
+          <LocalizedLink
+            to="/regions?kpi=meetsParis"
+            className={`${CONCLUSION_CTA_BASE} bg-blue-2/25 text-blue-2 hover:bg-blue-2/35`}
+          >
+            {t("nation.story.conclusion.ctaRegions")}
+          </LocalizedLink>
+        </div>
+      </motion.div>
 
       <motion.p
         initial={{ opacity: 0, y: 12 }}
