@@ -95,7 +95,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 
   const pathComparison = useMemo(() => {
     if (!approximatedData) {
-      return { gapShareOfParis: null as number | null };
+      return { totalTrend: 0, totalParis: 0 };
     }
     const asDataPoints: DataPoint[] = chartData.map((point) => ({
       year: point.year,
@@ -234,7 +234,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({
         {approximatedData && (
           <FutureTotalsCaption
             year={chartEndYear}
-            gapShareOfParis={pathComparison.gapShareOfParis}
+            totalTrend={pathComparison.totalTrend}
+            totalParis={pathComparison.totalParis}
             translationPrefix="companies.emissionsHistory"
           />
         )}

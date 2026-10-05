@@ -1,21 +1,34 @@
 import { describe, expect, it } from "vitest";
-import { pickTrendVsParisPhraseKey } from "./twoFuturesComparisonPhrase";
+import { captionFromPathTotals } from "./twoFuturesComparisonPhrase";
 
-describe("pickTrendVsParisPhraseKey", () => {
-  it("returns null when aligned with the Paris path", () => {
-    expect(pickTrendVsParisPhraseKey(0)).toBeNull();
-    expect(pickTrendVsParisPhraseKey(0.002)).toBeNull();
+describe("captionFromPathTotals", () => {
+  it("returns aligned when totals match within tolerance", () => {
+    expect(captionFromPathTotals(100, 100)).toEqual({ kind: "aligned" });
+    expect(captionFromPathTotals(100.4, 100)).toEqual({ kind: "aligned" });
   });
 
-  it("picks double for a 100% overshoot", () => {
-    expect(pickTrendVsParisPhraseKey(1)).toBe("double");
+  it("returns overshoot times as rounded trend/Paris ratio", () => {
+    expect(captionFromPathTotals(200, 100)).toEqual({
+      kind: "overshoot",
+      times: 2,
+    });
+    expect(captionFromPathTotals(340, 100)).toEqual({
+      kind: "overshoot",
+      times: 3,
+    });
   });
 
-  it("picks eighth less for a one-eighth undershoot", () => {
-    expect(pickTrendVsParisPhraseKey(-0.125)).toBe("eighthLess");
+  it("uses at least 2× for small overshoots", () => {
+    expect(captionFromPathTotals(112, 100)).toEqual({
+      kind: "overshoot",
+      times: 2,
+    });
   });
 
-  it("snaps a 65% overshoot to two thirds more", () => {
-    expect(pickTrendVsParisPhraseKey(0.65)).toBe("twoThirdsMore");
+  it("returns undershoot times from Paris/trend ratio", () => {
+    expect(captionFromPathTotals(70, 100)).toEqual({
+      kind: "undershoot",
+      times: 2,
+    });
   });
 });

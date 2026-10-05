@@ -281,7 +281,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <EnhancedLegend items={legendItems} />
         <FutureTotalsCaption
           year={chartEndYear}
-          gapShareOfParis={pathComparison.gapShareOfParis}
+          totalTrend={pathComparison.totalTrend}
+          totalParis={pathComparison.totalParis}
           translationPrefix="detailPage.graph"
         />
         <ChartYearControls
