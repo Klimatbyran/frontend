@@ -42,9 +42,7 @@ export function getPositiveIndicatorColor(forMeetsParis: boolean): string {
 }
 
 export function getPositiveIndicatorClass(forMeetsParis: boolean): string {
-  return forMeetsParis
-    ? MEETS_PARIS_POSITIVE_CLASS
-    : "text-blue-3";
+  return forMeetsParis ? MEETS_PARIS_POSITIVE_CLASS : "text-blue-3";
 }
 
 export const DEFAULT_NULL_DATA_COLOR = "var(--grey)";
