@@ -103,7 +103,7 @@ export function CompanyOverviewMainStats({
       <OverviewStat
         label={
           <div className="flex items-center gap-2">
-            <Text className="mb-1 md:mb-2 lg:text-lg md:text-base sm:text-sm">
+            <Text className="lg:text-lg md:text-base sm:text-sm">
               {t("companies.overview.changeSinceLastYear")}
             </Text>
             <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />

@@ -127,7 +127,9 @@ export function OverviewStat({
   const labelBlock = (
     <div
       className={cn(
-        isDetailVariant && alignBenchmarks && "min-h-[2.75rem] md:min-h-[3rem]",
+        isDetailVariant &&
+          alignBenchmarks &&
+          "min-h-[2.25rem] md:min-h-[2.5rem]",
       )}
     >
       <div className={isDetailVariant ? "" : "mb-1 md:mb-2"}>
@@ -141,7 +143,7 @@ export function OverviewStat({
       className={cn(
         isDetailVariant &&
           alignBenchmarks &&
-          "flex min-h-[3.25rem] items-end xl:min-h-[3.5rem]",
+          "flex min-h-[2.75rem] items-end md:min-h-[3.25rem]",
       )}
     >
       {renderValue()}
