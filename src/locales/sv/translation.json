@@ -1501,6 +1501,7 @@
       "pastPath": "Det som hänt",
       "trendPath": "Vart dagens takt leder",
       "parisPath": "Det 1,5-gradersmålet kräver",
+      "todayMarker": "idag",
       "twoFuturesOvershoot": "Räknar man ihop till {{year}} ger dagens takt <0>{{factor}}</0> gånger mer utsläpp än Parisbanan.",
       "twoFuturesUndershoot": "Räknar man ihop till {{year}} ger dagens takt <0>{{factor}}</0> gånger mindre utsläpp än Parisbanan.",
       "twoFuturesAligned": "Räknar man ihop till {{year}} ligger dagens takt i linje med Parisbanan.",

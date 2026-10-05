@@ -1451,6 +1451,7 @@
       "pastPath": "What has happened",
       "trendPath": "Where today's pace leads",
       "parisPath": "What the 1.5°C target requires",
+      "todayMarker": "today",
       "twoFuturesOvershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times higher than the Paris path.",
       "twoFuturesUndershoot": "Add it up to {{year}} — at today's pace, emissions are <0>{{factor}}</0> times lower than the Paris path.",
       "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path.",

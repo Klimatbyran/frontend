@@ -21,118 +21,23 @@ import {
   EnhancedLegend,
   getChartContainerProps,
   getXAxisProps,
-  type LegendItem,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
-import {
-  formatEmissionsAbsolute,
-  formatEmissionsAbsoluteCompact,
-} from "@/utils/formatting/localization";
+import { formatEmissionsAbsoluteCompact } from "@/utils/formatting/localization";
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
 } from "@/components/territories/emissionsGraph/twoFuturesChartData";
 import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
-
-/** Same dash as the existing trend and Paris lines. */
-const FUTURE_LINE_DASH = "4 4";
+import { createTwoFuturesLegendItems } from "@/components/charts/twoFutures/createTwoFuturesLegendItems";
+import { getTodayReferenceLineProps } from "@/components/charts/twoFutures/getTodayReferenceLineProps";
+import {
+  FUTURE_LINE_DASH,
+  TwoFuturesTooltip,
+} from "@/components/charts/twoFutures/TwoFuturesTooltip";
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
-}
-
-type TooltipRow = {
-  dataKey?: string;
-  value?: number;
-  name?: string;
-  color?: string;
-};
-
-function TwoFuturesTooltip({
-  active,
-  payload,
-  label,
-  unit,
-  labels,
-}: {
-  active?: boolean;
-  payload?: TooltipRow[];
-  label?: string | number;
-  unit: string;
-  labels: Record<"history" | "trend" | "paris", string>;
-}) {
-  const { currentLanguage } = useLanguage();
-  if (!active || !payload?.length) return null;
-
-  const rows = payload.filter(
-    (entry) =>
-      entry.value != null &&
-      entry.dataKey !== "parisBase" &&
-      entry.dataKey !== "gap",
-  );
-
-  return (
-    <div className="rounded-md border border-white/10 bg-black-2 px-3 py-2 text-sm shadow-lg">
-      <p className="mb-2 font-medium text-white">{label}</p>
-      <ul className="space-y-1">
-        {rows.map((entry) => {
-          const key = entry.dataKey as keyof typeof labels;
-          const name = labels[key] ?? entry.name;
-          return (
-            <li
-              key={entry.dataKey}
-              className="flex items-center justify-between gap-4 tabular-nums"
-            >
-              <span className="flex items-center gap-2 text-grey">
-                <span
-                  className="h-0.5 w-4"
-                  style={
-                    entry.dataKey === "history"
-                      ? { background: entry.color }
-                      : {
-                          background: "transparent",
-                          borderTop: `2px dashed ${entry.color}`,
-                        }
-                  }
-                  aria-hidden
-                />
-                {name}
-              </span>
-              <span className="text-white">
-                {formatEmissionsAbsolute(entry.value!, currentLanguage)} {unit}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-}
-
-function createTwoFuturesLegendItems(t: (key: string) => string): LegendItem[] {
-  return [
-    {
-      name: t("detailPage.graph.pastPath"),
-      color: "#ffffff",
-      isClickable: false,
-      isHidden: false,
-      isDashed: false,
-    },
-    {
-      name: t("detailPage.graph.trendPath"),
-      color: "var(--pink-3)",
-      isClickable: false,
-      isHidden: false,
-      isDashed: true,
-    },
-    {
-      name: t("detailPage.graph.parisPath"),
-      color: "var(--green-2)",
-      isClickable: false,
-      isHidden: false,
-      isDashed: true,
-    },
-  ];
 }
 
 export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
@@ -153,7 +58,10 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
     [rows, chartEndYear],
   );
 
-  const legendItems = useMemo(() => createTwoFuturesLegendItems(t), [t]);
+  const legendItems = useMemo(
+    () => createTwoFuturesLegendItems(t, "detailPage.graph"),
+    [t],
+  );
 
   const pathComparison = useMemo(
     () => compareFuturePathTotals(projectedData, currentYear, chartEndYear),
@@ -212,15 +120,10 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             />
 
             <ReferenceLine
-              x={currentYear}
-              stroke="rgba(255,255,255,0.35)"
-              strokeDasharray="4 4"
-              label={{
-                value: t("detailPage.graph.todayMarker"),
-                position: "insideTopLeft",
-                fill: "var(--grey)",
-                fontSize: 12,
-              }}
+              {...getTodayReferenceLineProps(
+                currentYear,
+                t("detailPage.graph.todayMarker"),
+              )}
             />
 
             <Area
