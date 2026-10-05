@@ -1182,9 +1182,9 @@
       "trendPath": "Vart dagens takt leder",
       "parisPath": "Det 1,5-gradersmålet kräver",
       "todayMarker": "idag",
-      "twoFuturesOvershoot": "Räknar man ihop till {{year}} ligger den rosa linjen <0>{{ofParis}}</0> över den gröna. Skillnaden är <1>{{ofTrend}}</1> av den rosa linjen.",
-      "twoFuturesUndershoot": "Räknar man ihop till {{year}} ligger den rosa linjen <0>{{ofParis}}</0> under den gröna. Skillnaden är <1>{{ofTrend}}</1> av den rosa linjen.",
-      "twoFuturesAligned": "Räknar man ihop till {{year}} är den rosa och den gröna linjen lika stora."
+      "twoFuturesOvershoot": "Räknar man ihop till {{year}} ligger dagens takt <0>{{share}}</0> över Parisbanan.",
+      "twoFuturesUndershoot": "Räknar man ihop till {{year}} ligger dagens takt <0>{{share}}</0> under Parisbanan.",
+      "twoFuturesAligned": "Räknar man ihop till {{year}} ligger dagens takt i linje med Parisbanan."
     }
   },
   "municipalitiesOverviewPage": {

@@ -1131,9 +1131,9 @@
       "trendPath": "Where today's pace leads",
       "parisPath": "What the 1.5°C target requires",
       "todayMarker": "today",
-      "twoFuturesOvershoot": "Add it up to {{year}}, and the pink line is <0>{{ofParis}}</0> above the green one. That difference is <1>{{ofTrend}}</1> of the pink line.",
-      "twoFuturesUndershoot": "Add it up to {{year}}, and the pink line is <0>{{ofParis}}</0> below the green one. That difference is <1>{{ofTrend}}</1> of the pink line.",
-      "twoFuturesAligned": "Add it up to {{year}}, and the pink line and the green line match."
+      "twoFuturesOvershoot": "Add it up to {{year}}, and today's pace is <0>{{share}}</0> above the Paris path.",
+      "twoFuturesUndershoot": "Add it up to {{year}}, and today's pace is <0>{{share}}</0> below the Paris path.",
+      "twoFuturesAligned": "Add it up to {{year}}, today's pace matches the Paris path."
     }
   },
   "municipalitiesOverviewPage": {

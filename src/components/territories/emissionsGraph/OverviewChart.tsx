@@ -115,15 +115,13 @@ function TwoFuturesTooltip({
 function FutureTotalsCaption({
   year,
   gapShareOfParis,
-  gapShareOfTrend,
   language,
 }: {
   year: number;
   gapShareOfParis: number | null;
-  gapShareOfTrend: number | null;
   language: SupportedLanguage;
 }) {
-  if (gapShareOfParis == null || gapShareOfTrend == null) return null;
+  if (gapShareOfParis == null) return null;
 
   const aligned = Math.abs(gapShareOfParis) < ALIGNED_SHARE;
   const overshoot = gapShareOfParis > 0;
@@ -140,13 +138,9 @@ function FutureTotalsCaption({
         i18nKey={i18nKey}
         values={{
           year,
-          ofParis: formatPercent(Math.abs(gapShareOfParis), language, false, 0),
-          ofTrend: formatPercent(Math.abs(gapShareOfTrend), language, false, 0),
+          share: formatPercent(Math.abs(gapShareOfParis), language, false, 0),
         }}
-        components={[
-          <span key="0" className={accent} />,
-          <span key="1" className={accent} />,
-        ]}
+        components={[<span key="0" className={accent} />]}
       />
     </p>
   );
@@ -325,7 +319,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <FutureTotalsCaption
           year={chartEndYear}
           gapShareOfParis={pathComparison.gapShareOfParis}
-          gapShareOfTrend={pathComparison.gapShareOfTrend}
           language={currentLanguage}
         />
         <ChartYearControls
