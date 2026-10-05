@@ -140,8 +140,8 @@ export function EmissionsHistory({
             height:
               dataView === "overview"
                 ? isMobile
-                  ? "560px"
-                  : "580px"
+                  ? "540px"
+                  : "555px"
                 : getDynamicChartHeight(dataView, isMobile),
           }}
         >

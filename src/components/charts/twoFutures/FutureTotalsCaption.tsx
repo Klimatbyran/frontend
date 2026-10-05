@@ -25,7 +25,7 @@ export function FutureTotalsCaption({
 
   if (caption.kind === "aligned") {
     return (
-      <p className="max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
+      <p className="mb-0 max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
         {t(`${translationPrefix}.twoFuturesAligned`, { year })}
       </p>
     );
@@ -39,7 +39,7 @@ export function FutureTotalsCaption({
   const factor = formatEmissionsAbsolute(caption.times, currentLanguage);
 
   return (
-    <p className="max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
+    <p className="mb-0 max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
       <Trans
         i18nKey={i18nKey}
         values={{ year, factor }}

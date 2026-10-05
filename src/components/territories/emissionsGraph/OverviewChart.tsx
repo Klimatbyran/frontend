@@ -277,7 +277,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         </ResponsiveContainer>
       </ChartArea>
 
-      <ChartFooter>
+      <ChartFooter className="mb-0 space-y-2 md:space-y-2.5">
         <EnhancedLegend items={legendItems} />
         <FutureTotalsCaption
           year={chartEndYear}
@@ -288,6 +288,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         <ChartYearControls
           chartEndYear={chartEndYear}
           setChartEndYear={setChartEndYear}
+          className="!mt-0"
         />
       </ChartFooter>
     </ChartWrapper>
