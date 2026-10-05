@@ -90,8 +90,7 @@ export const RequestsDashboard = () => {
               else if (status === "in-progress")
                 rowClass += "bg-orange-5/30 border-l-4 border-l-orange-3";
               else if (status === "finished")
-                rowClass +=
-                  "bg-blue-5/30 border-l-4 border-l-blue-3 text-grey";
+                rowClass += "bg-blue-5/30 border-l-4 border-l-blue-3 text-grey";
               return (
                 <tr key={issue.number} className={rowClass}>
                   <td className="px-4 py-2 text-left">{issue.number}</td>
