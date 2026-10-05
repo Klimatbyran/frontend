@@ -82,8 +82,12 @@ export function useTerritoryDetailHeaderStats(
   }
 
   const peers = options?.peers ?? [];
-  const lastYearEmissions =
-    territory.emissions.find((d) => d?.year === lastYear)?.value ?? 0;
+  const reportedEmissions = territory.emissions.find(
+    (point) => point?.year === lastYear,
+  )?.value;
+  const lastYearEmissions = Number.isFinite(reportedEmissions)
+    ? reportedEmissions
+    : null;
   const compareTotalEmissions = options?.compareTotalEmissions !== false;
 
   const meetsParis = {
@@ -116,20 +120,21 @@ export function useTerritoryDetailHeaderStats(
   };
   const total = {
     ...createTotalEmissionsStat(
-      lastYearEmissions,
+      lastYearEmissions ?? 0,
       lastYear,
       currentLanguage,
       t,
     ),
-    benchmark: compareTotalEmissions
-      ? buildNumericBenchmark({
-          value: lastYearEmissions,
-          peers: finiteNumbers(peers.map((peer) => peer.totalEmissions)),
-          higherIsBetter: null,
-          peerGroup: "regions",
-          peersIncludeSubject: false,
-        })
-      : null,
+    benchmark:
+      compareTotalEmissions && lastYearEmissions !== null
+        ? buildNumericBenchmark({
+            value: lastYearEmissions,
+            peers: finiteNumbers(peers.map((peer) => peer.totalEmissions)),
+            higherIsBetter: null,
+            peerGroup: "regions",
+            peersIncludeSubject: false,
+          })
+        : null,
   };
 
   return [meetsParis, change, total];

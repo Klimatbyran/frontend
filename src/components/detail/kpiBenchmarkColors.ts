@@ -13,9 +13,8 @@ export function numericBarUsesNeutralGradient(
 export function benchmarkToneTextClass(
   tone: BenchmarkTone,
   visual?: BenchmarkVisual,
-  options?: { neutralGradientBar?: boolean },
 ): string {
-  if (options?.neutralGradientBar || visual?.neutralBar) {
+  if (visual?.neutralBar) {
     return "text-orange-2";
   }
   if (tone === "good") {
@@ -29,9 +28,8 @@ export function benchmarkToneTextClass(
 export function benchmarkToneFill(
   tone: BenchmarkTone,
   visual?: BenchmarkVisual,
-  options?: { neutralGradientBar?: boolean },
 ): string {
-  if (options?.neutralGradientBar || visual?.neutralBar) {
+  if (visual?.neutralBar) {
     return "var(--orange-2)";
   }
   if (tone === "good") {
@@ -47,12 +45,9 @@ export function numericBenchmarkAccent(view: NumericBenchmarkView): {
   textClass: string;
   fill: string;
 } {
-  const neutralGradientBar = numericBarUsesNeutralGradient(view);
   return {
-    textClass: benchmarkToneTextClass(view.tone, view.visual, {
-      neutralGradientBar,
-    }),
-    fill: benchmarkToneFill(view.tone, view.visual, { neutralGradientBar }),
+    textClass: benchmarkToneTextClass(view.tone, view.visual),
+    fill: benchmarkToneFill(view.tone, view.visual),
   };
 }
 

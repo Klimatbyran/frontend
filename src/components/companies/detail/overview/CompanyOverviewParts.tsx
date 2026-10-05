@@ -71,6 +71,7 @@ export function CompanyOverviewMainStats({
         label={t("detailPage.meetsParisGoal")}
         value={meetsParisDisplay.value}
         valueClassName={meetsParisDisplay.valueClassName}
+        caption={meetsParisDisplay.caption}
         benchmark={benchmarks?.meetsParis}
         alignBenchmarks={Boolean(benchmarks)}
         useFlex1={false}
