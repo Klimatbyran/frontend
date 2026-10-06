@@ -708,7 +708,7 @@
         },
         "who": {
           "title": "Who is included",
-          "paragraph1": "The same median is used for municipalities, regions and companies. What changes is which peers are in the group.",
+          "paragraph1": "The same median is used for municipalities, regions and companies. What changes is which peers are in the group. Total emissions are compared for the year shown on the page, and a peer without a figure for that year is left out.",
           "municipalities": "Municipalities are compared with other municipalities in the same region when at least three of them have the figure. Otherwise they are compared with all municipalities.",
           "regions": "Regions are compared with the other regions. For Sweden as a whole, the Paris question and the change in emissions use those same regions as the comparison. Sweden’s total emissions are shown without that comparison.",
           "companies": "Companies are compared with others in the same industry when at least five other companies are in that industry and at least five of them have the figure. If the industry has fewer than five companies, we try the sector on the same terms. Otherwise the company is compared with all companies. The comparison follows the reporting year selected on the page.",

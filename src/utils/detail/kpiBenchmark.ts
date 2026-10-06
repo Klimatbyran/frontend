@@ -132,8 +132,7 @@ export function rankPosition(value: number, values: number[]): number {
 
   const lowerValue = sorted[below - 1];
   const upperValue = sorted[below];
-  const span = upperValue - lowerValue;
-  const fraction = span === 0 ? 0.5 : (value - lowerValue) / span;
+  const fraction = (value - lowerValue) / (upperValue - lowerValue);
   const lowerPos = (below - 1) / (count - 1);
   const upperPos = below / (count - 1);
   return lowerPos + fraction * (upperPos - lowerPos);

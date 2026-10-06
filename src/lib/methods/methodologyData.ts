@@ -2,7 +2,6 @@
 
 export type MethodType = {
   id: string;
-  relatedMethods?: string[];
   category: string;
 };
 
@@ -46,18 +45,6 @@ export const getMethodById = (id: string): MethodType | undefined => {
     if (method) return method;
   }
   return undefined;
-};
-
-// Function to get related methods
-export const getRelatedMethods = (methodId: string): MethodType[] => {
-  const method = getMethodById(methodId);
-  if (!method || !method.relatedMethods || method.relatedMethods.length === 0) {
-    return [];
-  }
-
-  return method.relatedMethods
-    .map((id) => getMethodById(id))
-    .filter((m): m is MethodType => m !== undefined);
 };
 
 // Function to get all methods as a flat array

@@ -22,14 +22,12 @@ type TerritoryDetailPageEntity = TerritoryEmissionsSource &
 
 type SectorTerritoryType = "regions" | "nation";
 
-function latestRegionEmission(region: RegionForExplore): number | null {
-  const years = Object.keys(region.emissions)
-    .map(Number)
-    .filter((year) => !Number.isNaN(year));
-  if (!years.length) return null;
-  const latestYear = Math.max(...years);
-  const value = region.emissions[String(latestYear)];
-  return Number.isFinite(value) ? value : null;
+function regionTotalForYear(
+  region: RegionForExplore,
+  year: number,
+): number | null {
+  const value = region.emissions[String(year)];
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
 export function useTerritoryDetailPageData(
@@ -46,18 +44,6 @@ export function useTerritoryDetailPageData(
     entity && "name" in entity && typeof entity.name === "string"
       ? entity.name
       : null;
-  const peers = useMemo<TerritoryBenchmarkPeer[]>(
-    () =>
-      regions
-        .filter((region) => region.name !== selfName)
-        .map((region) => ({
-          historicalEmissionChangePercent:
-            region.historicalEmissionChangePercent,
-          meetsParis: region.meetsParis,
-          totalEmissions: latestRegionEmission(region),
-        })),
-    [regions, selfName],
-  );
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
@@ -74,6 +60,19 @@ export function useTerritoryDetailPageData(
   }, [emissionsData]);
 
   const lastYear = lastYearEmissions?.year;
+  const peers = useMemo<TerritoryBenchmarkPeer[]>(
+    () =>
+      regions
+        .filter((region) => region.name !== selfName)
+        .map((region) => ({
+          historicalEmissionChangePercent:
+            region.historicalEmissionChangePercent,
+          meetsParis: region.meetsParis,
+          totalEmissions:
+            lastYear == null ? null : regionTotalForYear(region, lastYear),
+        })),
+    [regions, selfName, lastYear],
+  );
   const headerStats = useTerritoryDetailHeaderStats(entity, lastYear, {
     peers,
     compareTotalEmissions: sectorTerritoryType !== "nation",

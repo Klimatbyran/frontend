@@ -25,15 +25,23 @@ const REGION_COMPARISON = {
   reference: "region" as const,
 };
 
-export function latestEmissionValue(
+/** Last slot in the series. That is the total shown in the header. */
+function headlineEmission(
   emissions: Array<EmissionDataPoint | null> | undefined,
+): { year: number; value: number } | null {
+  const last = emissions?.at(-1);
+  if (!last || !Number.isFinite(last.value)) return null;
+  const year = Number(last.year);
+  if (!Number.isFinite(year)) return null;
+  return { year, value: last.value };
+}
+
+function emissionInYear(
+  emissions: Array<EmissionDataPoint | null> | undefined,
+  year: number,
 ): number | null {
-  if (!emissions?.length) return null;
-  for (let index = emissions.length - 1; index >= 0; index -= 1) {
-    const point = emissions[index];
-    if (point && Number.isFinite(point.value)) return point.value;
-  }
-  return null;
+  const point = emissions?.find((item) => item && Number(item.year) === year);
+  return point && Number.isFinite(point.value) ? point.value : null;
 }
 
 function numericValues(
@@ -54,7 +62,7 @@ export function buildMunicipalityBenchmarks(
 ): MunicipalityBenchmarkSet {
   const others = peers.filter((peer) => peer.name !== municipality.name);
   const inRegion = others.filter((peer) => peer.region === municipality.region);
-  const emissions = latestEmissionValue(municipality.emissions);
+  const emissions = headlineEmission(municipality.emissions);
   const chargePoints = municipality.electricVehiclePerChargePoints;
 
   return {
@@ -70,12 +78,12 @@ export function buildMunicipalityBenchmarks(
       emissions === null
         ? null
         : buildNumericBenchmark({
-            value: emissions,
+            value: emissions.value,
             peers: numericValues(others, (peer) =>
-              latestEmissionValue(peer.emissions),
+              emissionInYear(peer.emissions, emissions.year),
             ),
             groupPeers: numericValues(inRegion, (peer) =>
-              latestEmissionValue(peer.emissions),
+              emissionInYear(peer.emissions, emissions.year),
             ),
             higherIsBetter: null,
             peersIncludeSubject: false,

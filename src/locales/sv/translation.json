@@ -759,7 +759,7 @@
         },
         "who": {
           "title": "Vilka som ingår",
-          "paragraph1": "Samma median används för kommuner, län och företag. Det som skiljer är vilka aktörer som ingår i gruppen.",
+          "paragraph1": "Samma median används för kommuner, län och företag. Det som skiljer är vilka aktörer som ingår i gruppen. Totala utsläpp jämförs för det år som visas på sidan, och en aktör utan siffra för det året lämnas utanför.",
           "municipalities": "Kommuner jämförs med andra kommuner i samma län när minst tre av dem har siffran. Annars jämförs de med alla kommuner.",
           "regions": "Län jämförs med de andra länen. För Sverige som helhet används samma län som jämförelse för frågan om Parisavtalet och för utsläppsförändringen. Sveriges totala utsläpp visas utan den jämförelsen.",
           "companies": "Företag jämförs med andra i samma bransch när minst fem andra företag finns i branschen och minst fem av dem har siffran. Om branschen har färre än fem företag prövar vi sektorn på samma sätt. Annars jämförs företaget med alla företag. Jämförelsen följer det rapporteringsår som är valt på sidan.",
