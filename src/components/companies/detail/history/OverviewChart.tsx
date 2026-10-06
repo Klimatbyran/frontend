@@ -10,8 +10,8 @@ import {
   YAxis,
 } from "recharts";
 import { useTranslation } from "react-i18next";
-import { isMobile } from "react-device-detect";
 import { ChartData } from "@/types/emissions";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   ChartYearControls,
   EnhancedLegend,
@@ -73,6 +73,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
   const currentYear = new Date().getFullYear();
 
   const filteredData = useMemo(() => filterValidTotalData(data), [data]);
@@ -198,7 +199,10 @@ export const OverviewChart: FC<OverviewChartProps> = ({
                 "year",
                 [firstDataYear, chartEndYear],
                 ticks,
-                createCustomTickRenderer(companyBaseYear),
+                createCustomTickRenderer(companyBaseYear, true, [
+                  firstDataYear,
+                  chartEndYear,
+                ]),
               )}
               type="number"
             />

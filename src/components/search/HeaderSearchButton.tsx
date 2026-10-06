@@ -11,11 +11,14 @@ type HeaderSearchButtonProps = {
   className?: string;
   /** Mobile header: close the hamburger sheet when opening search or after choosing a result. */
   closeMobileNav?: () => void;
+  /** Hide the text label so a centered page title can sit in the header. */
+  iconOnly?: boolean;
 };
 
 export const HeaderSearchButton = ({
   className,
   closeMobileNav,
+  iconOnly = false,
 }: HeaderSearchButtonProps) => {
   const [commandOpen, setCommandOpen] = useState(false);
   const navigate = useNavigate();
@@ -72,7 +75,7 @@ export const HeaderSearchButton = ({
         )}
       >
         <SearchIcon className="h-4 w-4" />
-        <span className="text-sm text-grey">
+        <span className={cn("text-sm text-grey", iconOnly && "sr-only")}>
           {t("globalSearch.headerButtonTitle", "Search")}
         </span>
       </button>

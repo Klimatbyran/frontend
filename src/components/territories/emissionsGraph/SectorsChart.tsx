@@ -141,7 +141,12 @@ export const SectorsChart: FC<SectorsChartProps> = ({
               allowDuplicatedCategory
               tickFormatter={(year) => year}
             />
-            <YAxis {...getYAxisProps(currentLanguage)} />
+            <YAxis
+              {...getYAxisProps(currentLanguage, [0, "auto"], {
+                mirror: isMobile,
+              })}
+              width={isMobile ? 48 : 64}
+            />
 
             <Tooltip
               content={

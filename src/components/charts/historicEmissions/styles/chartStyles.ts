@@ -41,8 +41,8 @@ export const CHART_DIMENSIONS = {
   },
   margin: {
     top: 20,
-    right: 0,
-    left: -5, // Increased for tilted Y-axis labels
+    right: 4,
+    left: 4,
     bottom: 0,
   },
   padding: {
