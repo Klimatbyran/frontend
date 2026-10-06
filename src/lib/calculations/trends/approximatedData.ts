@@ -65,36 +65,58 @@ function calculateApproximatedValue(
   );
 }
 
-function calculateEmissions2025(
+function getParisLineStartYear(): number {
+  return new Date().getFullYear();
+}
+
+/**
+ * Emissions in the Paris line's start year: reported data when it exists,
+ * otherwise the trend estimate for that year.
+ */
+function calculateEmissionsAtYear(
   data: ChartData[],
   coefficients: Coefficients,
+  year: number,
 ): number {
-  const actual2025Data = data.find((d) => d.year === 2025)?.total;
-  if (actual2025Data !== undefined && actual2025Data !== null) {
-    return actual2025Data;
+  const actual = data.find((d) => d.year === year)?.total;
+  if (actual !== undefined && actual !== null) {
+    return actual;
   }
 
   const lastDataValue = getLastEmissionsValue(data);
   const lastYearWithData = getLastYearWithData(data);
   return applyCoefficients(
     lastDataValue,
-    2025 - lastYearWithData,
+    year - lastYearWithData,
     coefficients,
   );
 }
 
+/**
+ * Paris line starts at the current year and then falls by Carbon Law.
+ * Years before today have no Paris value.
+ */
 function calculateParisLineValue(
   year: number,
   data: ChartData[],
   coefficients: Coefficients,
 ): number | null {
-  if (year < 2025) {
+  const startYear = getParisLineStartYear();
+  if (year < startYear) {
     return null;
   }
 
-  const emissions2025 = calculateEmissions2025(data, coefficients);
+  const startEmissions = calculateEmissionsAtYear(
+    data,
+    coefficients,
+    startYear,
+  );
+  if (startEmissions <= 0) {
+    return null;
+  }
+
   const calculatedValue =
-    emissions2025 * Math.pow(1 - CARBON_LAW_REDUCTION_RATE, year - 2025);
+    startEmissions * Math.pow(1 - CARBON_LAW_REDUCTION_RATE, year - startYear);
   return calculatedValue > 0 ? calculatedValue : null;
 }
 
