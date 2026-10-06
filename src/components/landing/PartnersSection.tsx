@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Text } from "../ui/text";
 import { partners } from "@/lib/constants/footer";
+import { cn } from "@/lib/utils";
 
 export const PartnersSection = () => {
   const { t } = useTranslation();
@@ -42,7 +43,10 @@ export const PartnersSection = () => {
                   <img
                     src={logo.src}
                     alt={logo.alt}
-                    className="h-16 max-w-full object-contain opacity-90 transition-opacity group-hover:opacity-100"
+                    className={cn(
+                      "h-16 max-w-full object-contain opacity-90 transition-opacity group-hover:opacity-100",
+                      logo.invert && "invert",
+                    )}
                     loading="lazy"
                   />
                 </span>

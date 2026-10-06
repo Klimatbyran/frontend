@@ -34,7 +34,14 @@ export const socialLinks = [
   },
 ];
 
-export const partners = [
+type PartnerLogo = {
+  href: string;
+  src: string;
+  alt: string;
+  invert?: boolean;
+};
+
+export const partners: PartnerLogo[] = [
   {
     href: "https://ai-bridges.org/",
     src: "/logos/partners/ai-bridges-logo.png",
@@ -84,5 +91,11 @@ export const partners = [
     href: "https://www.uzh.ch/en.html/",
     src: "/logos/partners/Uni_Zuerich_Siegel.svg",
     alt: "University of Zurich logo",
+  },
+  {
+    href: "https://climatetrace.org/",
+    src: "/logos/partners/climatetrace-logo.png",
+    alt: "Climate TRACE logo",
+    invert: true,
   },
 ];
