@@ -24,3 +24,6 @@ yarn.lock
 
 # Generated API types
 src/lib/api-types.ts
+
+# Vendored dependency (patched braces); keep upstream formatting
+vendor
