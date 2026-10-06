@@ -72,8 +72,8 @@ describe("compareFuturePathTotals", () => {
     const comparison = compareFuturePathTotals(data, currentYear, 2028);
     expect(comparison.totalParis).toBe(170);
     expect(comparison.totalTrend).toBe(200);
-    expect(comparison.areaParis).toBe(120);
-    expect(comparison.areaTrend).toBe(135);
+    expect(comparison.endParis).toBe(40);
+    expect(comparison.endTrend).toBe(50);
     expect(comparison.gapShareOfParis).toBeCloseTo(30 / 170);
     expect(comparison.gapShareOfTrend).toBeCloseTo(30 / 200);
   });
@@ -104,12 +104,12 @@ describe("compareFuturePathTotals", () => {
     const comparison = compareFuturePathTotals(data, currentYear, currentYear);
     expect(comparison.totalParis).toBe(60);
     expect(comparison.totalTrend).toBe(80);
-    expect(comparison.areaParis).toBe(60);
-    expect(comparison.areaTrend).toBe(80);
+    expect(comparison.endParis).toBe(60);
+    expect(comparison.endTrend).toBe(80);
     expect(comparison.gapShareOfParis).toBeCloseTo(20 / 60);
   });
 
-  it("reads a flat trend against a carbon-law path as more than 3 times the drawn area", () => {
+  it("rounds a flat trend in 2050 to many times the Paris path", () => {
     const reduction = 0.1172;
     const flat = 2_242_227;
     const series: DataPoint[] = [];
@@ -126,10 +126,9 @@ describe("compareFuturePathTotals", () => {
     }
 
     const comparison = compareFuturePathTotals(series, currentYear, 2050);
-    expect(comparison.totalTrend / comparison.totalParis).toBeLessThan(3);
-    expect(comparison.areaTrend / comparison.areaParis).toBeGreaterThan(3);
+    expect(comparison.endTrend / comparison.endParis).toBeGreaterThan(15);
     expect(
-      captionFromPathTotals(comparison.areaTrend, comparison.areaParis),
-    ).toEqual({ kind: "overshoot", times: 3, moreThan: true });
+      captionFromPathTotals(comparison.endTrend, comparison.endParis),
+    ).toEqual({ kind: "overshoot", times: 19 });
   });
 });

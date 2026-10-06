@@ -64,13 +64,10 @@ export function buildTwoFuturesRows(
 export type FutureTotalsComparison = {
   totalParis: number;
   totalTrend: number;
-  /**
-   * Area under the piecewise-linear Paris path. This is the shape drawn
-   * on the chart, which is what “how many times” is read against.
-   */
-  areaParis: number;
-  /** Area under the piecewise-linear trend path. */
-  areaTrend: number;
+  /** Trend emissions in endYear. */
+  endTrend: number;
+  /** Paris-path emissions in endYear. */
+  endParis: number;
   /**
    * (trend total − Paris total) / Paris total.
    * Positive is overshoot, negative is undershoot.
@@ -83,23 +80,10 @@ export type FutureTotalsComparison = {
   gapShareOfTrend: number | null;
 };
 
-function areaUnderPath(points: { year: number; value: number }[]): number {
-  if (points.length === 0) return 0;
-  if (points.length === 1) return points[0].value;
-
-  let area = 0;
-  for (let i = 1; i < points.length; i++) {
-    const years = points[i].year - points[i - 1].year;
-    if (years <= 0) continue;
-    area += ((points[i - 1].value + points[i].value) / 2) * years;
-  }
-  return area;
-}
-
 /**
  * Compare the Paris path and the trend path from today through endYear.
- * Totals are summed yearly emissions. Areas follow the straight lines drawn
- * between those years — the comparison the chart actually shows.
+ * Totals are summed yearly emissions. endTrend and endParis are the values
+ * in endYear — the level the chart reaches, not the sum along the way.
  */
 export function compareFuturePathTotals(
   data: DataPoint[],
@@ -108,52 +92,40 @@ export function compareFuturePathTotals(
 ): FutureTotalsComparison {
   let totalParis = 0;
   let totalTrend = 0;
-  const parisPoints: { year: number; value: number }[] = [];
-  const trendPoints: { year: number; value: number }[] = [];
+  let counted = 0;
+  let endTrend = 0;
+  let endParis = 0;
 
   for (const point of data) {
     if (point.year < currentYear || point.year > endYear) continue;
     if (point.trend == null || point.carbonLaw == null) continue;
     totalParis += point.carbonLaw;
     totalTrend += point.trend;
-    parisPoints.push({ year: point.year, value: point.carbonLaw });
-    trendPoints.push({ year: point.year, value: point.trend });
+    counted += 1;
+    if (point.year === endYear) {
+      endTrend = point.trend;
+      endParis = point.carbonLaw;
+    }
   }
 
-  if (parisPoints.length === 0) {
+  if (counted === 0) {
     return {
       totalParis: 0,
       totalTrend: 0,
-      areaParis: 0,
-      areaTrend: 0,
+      endTrend: 0,
+      endParis: 0,
       gapShareOfParis: null,
       gapShareOfTrend: null,
     };
   }
-
-  const byYear = (points: { year: number; value: number }[]) =>
-    [...points]
-      .sort((a, b) => a.year - b.year)
-      .reduce<{ year: number; value: number }[]>((merged, point) => {
-        const last = merged[merged.length - 1];
-        if (last && last.year === point.year) {
-          last.value += point.value;
-        } else {
-          merged.push({ ...point });
-        }
-        return merged;
-      }, []);
-
-  const areaParis = areaUnderPath(byYear(parisPoints));
-  const areaTrend = areaUnderPath(byYear(trendPoints));
 
   const gap = totalTrend - totalParis;
 
   return {
     totalParis,
     totalTrend,
-    areaParis,
-    areaTrend,
+    endTrend,
+    endParis,
     gapShareOfParis: totalParis > 0 ? gap / totalParis : null,
     gapShareOfTrend: totalTrend > 0 ? gap / totalTrend : null,
   };

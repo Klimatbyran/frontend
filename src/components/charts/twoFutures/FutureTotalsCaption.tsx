@@ -5,22 +5,24 @@ import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 
 export type FutureTotalsCaptionProps = {
   year: number;
-  totalTrend: number;
-  totalParis: number;
+  /** Trend emissions in `year`. */
+  trend: number;
+  /** Paris-path emissions in `year`. */
+  paris: number;
   /** i18n prefix, e.g. `detailPage.graph` or `companies.emissionsHistory` */
   translationPrefix: string;
 };
 
 export function FutureTotalsCaption({
   year,
-  totalTrend,
-  totalParis,
+  trend,
+  paris,
   translationPrefix,
 }: FutureTotalsCaptionProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const caption = captionFromPathTotals(totalTrend, totalParis);
+  const caption = captionFromPathTotals(trend, paris);
   if (caption == null) return null;
 
   if (caption.kind === "aligned") {
@@ -45,12 +47,8 @@ export function FutureTotalsCaption({
 
   const overshoot = caption.kind === "overshoot";
   const i18nKey = overshoot
-    ? caption.moreThan
-      ? `${translationPrefix}.twoFuturesOvershootMoreThan`
-      : `${translationPrefix}.twoFuturesOvershoot`
-    : caption.moreThan
-      ? `${translationPrefix}.twoFuturesUndershootMoreThan`
-      : `${translationPrefix}.twoFuturesUndershoot`;
+    ? `${translationPrefix}.twoFuturesOvershoot`
+    : `${translationPrefix}.twoFuturesUndershoot`;
   const accent = overshoot ? "text-pink-3" : "text-green-2";
   const factor = formatEmissionsAbsolute(caption.times, currentLanguage);
 

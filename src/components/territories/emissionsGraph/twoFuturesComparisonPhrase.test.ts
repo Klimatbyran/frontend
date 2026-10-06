@@ -2,35 +2,28 @@ import { describe, expect, it } from "vitest";
 import { captionFromPathTotals } from "./twoFuturesComparisonPhrase";
 
 describe("captionFromPathTotals", () => {
-  it("returns aligned when totals match within tolerance", () => {
+  it("returns aligned when the values match within tolerance", () => {
     expect(captionFromPathTotals(100, 100)).toEqual({ kind: "aligned" });
     expect(captionFromPathTotals(100.4, 100)).toEqual({ kind: "aligned" });
   });
 
-  it("returns an exact multiple when the ratio is a whole number", () => {
+  it("rounds the ratio to the nearest whole number of times", () => {
     expect(captionFromPathTotals(200, 100)).toEqual({
       kind: "overshoot",
       times: 2,
-      moreThan: false,
     });
-    expect(captionFromPathTotals(300, 100)).toEqual({
-      kind: "overshoot",
-      times: 3,
-      moreThan: false,
-    });
-  });
-
-  it("keeps a ratio above a whole number as more than that number", () => {
     expect(captionFromPathTotals(340, 100)).toEqual({
       kind: "overshoot",
       times: 3,
-      moreThan: true,
     });
-    // Göteborg's chart area is just over 3× the Paris path, not 3×.
-    expect(captionFromPathTotals(305.8, 100)).toEqual({
+    expect(captionFromPathTotals(360, 100)).toEqual({
       kind: "overshoot",
-      times: 3,
-      moreThan: true,
+      times: 4,
+    });
+    // Göteborg in 2050: trend is about 18.8× the Paris path.
+    expect(captionFromPathTotals(1880, 100)).toEqual({
+      kind: "overshoot",
+      times: 19,
     });
   });
 
@@ -38,8 +31,9 @@ describe("captionFromPathTotals", () => {
     expect(captionFromPathTotals(112, 100)).toEqual({
       kind: "overshootMild",
     });
-    expect(captionFromPathTotals(70, 100)).toEqual({
-      kind: "undershootMild",
+    expect(captionFromPathTotals(150, 100)).toEqual({
+      kind: "overshoot",
+      times: 2,
     });
   });
 
@@ -47,12 +41,16 @@ describe("captionFromPathTotals", () => {
     expect(captionFromPathTotals(50, 100)).toEqual({
       kind: "undershoot",
       times: 2,
-      moreThan: false,
     });
     expect(captionFromPathTotals(30, 100)).toEqual({
       kind: "undershoot",
       times: 3,
-      moreThan: true,
+    });
+    expect(captionFromPathTotals(70, 100)).toEqual({
+      kind: "undershootMild",
+    });
+    expect(captionFromPathTotals(0, 100)).toEqual({
+      kind: "undershootMild",
     });
   });
 });
