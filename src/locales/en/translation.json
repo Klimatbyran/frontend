@@ -690,6 +690,34 @@
         "paragraph4": "Similarly, emissions and removals from forests and land (known as biogenic emissions) are reported separately and are not included in the territorial greenhouse gas totals shown on Klimatkollen.",
         "paragraph5": "In reality, a municipality's full climate footprint is often larger than its territorial emissions alone suggest. The data currently displayed on Klimatkollen reflects territorial emissions — those that physically occur within each municipality's or region's borders.",
         "paragraph6": "We compare territorial emissions against the Paris-aligned reduction rate defined by Carbon Law (approximately 12% per year from 2025). Klimatkollen continues to explore how to present a more complete picture of climate impact on the platform."
+      },
+      "peerComparison": {
+        "title": "How We Calculate the Median",
+        "description": "Learn how municipalities, regions and companies are compared with similar peers",
+        "paragraph1": "On the detail pages, many figures come with a short comparison and a thin bar. The bar shows where this municipality, region or company sits among similar peers. The colour shifts around the median, the typical peer in the group. The text under the bar is based on that median, for example “Close to the median”, “Better than the median”, or the same kind of phrase for a region, an industry or a sector.",
+        "paragraph2": "This municipality, region or company is left out of its own median. Missing figures are left out as well. If fewer than two peers remain, we do not show a comparison.",
+        "whyMedian": {
+          "title": "Why a median",
+          "paragraph1": "The median is the middle value when the peers are lined up from smallest to largest. With an odd number of peers, it is the one in the middle. With an even number, it is halfway between the two in the middle.",
+          "paragraph2": "Five peers with the values 10, 20, 30, 40 and 100 have a median of 30. The ordinary mean of the same values is 40, because the single value of 100 pulls the result up. The median stays with the typical peer."
+        },
+        "where": {
+          "title": "Where the marker sits",
+          "paragraph1": "The bar runs from the smallest value on the left to the largest on the right. Each actor takes the same amount of space, so one very large value does not stretch the scale. Actors with the same value share that place. The dot is this municipality, region or company, and the colour shifts around the median’s place on the same line.",
+          "paragraph2": "A figure near the median is described as close to it. Further away, the text says better or worse when a lower or higher number is the better outcome, and higher or lower when the figure describes size. Total emissions are a size figure. A larger municipality or company is not automatically doing worse."
+        },
+        "who": {
+          "title": "Who is included",
+          "paragraph1": "The same median is used for municipalities, regions and companies. What changes is which peers are in the group.",
+          "municipalities": "Municipalities are compared with other municipalities in the same region when at least three of them have the figure. Otherwise they are compared with all municipalities.",
+          "regions": "Regions are compared with the other regions. For Sweden as a whole, the Paris question and the change in emissions use those same regions as the comparison. Sweden’s total emissions are shown without that comparison.",
+          "companies": "Companies are compared with others in the same industry when at least five other companies are in that industry and at least five of them have the figure. If the industry has fewer than five companies, we try the sector on the same terms. Otherwise the company is compared with all companies. The comparison follows the reporting year selected on the page.",
+          "paragraph2": "Year-to-year changes larger than 200 percent are left out of the company comparison. They usually come from a previous year close to zero, and would otherwise set the ends of the bar."
+        },
+        "yesNo": {
+          "title": "Yes and no",
+          "paragraph1": "Some figures are a yes or a no, such as whether the actor is on track for the Paris Agreement. The colour shift on that bar shows the share of peers that answered yes, including the actor on the page."
+        }
       }
     },
     "company": {

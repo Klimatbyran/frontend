@@ -741,6 +741,34 @@
         "paragraph4": "På samma sätt rapporteras utsläpp och upptag från skog och mark (så kallade biogena utsläpp) separat och ingår inte i de territoriella växthusgasutsläpp som visas på Klimatkollen.",
         "paragraph5": "I verkligheten är en kommuns fulla klimatavtryck ofta större än vad de territoriella utsläppen ensamma antyder. Den data som visas på Klimatkollen speglar territoriella utsläpp — det vill säga utsläpp som fysiskt sker inom respektive kommuns eller längräns.",
         "paragraph6": "Vi jämför territoriella utsläpp med den Parisanpassade minskningstakt som definieras av Carbon Law (cirka 12 % per år från 2025). Klimatkollen fortsätter att utforska hur vi kan presentera en mer fullständig bild av klimatpåverkan på plattformen."
+      },
+      "peerComparison": {
+        "title": "Hur vi räknar medianen",
+        "description": "Så jämför vi kommuner, län och företag med liknande aktörer",
+        "paragraph1": "På detaljsidorna har många siffror en kort jämförelse och en tunn stapel. Stapeln visar var den här kommunen, det här länet eller det här företaget ligger bland liknande aktörer. Färgen skiftar kring medianen, alltså den typiska aktören i gruppen. Texten under stapeln utgår från den medianen, till exempel ”Nära medianen”, ”Bättre än medianen” eller samma typ av formulering för ett län, en bransch eller en sektor.",
+        "paragraph2": "Kommunen, länet eller företaget ingår inte i sin egen median. Siffror som saknas lämnas också utanför. Om färre än två andra aktörer finns kvar visar vi ingen jämförelse.",
+        "whyMedian": {
+          "title": "Varför en median",
+          "paragraph1": "Medianen är värdet i mitten när aktörerna sorteras från det lägsta till det högsta. Vid ett udda antal är det den som står i mitten. Vid ett jämnt antal är det mitt emellan de två i mitten.",
+          "paragraph2": "Fem aktörer med värdena 10, 20, 30, 40 och 100 har medianen 30. Medelvärdet av samma tal är 40, eftersom värdet 100 drar upp resultatet. Medianen stannar kvar hos den typiska aktören."
+        },
+        "where": {
+          "title": "Var markeringen hamnar",
+          "paragraph1": "Stapeln går från det lägsta värdet till vänster till det högsta till höger. Varje aktör tar lika stor plats, så ett enstaka mycket högt värde tänjer inte ut skalan. Aktörer med samma värde delar den platsen. Punkten är den här kommunen, det här länet eller det här företaget, och färgen skiftar kring medianens plats på samma linje.",
+          "paragraph2": "En siffra nära medianen beskrivs som nära den. Längre ifrån säger texten bättre eller sämre när ett lägre eller högre tal är det bättre utfallet, och högre eller lägre när siffran beskriver storlek. Totala utsläpp är en sådan storlekssiffra. En större kommun eller ett större företag är inte automatiskt sämre."
+        },
+        "who": {
+          "title": "Vilka som ingår",
+          "paragraph1": "Samma median används för kommuner, län och företag. Det som skiljer är vilka aktörer som ingår i gruppen.",
+          "municipalities": "Kommuner jämförs med andra kommuner i samma län när minst tre av dem har siffran. Annars jämförs de med alla kommuner.",
+          "regions": "Län jämförs med de andra länen. För Sverige som helhet används samma län som jämförelse för frågan om Parisavtalet och för utsläppsförändringen. Sveriges totala utsläpp visas utan den jämförelsen.",
+          "companies": "Företag jämförs med andra i samma bransch när minst fem andra företag finns i branschen och minst fem av dem har siffran. Om branschen har färre än fem företag prövar vi sektorn på samma sätt. Annars jämförs företaget med alla företag. Jämförelsen följer det rapporteringsår som är valt på sidan.",
+          "paragraph2": "Förändringar från ett år till nästa som är större än 200 procent lämnas utanför företagsjämförelsen. De kommer oftast från ett föregående år nära noll och skulle annars bestämma ändarna på stapeln."
+        },
+        "yesNo": {
+          "title": "Ja och nej",
+          "paragraph1": "Vissa uppgifter är ett ja eller ett nej, till exempel om aktören är på väg att klara Parisavtalet. Färgskiftet på den stapeln visar andelen som svarat ja, inklusive aktören på sidan."
+        }
       }
     },
     "company": {

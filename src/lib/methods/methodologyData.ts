@@ -19,6 +19,7 @@ export const methodologySections: MethodologySectionType = {
     // { id: "parisAlignment", category: "general" },
     // { id: "interpretingOnTrack", category: "general" },
     { id: "emissionTypes", category: "general" },
+    { id: "peerComparison", category: "general" },
   ],
   municipalityAndRegion: [
     {

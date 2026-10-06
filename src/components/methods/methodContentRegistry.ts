@@ -7,6 +7,7 @@ import { EmissionsAndCategoriesContent } from "./content/EmissionsCategories";
 import { HistoricalDataContent } from "./content/HistoricalData";
 import { ParisAgreementContent } from "./content/ParisAgreementContent";
 import { EmissionTypesContent } from "./content/EmissionTypesContent";
+import { PeerComparisonContent } from "./content/PeerComparisonContent";
 import { CalculationsContent } from "./content/CalculationsContent";
 import { CarbonLawContent } from "./content/CarbonLaw";
 import { MunicipalityAndRegionDataOverviewContent } from "./content/MunicipalityAndRegionDataOverview";
@@ -24,6 +25,7 @@ const METHOD_CONTENT_COMPONENTS: Record<string, ComponentType> = {
   parisAlignment: ParisAlignmentMethodContent,
   interpretingOnTrack: InterpretingOnTrackContent,
   emissionTypes: EmissionTypesContent,
+  peerComparison: PeerComparisonContent,
   municipalityAndRegionDataOverview: MunicipalityAndRegionDataOverviewContent,
   municipalityKPIs: MunicipalityKPIsContent,
   companyDataOverview: CompanyDataOverviewContent,
