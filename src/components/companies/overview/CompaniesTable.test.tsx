@@ -72,6 +72,13 @@ describe("CompaniesTable", () => {
     expect(document.querySelectorAll("tbody tr")).toHaveLength(3);
   });
 
+  it("scrolls a wider table inside the card below the sm breakpoint", () => {
+    renderTable();
+    const table = document.querySelector("table");
+    expect(table).toHaveClass("min-w-[36rem]", "sm:min-w-0", "sm:table-fixed");
+    expect(table?.parentElement?.parentElement).toHaveClass("overflow-x-auto");
+  });
+
   it("sorts on-track companies first by default", () => {
     renderTable();
     // Bravo meets Paris, Alpha does not, Charlie can't be judged.

@@ -117,30 +117,24 @@ function ParisBadge({ value }: { value: boolean | null | undefined }) {
 
   if (value === true) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-5/40 px-2.5 py-1 text-xs font-medium text-blue-2 max-md:max-w-full max-md:whitespace-normal max-md:text-left md:whitespace-nowrap">
+      <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-blue-5/40 px-2.5 py-1 text-xs font-medium text-blue-2 sm:whitespace-normal md:whitespace-nowrap">
         <i className="size-1.5 shrink-0 rounded-full bg-blue-3" />
-        <span className="max-md:min-w-0">
-          {t("companiesOverviewPage.paris.badgeOnTrack")}
-        </span>
+        {t("companiesOverviewPage.paris.badgeOnTrack")}
       </span>
     );
   }
   if (value === false) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-pink-5/30 px-2.5 py-1 text-xs font-medium text-pink-2 max-md:max-w-full max-md:whitespace-normal max-md:text-left md:whitespace-nowrap">
+      <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-pink-5/30 px-2.5 py-1 text-xs font-medium text-pink-2 sm:whitespace-normal md:whitespace-nowrap">
         <i className="size-1.5 shrink-0 rounded-full bg-pink-3" />
-        <span className="max-md:min-w-0">
-          {t("companiesOverviewPage.paris.badgeOffTrack")}
-        </span>
+        {t("companiesOverviewPage.paris.badgeOffTrack")}
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-2.5 py-1 text-xs text-white/45 max-md:max-w-full max-md:whitespace-normal max-md:text-left md:whitespace-nowrap">
+    <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white/5 px-2.5 py-1 text-xs text-white/45 sm:whitespace-normal md:whitespace-nowrap">
       <i className="size-1.5 shrink-0 rounded-full bg-white/25" />
-      <span className="max-md:min-w-0">
-        {t("companiesOverviewPage.paris.badgeNoData")}
-      </span>
+      {t("companiesOverviewPage.paris.badgeNoData")}
     </span>
   );
 }
@@ -176,13 +170,13 @@ function SortableColumnHead({
             : undefined
         }
         className={cn(
-          "inline-flex w-full min-w-0 items-center gap-1 font-normal transition-colors hover:text-white/70 max-md:whitespace-normal max-md:text-left",
-          align === "end" && "justify-end max-md:text-right",
-          align === "center" && "justify-center max-md:text-center",
+          "inline-flex w-max items-center gap-1 whitespace-nowrap font-normal transition-colors hover:text-white/70 sm:w-full sm:min-w-0 sm:whitespace-normal",
+          align === "end" && "justify-end",
+          align === "center" && "justify-center",
           active ? "text-white/70" : "text-inherit",
         )}
       >
-        <span className="max-md:min-w-0">{children}</span>
+        {children}
         {active &&
           (direction === "asc" ? (
             <ArrowUp className="size-3.5 shrink-0 opacity-80" aria-hidden />
@@ -301,8 +295,10 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
         />
       </div>
 
-      <div className="mt-4">
-        <Table className="table-fixed">
+      {/* Below sm the list is wider than the card and scrolls inside it.
+          sm+ keeps the fixed columns that fit the card without page scroll. */}
+      <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)] overflow-x-auto sm:overflow-visible [&>div]:overflow-visible sm:[&>div]:overflow-auto">
+        <Table className="min-w-[36rem] sm:min-w-0 sm:table-fixed">
           <TableHeader>
             <TableRow className="border-white/10 hover:bg-transparent">
               <SortableColumnHead
@@ -349,7 +345,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="end"
-                className="w-[5.75rem] text-white/40 md:w-[6.5rem] lg:w-[9rem]"
+                className="text-white/40 sm:w-[5.75rem] md:w-[6.5rem] lg:w-[9rem]"
               >
                 {t("companiesOverviewPage.paris.colChange")}
               </SortableColumnHead>
@@ -359,7 +355,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="center"
-                className="w-[7.5rem] text-white/40 md:w-[9.5rem] lg:w-[11.5rem]"
+                className="text-white/40 sm:w-[7.5rem] md:w-[9.5rem] lg:w-[11.5rem]"
               >
                 {t("companiesOverviewPage.paris.colOnTrack")}
               </SortableColumnHead>
@@ -392,13 +388,15 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   <TableCell className="py-3 text-right font-mono text-xs text-white/30">
                     {index + 1}
                   </TableCell>
-                  <TableCell className="max-w-0 overflow-hidden py-3">
-                    <LocalizedLink
-                      to={detailPath}
-                      className="block truncate hover:underline"
-                    >
-                      {company.name}
-                    </LocalizedLink>
+                  <TableCell className="py-3 sm:max-w-0 sm:overflow-hidden">
+                    <div className="w-[20rem] sm:w-auto">
+                      <LocalizedLink
+                        to={detailPath}
+                        className="block truncate hover:underline"
+                      >
+                        {company.name}
+                      </LocalizedLink>
+                    </div>
                   </TableCell>
                   <TableCell className="hidden py-3 text-grey md:table-cell">
                     {sector && (

@@ -148,31 +148,33 @@ function CompaniesTableSkeleton() {
 
       <Block className="mt-5 h-10 w-full rounded-full" />
 
-      <div className="mt-4 min-w-0 space-y-1 overflow-x-auto">
-        <div className="flex items-center gap-4 border-b border-white/10 py-3">
-          <Block className="h-3 w-6 shrink-0" />
-          <Block className="h-3 w-28" />
-          <Block className="hidden h-3 w-24 md:block" />
-          <div className="flex-1" />
-          <Block className="hidden h-3 w-20 shrink-0 sm:block" />
-          <Block className="h-3 w-16 shrink-0" />
-          <Block className="h-3 w-16 shrink-0" />
-        </div>
-
-        {Array.from({ length: 12 }, (_, index) => (
-          <div
-            key={index}
-            className="flex items-center gap-4 border-b border-white/5 py-3"
-          >
+      <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)] overflow-x-auto sm:overflow-visible">
+        <div className="min-w-[36rem] space-y-1 sm:min-w-0">
+          <div className="flex items-center gap-4 border-b border-white/10 py-3">
             <Block className="h-3 w-6 shrink-0" />
-            <Block className="size-7 shrink-0 rounded-full" />
-            <Block className="h-4 w-32 max-w-[35%] flex-1" />
-            <Block className="hidden h-3.5 w-24 shrink-0 md:block" />
-            <Block className="hidden h-3.5 w-20 shrink-0 sm:block" />
-            <Block className="h-3.5 w-14 shrink-0" />
-            <Block className="h-5 w-16 shrink-0 rounded-full" />
+            <Block className="h-3 w-[20rem] sm:w-28" />
+            <Block className="hidden h-3 w-24 md:block" />
+            <div className="flex-1" />
+            <Block className="hidden h-3 w-20 shrink-0 sm:block" />
+            <Block className="h-3 w-16 shrink-0" />
+            <Block className="h-3 w-16 shrink-0" />
           </div>
-        ))}
+
+          {Array.from({ length: 12 }, (_, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-4 border-b border-white/5 py-3"
+            >
+              <Block className="h-3 w-6 shrink-0" />
+              <Block className="size-7 shrink-0 rounded-full" />
+              <Block className="h-4 w-[20rem] flex-none sm:w-32 sm:max-w-[35%] sm:flex-1" />
+              <Block className="hidden h-3.5 w-24 shrink-0 md:block" />
+              <Block className="hidden h-3.5 w-20 shrink-0 sm:block" />
+              <Block className="ml-auto h-3.5 w-14 shrink-0 sm:ml-0" />
+              <Block className="h-5 w-16 shrink-0 rounded-full" />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
