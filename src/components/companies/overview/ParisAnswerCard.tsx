@@ -75,7 +75,7 @@ export function ParisAnswerCard({
 }: ParisAnswerCardProps) {
   const { t } = useTranslation();
   const { reduceMotion, fadeDuration, ease } = useChartMotion();
-  const { total, onTrack, offTrack, unknown, onTrackPercent } = summary;
+  const { total, onTrack, offTrack, onTrackPercent } = summary;
 
   if (total === 0) {
     return (
@@ -208,13 +208,6 @@ export function ParisAnswerCard({
             count={offTrack}
             total={total}
             index={1}
-          />
-          <BreakdownRow
-            color="rgba(255,255,255,0.2)"
-            label={t("companiesOverviewPage.paris.notEnoughData")}
-            count={unknown}
-            total={total}
-            index={2}
           />
         </div>
       </div>

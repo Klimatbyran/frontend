@@ -54,11 +54,11 @@ describe("ParisAnswerCard", () => {
       screen.getByText("companiesOverviewPage.paris.offTrack"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("companiesOverviewPage.paris.notEnoughData"),
-    ).toBeInTheDocument();
+      screen.queryByText("companiesOverviewPage.paris.notEnoughData"),
+    ).not.toBeInTheDocument();
     expect(screen.getAllByText("3").length).toBeGreaterThan(0);
     expect(screen.getByText("5")).toBeInTheDocument();
-    expect(screen.getByText("2")).toBeInTheDocument();
+    expect(screen.queryByText("2")).not.toBeInTheDocument();
     expect(
       screen.getByText("companiesOverviewPage.paris.share:30:10"),
     ).toBeInTheDocument();
