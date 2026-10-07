@@ -9,6 +9,7 @@ interface VerdictColumnProps {
   label: string;
   count: number;
   judged: number;
+  maxCount: number;
   index: number;
 }
 
@@ -17,14 +18,17 @@ function VerdictColumn({
   label,
   count,
   judged,
+  maxCount,
   index,
 }: VerdictColumnProps) {
   const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
   const share = judged ? (count / judged) * 100 : 0;
+  const barHeightPercent =
+    maxCount > 0 && count > 0 ? (count / maxCount) * 100 : 0;
 
   return (
     <motion.div
-      className="flex min-w-0 flex-1 flex-col items-center"
+      className="flex w-[116px] shrink-0 flex-col items-center sm:w-[128px]"
       initial={reduceMotion ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -33,17 +37,16 @@ function VerdictColumn({
         ease,
       }}
     >
-      <div className="mb-2 text-center text-sm tabular-nums">
-        <span className="font-medium">{count}</span>
-        <span className="ml-1.5 text-white/40">{Math.round(share)}%</span>
-      </div>
       <div
-        className="flex h-36 w-full max-w-[88px] items-end justify-center sm:h-40"
+        className="flex h-40 w-full items-end sm:h-44"
         aria-hidden
       >
         <motion.div
-          className="w-full min-h-[4px] origin-bottom rounded-t-md"
-          style={{ backgroundColor: color, height: `${share}%` }}
+          className="relative w-full origin-bottom rounded-t-lg"
+          style={{
+            backgroundColor: color,
+            height: `${barHeightPercent}%`,
+          }}
           initial={reduceMotion ? false : { scaleY: 0 }}
           animate={{ scaleY: 1 }}
           transition={{
@@ -51,14 +54,25 @@ function VerdictColumn({
             delay: stagger(index, 0.08),
             ease,
           }}
-        />
+        >
+          {count > 0 && (
+            <div className="absolute inset-x-0 top-0 flex flex-col items-center px-1 pt-2 text-center text-xs leading-tight tabular-nums">
+              <span className="font-medium text-white drop-shadow-sm">
+                {count}
+              </span>
+              <span className="text-white/75 drop-shadow-sm">
+                {Math.round(share)}%
+              </span>
+            </div>
+          )}
+        </motion.div>
       </div>
-      <div className="mt-3 flex max-w-[120px] items-start justify-center gap-2 text-center text-sm text-white/70">
+      <div className="mt-3 flex min-h-[2.75rem] w-full items-start justify-center gap-1.5 px-0.5 text-center text-xs leading-snug text-white/70">
         <i
-          className="mt-1.5 size-2.5 shrink-0 rounded-full"
+          className="mt-1 size-2 shrink-0 rounded-full"
           style={{ backgroundColor: color }}
         />
-        <span className="leading-snug">{label}</span>
+        <span>{label}</span>
       </div>
     </motion.div>
   );
@@ -109,6 +123,7 @@ export function ParisAnswerCard({
 
   const judged = onTrack + offTrack;
   const showChartPanel = judged > 0 || unknown > 0;
+  const maxCount = Math.max(onTrack, offTrack);
 
   return (
     <section className="grid items-center gap-9 rounded-level-2 bg-black-2 px-6 py-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.85fr)] md:gap-14 md:px-10 md:py-9">
@@ -156,8 +171,8 @@ export function ParisAnswerCard({
 
       {showChartPanel && (
         <div>
-          <div className="flex items-center gap-2">
-            <p className="text-xs text-white/40">
+          <div className="flex min-w-0 items-center gap-2">
+            <p className="shrink-0 whitespace-nowrap text-xs text-white/40">
               {t("companiesOverviewPage.paris.chartCaption")}
             </p>
             {unknown > 0 && (
@@ -174,7 +189,7 @@ export function ParisAnswerCard({
           </div>
           {judged > 0 && (
             <div
-              className="mt-4 flex items-end justify-center gap-5 sm:gap-8"
+              className="mt-4 flex items-end justify-center gap-2 sm:gap-3"
               role="img"
               aria-label={t("companiesOverviewPage.paris.chartAria", {
                 onTrack,
@@ -186,6 +201,7 @@ export function ParisAnswerCard({
                 label={t("companiesOverviewPage.paris.onTrack")}
                 count={onTrack}
                 judged={judged}
+                maxCount={maxCount}
                 index={0}
               />
               <VerdictColumn
@@ -193,6 +209,7 @@ export function ParisAnswerCard({
                 label={t("companiesOverviewPage.paris.offTrack")}
                 count={offTrack}
                 judged={judged}
+                maxCount={maxCount}
                 index={1}
               />
             </div>
