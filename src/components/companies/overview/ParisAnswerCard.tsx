@@ -161,7 +161,9 @@ export function ParisAnswerCard({
               {t("companiesOverviewPage.paris.chartCaption")}
             </p>
             {unknown > 0 && (
-              <InfoTooltip ariaLabel={t("companiesOverviewPage.paris.unknownNoteAria")}>
+              <InfoTooltip
+                ariaLabel={t("companiesOverviewPage.paris.unknownNoteAria")}
+              >
                 <p>
                   {t("companiesOverviewPage.paris.unknownNote", {
                     count: unknown,
