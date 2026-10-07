@@ -26,7 +26,8 @@ interface BreakdownRowProps {
   color: string;
   label: string;
   count: number;
-  total: number;
+  /** Share of the companies these two rows cover, so the pair adds up to 100. */
+  percent: number;
   index: number;
 }
 
@@ -34,7 +35,7 @@ function BreakdownRow({
   color,
   label,
   count,
-  total,
+  percent,
   index,
 }: BreakdownRowProps) {
   const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
@@ -57,7 +58,7 @@ function BreakdownRow({
       <span className="min-w-0 flex-1 text-white/70">{label}</span>
       <span className="font-medium tabular-nums">{count}</span>
       <span className="w-11 text-right tabular-nums text-white/40">
-        {total ? Math.round((count / total) * 100) : 0}%
+        {percent}%
       </span>
     </motion.div>
   );
@@ -100,6 +101,9 @@ export function ParisAnswerCard({
     : t("companiesOverviewPage.paris.scopeAll");
 
   const judged = onTrack + offTrack;
+  const onTrackShare = judged === 0 ? 0 : Math.round((onTrack / judged) * 100);
+  const offTrackShare =
+    offTrack === 0 ? 0 : onTrack === 0 ? 100 : 100 - onTrackShare;
   const size = dotSize(judged);
   const dots = [
     ...Array<string>(onTrack).fill("var(--blue-3)"),
@@ -208,14 +212,14 @@ export function ParisAnswerCard({
             color="var(--blue-3)"
             label={t("companiesOverviewPage.paris.onTrack")}
             count={onTrack}
-            total={total}
+            percent={onTrackShare}
             index={0}
           />
           <BreakdownRow
             color="var(--pink-3)"
             label={t("companiesOverviewPage.paris.offTrack")}
             count={offTrack}
-            total={total}
+            percent={offTrackShare}
             index={1}
           />
         </div>

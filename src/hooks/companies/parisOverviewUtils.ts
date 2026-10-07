@@ -130,48 +130,24 @@ export const TREND_MIN_YEARS = 3;
 
 export interface ReportingSplit {
   total: number;
-  /** At least {@link TREND_MIN_YEARS} distinct years with an emissions total. */
+  /** A Paris verdict exists, the same signal as the table badge. */
   enough: number;
-  /** Fewer than {@link TREND_MIN_YEARS} years, including no report at all. */
+  /** No verdict, including companies that have not reported. */
   tooLittle: number;
 }
 
-/** Distinct years that include a numeric emissions total. */
-export function reportedEmissionYears(company: {
-  reportingPeriods?: Array<{
-    endDate?: string | null;
-    emissions?: { calculatedTotalEmissions?: number | null } | null;
-  }> | null;
-}): number {
-  const years = new Set<string>();
-  let undated = 0;
-
-  for (const period of company.reportingPeriods ?? []) {
-    const value = period.emissions?.calculatedTotalEmissions;
-    if (typeof value !== "number" || !Number.isFinite(value)) continue;
-
-    if (period.endDate) {
-      const year = new Date(period.endDate).getUTCFullYear();
-      if (Number.isFinite(year)) {
-        years.add(String(year));
-        continue;
-      }
-    }
-
-    undated += 1;
-  }
-
-  return years.size + undated;
-}
-
-/** Enough years to read a trend, against everyone else in view. */
+/**
+ * Enough to judge means the company has a Paris verdict. That is the same
+ * split as the on-track and off-track badges, so the bar cannot count a
+ * company as readable when the table still says there is no data.
+ */
 export function summariseReporting(
-  companies: Array<Parameters<typeof reportedEmissionYears>[0]>,
+  companies: Array<{ meetsParis?: boolean | null }>,
 ): ReportingSplit {
   let enough = 0;
 
   for (const company of companies) {
-    if (reportedEmissionYears(company) >= TREND_MIN_YEARS) enough += 1;
+    if (typeof company.meetsParis === "boolean") enough += 1;
   }
 
   const total = companies.length;

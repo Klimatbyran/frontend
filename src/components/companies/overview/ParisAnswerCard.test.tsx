@@ -58,6 +58,9 @@ describe("ParisAnswerCard", () => {
     expect(screen.getAllByText("3").length).toBeGreaterThan(0);
     expect(screen.getByText("5")).toBeInTheDocument();
     expect(screen.queryByText("2")).not.toBeInTheDocument();
+    // 3 and 5 judged companies, so the two rows add up to 100.
+    expect(screen.getByText("38%")).toBeInTheDocument();
+    expect(screen.getByText("62%")).toBeInTheDocument();
     expect(
       screen.getByText("companiesOverviewPage.paris.share:30:10"),
     ).toBeInTheDocument();

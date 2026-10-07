@@ -6,7 +6,6 @@ import {
   furthestBehind,
   isSwedishCompany,
   latestEmissions,
-  reportedEmissionYears,
   shareRampColor,
   summariseParis,
   summariseReporting,
@@ -31,74 +30,19 @@ function company(
   } as unknown as CompanyWithKPIs;
 }
 
-describe("reportedEmissionYears", () => {
-  it("counts distinct years and ignores a repeated year", () => {
-    expect(
-      reportedEmissionYears({
-        reportingPeriods: [
-          {
-            endDate: "2022-12-31",
-            emissions: { calculatedTotalEmissions: 10 },
-          },
-          {
-            endDate: "2022-06-30",
-            emissions: { calculatedTotalEmissions: 11 },
-          },
-          {
-            endDate: "2023-12-31",
-            emissions: { calculatedTotalEmissions: 9 },
-          },
-          {
-            endDate: "2021-12-31",
-            emissions: { calculatedTotalEmissions: null },
-          },
-        ],
-      }),
-    ).toBe(2);
-  });
-
-  it("counts an undated total and ignores a non-finite one", () => {
-    expect(
-      reportedEmissionYears({
-        reportingPeriods: [
-          { emissions: { calculatedTotalEmissions: 4 } },
-          {
-            endDate: "not-a-date",
-            emissions: { calculatedTotalEmissions: 5 },
-          },
-          {
-            endDate: "2020-12-31",
-            emissions: { calculatedTotalEmissions: Number.NaN },
-          },
-        ],
-      }),
-    ).toBe(2);
-  });
-});
-
 describe("summariseReporting", () => {
-  function withYears(count: number) {
-    return {
-      reportingPeriods: Array.from({ length: count }, (_, index) => ({
-        endDate: `${2010 + index}-12-31`,
-        emissions: { calculatedTotalEmissions: 1 },
-      })),
-    };
-  }
-
-  it("treats three or more distinct years as enough and everyone else as too little", () => {
+  it("counts a Paris verdict as enough and a missing verdict as too little", () => {
     expect(
       summariseReporting([
-        withYears(6),
-        withYears(8),
-        withYears(3),
-        withYears(5),
-        withYears(2),
-        withYears(0),
+        { meetsParis: true },
+        { meetsParis: false },
+        { meetsParis: true },
+        { meetsParis: null },
+        { meetsParis: undefined },
       ]),
     ).toEqual({
-      total: 6,
-      enough: 4,
+      total: 5,
+      enough: 3,
       tooLittle: 2,
     });
   });

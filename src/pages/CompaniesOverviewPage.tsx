@@ -110,6 +110,7 @@ export function CompaniesOverviewPage() {
   );
 
   const summary = useMemo(() => summariseParis(inView), [inView]);
+  const pieRows = useMemo(() => buildIndustryBreakdown(inView), [inView]);
 
   if (companiesLoading) {
     return <CompaniesOverviewSkeleton />;
@@ -162,7 +163,7 @@ export function CompaniesOverviewPage() {
 
       <VerdictLists companies={inView} />
 
-      <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
+      <IndustryEmissionsPie rows={pieRows} selected={selectedSector} />
 
       <ReportingCoverage companies={inView} />
 

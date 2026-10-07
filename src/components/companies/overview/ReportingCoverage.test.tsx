@@ -24,25 +24,20 @@ vi.mock("@/hooks/useChartMotion", () => ({
   }),
 }));
 
-function companyWithYears(count: number): CompanyWithKPIs {
-  return {
-    reportingPeriods: Array.from({ length: count }, (_, index) => ({
-      endDate: `${2010 + index}-12-31`,
-      emissions: { calculatedTotalEmissions: 1 },
-    })),
-  } as unknown as CompanyWithKPIs;
+function companyWithVerdict(meetsParis: boolean | null): CompanyWithKPIs {
+  return { meetsParis } as unknown as CompanyWithKPIs;
 }
 
 describe("ReportingCoverage", () => {
-  it("splits companies with enough years from those with too little", () => {
+  it("splits companies with a verdict from those with none", () => {
     render(
       <ReportingCoverage
         companies={[
-          companyWithYears(7),
-          companyWithYears(4),
-          companyWithYears(3),
-          companyWithYears(1),
-          companyWithYears(0),
+          companyWithVerdict(true),
+          companyWithVerdict(false),
+          companyWithVerdict(true),
+          companyWithVerdict(null),
+          companyWithVerdict(null),
         ]}
       />,
     );
@@ -78,7 +73,7 @@ describe("ReportingCoverage", () => {
   it("gives the only populated side the full bar", () => {
     render(
       <ReportingCoverage
-        companies={[companyWithYears(3), companyWithYears(5)]}
+        companies={[companyWithVerdict(true), companyWithVerdict(false)]}
       />,
     );
 
