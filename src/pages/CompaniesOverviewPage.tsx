@@ -31,7 +31,7 @@ function VerdictLists({ companies }: { companies: CompanyWithKPIs[] }) {
   if (doingWell.length === 0 && fallingBehind.length === 0) return null;
 
   return (
-    <div className="grid items-start gap-6 md:grid-cols-2">
+    <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2">
       {doingWell.length > 0 && (
         <InsightsList<CompanyWithKPIs>
           title={t("companiesOverviewPage.paris.doingWellTitle")}

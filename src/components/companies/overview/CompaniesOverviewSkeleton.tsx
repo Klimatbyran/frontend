@@ -134,7 +134,7 @@ function IndustryPieSkeleton() {
 
 function CompaniesTableSkeleton() {
   return (
-    <section className="rounded-level-2 bg-black-2 p-5 md:p-7">
+    <section className="min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="space-y-2">
           <Block className="h-6 w-56 md:h-7" />
@@ -148,7 +148,7 @@ function CompaniesTableSkeleton() {
 
       <Block className="mt-5 h-10 w-full rounded-full" />
 
-      <div className="mt-4 space-y-1">
+      <div className="mt-4 min-w-0 space-y-1 overflow-x-auto">
         <div className="flex items-center gap-4 border-b border-white/10 py-3">
           <Block className="h-3 w-6 shrink-0" />
           <Block className="h-3 w-28" />
@@ -195,7 +195,7 @@ export function CompaniesOverviewSkeleton() {
           <AnswerCardSkeleton />
         </div>
 
-        <div className="grid items-start gap-6 md:grid-cols-2">
+        <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2">
           <VerdictListSkeleton />
           <VerdictListSkeleton />
         </div>
@@ -210,7 +210,7 @@ export function CompaniesOverviewSkeleton() {
             <Block className="h-4 w-2/3" />
           </div>
           <Block className="mt-6 h-4 w-full rounded-full" />
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <Block className="h-9 w-16" />
               <Block className="mt-2 h-4 w-44" />

@@ -87,7 +87,7 @@ export function ReportingCoverage({
         )}
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
         <CoverageFigure
           color={ENOUGH_COLOR}
           label={t("companiesOverviewPage.paris.reportingEnough")}
@@ -124,6 +124,7 @@ function CoverageFigure({
 
   return (
     <motion.div
+      className="min-w-0"
       initial={reduceMotion ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -140,7 +141,7 @@ function CoverageFigure({
           className="mt-1 size-2.5 shrink-0 rounded-full"
           style={{ backgroundColor: color }}
         />
-        <span className="min-w-0">
+        <span className="min-w-0 break-words">
           {label}
           <span className="ml-2 tabular-nums text-white/40">{percent}%</span>
         </span>

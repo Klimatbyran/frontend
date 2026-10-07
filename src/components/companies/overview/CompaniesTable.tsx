@@ -117,24 +117,30 @@ function ParisBadge({ value }: { value: boolean | null | undefined }) {
 
   if (value === true) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-5/40 px-2.5 py-1 text-xs font-medium text-blue-2">
-        <i className="size-1.5 rounded-full bg-blue-3" />
-        {t("companiesOverviewPage.paris.badgeOnTrack")}
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-5/40 px-2.5 py-1 text-xs font-medium text-blue-2 max-md:max-w-full max-md:whitespace-normal max-md:text-left md:whitespace-nowrap">
+        <i className="size-1.5 shrink-0 rounded-full bg-blue-3" />
+        <span className="max-md:min-w-0">
+          {t("companiesOverviewPage.paris.badgeOnTrack")}
+        </span>
       </span>
     );
   }
   if (value === false) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-pink-5/30 px-2.5 py-1 text-xs font-medium text-pink-2">
-        <i className="size-1.5 rounded-full bg-pink-3" />
-        {t("companiesOverviewPage.paris.badgeOffTrack")}
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-pink-5/30 px-2.5 py-1 text-xs font-medium text-pink-2 max-md:max-w-full max-md:whitespace-normal max-md:text-left md:whitespace-nowrap">
+        <i className="size-1.5 shrink-0 rounded-full bg-pink-3" />
+        <span className="max-md:min-w-0">
+          {t("companiesOverviewPage.paris.badgeOffTrack")}
+        </span>
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-2.5 py-1 text-xs text-white/45">
-      <i className="size-1.5 rounded-full bg-white/25" />
-      {t("companiesOverviewPage.paris.badgeNoData")}
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-2.5 py-1 text-xs text-white/45 max-md:max-w-full max-md:whitespace-normal max-md:text-left md:whitespace-nowrap">
+      <i className="size-1.5 shrink-0 rounded-full bg-white/25" />
+      <span className="max-md:min-w-0">
+        {t("companiesOverviewPage.paris.badgeNoData")}
+      </span>
     </span>
   );
 }
@@ -170,13 +176,13 @@ function SortableColumnHead({
             : undefined
         }
         className={cn(
-          "inline-flex w-full items-center gap-1 font-normal transition-colors hover:text-white/70",
-          align === "end" && "justify-end",
-          align === "center" && "justify-center",
+          "inline-flex w-full min-w-0 items-center gap-1 font-normal transition-colors hover:text-white/70 max-md:whitespace-normal max-md:text-left",
+          align === "end" && "justify-end max-md:text-right",
+          align === "center" && "justify-center max-md:text-center",
           active ? "text-white/70" : "text-inherit",
         )}
       >
-        {children}
+        <span className="max-md:min-w-0">{children}</span>
         {active &&
           (direction === "asc" ? (
             <ArrowUp className="size-3.5 shrink-0 opacity-80" aria-hidden />
@@ -271,7 +277,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
   };
 
   return (
-    <section className="rounded-level-2 bg-black-2 p-5 md:p-7">
+    <section className="min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7">
       <div>
         <h2 className="text-xl font-light md:text-[21px]">
           {t("companiesOverviewPage.paris.everyCompanyTitle")}
@@ -296,7 +302,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
       </div>
 
       <div className="mt-4">
-        <Table>
+        <Table className="table-fixed">
           <TableHeader>
             <TableRow className="border-white/10 hover:bg-transparent">
               <SortableColumnHead
@@ -305,7 +311,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="end"
-                className="w-10 text-white/40"
+                className="w-8 text-white/40 md:w-10"
               >
                 #
               </SortableColumnHead>
@@ -323,7 +329,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 activeKey={sortKey}
                 direction={direction}
                 onSort={toggleSort}
-                className="hidden text-white/40 md:table-cell"
+                className="hidden text-white/40 md:table-cell md:w-[18%]"
               >
                 {t("companiesOverviewPage.paris.colIndustry")}
               </SortableColumnHead>
@@ -333,7 +339,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="end"
-                className="hidden text-white/40 sm:table-cell"
+                className="hidden text-white/40 sm:table-cell sm:w-[16%]"
               >
                 {t("companiesOverviewPage.paris.colEmissions")}
               </SortableColumnHead>
@@ -343,7 +349,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="end"
-                className="text-white/40"
+                className="w-[5.75rem] text-white/40 md:w-[6.5rem] lg:w-[9rem]"
               >
                 {t("companiesOverviewPage.paris.colChange")}
               </SortableColumnHead>
@@ -353,7 +359,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="center"
-                className="text-white/40"
+                className="w-[7.5rem] text-white/40 md:w-[9.5rem] lg:w-[11.5rem]"
               >
                 {t("companiesOverviewPage.paris.colOnTrack")}
               </SortableColumnHead>
@@ -386,10 +392,10 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   <TableCell className="py-3 text-right font-mono text-xs text-white/30">
                     {index + 1}
                   </TableCell>
-                  <TableCell className="py-3">
+                  <TableCell className="max-w-0 overflow-hidden py-3">
                     <LocalizedLink
                       to={detailPath}
-                      className="truncate hover:underline"
+                      className="block truncate hover:underline"
                     >
                       {company.name}
                     </LocalizedLink>
@@ -437,9 +443,13 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                           : "text-pink-3",
                     )}
                   >
-                    {change === null || change === undefined
-                      ? t("companiesOverviewPage.paris.noComparableData")
-                      : formatPercentChange(change, currentLanguage, false)}
+                    {change === null || change === undefined ? (
+                      t("companiesOverviewPage.paris.noComparableData")
+                    ) : (
+                      <span className="whitespace-nowrap">
+                        {formatPercentChange(change, currentLanguage, false)}
+                      </span>
+                    )}
                   </TableCell>
                   <TableCell className="py-3 text-center">
                     <ParisBadge value={company.meetsParis} />
