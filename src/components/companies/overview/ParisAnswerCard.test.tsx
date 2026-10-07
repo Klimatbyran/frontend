@@ -6,6 +6,9 @@ import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: Record<string, unknown>) => {
+      if (options && "percent" in options && "count" in options) {
+        return `${key}:${options.percent}:${options.count}`;
+      }
       if (options && "count" in options) {
         return `${key}:${options.count}`;
       }
@@ -56,5 +59,8 @@ describe("ParisAnswerCard", () => {
     expect(screen.getAllByText("3").length).toBeGreaterThan(0);
     expect(screen.getByText("5")).toBeInTheDocument();
     expect(screen.getByText("2")).toBeInTheDocument();
+    expect(
+      screen.getByText("companiesOverviewPage.paris.share:30:10"),
+    ).toBeInTheDocument();
   });
 });

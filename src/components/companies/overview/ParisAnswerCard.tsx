@@ -80,7 +80,6 @@ export function ParisAnswerCard({
     onTrack,
     offTrack,
     unknown,
-    reducingNotOnTrack,
     onTrackPercent,
   } = summary;
 
@@ -152,10 +151,10 @@ export function ParisAnswerCard({
             ease,
           }}
         >
-          {t("companiesOverviewPage.paris.share", { percent: onTrackPercent })}{" "}
-          {reducingNotOnTrack > 0
-            ? t("companiesOverviewPage.paris.manyCutting")
-            : t("companiesOverviewPage.paris.restTooSlow")}
+          {t("companiesOverviewPage.paris.share", {
+            percent: onTrackPercent,
+            count: total,
+          })}
         </motion.p>
       </div>
 
