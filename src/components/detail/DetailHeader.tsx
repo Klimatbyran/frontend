@@ -69,7 +69,7 @@ export function DetailHeader({
         )}
       </div>
       {stats.length > 0 && (
-        <div className={`mt-8 ${detailStatsRowClassName}`}>
+        <div className={cn("mt-8", detailStatsRowClassName)}>
           {stats.map((stat, index) => (
             <div key={index} className={detailStatItemClassName}>
               <DetailStatItem stat={stat} />
