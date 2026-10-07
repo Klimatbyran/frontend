@@ -3,6 +3,7 @@ import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
+import { detailEntityNameClassName } from "@/components/detail/detailEntityTitle";
 import {
   detailStatItemClassName,
   detailStatsRowClassName,
@@ -57,7 +58,7 @@ export function DetailHeader({
     <SectionWithHelp helpItems={helpItems}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 flex-1 flex-col gap-3">
-          <Text className="text-4xl md:text-8xl">{name}</Text>
+          <Text className={detailEntityNameClassName}>{name}</Text>
           {headerChip && <div className="w-fit shrink-0">{headerChip}</div>}
         </div>
         {logoUrl && (
