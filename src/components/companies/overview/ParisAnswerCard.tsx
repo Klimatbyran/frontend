@@ -136,7 +136,7 @@ export function ParisAnswerCard({
           </motion.span>
         </p>
         <motion.p
-          className="mt-4 max-w-[620px] text-base leading-relaxed text-white/65"
+          className="mt-4 text-base leading-relaxed text-white/65"
           initial={reduceMotion ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{

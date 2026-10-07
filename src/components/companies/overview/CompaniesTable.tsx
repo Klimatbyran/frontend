@@ -276,7 +276,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
         <h2 className="text-xl font-light md:text-[21px]">
           {t("companiesOverviewPage.paris.everyCompanyTitle")}
         </h2>
-        <p className="mt-2 max-w-[560px] text-sm leading-relaxed text-white/60">
+        <p className="mt-2 text-sm leading-relaxed text-white/60">
           {t("companiesOverviewPage.paris.everyCompanyDescription")}
         </p>
       </div>

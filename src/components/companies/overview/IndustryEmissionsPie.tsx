@@ -57,7 +57,7 @@ export function IndustryEmissionsPie({
       <h2 className="text-xl font-light md:text-[21px]">
         {t("companiesOverviewPage.paris.industriesTitle")}
       </h2>
-      <p className="mt-2 max-w-[560px] text-sm leading-relaxed text-white/60">
+      <p className="mt-2 text-sm leading-relaxed text-white/60">
         {t("companiesOverviewPage.paris.industriesDescription")}
       </p>
 

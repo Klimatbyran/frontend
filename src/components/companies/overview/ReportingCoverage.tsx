@@ -27,7 +27,7 @@ export function ReportingCoverage({ summary }: { summary: ParisSummary }) {
       <h2 className="text-xl font-light md:text-[21px]">
         {t("companiesOverviewPage.paris.reportingTitle")}
       </h2>
-      <p className="mt-2 max-w-[640px] text-sm leading-relaxed text-white/60">
+      <p className="mt-2 text-sm leading-relaxed text-white/60">
         {t("companiesOverviewPage.paris.reportingDescription")}
       </p>
 
