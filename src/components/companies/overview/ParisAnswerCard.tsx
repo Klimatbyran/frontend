@@ -37,10 +37,7 @@ function VerdictColumn({
         ease,
       }}
     >
-      <div
-        className="flex h-40 w-full items-end sm:h-44"
-        aria-hidden
-      >
+      <div className="flex h-40 w-full items-end sm:h-44" aria-hidden>
         <motion.div
           className="relative w-full origin-bottom rounded-t-lg"
           style={{
