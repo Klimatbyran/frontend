@@ -28,7 +28,8 @@ export function ScrollReveal({
     <motion.div
       ref={ref}
       className={cn("min-w-0", className)}
-      inert={show ? undefined : true}
+      // React 18 only writes `inert` when the value is a string.
+      inert={show ? undefined : ""}
       initial={false}
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : 24 }}
       transition={{

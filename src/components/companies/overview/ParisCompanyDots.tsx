@@ -86,7 +86,7 @@ export function ParisCompanyDots({
   };
 
   return (
-    <div ref={ref} inert={play ? undefined : true}>
+    <div ref={ref} inert={play ? undefined : ""}>
       <p className="text-xs text-white/40">
         {t("companiesOverviewPage.paris.dotNote")}
       </p>
@@ -173,7 +173,7 @@ export function ParisCompanyDots({
           <>
             <LocalizedLink
               to={getCompanyDetailPath(active)}
-              className="font-medium text-white underline decoration-white/30 underline-offset-2 transition-colors hover:decoration-white"
+              className="font-medium text-blue-2 underline decoration-blue-2/70 underline-offset-2 transition-colors hover:text-white"
             >
               {active.name}
             </LocalizedLink>

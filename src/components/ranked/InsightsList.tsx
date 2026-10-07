@@ -98,11 +98,12 @@ function InsightsList<T>({
               style={
                 rowFadeMs
                   ? {
-                      animation: `fadeSlideIn ${rowFadeMs}ms ease-out both`,
+                      animationName: "fadeSlideIn",
+                      animationDuration: `${rowFadeMs}ms`,
+                      animationTimingFunction: "ease-out",
                       animationDelay: `${index * rowStaggerMs}ms`,
-                      ...(holdAnimation
-                        ? { animationPlayState: "paused" as const }
-                        : {}),
+                      animationFillMode: "both",
+                      animationPlayState: holdAnimation ? "paused" : "running",
                     }
                   : undefined
               }
@@ -115,11 +116,14 @@ function InsightsList<T>({
                     backgroundColor: color ?? "currentColor",
                     ...(barTransitionMs
                       ? {
-                          animation: `barGrowFromLeft ${barTransitionMs}ms ${barEase} both`,
+                          animationName: "barGrowFromLeft",
+                          animationDuration: `${barTransitionMs}ms`,
+                          animationTimingFunction: barEase,
                           animationDelay: `${index * barStaggerMs}ms`,
-                          ...(holdAnimation
-                            ? { animationPlayState: "paused" as const }
-                            : {}),
+                          animationFillMode: "both",
+                          animationPlayState: holdAnimation
+                            ? "paused"
+                            : "running",
                         }
                       : { width: `${barWidth}%` }),
                     transition: "opacity 0.3s ease",
