@@ -14,10 +14,6 @@ export const NAV_LINKS: NavLink[] = [
     path: `/explore`,
     sublinks: [
       {
-        label: "header.explore",
-        path: `/explore/municipalities`,
-      },
-      {
         label: "header.territories",
         items: [
           {
@@ -46,6 +42,10 @@ export const NAV_LINKS: NavLink[] = [
             path: `/sectors`,
           },
         ],
+      },
+      {
+        label: "header.exploreAllData",
+        path: `/explore/municipalities`,
       },
     ],
   },
