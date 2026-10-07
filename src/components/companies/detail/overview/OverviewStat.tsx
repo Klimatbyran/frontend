@@ -45,7 +45,9 @@ export function OverviewStat({
         return (
           <div className="flex gap-2">
             <Text
-              className={dense ? "text-sm md:text-base" : "text-base md:text-lg"}
+              className={
+                dense ? "text-sm md:text-base" : "text-base md:text-lg"
+              }
             >
               {label}
             </Text>
@@ -59,7 +61,7 @@ export function OverviewStat({
           </div>
         );
       }
-      return <Text className="lg:text-lg md:text-base text-sm">{label}</Text>;
+      return <Text className="lg:text-base md:text-sm text-sm">{label}</Text>;
     }
     return label;
   };
