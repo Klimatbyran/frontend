@@ -886,7 +886,7 @@
           "title": "Consumption-based emissions abroad",
           "paragraph1": "These figures cover emissions caused by Swedish final demand (households, public consumption and investment) that occur outside Sweden. Domestic emissions already covered in the production-based series are removed so the two can be added without double-counting.",
           "paragraph2": "For 2008–2023 we start from SCB’s consumption-based statistics (sum of domestic demand components). For 2024–2025 we hold the 2023 level for the SCB-based part of the series. For 1990–2007 we scale Global Carbon Project consumption-based CO₂ for Sweden up to all greenhouse gases using the global GHG/CO₂ ratio from EDGAR, which tracks SCB’s ratio within about 5% for 2008–2023.",
-          "paragraph3": "International flights: following the Stockholm Environment Institute approach, we replace SCB flight emissions with Chalmers estimates for Swedes’ outbound flights (1990–2017), extended to 2025 using Trafikanalys passenger-kilometres, to capture among other things the high-altitude effect. A similar SEI approach differs by at most about 1.6% in overlapping years.",
+          "paragraph3": "International flights: following the Stockholm Environment Institute (SEI) approach, we replace SCB flight emissions with Chalmers estimates for Swedes’ outbound flights (1990–2017), extended to 2025 using Trafikanalys passenger-kilometres, to capture among other things the high-altitude effect. A similar SEI approach differs by at most about 1.6% in overlapping years.",
           "paragraph4": "Private e-commerce imports from abroad (2020–2025): parcels to private individuals below certain thresholds are largely missing from SCB consumption categories. We estimate emissions using Svensk Handel turnover for foreign e-commerce, multiplied by the consumption-based emission intensity of clothing (COICOP 03.1.2). Clothing and electronics dominate Swedish e-commerce; their intensities are similar. The 2025 estimate is about 326,000 tonnes CO₂e – roughly equivalent to Gävle municipality’s emissions in 2024.",
           "paragraph5": "How the abroad-only series is built (simplified): remove SCB flight emissions from consumption totals; remove the share of remaining emissions that arise in Sweden; add Chalmers/Trafikanalys international flight emissions; add the e-commerce estimate from 2020 onward. For pre-2008 years, flight and import shares are back-cast with SCB monetary and GDP/import data, cross-checked against SCB for 2008–2023.",
           "paragraph6": "Uncertainty remains around e-commerce (Svensk Handel value trends vs parcel-count growth in Transportföretagen’s Paketindex) and around embedded transport in intensities. We document these assumptions rather than treating the series as official statistics.",
@@ -896,7 +896,8 @@
             "scb": "SCB – Environmental impact from consumption by product group",
             "chalmers": "Kamb & Larsson (Chalmers) – Climate impact of Swedes’ air travel 1990–2017",
             "trafa": "Trafikanalys – Civil aviation statistics",
-            "svenskHandel": "Svensk Handel – E-commerce indicator, full year 2025"
+            "svenskHandel": "Svensk Handel – E-commerce indicator, full year 2025",
+            "sei": "SEI – Konsumtionskompassen, tools and method on consumption-based emissions"
           }
         },
         "biogenic": {
@@ -1129,7 +1130,7 @@
     "emissionsDevelopment": "Emissions Development",
     "inTons": "In tons CO₂e",
     "annualChange": "Annual Change",
-    "meetsParisGoal": "On track to meet the Paris Agreement?",
+    "meetsParisGoal": "Meets the Paris Agreement",
     "meetsParisOnTrack": "Emissions are coming down fast enough.",
     "meetsParisOffTrack": "Emissions need to come down faster.",
     "meetsParisUnknown": "Not enough data to say yet.",
@@ -1160,9 +1161,13 @@
       "noData": "No data available",
       "pastPath": "What has happened",
       "trendPath": "Where today's pace leads",
-      "parisPath": "What Paris asks for",
+      "parisPath": "What the Paris Agreement requires",
       "todayMarker": "today",
-      "twoFuturesCaption": "The pink area is emissions beyond the Paris path from today onward — about <0>{{overshoot}} {{unit}}</0> in total. Closing the gap means bending the pink line down onto the green one, starting this year."
+      "twoFuturesOvershoot": "In {{year}}, at today's pace, emissions are <0>{{factor}}</0> times higher than the Paris path.",
+      "twoFuturesOvershootMild": "In {{year}}, at today's pace, emissions are higher than the Paris path.",
+      "twoFuturesUndershoot": "In {{year}}, at today's pace, emissions are <0>{{factor}}</0> times lower than the Paris path.",
+      "twoFuturesUndershootMild": "In {{year}}, at today's pace, emissions are lower than the Paris path.",
+      "twoFuturesAligned": "In {{year}}, today's pace matches the Paris path."
     }
   },
   "kpiBenchmark": {
@@ -1494,12 +1499,6 @@
       "scope1": "Scope 1",
       "scope2": "Scope 2"
     },
-    "dataView": {
-      "overview": "Overview",
-      "scopes": "Scopes 1-3",
-      "categories": "Scope 3 Categories",
-      "selectView": "Select View"
-    },
     "emissionsHistory": {
       "noReportingPeriods": "No reporting periods available",
       "title": "Emissions development",
@@ -1512,6 +1511,15 @@
       "approximated": "Approximated",
       "trend": "Trend",
       "carbonLaw": "Paris Agreement",
+      "pastPath": "What has happened",
+      "trendPath": "Where today's pace leads",
+      "parisPath": "What the Paris Agreement requires",
+      "todayMarker": "today",
+      "twoFuturesOvershoot": "In {{year}}, at today's pace, emissions are <0>{{factor}}</0> times higher than the Paris path.",
+      "twoFuturesOvershootMild": "In {{year}}, at today's pace, emissions are higher than the Paris path.",
+      "twoFuturesUndershoot": "In {{year}}, at today's pace, emissions are <0>{{factor}}</0> times lower than the Paris path.",
+      "twoFuturesUndershootMild": "In {{year}}, at today's pace, emissions are lower than the Paris path.",
+      "twoFuturesAligned": "In {{year}}, today's pace matches the Paris path.",
       "scope1": "Scope 1 - Direct Emissions",
       "scope2": "Scope 2 - Indirect Emissions",
       "scope3": "Scope 3 - Attributed Supply Chain and Product Lifecycle Emissions",
@@ -1809,8 +1817,7 @@
         "methodologyLink": "Read more about how we calculate Sweden’s emissions",
         "ctaLead": "Want to dig deeper into the numbers?",
         "ctaNation": "Explore Sweden's data",
-        "ctaMunicipalities": "How does it look in your municipality?",
-        "ctaRegions": "How does it look in your region?",
+        "ctaMunicipalities": "How does your municipality compare?",
         "shareCta": "Feel free to share on your social channels",
         "shareText": "A story about Sweden's emissions ahead of the 2026 election – from territorial figures to the full picture.",
         "shareNative": "Share this page",

@@ -1,7 +1,6 @@
 import { FC, useMemo, useState } from "react";
 import {
   Area,
-  CartesianGrid,
   ComposedChart,
   Line,
   ReferenceLine,
@@ -10,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { DataPoint } from "@/types/emissions";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import {
@@ -21,107 +20,26 @@ import {
   EnhancedLegend,
   getChartContainerProps,
   getXAxisProps,
-  type LegendItem,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
 import {
-  formatEmissionsAbsolute,
-  formatEmissionsAbsoluteCompact,
-} from "@/utils/formatting/localization";
-import {
   buildTwoFuturesRows,
-  sumFutureOvershootTonnes,
+  compareFuturePathTotals,
 } from "@/components/territories/emissionsGraph/twoFuturesChartData";
+import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
+import { createTwoFuturesLegendItems } from "@/components/charts/twoFutures/createTwoFuturesLegendItems";
+import { getTodayReferenceLineProps } from "@/components/charts/twoFutures/getTodayReferenceLineProps";
+import {
+  FUTURE_LINE_DASH,
+  TwoFuturesTooltip,
+} from "@/components/charts/twoFutures/TwoFuturesTooltip";
+import {
+  getTwoFuturesChartMargin,
+  getTwoFuturesYAxisProps,
+} from "@/components/charts/twoFutures/twoFuturesChartAxis";
 
 interface OverviewChartProps {
   projectedData: DataPoint[];
-}
-
-type TooltipRow = {
-  dataKey?: string;
-  value?: number;
-  name?: string;
-  color?: string;
-};
-
-function TwoFuturesTooltip({
-  active,
-  payload,
-  label,
-  unit,
-  labels,
-}: {
-  active?: boolean;
-  payload?: TooltipRow[];
-  label?: string | number;
-  unit: string;
-  labels: Record<"history" | "trend" | "paris", string>;
-}) {
-  const { currentLanguage } = useLanguage();
-  if (!active || !payload?.length) return null;
-
-  const rows = payload.filter(
-    (entry) =>
-      entry.value != null &&
-      entry.dataKey !== "parisBase" &&
-      entry.dataKey !== "gap",
-  );
-
-  return (
-    <div className="rounded-md border border-white/10 bg-black-2 px-3 py-2 text-sm shadow-lg">
-      <p className="mb-2 font-medium text-white">{label}</p>
-      <ul className="space-y-1">
-        {rows.map((entry) => {
-          const key = entry.dataKey as keyof typeof labels;
-          const name = labels[key] ?? entry.name;
-          return (
-            <li
-              key={entry.dataKey}
-              className="flex items-center justify-between gap-4 tabular-nums"
-            >
-              <span className="flex items-center gap-2 text-grey">
-                <span
-                  className="h-0.5 w-4 rounded-full"
-                  style={{ background: entry.color }}
-                  aria-hidden
-                />
-                {name}
-              </span>
-              <span className="text-white">
-                {formatEmissionsAbsolute(entry.value!, currentLanguage)} {unit}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-}
-
-function createTwoFuturesLegendItems(t: (key: string) => string): LegendItem[] {
-  return [
-    {
-      name: t("detailPage.graph.pastPath"),
-      color: "#ffffff",
-      isClickable: false,
-      isHidden: false,
-      isDashed: false,
-    },
-    {
-      name: t("detailPage.graph.trendPath"),
-      color: "var(--pink-3)",
-      isClickable: false,
-      isHidden: false,
-      isDashed: false,
-    },
-    {
-      name: t("detailPage.graph.parisPath"),
-      color: "var(--green-2)",
-      isClickable: false,
-      isHidden: false,
-      isDashed: false,
-    },
-  ];
 }
 
 export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
@@ -142,11 +60,14 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
     [rows, chartEndYear],
   );
 
-  const legendItems = useMemo(() => createTwoFuturesLegendItems(t), [t]);
+  const legendItems = useMemo(
+    () => createTwoFuturesLegendItems(t, "detailPage.graph"),
+    [t],
+  );
 
-  const overshootTonnes = useMemo(
-    () => sumFutureOvershootTonnes(projectedData, currentYear),
-    [projectedData, currentYear],
+  const pathComparison = useMemo(
+    () => compareFuturePathTotals(projectedData, currentYear, chartEndYear),
+    [projectedData, currentYear, chartEndYear],
   );
 
   const tooltipLabels = useMemo(
@@ -161,19 +82,13 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
   const unit = t("emissionsUnit");
 
   return (
-    <ChartWrapper>
-      <ChartArea>
+    <ChartWrapper className="h-auto">
+      <ChartArea className="h-[300px] min-h-0 flex-none sm:h-[380px]">
         <ResponsiveContainer {...getChartContainerProps()}>
           <ComposedChart
             data={filteredRows}
-            margin={{
-              top: 20,
-              right: 12,
-              left: isMobile ? 0 : 4,
-              bottom: 8,
-            }}
+            margin={getTwoFuturesChartMargin(isMobile)}
           >
-            <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
             <XAxis
               {...getXAxisProps(
                 "year",
@@ -183,17 +98,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               allowDuplicatedCategory
               tickFormatter={(year) => String(year)}
             />
-            <YAxis
-              stroke="var(--grey)"
-              tickLine={false}
-              axisLine={false}
-              domain={[0, "auto"]}
-              width={isMobile ? 56 : 72}
-              tick={{ fill: "var(--grey)", fontSize: 11 }}
-              tickFormatter={(value: number) =>
-                formatEmissionsAbsoluteCompact(value, currentLanguage)
-              }
-            />
+            <YAxis {...getTwoFuturesYAxisProps(currentLanguage, isMobile)} />
 
             <Tooltip
               content={<TwoFuturesTooltip unit={unit} labels={tooltipLabels} />}
@@ -201,15 +106,10 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             />
 
             <ReferenceLine
-              x={currentYear}
-              stroke="rgba(255,255,255,0.35)"
-              strokeDasharray="4 4"
-              label={{
-                value: t("detailPage.graph.todayMarker"),
-                position: "insideTopLeft",
-                fill: "var(--grey)",
-                fontSize: 12,
-              }}
+              {...getTodayReferenceLineProps(
+                currentYear,
+                t("detailPage.graph.todayMarker"),
+              )}
             />
 
             <Area
@@ -245,6 +145,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               dataKey="trend"
               stroke="var(--pink-3)"
               strokeWidth={2.5}
+              strokeDasharray={FUTURE_LINE_DASH}
               dot={false}
               connectNulls={false}
               isAnimationActive={false}
@@ -255,6 +156,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               dataKey="paris"
               stroke="var(--green-2)"
               strokeWidth={2.5}
+              strokeDasharray={FUTURE_LINE_DASH}
               dot={false}
               connectNulls={false}
               isAnimationActive={false}
@@ -264,27 +166,18 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
         </ResponsiveContainer>
       </ChartArea>
 
-      {overshootTonnes > 0 && (
-        <p className="max-w-3xl px-1 text-sm leading-relaxed text-white/80 md:text-base">
-          <Trans
-            i18nKey="detailPage.graph.twoFuturesCaption"
-            values={{
-              overshoot: formatEmissionsAbsolute(
-                overshootTonnes,
-                currentLanguage,
-              ),
-              unit,
-            }}
-            components={[<span key="0" className="text-pink-3" />]}
-          />
-        </p>
-      )}
-
-      <ChartFooter>
+      <ChartFooter className="mb-0 space-y-2 md:space-y-2.5">
         <EnhancedLegend items={legendItems} />
+        <FutureTotalsCaption
+          year={chartEndYear}
+          trend={pathComparison.endTrend}
+          paris={pathComparison.endParis}
+          translationPrefix="detailPage.graph"
+        />
         <ChartYearControls
           chartEndYear={chartEndYear}
           setChartEndYear={setChartEndYear}
+          className="!mt-0"
         />
       </ChartFooter>
     </ChartWrapper>

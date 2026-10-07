@@ -7,14 +7,10 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface MethodologyNavigationProps {
   selectedMethod: string;
-  onMethodChange: (method: string) => void;
-  contentRef: React.RefObject<HTMLDivElement>;
 }
 
 export function MethodologyNavigation({
   selectedMethod,
-  onMethodChange,
-  contentRef,
 }: MethodologyNavigationProps) {
   const { t } = useTranslation();
   const [expandedCategories, setExpandedCategories] = useState<string[]>(
@@ -37,21 +33,6 @@ export function MethodologyNavigation({
         ? prev.filter((cat) => cat !== category)
         : [...prev, category],
     );
-  };
-
-  // Scroll to MethodContent on mobile when a method is selected
-  const handleMethodChange = (method: string) => {
-    navigate(`?view=${method}`);
-    onMethodChange(method);
-    if (isMobile && contentRef?.current) {
-      setTimeout(() => {
-        if (!contentRef.current) return;
-        const headerHeight = window.innerWidth >= 1024 ? 48 : 40; // 48px for lg, 40px for mobile
-        const rect = contentRef.current.getBoundingClientRect();
-        const scrollTo = rect.top + window.scrollY - headerHeight;
-        window.scrollTo({ top: scrollTo, behavior: "smooth" });
-      }, 350);
-    }
   };
 
   return (
@@ -83,9 +64,7 @@ export function MethodologyNavigation({
                 {methods.map((method) => (
                   <li key={method.id}>
                     <button
-                      onClick={() => {
-                        handleMethodChange(method.id);
-                      }}
+                      onClick={() => navigate(`?view=${method.id}`)}
                       className={`w-full p-2 my-0.5 text-left text-sm rounded-lg transition-colors duration-200 ${
                         selectedMethod === method.id
                           ? "bg-black-1 text-blue-3 font-medium"

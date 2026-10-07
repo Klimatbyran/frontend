@@ -58,6 +58,26 @@ export const getLinePropsWithHover = (
   };
 };
 
+/**
+ * Anchor only the domain ends inward. Other years stay centered on their tick.
+ * Treating the first *visible* tick as the left edge shifted labels like 2020
+ * rightward whenever an earlier year was skipped.
+ */
+function edgeTickPlacement(
+  x: number,
+  value: number,
+  domainStart?: number,
+  domainEnd?: number,
+) {
+  if (domainStart != null && value === domainStart) {
+    return { x, textAnchor: "start" as const };
+  }
+  if (domainEnd != null && value === domainEnd) {
+    return { x, textAnchor: "end" as const };
+  }
+  return { x, textAnchor: "middle" as const };
+}
+
 // X-axis styling utilities
 export const getXAxisProps = (
   dataKey: string,
@@ -76,14 +96,21 @@ export const getXAxisProps = (
     tick:
       customTick ||
       (({ x, y, payload }: TickProps) => {
+        const place = edgeTickPlacement(
+          x,
+          payload.value,
+          domain?.[0],
+          domain?.[1],
+        );
         return React.createElement(
           "text",
           {
-            x: x - 15,
+            x: place.x,
             y: y + 10,
             fontSize: 12,
             fill: "var(--grey)",
             fontWeight: "normal",
+            textAnchor: place.textAnchor,
           },
           payload.value,
         ) as unknown as React.ReactElement<SVGElement>;
@@ -106,59 +133,87 @@ export const getYAxisProps = (
   domain: [number, number | "auto"] = [0, "auto"],
   options: {
     orientation?: "left" | "right";
-    yAxisId?: string;
+    /**
+     * Only set this when the series use the same id.
+     * Omitting it keeps Recharts' default (0), which is what Line and Area use.
+     */
+    yAxisId?: string | number;
     formatter?: (value: number, lang: "sv" | "en") => string;
+    /** Draw labels inside the plot so the chart stays full-width. */
+    mirror?: boolean;
   } = {},
-) => ({
-  stroke: "var(--grey)",
-  tickLine: false,
-  axisLine: false,
-  orientation: options.orientation || "left",
-  yAxisId: options.yAxisId || "left",
-  tick: ({ x, y, payload }: TickProps) => {
-    const formattedValue = options.formatter
-      ? options.formatter(payload.value, currentLanguage)
-      : formatEmissionsAbsoluteCompact(payload.value, currentLanguage);
+) => {
+  const onRight = options.orientation === "right";
+  const mirrored = options.mirror ?? false;
 
-    return React.createElement(
-      "text",
-      {
-        x: options.orientation === "right" ? x + 5 : x - 5,
-        y: y + 5,
-        fontSize: 12,
-        fill: "var(--grey)",
-        textAnchor: options.orientation === "right" ? "start" : "end",
-        transform:
-          options.orientation === "right"
-            ? `rotate(30, ${x + 5}, ${y + 5})`
-            : `rotate(-30, ${x - 5}, ${y + 5})`,
-      },
-      formattedValue,
-    ) as unknown as React.ReactElement<SVGElement>;
-  },
-  domain,
-  padding: { top: 0, bottom: 0 },
-});
+  return {
+    stroke: "var(--grey)",
+    tickLine: false,
+    axisLine: false,
+    orientation: options.orientation || "left",
+    ...(options.yAxisId != null ? { yAxisId: options.yAxisId } : {}),
+    ...(mirrored ? { mirror: true } : {}),
+    tick: ({ x, y, payload }: TickProps) => {
+      const formattedValue = options.formatter
+        ? options.formatter(payload.value, currentLanguage)
+        : formatEmissionsAbsoluteCompact(payload.value, currentLanguage);
+
+      // Mirrored labels sit inside the plot, horizontal, so they don't need a side gutter.
+      if (mirrored) {
+        return React.createElement(
+          "text",
+          {
+            x,
+            y: y + 4,
+            fontSize: 11,
+            fill: "var(--grey)",
+            textAnchor: onRight ? "end" : "start",
+          },
+          formattedValue,
+        ) as unknown as React.ReactElement<SVGElement>;
+      }
+
+      const labelX = onRight ? x + 5 : x - 5;
+      return React.createElement(
+        "text",
+        {
+          x: labelX,
+          y: y + 5,
+          fontSize: 12,
+          fill: "var(--grey)",
+          textAnchor: onRight ? "start" : "end",
+          transform: onRight
+            ? `rotate(30, ${labelX}, ${y + 5})`
+            : `rotate(-30, ${labelX}, ${y + 5})`,
+        },
+        formattedValue,
+      ) as unknown as React.ReactElement<SVGElement>;
+    },
+    domain,
+    padding: { top: 0, bottom: 0 },
+  };
+};
 
 // Custom tick renderer factory
 export const createCustomTickRenderer =
-  (baseYear?: number, isBaseYearBold: boolean = true) =>
-  ({ x, y, payload, index, visibleTicksCount }: TickProps) => {
+  (
+    baseYear?: number,
+    isBaseYearBold: boolean = true,
+    domain?: [number, number],
+  ) =>
+  ({ x, y, payload }: TickProps) => {
     const isBaseYear = payload.value === baseYear;
-    const isLastTick =
-      index !== undefined &&
-      visibleTicksCount !== undefined &&
-      index === visibleTicksCount - 1;
+    const place = edgeTickPlacement(x, payload.value, domain?.[0], domain?.[1]);
 
     return React.createElement(
       "text",
       {
-        x: isLastTick ? x - 10 : x - 5, // More space for last tick
+        x: place.x,
         y: y + 10,
         fontSize: 12,
         fill: isBaseYear ? "white" : "var(--grey)",
         fontWeight: isBaseYear && isBaseYearBold ? "bold" : "normal",
-        textAnchor: isLastTick ? "end" : "start", // Right-align last tick
+        textAnchor: place.textAnchor,
       },
       payload.value,
     ) as unknown as React.ReactElement<SVGElement>;
@@ -289,24 +344,24 @@ export const getLegendContainerHeight = (
     return isMobile ? "180px" : "150px";
   }
 
-  // Sectors view needs slightly more height than overview/scopes
+  // Sectors view needs slightly more height than overview
   if (dataView === "sectors") {
     return isMobile ? "140px" : "120px";
   }
 
-  // Default heights for overview and scopes
   return isMobile ? "120px" : "100px";
 };
 
 // Utility function to get chart margin
 export const getChartMargin = () => CHART_DIMENSIONS.margin;
 
-// Utility function to get responsive chart margin (better mobile space usage)
+// Symmetric insets. A negative left margin used to pull tilted labels back
+// onto the card and shoved the plot off-center on narrow screens.
 export const getResponsiveChartMargin = (isMobile: boolean = false) => ({
   top: 20,
-  right: 0,
-  left: isMobile ? -10 : -5, // Increased left margin for tilted Y-axis labels
-  bottom: 0,
+  right: isMobile ? 8 : 4,
+  left: isMobile ? 8 : 4,
+  bottom: 4,
 });
 
 // Utility function to get line style based on type

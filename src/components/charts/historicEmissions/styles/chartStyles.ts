@@ -41,8 +41,8 @@ export const CHART_DIMENSIONS = {
   },
   margin: {
     top: 20,
-    right: 0,
-    left: -5, // Increased for tilted Y-axis labels
+    right: 4,
+    left: 4,
     bottom: 0,
   },
   padding: {
@@ -74,11 +74,6 @@ export const LINE_CONFIGS = {
     type: "trend" as const,
     color: CHART_COLORS.paris,
     style: LINE_STYLES.trend,
-  },
-  scope: {
-    type: "primary" as const,
-    color: "var(--pink-3)", // Will be overridden by stroke prop
-    style: LINE_STYLES.primary,
   },
   category: {
     type: "primary" as const,

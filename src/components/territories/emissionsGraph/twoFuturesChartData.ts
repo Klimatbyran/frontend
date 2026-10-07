@@ -61,15 +61,72 @@ export function buildTwoFuturesRows(
     });
 }
 
-/** Sum of (trend − Paris) for each future year — a readable overshoot proxy. */
-export function sumFutureOvershootTonnes(
+export type FutureTotalsComparison = {
+  totalParis: number;
+  totalTrend: number;
+  /** Trend emissions in endYear. */
+  endTrend: number;
+  /** Paris-path emissions in endYear. */
+  endParis: number;
+  /**
+   * (trend total − Paris total) / Paris total.
+   * Positive is overshoot, negative is undershoot.
+   */
+  gapShareOfParis: number | null;
+  /**
+   * (trend total − Paris total) / trend total.
+   * Positive is overshoot, negative is undershoot.
+   */
+  gapShareOfTrend: number | null;
+};
+
+/**
+ * Compare the Paris path and the trend path from today through endYear.
+ * Totals are summed yearly emissions. endTrend and endParis are the values
+ * in endYear — the level the chart reaches, not the sum along the way.
+ */
+export function compareFuturePathTotals(
   data: DataPoint[],
   currentYear: number,
-): number {
-  return data
-    .filter((point) => point.year >= currentYear)
-    .reduce((sum, point) => {
-      if (point.trend == null || point.carbonLaw == null) return sum;
-      return sum + Math.max(0, point.trend - point.carbonLaw);
-    }, 0);
+  endYear: number,
+): FutureTotalsComparison {
+  let totalParis = 0;
+  let totalTrend = 0;
+  let counted = 0;
+  let endTrend = 0;
+  let endParis = 0;
+
+  for (const point of data) {
+    if (point.year < currentYear || point.year > endYear) continue;
+    if (point.trend == null || point.carbonLaw == null) continue;
+    totalParis += point.carbonLaw;
+    totalTrend += point.trend;
+    counted += 1;
+    if (point.year === endYear) {
+      endTrend = point.trend;
+      endParis = point.carbonLaw;
+    }
+  }
+
+  if (counted === 0) {
+    return {
+      totalParis: 0,
+      totalTrend: 0,
+      endTrend: 0,
+      endParis: 0,
+      gapShareOfParis: null,
+      gapShareOfTrend: null,
+    };
+  }
+
+  const gap = totalTrend - totalParis;
+
+  return {
+    totalParis,
+    totalTrend,
+    endTrend,
+    endParis,
+    gapShareOfParis: totalParis > 0 ? gap / totalParis : null,
+    gapShareOfTrend: totalTrend > 0 ? gap / totalTrend : null,
+  };
 }

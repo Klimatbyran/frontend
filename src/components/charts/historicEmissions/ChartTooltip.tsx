@@ -145,7 +145,7 @@ function TooltipDataRow({
   currentLanguage: string;
   t: ReturnType<typeof useTranslation>["t"];
 }) {
-  if (entry.dataKey === "gap") return null;
+  if (entry.dataKey === "gap" || entry.dataKey === "parisBase") return null;
 
   const name = formatName(String(entry.name || entry.dataKey || ""), entry);
   const isTurnoverEntry = entry.dataKey === "turnover";

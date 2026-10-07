@@ -8,6 +8,11 @@ import {
 } from "@/utils/formatting/localization";
 import { getMeetsParisDisplay } from "@/components/detail/meetsParisStat";
 import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
+import {
+  detailStatItemClassName,
+  detailStatsRowClassName,
+} from "@/components/detail/detailStatsLayout";
+import { cn } from "@/lib/utils";
 import { OverviewStat } from "./OverviewStat";
 import { FinancialsTooltip } from "./FinancialsTooltip";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
@@ -63,48 +68,28 @@ export function CompanyOverviewMainStats({
 }: CompanyOverviewMainStatsProps) {
   const { t } = useTranslation();
   const meetsParisDisplay = getMeetsParisDisplay(meetsParis, t);
+  const alignBenchmarks = Boolean(benchmarks);
 
   return (
-    <div className="mb-8 grid grid-cols-1 gap-8 md:mb-12 md:grid-cols-3 md:items-stretch md:gap-12">
+    <div className={cn("mb-8 md:mb-12", detailStatsRowClassName)}>
       <OverviewStat
+        className={detailStatItemClassName}
         variant="detail"
+        useFlex1={false}
         label={t("detailPage.meetsParisGoal")}
         value={meetsParisDisplay.value}
         valueClassName={meetsParisDisplay.valueClassName}
         caption={meetsParisDisplay.caption}
         benchmark={benchmarks?.meetsParis}
-        alignBenchmarks={Boolean(benchmarks)}
-        useFlex1={false}
+        alignBenchmarks={alignBenchmarks}
       />
       <OverviewStat
-        label={
-          <div className="flex items-center gap-2">
-            <Text variant="body" className="lg:text-lg md:text-base text-sm">
-              {t("companies.overview.totalEmissions")} {periodYear}
-            </Text>
-            {sectorCode === "40" && <FinancialsTooltip />}
-          </div>
-        }
-        value={
-          !calculatedTotalEmissions
-            ? t("companies.overview.noData")
-            : formatEmissionsAbsolute(calculatedTotalEmissions, currentLanguage)
-        }
-        valueClassName={
-          !calculatedTotalEmissions ? "text-grey" : "text-orange-2"
-        }
-        unit={calculatedTotalEmissions ? t("emissionsUnit") : undefined}
-        showAiIcon={totalEmissionsAIGenerated}
-        benchmark={benchmarks?.totalEmissions}
+        className={detailStatItemClassName}
         variant="detail"
-        alignBenchmarks={Boolean(benchmarks)}
         useFlex1={false}
-      />
-
-      <OverviewStat
         label={
           <div className="flex items-center gap-2">
-            <Text className="lg:text-lg md:text-base sm:text-sm">
+            <Text className="mb-1 md:mb-2 lg:text-base md:text-sm sm:text-sm">
               {t("companies.overview.changeSinceLastYear")}
             </Text>
             <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
@@ -125,9 +110,32 @@ export function CompanyOverviewMainStats({
         }
         showAiIcon={yearOverYearAIGenerated}
         benchmark={benchmarks?.yearOverYearChange}
+        alignBenchmarks={alignBenchmarks}
+      />
+      <OverviewStat
+        className={detailStatItemClassName}
         variant="detail"
-        alignBenchmarks={Boolean(benchmarks)}
         useFlex1={false}
+        label={
+          <div className="flex items-center gap-2">
+            <Text variant="body" className="lg:text-base md:text-sm text-sm">
+              {t("companies.overview.totalEmissions")} {periodYear}
+            </Text>
+            {sectorCode === "40" && <FinancialsTooltip />}
+          </div>
+        }
+        value={
+          !calculatedTotalEmissions
+            ? t("companies.overview.noData")
+            : formatEmissionsAbsolute(calculatedTotalEmissions, currentLanguage)
+        }
+        valueClassName={
+          !calculatedTotalEmissions ? "text-grey" : "text-orange-2"
+        }
+        unit={calculatedTotalEmissions ? t("emissionsUnit") : undefined}
+        showAiIcon={totalEmissionsAIGenerated}
+        benchmark={benchmarks?.totalEmissions}
+        alignBenchmarks={alignBenchmarks}
       />
     </div>
   );

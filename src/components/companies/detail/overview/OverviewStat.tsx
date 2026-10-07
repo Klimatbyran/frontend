@@ -13,7 +13,6 @@ interface OverviewStatProps {
   unit?: string;
   showAiIcon?: boolean;
   className?: string;
-  // Support for DetailStatCard pattern
   variant?: "overview" | "detail";
   info?: boolean;
   infoText?: string;
@@ -22,17 +21,9 @@ interface OverviewStatProps {
   /** Slightly smaller type so four headline numbers fit on one desktop row. */
   dense?: boolean;
   useFlex1?: boolean;
-  /** Comparison that shows whether the number is high, low, good, or bad. */
   benchmark?: KpiBenchmarkView | null;
-  /** Pin value rows and comparison bars to the same baseline in a grid row. */
   alignBenchmarks?: boolean;
 }
-
-const DETAIL_VALUE =
-  "text-4xl font-light leading-none tracking-tighter tabular-nums xl:text-5xl";
-const DETAIL_VALUE_RELAXED =
-  "text-4xl font-light leading-none tracking-tighter tabular-nums md:text-5xl";
-const DETAIL_UNIT = "text-lg text-grey";
 
 export function OverviewStat({
   label,
@@ -51,17 +42,17 @@ export function OverviewStat({
   alignBenchmarks = false,
 }: OverviewStatProps) {
   const isDetailVariant = variant === "detail";
-  const valueSizeClass = dense ? DETAIL_VALUE : DETAIL_VALUE_RELAXED;
   const showCaption = Boolean(caption) && !(isDetailVariant && benchmark);
 
-  // Handle label with InfoTooltip support
   const renderLabel = () => {
     if (typeof label === "string") {
       if (isDetailVariant) {
         return (
           <div className="flex gap-2">
             <Text
-              className={dense ? "text-base md:text-lg" : "text-lg md:text-xl"}
+              className={
+                dense ? "text-sm md:text-base" : "text-base md:text-lg"
+              }
             >
               {label}
             </Text>
@@ -75,46 +66,48 @@ export function OverviewStat({
           </div>
         );
       }
-      return <Text className="lg:text-lg md:text-base text-sm">{label}</Text>;
+      return <Text className="lg:text-base md:text-sm text-sm">{label}</Text>;
     }
     return label;
   };
 
-  // Handle value and unit rendering
-  const renderValue = () => {
-    if (isDetailVariant && unit) {
-      return (
-        <div className="flex flex-wrap items-end gap-x-2">
-          <Text className={cn(valueSizeClass, valueClassName)}>{value}</Text>
-          <Text className={cn(DETAIL_UNIT, dense ? "" : "md:text-xl")}>
-            {unit}
-          </Text>
-          {showAiIcon && <AiIcon size="md" />}
-        </div>
-      );
-    }
+  const detailValueClassName = cn(
+    dense ? "text-3xl xl:text-4xl" : "text-3xl md:text-5xl",
+    "max-w-full break-words [overflow-wrap:anywhere]",
+    valueClassName,
+  );
 
+  const renderValue = () => {
     if (isDetailVariant) {
       return (
-        <div className="flex items-end gap-2">
-          <Text className={cn(valueSizeClass, valueClassName)}>{value}</Text>
+        <div className="flex flex-wrap items-baseline gap-x-2">
+          <Text className={detailValueClassName}>{value}</Text>
+          {unit && (
+            <Text
+              className={cn(
+                "text-grey",
+                dense ? "text-base" : "text-sm md:text-xl",
+              )}
+            >
+              {unit}
+            </Text>
+          )}
           {showAiIcon && <AiIcon size="md" />}
         </div>
       );
     }
 
-    // Overview variant: inline unit
     return (
       <div className="flex items-start gap-2">
         <Text
           className={cn(
-            "text-4xl md:text-6xl font-light tracking-tighter leading-none",
+            "text-3xl md:text-5xl font-light tracking-tighter leading-none max-w-full break-words [overflow-wrap:anywhere]",
             valueClassName,
           )}
         >
           {value}
           {unit && (
-            <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
+            <span className="text-base lg:text-xl md:text-base sm:text-sm ml-2 text-grey">
               {unit}
             </span>
           )}
@@ -151,7 +144,7 @@ export function OverviewStat({
   );
 
   const captionBlock = showCaption ? (
-    <Text className="mt-2 text-sm text-grey md:text-base">{caption}</Text>
+    <Text className="mt-2 text-xs text-grey md:text-sm">{caption}</Text>
   ) : null;
 
   const benchmarkBlock = benchmark ? (
@@ -165,7 +158,7 @@ export function OverviewStat({
     <div
       className={cn(
         useFlex1 && "flex-1",
-        "min-w-0",
+        "min-w-0 max-w-full",
         isDetailVariant && alignBenchmarks && "flex h-full flex-col",
         className,
       )}

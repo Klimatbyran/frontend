@@ -35,8 +35,8 @@ export function HeaderMobileMenu({
 
   return (
     <>
-      {showTitle && (
-        <span className="absolute left-1/2 transform -translate-x-1/2 lg:hidden">
+      {showTitle && headerTitle && (
+        <span className="pointer-events-none absolute left-1/2 top-1/2 max-w-[min(10rem,calc(100%-13.5rem))] -translate-x-1/2 -translate-y-1/2 truncate text-sm text-white lg:hidden">
           {headerTitle}
         </span>
       )}
@@ -44,6 +44,7 @@ export function HeaderMobileMenu({
         <HeaderSearchButton
           className="w-full lg:hidden"
           closeMobileNav={onCloseMobileNav}
+          iconOnly={showTitle && !!headerTitle}
         />
 
         <button

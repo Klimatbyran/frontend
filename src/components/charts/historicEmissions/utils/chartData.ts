@@ -23,16 +23,6 @@ export const filterValidTotalData = (data: ChartData[]) => {
   return cleaned;
 };
 
-export const filterValidScopeData = (data: ChartData[]) => {
-  return data.filter((d) => {
-    return (
-      (d.scope1?.value !== undefined && d.scope1?.value !== null) ||
-      (d.scope2?.value !== undefined && d.scope2?.value !== null) ||
-      (d.scope3?.value !== undefined && d.scope3?.value !== null)
-    );
-  });
-};
-
 export const filterValidCategoryData = (data: ChartData[]) => {
   return data.filter((d) => {
     return Object.keys(d).some((key) => {

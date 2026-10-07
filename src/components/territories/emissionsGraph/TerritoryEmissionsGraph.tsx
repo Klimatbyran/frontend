@@ -28,7 +28,7 @@ export const TerritoryEmissionsGraph: FC<TerritoryEmissionsGraphProps> = ({
   }
 
   return (
-    <div className="h-full">
+    <div className={dataView === "overview" ? "h-auto" : "h-full"}>
       {dataView === "overview" ? (
         <OverviewChart projectedData={projectedData} />
       ) : (

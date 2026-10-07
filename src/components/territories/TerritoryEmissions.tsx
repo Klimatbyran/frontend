@@ -55,7 +55,11 @@ export const TerritoryEmissions: FC<TerritoryEmissionsProps> = ({
       />
       <div
         className="mt-8"
-        style={{ height: getDynamicChartHeight(dataView, false) }}
+        style={
+          dataView === "overview"
+            ? undefined
+            : { height: getDynamicChartHeight(dataView, false) }
+        }
       >
         <TerritoryEmissionsGraph
           projectedData={emissionsData}

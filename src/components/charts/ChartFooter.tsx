@@ -17,7 +17,7 @@ export const ChartFooter: React.FC<ChartFooterProps> = ({
     <div
       className={cn(
         "mt-2 mb-2 min-h-0",
-        isMobile ? "space-y-3 px-2" : "space-y-4",
+        isMobile ? "space-y-3" : "space-y-4",
         className,
       )}
     >
