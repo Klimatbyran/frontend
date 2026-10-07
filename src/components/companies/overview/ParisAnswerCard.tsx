@@ -106,11 +106,11 @@ export function ParisAnswerCard({
       })
     : t("companiesOverviewPage.paris.scopeAll");
 
-  const size = dotSize(total);
+  const judged = onTrack + offTrack;
+  const size = dotSize(judged);
   const dots = [
     ...Array<string>(onTrack).fill("var(--blue-3)"),
     ...Array<string>(offTrack).fill("var(--pink-3)"),
-    ...Array<string>(unknown).fill("rgba(255,255,255,0.2)"),
   ];
 
   const staggerStep = dotStaggerStep(dots.length);
@@ -160,43 +160,47 @@ export function ParisAnswerCard({
       </div>
 
       <div>
-        <p className="text-xs text-white/40">
-          {t("companiesOverviewPage.paris.dotNote")}
-        </p>
-        <motion.div
-          aria-hidden="true"
-          className="mt-2.5 flex flex-wrap"
-          style={{ gap: size > 16 ? 9 : 6 }}
-          initial={reduceMotion ? false : "hidden"}
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: reduceMotion ? 0 : staggerStep,
-              },
-            },
-          }}
-        >
-          {dots.map((color, index) => (
-            <motion.span
-              key={index}
-              className="block rounded-full"
-              style={{ width: size, height: size, backgroundColor: color }}
+        {dots.length > 0 && (
+          <>
+            <p className="text-xs text-white/40">
+              {t("companiesOverviewPage.paris.dotNote")}
+            </p>
+            <motion.div
+              aria-hidden="true"
+              className="mt-2.5 flex flex-wrap"
+              style={{ gap: size > 16 ? 9 : 6 }}
+              initial={reduceMotion ? false : "hidden"}
+              animate="visible"
               variants={{
-                hidden: { opacity: 0, scale: 0.35 },
+                hidden: {},
                 visible: {
-                  opacity: 1,
-                  scale: 1,
                   transition: {
-                    duration: reduceMotion ? 0 : DOT_ENTER_DURATION,
-                    ease,
+                    staggerChildren: reduceMotion ? 0 : staggerStep,
                   },
                 },
               }}
-            />
-          ))}
-        </motion.div>
+            >
+              {dots.map((color, index) => (
+                <motion.span
+                  key={index}
+                  className="block rounded-full"
+                  style={{ width: size, height: size, backgroundColor: color }}
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.35 },
+                    visible: {
+                      opacity: 1,
+                      scale: 1,
+                      transition: {
+                        duration: reduceMotion ? 0 : DOT_ENTER_DURATION,
+                        ease,
+                      },
+                    },
+                  }}
+                />
+              ))}
+            </motion.div>
+          </>
+        )}
         <div className="mt-3.5">
           <BreakdownRow
             color="var(--blue-3)"

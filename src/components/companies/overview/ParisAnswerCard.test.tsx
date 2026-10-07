@@ -33,7 +33,7 @@ const baseSummary: ParisSummary = {
 };
 
 describe("ParisAnswerCard", () => {
-  it("shows one animated dot per company and the three-way breakdown", () => {
+  it("shows one animated dot per judged company and leaves out companies without enough data", () => {
     const { container } = render(
       <ParisAnswerCard summary={baseSummary} industryLabel={null} />,
     );
@@ -43,7 +43,7 @@ describe("ParisAnswerCard", () => {
     ).toBeInTheDocument();
     expect(
       container.querySelector('[aria-hidden="true"]')?.querySelectorAll("span"),
-    ).toHaveLength(10);
+    ).toHaveLength(8);
     expect(
       screen.getByText("companiesOverviewPage.paris.onTrack"),
     ).toBeInTheDocument();
