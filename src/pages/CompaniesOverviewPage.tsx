@@ -131,32 +131,35 @@ export function CompaniesOverviewPage() {
 
   return (
     <div className="space-y-8 md:space-y-10">
-      <div className="space-y-5">
-        {/* Layout already applies `container mx-auto px-4`; PageHeader's own
-            max-width and padding would inset the title past the cards. */}
-        <PageHeader
-          className="mx-0 mb-0 max-w-none p-0 md:mb-0"
-          title={t("companiesOverviewPage.paris.title")}
-          description={t("companiesOverviewPage.paris.lead")}
+      {/* A step tighter than the page stack, so the chips sit closer to the cards. */}
+      <div className="space-y-5 md:space-y-7">
+        <div className="space-y-5">
+          {/* Layout already applies `container mx-auto px-4`; PageHeader's own
+              max-width and padding would inset the title past the cards. */}
+          <PageHeader
+            className="mx-0 mb-0 max-w-none p-0 md:mb-0"
+            title={t("companiesOverviewPage.paris.title")}
+            description={t("companiesOverviewPage.paris.lead")}
+          />
+          <ParisExplainer />
+        </div>
+
+        <IndustryChipFilter
+          options={industryRows.map((row) => ({
+            code: row.code,
+            companyCount: row.companyCount,
+          }))}
+          selected={selectedSector}
+          totalCount={swedishCompanies.length}
+          onSelect={(code) => urlState.setSectorInURL(code)}
         />
-        <ParisExplainer />
+
+        <ParisAnswerCard
+          key={selectedSector ?? "all"}
+          summary={summary}
+          industryLabel={selectedSector ? sectorNames[selectedSector] : null}
+        />
       </div>
-
-      <IndustryChipFilter
-        options={industryRows.map((row) => ({
-          code: row.code,
-          companyCount: row.companyCount,
-        }))}
-        selected={selectedSector}
-        totalCount={swedishCompanies.length}
-        onSelect={(code) => urlState.setSectorInURL(code)}
-      />
-
-      <ParisAnswerCard
-        key={selectedSector ?? "all"}
-        summary={summary}
-        industryLabel={selectedSector ? sectorNames[selectedSector] : null}
-      />
 
       <VerdictLists companies={inView} />
 

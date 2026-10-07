@@ -189,9 +189,11 @@ export function CompaniesOverviewSkeleton() {
       </span>
 
       <div className="space-y-8 md:space-y-10" aria-hidden="true">
-        <HeaderSkeleton />
-        <ChipFilterSkeleton />
-        <AnswerCardSkeleton />
+        <div className="space-y-5 md:space-y-7">
+          <HeaderSkeleton />
+          <ChipFilterSkeleton />
+          <AnswerCardSkeleton />
+        </div>
 
         <div className="grid items-start gap-6 md:grid-cols-2">
           <VerdictListSkeleton />
