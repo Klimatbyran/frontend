@@ -335,8 +335,6 @@
     "relatedArticles": "Relaterade artiklar"
   },
   "companiesOverviewPage": {
-    "title": "Företagsöversikt",
-    "description": "Jämför företag baserat på viktiga klimatindikatorer",
     "paris": {
       "title": "Vilka stora svenska företag gör tillräckligt för klimatet?",
       "lead": "Att klara Parisavtalet betyder att ungefär halvera utsläppen det här årtiondet. Så här går det för Sveriges största bolag.",
@@ -351,9 +349,10 @@
       "kicker": "Det korta svaret",
       "scopeAll": "vi följer",
       "scopeIndustry": "vi följer inom {{industry}}",
-      "heading_one": "av {{count}} svenskt företag {{scope}} minskar utsläppen tillräckligt snabbt för Parismålet.",
-      "heading_other": "av {{count}} svenska företag {{scope}} minskar utsläppen tillräckligt snabbt för Parismålet.",
-      "share": "Det är {{percent}} % av Sveriges {{count}} största företag.",
+      "companyNoun_one": "svenskt företag",
+      "companyNoun_other": "svenska företag",
+      "heading": "av {{total}} {{companies}} {{scope}} minskar utsläppen tillräckligt snabbt för Parismålet.",
+      "share": "Det är {{percent}} % av Sveriges {{count}} största bolag.",
       "dotNote": "Varje prick är ett företag",
       "onTrack": "På rätt väg för Paris",
       "offTrack": "Inte på rätt väg",
@@ -368,7 +367,6 @@
       "reportingAria": "{{enough}} företag ({{enoughPercent}} %) har tillräckligt för att bedöma ({{min}} år eller mer). {{tooLittle}} företag ({{tooLittlePercent}} %) har för lite (färre än {{min}} år, inklusive de utan rapport).",
       "industriesTitle": "Vilka sektorer betyder mest?",
       "industriesDescription": "Varje tårtbit är en sektor, i storlek efter dess andel av alla utsläpp. Blått betyder att de flesta av dess företag är på rätt väg för Paris, rosa att få är det.",
-      "clickIndustry": "Klicka för att bara se den här sektorn",
       "rampLow": "Nästan ingen på rätt väg",
       "rampHigh": "Flest på rätt väg",
       "everyCompanyTitle": "Alla företag i den här vyn",
@@ -388,15 +386,8 @@
     },
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
-    "mapPlaceholder": "Kartvisualisering kommer snart",
-    "filterByIndustry": "Filtrera efter sektor",
-    "clearFilters": "Rensa alla",
     "selectIndustry": "Välj sektor",
     "selectCountry": "Välj land",
-    "viewToggle": {
-      "showGraph": "Graf",
-      "showList": "Lista"
-    },
     "visualizations": {
       "noVisualizationAvailable": "Ingen visualisering tillgänglig för denna KPI",
       "noDataAvailable": "Ingen data tillgänglig",

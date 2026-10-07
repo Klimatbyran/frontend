@@ -132,7 +132,16 @@ export function ParisAnswerCard({
               ease,
             }}
           >
-            {t("companiesOverviewPage.paris.heading", { count: total, scope })}
+            {t("companiesOverviewPage.paris.heading", {
+            total,
+            scope,
+            companies: t("companiesOverviewPage.paris.companyNoun", {
+              count: total,
+            }),
+            verb: t("companiesOverviewPage.paris.headingVerb", {
+              count: onTrack,
+            }),
+          })}
           </motion.span>
         </p>
         <motion.p

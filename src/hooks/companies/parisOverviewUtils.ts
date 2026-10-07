@@ -17,23 +17,12 @@ export function latestEmissions(company: CompanyWithKPIs): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-function isReducing(company: CompanyWithKPIs): boolean {
-  return (
-    typeof company.emissionsChangeFromBaseYear === "number" &&
-    company.emissionsChangeFromBaseYear < 0
-  );
-}
-
 export interface ParisSummary {
   total: number;
   onTrack: number;
   offTrack: number;
   /** Companies without enough reported years to judge either way. */
   unknown: number;
-  /** Companies whose emissions have fallen at all, on track or not. */
-  reducing: number;
-  /** Companies not on track that are still cutting emissions. */
-  reducingNotOnTrack: number;
   /** On track as a share of every company in view, including the unjudged. */
   onTrackPercent: number;
 }
@@ -41,18 +30,12 @@ export interface ParisSummary {
 export function summariseParis(companies: CompanyWithKPIs[]): ParisSummary {
   const judged = companies.filter((c) => typeof c.meetsParis === "boolean");
   const onTrack = judged.filter((c) => c.meetsParis === true).length;
-  const reducing = companies.filter(isReducing).length;
-  const reducingNotOnTrack = companies.filter(
-    (c) => c.meetsParis !== true && isReducing(c),
-  ).length;
 
   return {
     total: companies.length,
     onTrack,
     offTrack: judged.length - onTrack,
     unknown: companies.length - judged.length,
-    reducing,
-    reducingNotOnTrack,
     onTrackPercent: companies.length
       ? Math.round((onTrack / companies.length) * 100)
       : 0,
@@ -86,7 +69,11 @@ export interface IndustryBreakdownRow {
   code: SectorCode;
   companyCount: number;
   emissions: number;
-  /** Share of judged companies on track, or null when none can be judged. */
+  /**
+   * Share of the industry's companies that are on track, or null when none
+   * can be judged. Companies without a verdict count as not on track, so one
+   * judged company cannot paint the whole industry blue.
+   */
   onTrackShare: number | null;
 }
 
@@ -99,6 +86,7 @@ export function buildIndustryBreakdown(
       (company) => company.industry?.industryGics?.sectorCode === code,
     );
     const judged = rows.filter((c) => typeof c.meetsParis === "boolean");
+    const onTrack = judged.filter((c) => c.meetsParis === true).length;
 
     return {
       code,
@@ -107,10 +95,7 @@ export function buildIndustryBreakdown(
         const value = latestEmissions(c);
         return value === null ? sum : sum + value;
       }, 0),
-      onTrackShare: judged.length
-        ? (judged.filter((c) => c.meetsParis === true).length / judged.length) *
-          100
-        : null,
+      onTrackShare: judged.length ? (onTrack / rows.length) * 100 : null,
     };
   })
     .filter((row) => row.companyCount > 0)

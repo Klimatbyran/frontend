@@ -140,16 +140,6 @@ describe("summariseParis", () => {
     expect(summary.unknown).toBe(1);
   });
 
-  it("counts every company that is cutting at all, not just the on-track ones", () => {
-    // Three have a negative change; only two of those are on track.
-    expect(summariseParis(companies).reducing).toBe(3);
-  });
-
-  it("counts cutters only among companies not on track for the answer card copy", () => {
-    // Off A is cutting; on-track cutters must not flip the others-cutting line.
-    expect(summariseParis(companies).reducingNotOnTrack).toBe(1);
-  });
-
   it("takes the on-track share of everyone in view, including the unjudged", () => {
     expect(summariseParis(companies).onTrackPercent).toBe(40);
   });
@@ -189,6 +179,15 @@ describe("buildIndustryBreakdown", () => {
 
     expect(rows).toHaveLength(1);
     expect(rows[0].onTrackShare).toBeNull();
+  });
+
+  it("counts companies that cannot be judged as not on track", () => {
+    const rows = buildIndustryBreakdown([
+      company("Judged", "15", true, -10, 10),
+      company("Unknown", "15", null, null, 10),
+    ]);
+
+    expect(rows[0].onTrackShare).toBe(50);
   });
 });
 

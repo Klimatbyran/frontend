@@ -17,7 +17,7 @@ import { DEFAULT_OG_IMAGE } from "@/utils/seo";
  *   - See RegionDetailPage.tsx for data structure
  *
  * Note: Ranked list pages use route-level SEO (handled in routes.ts):
- * - /companies (companiesOverviewPage)
+ * - /companies (companiesOverviewPage.paris)
  * - /municipalities (MunicipalitiesOverviewPage)
  * - /regions (regionalOverviewPage)
  * These should be handled in routes.ts with getSeoForRoute() rather than entitySeo.ts

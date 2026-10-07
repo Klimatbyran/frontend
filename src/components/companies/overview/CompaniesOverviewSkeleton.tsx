@@ -61,7 +61,7 @@ function AnswerCardSkeleton() {
           ))}
         </div>
         <div className="mt-3.5">
-          {Array.from({ length: 3 }, (_, index) => (
+          {Array.from({ length: 2 }, (_, index) => (
             <div
               key={index}
               className="flex items-center gap-2.5 border-t border-white/10 py-3 last:border-b"

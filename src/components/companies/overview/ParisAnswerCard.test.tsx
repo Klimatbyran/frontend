@@ -31,7 +31,6 @@ const baseSummary: ParisSummary = {
   onTrack: 3,
   offTrack: 5,
   unknown: 2,
-  reducingNotOnTrack: 2,
   onTrackPercent: 30,
 };
 
