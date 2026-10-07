@@ -6,13 +6,8 @@ import type { CompanyWithKPIs } from "@/types/company";
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: Record<string, unknown>) => {
-      if (
-        options &&
-        "longCount" in options &&
-        "enough" in options &&
-        "thin" in options
-      ) {
-        return `${key}:${options.longCount}:${options.enough}:${options.thin}`;
+      if (options && "enough" in options && "tooLittle" in options) {
+        return `${key}:${options.enough}:${options.tooLittle}:${options.enoughPercent}:${options.tooLittlePercent}`;
       }
       return key;
     },
@@ -39,7 +34,7 @@ function companyWithYears(count: number): CompanyWithKPIs {
 }
 
 describe("ReportingCoverage", () => {
-  it("stacks a long record, the minimum trend, and companies with too little", () => {
+  it("splits companies with enough years from those with too little", () => {
     render(
       <ReportingCoverage
         companies={[
@@ -54,11 +49,8 @@ describe("ReportingCoverage", () => {
 
     expect(
       screen.getByRole("img", {
-        name: "companiesOverviewPage.paris.reportingAria:1:2:2",
+        name: "companiesOverviewPage.paris.reportingAria:3:2:60:40",
       }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("companiesOverviewPage.paris.reportingLong"),
     ).toBeInTheDocument();
     expect(
       screen.getByText("companiesOverviewPage.paris.reportingEnough"),
@@ -66,8 +58,31 @@ describe("ReportingCoverage", () => {
     expect(
       screen.getByText("companiesOverviewPage.paris.reportingTooLittle"),
     ).toBeInTheDocument();
-    expect(screen.getByText("1")).toBeInTheDocument();
-    expect(screen.getAllByText("2")).toHaveLength(2);
+    expect(
+      screen.queryByText("companiesOverviewPage.paris.reportingLong"),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("3")).toBeInTheDocument();
+    expect(screen.getByText("2")).toBeInTheDocument();
+    expect(screen.getByText("60%")).toBeInTheDocument();
+    expect(screen.getByText("40%")).toBeInTheDocument();
+
+    const bar = screen.getByRole("img");
+    expect(bar.querySelector('[style*="--blue-3"]')).toBeTruthy();
+    expect(bar.querySelector('[style*="--pink-3"]')).toBeTruthy();
+  });
+
+  it("gives the only populated side the full bar", () => {
+    render(
+      <ReportingCoverage
+        companies={[companyWithYears(3), companyWithYears(5)]}
+      />,
+    );
+
+    expect(screen.getByText("100%")).toBeInTheDocument();
+    expect(screen.getByText("0%")).toBeInTheDocument();
+    const bar = screen.getByRole("img");
+    expect(bar.querySelector('[style*="--blue-3"]')).toBeTruthy();
+    expect(bar.querySelector('[style*="--pink-3"]')).toBeNull();
   });
 
   it("renders nothing when the view is empty", () => {

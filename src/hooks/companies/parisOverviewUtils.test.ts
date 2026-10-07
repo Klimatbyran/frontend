@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import type { CompanyWithKPIs } from "@/types/company";
 import {
   buildIndustryBreakdown,
-  buildReportingPyramid,
   fastestCutters,
   furthestBehind,
   isSwedishCompany,
@@ -10,6 +9,7 @@ import {
   reportedEmissionYears,
   shareRampColor,
   summariseParis,
+  summariseReporting,
 } from "./parisOverviewUtils";
 
 function company(
@@ -56,9 +56,27 @@ describe("reportedEmissionYears", () => {
       }),
     ).toBe(2);
   });
+
+  it("counts an undated total and ignores a non-finite one", () => {
+    expect(
+      reportedEmissionYears({
+        reportingPeriods: [
+          { emissions: { calculatedTotalEmissions: 4 } },
+          {
+            endDate: "not-a-date",
+            emissions: { calculatedTotalEmissions: 5 },
+          },
+          {
+            endDate: "2020-12-31",
+            emissions: { calculatedTotalEmissions: Number.NaN },
+          },
+        ],
+      }),
+    ).toBe(2);
+  });
 });
 
-describe("buildReportingPyramid", () => {
+describe("summariseReporting", () => {
   function withYears(count: number) {
     return {
       reportingPeriods: Array.from({ length: count }, (_, index) => ({
@@ -68,9 +86,9 @@ describe("buildReportingPyramid", () => {
     };
   }
 
-  it("stacks a long record, the minimum trend, and everyone below it", () => {
+  it("treats three or more distinct years as enough and everyone else as too little", () => {
     expect(
-      buildReportingPyramid([
+      summariseReporting([
         withYears(6),
         withYears(8),
         withYears(3),
@@ -80,8 +98,7 @@ describe("buildReportingPyramid", () => {
       ]),
     ).toEqual({
       total: 6,
-      longRecord: 2,
-      enough: 2,
+      enough: 4,
       tooLittle: 2,
     });
   });

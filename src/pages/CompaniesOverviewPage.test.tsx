@@ -171,6 +171,19 @@ describe("CompaniesOverviewPage", () => {
     ).toHaveAttribute("aria-pressed", "true");
   });
 
+  it("places the reporting bar under the sectors chart", async () => {
+    renderPage("/en/companies");
+
+    const pie = await screen.findByTestId("industry-pie");
+    const reporting = screen.getByRole("heading", {
+      name: "companiesOverviewPage.paris.reportingTitle",
+    });
+
+    expect(
+      pie.compareDocumentPosition(reporting) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
   it("shows the county map under the company list", async () => {
     renderPage("/en/companies");
 

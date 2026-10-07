@@ -143,14 +143,9 @@ export function fastestCutters(
  */
 export const TREND_MIN_YEARS = 3;
 
-/** Long record at the top of the reporting pyramid: the minimum plus three. */
-export const LONG_RECORD_YEARS = 6;
-
-export interface ReportingPyramid {
+export interface ReportingSplit {
   total: number;
-  /** At least {@link LONG_RECORD_YEARS} distinct years. */
-  longRecord: number;
-  /** From {@link TREND_MIN_YEARS} up to, but not including, the long record. */
+  /** At least {@link TREND_MIN_YEARS} distinct years with an emissions total. */
   enough: number;
   /** Fewer than {@link TREND_MIN_YEARS} years, including no report at all. */
   tooLittle: number;
@@ -184,26 +179,18 @@ export function reportedEmissionYears(company: {
   return years.size + undated;
 }
 
-export function buildReportingPyramid(
+/** Enough years to read a trend, against everyone else in view. */
+export function summariseReporting(
   companies: Array<Parameters<typeof reportedEmissionYears>[0]>,
-): ReportingPyramid {
-  let longRecord = 0;
+): ReportingSplit {
   let enough = 0;
-  let tooLittle = 0;
 
   for (const company of companies) {
-    const years = reportedEmissionYears(company);
-    if (years >= LONG_RECORD_YEARS) longRecord += 1;
-    else if (years >= TREND_MIN_YEARS) enough += 1;
-    else tooLittle += 1;
+    if (reportedEmissionYears(company) >= TREND_MIN_YEARS) enough += 1;
   }
 
-  return {
-    total: companies.length,
-    longRecord,
-    enough,
-    tooLittle,
-  };
+  const total = companies.length;
+  return { total, enough, tooLittle: total - enough };
 }
 
 /** Off track, worst first: still growing, or shrinking far too slowly. */

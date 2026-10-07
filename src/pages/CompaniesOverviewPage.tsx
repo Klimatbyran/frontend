@@ -163,9 +163,9 @@ export function CompaniesOverviewPage() {
 
       <VerdictLists companies={inView} />
 
-      <ReportingCoverage companies={inView} />
-
       <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
+
+      <ReportingCoverage companies={inView} />
 
       <CompaniesTable companies={inView} />
 

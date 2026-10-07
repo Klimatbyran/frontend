@@ -3,21 +3,17 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import {
-  buildReportingPyramid,
-  LONG_RECORD_YEARS,
+  summariseReporting,
   TREND_MIN_YEARS,
-  type ReportingPyramid,
 } from "@/hooks/companies/parisOverviewUtils";
 import type { CompanyWithKPIs } from "@/types/company";
 
-const yearCopy = {
-  min: TREND_MIN_YEARS,
-  long: LONG_RECORD_YEARS,
-  almostLong: LONG_RECORD_YEARS - 1,
-};
+const ENOUGH_COLOR = "var(--blue-3)";
+const TOO_LITTLE_COLOR = "var(--pink-3)";
 
-function share(part: number, total: number): number {
+function percentLabel(part: number, total: number, other: number): number {
   if (total === 0 || part === 0) return 0;
+  if (other === 0) return 100;
   return Math.round((part / total) * 100);
 }
 
@@ -28,96 +24,127 @@ export function ReportingCoverage({
 }) {
   const { t } = useTranslation();
   const { reduceMotion, barDuration, ease } = useChartMotion();
-  const pyramid = useMemo(() => buildReportingPyramid(companies), [companies]);
+  const split = useMemo(() => summariseReporting(companies), [companies]);
 
-  if (pyramid.total === 0) return null;
+  if (split.total === 0) return null;
 
-  const tiers = tiersFrom(pyramid);
-  const widest = Math.max(...tiers.map((tier) => tier.count), 1);
+  const enoughPercent = percentLabel(
+    split.enough,
+    split.total,
+    split.tooLittle,
+  );
+  const tooLittlePercent =
+    split.tooLittle === 0 ? 0 : split.enough === 0 ? 100 : 100 - enoughPercent;
+  const enoughWidth = (split.enough / split.total) * 100;
+  const yearCopy = { min: TREND_MIN_YEARS };
 
   return (
     <section className="rounded-level-2 bg-black-2 p-6 md:p-7">
       <h2 className="text-xl font-light md:text-[21px]">
         {t("companiesOverviewPage.paris.reportingTitle")}
       </h2>
-      <p className="mt-2 text-sm leading-relaxed text-white/60">
+      <p className="mt-2 max-w-[640px] text-sm leading-relaxed text-white/60">
         {t("companiesOverviewPage.paris.reportingDescription", yearCopy)}
       </p>
 
       <div
-        className="mx-auto mt-8 flex w-full max-w-3xl flex-col items-center gap-6"
+        className="mt-6 flex h-4 overflow-hidden rounded-full"
         role="img"
         aria-label={t("companiesOverviewPage.paris.reportingAria", {
           ...yearCopy,
-          longCount: pyramid.longRecord,
-          enough: pyramid.enough,
-          thin: pyramid.tooLittle,
+          enough: split.enough,
+          tooLittle: split.tooLittle,
+          enoughPercent,
+          tooLittlePercent,
         })}
       >
-        {tiers.map((tier, index) => {
-          const width =
-            tier.count === 0 ? 0 : Math.max(18, (tier.count / widest) * 100);
+        {split.enough > 0 && (
+          <motion.div
+            className="h-full origin-left"
+            style={{ width: `${enoughWidth}%`, backgroundColor: ENOUGH_COLOR }}
+            initial={reduceMotion ? false : { scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{
+              duration: reduceMotion ? 0 : barDuration,
+              ease,
+            }}
+          />
+        )}
+        {split.tooLittle > 0 && (
+          <motion.div
+            className="h-full origin-right"
+            style={{
+              width: `${100 - enoughWidth}%`,
+              backgroundColor: TOO_LITTLE_COLOR,
+            }}
+            initial={reduceMotion ? false : { scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{
+              duration: reduceMotion ? 0 : barDuration,
+              ease,
+            }}
+          />
+        )}
+      </div>
 
-          return (
-            <div key={tier.id} className="flex w-full flex-col items-center">
-              {width > 0 && (
-                <motion.div
-                  className="h-11 origin-center rounded-md"
-                  style={{
-                    width: `${width}%`,
-                    backgroundColor: tier.color,
-                  }}
-                  initial={reduceMotion ? false : { scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{
-                    duration: reduceMotion ? 0 : barDuration,
-                    delay: reduceMotion ? 0 : index * 0.08,
-                    ease,
-                  }}
-                />
-              )}
-              <p className="mt-2 text-center text-sm leading-snug">
-                <span className="font-medium tabular-nums">{tier.count}</span>
-                <span className="ml-2 tabular-nums text-white/40">
-                  {share(tier.count, pyramid.total)}%
-                </span>
-              </p>
-              <p className="text-center text-sm text-white/80">
-                {t(tier.labelKey, yearCopy)}
-              </p>
-              <p className="max-w-md text-center text-xs leading-relaxed text-white/45">
-                {t(tier.detailKey, yearCopy)}
-              </p>
-            </div>
-          );
-        })}
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <CoverageFigure
+          color={ENOUGH_COLOR}
+          label={t("companiesOverviewPage.paris.reportingEnough", yearCopy)}
+          count={split.enough}
+          percent={enoughPercent}
+          index={0}
+        />
+        <CoverageFigure
+          color={TOO_LITTLE_COLOR}
+          label={t("companiesOverviewPage.paris.reportingTooLittle", yearCopy)}
+          count={split.tooLittle}
+          percent={tooLittlePercent}
+          index={1}
+        />
       </div>
     </section>
   );
 }
 
-function tiersFrom(pyramid: ReportingPyramid) {
-  return [
-    {
-      id: "long",
-      count: pyramid.longRecord,
-      color: "var(--blue-3)",
-      labelKey: "companiesOverviewPage.paris.reportingLong",
-      detailKey: "companiesOverviewPage.paris.reportingLongDetail",
-    },
-    {
-      id: "enough",
-      count: pyramid.enough,
-      color: "var(--blue-2)",
-      labelKey: "companiesOverviewPage.paris.reportingEnough",
-      detailKey: "companiesOverviewPage.paris.reportingEnoughDetail",
-    },
-    {
-      id: "thin",
-      count: pyramid.tooLittle,
-      color: "rgba(255,255,255,0.22)",
-      labelKey: "companiesOverviewPage.paris.reportingTooLittle",
-      detailKey: "companiesOverviewPage.paris.reportingTooLittleDetail",
-    },
-  ];
+function CoverageFigure({
+  color,
+  label,
+  count,
+  percent,
+  index,
+}: {
+  color: string;
+  label: string;
+  count: number;
+  percent: number;
+  index: number;
+}) {
+  const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
+
+  return (
+    <motion.div
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: fadeDuration,
+        delay: stagger(index, 0.06),
+        ease,
+      }}
+    >
+      <p className="text-3xl font-medium tabular-nums leading-none md:text-4xl">
+        {count}
+      </p>
+      <p className="mt-2 flex items-start gap-2 text-sm leading-snug text-white/70">
+        <span
+          className="mt-1 size-2.5 shrink-0 rounded-full"
+          style={{ backgroundColor: color }}
+        />
+        <span className="min-w-0">
+          {label}
+          <span className="ml-2 tabular-nums text-white/40">{percent}%</span>
+        </span>
+      </p>
+    </motion.div>
+  );
 }
