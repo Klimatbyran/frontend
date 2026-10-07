@@ -81,30 +81,7 @@ export function CompanyOverviewMainStats({
         useFlex1={false}
         label={
           <div className="flex items-center gap-2">
-            <Text variant="body" className="lg:text-base md:text-sm text-sm">
-              {t("companies.overview.totalEmissions")} {periodYear}
-            </Text>
-            {sectorCode === "40" && <FinancialsTooltip />}
-          </div>
-        }
-        value={
-          !calculatedTotalEmissions
-            ? t("companies.overview.noData")
-            : formatEmissionsAbsolute(calculatedTotalEmissions, currentLanguage)
-        }
-        valueClassName={
-          !calculatedTotalEmissions ? "text-grey" : "text-orange-2"
-        }
-        unit={calculatedTotalEmissions ? t("emissionsUnit") : undefined}
-        showAiIcon={totalEmissionsAIGenerated}
-      />
-
-      <OverviewStat
-        className={detailStatItemClassName}
-        useFlex1={false}
-        label={
-          <div className="flex items-center gap-2">
-            <Text className="mb-1 md:mb-2 lg:text-lg md:text-base sm:text-sm">
+            <Text className="mb-1 md:mb-2 lg:text-base md:text-sm sm:text-sm">
               {t("companies.overview.changeSinceLastYear")}
             </Text>
             <CompanyOverviewTooltip yearOverYearChange={yearOverYearChange} />
@@ -124,6 +101,29 @@ export function CompanyOverviewMainStats({
           )
         }
         showAiIcon={yearOverYearAIGenerated}
+      />
+
+      <OverviewStat
+        className={detailStatItemClassName}
+        useFlex1={false}
+        label={
+          <div className="flex items-center gap-2">
+            <Text variant="body" className="lg:text-base md:text-sm text-sm">
+              {t("companies.overview.totalEmissions")} {periodYear}
+            </Text>
+            {sectorCode === "40" && <FinancialsTooltip />}
+          </div>
+        }
+        value={
+          !calculatedTotalEmissions
+            ? t("companies.overview.noData")
+            : formatEmissionsAbsolute(calculatedTotalEmissions, currentLanguage)
+        }
+        valueClassName={
+          !calculatedTotalEmissions ? "text-grey" : "text-orange-2"
+        }
+        unit={calculatedTotalEmissions ? t("emissionsUnit") : undefined}
+        showAiIcon={totalEmissionsAIGenerated}
       />
     </div>
   );

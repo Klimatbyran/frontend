@@ -49,16 +49,6 @@ export function useMunicipalityDetailHeaderStats(
     ? [
         createMeetsParisStat(municipality.meetsParisGoal, t),
         {
-          label: t("detailPage.totalEmissions", {
-            year: lastYear,
-          }),
-          value: lastYearEmissionsTon,
-          unit: t("emissionsUnit"),
-          valueClassName: "text-orange-2",
-          info: true,
-          infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
-        },
-        {
           label: t("municipalityDetailPage.annualChangeSince2015"),
           value: formatPercentChange(
             municipality.historicalEmissionChangePercent,
@@ -69,6 +59,16 @@ export function useMunicipalityDetailHeaderStats(
               ? "text-pink-3"
               : "text-orange-2",
           ),
+        },
+        {
+          label: t("detailPage.totalEmissions", {
+            year: lastYear,
+          }),
+          value: lastYearEmissionsTon,
+          unit: t("emissionsUnit"),
+          valueClassName: "text-orange-2",
+          info: true,
+          infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
         },
         {
           label: t("municipalityDetailPage.consumptionEmissionsPerCapita"),
