@@ -67,7 +67,7 @@ export function CompanyOverviewMainStats({
   const meetsParisDisplay = getMeetsParisDisplay(meetsParis, t);
 
   return (
-    <div className={`mb-8 md:mb-12 ${detailStatsRowClassName}`}>
+    <div className={cn("mb-8 md:mb-12", detailStatsRowClassName)}>
       <OverviewStat
         className={detailStatItemClassName}
         useFlex1={false}
@@ -81,7 +81,7 @@ export function CompanyOverviewMainStats({
         useFlex1={false}
         label={
           <div className="flex items-center gap-2">
-            <Text variant="body" className="lg:text-lg md:text-base text-sm">
+            <Text variant="body" className="lg:text-base md:text-sm text-sm">
               {t("companies.overview.totalEmissions")} {periodYear}
             </Text>
             {sectorCode === "40" && <FinancialsTooltip />}
