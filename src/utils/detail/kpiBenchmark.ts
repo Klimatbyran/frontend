@@ -33,6 +33,15 @@ export interface BooleanBenchmarkView {
   tone: BenchmarkTone;
   /** Share of decisive peers that are true, including this entity. */
   trueShare: number;
+  /** Entities that answered yes, including this one when it did. */
+  yesCount: number;
+  /** Entities that answered no, including this one when it did. */
+  noCount: number;
+  /**
+   * Entities with no yes/no answer. Includes this one when its answer is
+   * missing and it is not already in `peers`.
+   */
+  unknownCount: number;
   higherIsBetter: boolean;
   /** This entity's yes/no answer, when known. */
   subjectValue: boolean | null;
@@ -364,34 +373,40 @@ function extremePhrase(
   return null;
 }
 
-function decisiveCounts(values: Array<boolean | null | undefined>) {
+function triStateCounts(values: Array<boolean | null | undefined>) {
   let yes = 0;
   let no = 0;
+  let unknown = 0;
   for (const value of values) {
     if (value === true) yes += 1;
     else if (value === false) no += 1;
+    else unknown += 1;
   }
-  return { yes, no, total: yes + no };
+  return { yes, no, unknown };
 }
 
 export function buildBooleanBenchmark(
   input: BooleanBenchmarkInput,
 ): BooleanBenchmarkView | null {
-  const counted = decisiveCounts(input.peers);
-  const others = { ...counted };
+  const counted = triStateCounts(input.peers);
+  const others = { yes: counted.yes, no: counted.no };
   if (input.peersIncludeSubject !== false) {
     if (input.value === true && others.yes > 0) others.yes -= 1;
     if (input.value === false && others.no > 0) others.no -= 1;
-    others.total = others.yes + others.no;
   }
 
-  const subjectCounts = input.value === true || input.value === false ? 1 : 0;
-  const population = others.total + subjectCounts;
+  const yesCount = others.yes + (input.value === true ? 1 : 0);
+  const noCount = others.no + (input.value === false ? 1 : 0);
+  const subjectIsUnknown = input.value !== true && input.value !== false;
+  const unknownCount =
+    counted.unknown +
+    (subjectIsUnknown && input.peersIncludeSubject === false ? 1 : 0);
+  const population = yesCount + noCount;
   if (population < 2) return null;
 
-  const trueShare = (others.yes + (input.value === true ? 1 : 0)) / population;
-  const othersYesShare =
-    others.total > 0 ? others.yes / others.total : trueShare;
+  const trueShare = yesCount / population;
+  const othersTotal = others.yes + others.no;
+  const othersYesShare = othersTotal > 0 ? others.yes / othersTotal : trueShare;
   const yesIsGood = input.higherIsBetter;
   const inMajority =
     input.value === true ? othersYesShare >= 0.5 : othersYesShare < 0.5;
@@ -425,6 +440,9 @@ export function buildBooleanBenchmark(
     kind: "boolean",
     tone,
     trueShare,
+    yesCount,
+    noCount,
+    unknownCount,
     higherIsBetter: input.higherIsBetter,
     subjectValue:
       input.value === true || input.value === false ? input.value : null,
