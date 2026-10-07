@@ -10,6 +10,7 @@ import { ParisExplainer } from "@/components/companies/overview/ParisExplainer";
 import { IndustryChipFilter } from "@/components/companies/overview/IndustryChipFilter";
 import { IndustryEmissionsPie } from "@/components/companies/overview/IndustryEmissionsPie";
 import { ReportingCoverage } from "@/components/companies/overview/ReportingCoverage";
+import { CompanyRegionMapSection } from "@/components/companies/CompanyRegionMapSection";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { enrichCompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import type { CompanyWithKPIs } from "@/types/company";
@@ -164,6 +165,8 @@ export function CompaniesOverviewPage() {
       <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
 
       <CompaniesTable companies={inView} />
+
+      <CompanyRegionMapSection companies={inView} />
     </div>
   );
 }

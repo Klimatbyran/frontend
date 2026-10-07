@@ -398,6 +398,38 @@
       "showGraph": "Graph",
       "showList": "List"
     },
+    "regionMap": {
+      "title": "Company reports and territorial emissions",
+      "descriptionPlaced": "Colour shows the share of the region's territorial emissions in {{year}} that matches company reports we can place there. A company is included only when a municipality, city, or region in the data matches a Swedish municipality or county. The figure is the company's reported total — often operations and value chain outside the region — and is not a slice of the territorial inventory.",
+      "descriptionUnplaced": "Company data has no municipality or region we can match, so the reports cannot be added up by county. Colour instead shows each county's share of Sweden's territorial emissions in {{year}}. The card compares that county with the combined latest reports from the companies in this list. It is a comparison of scale, not emissions inside the county.",
+      "unplacedNote": "{{count}} companies in this list have no place we can match and are left out of every county.",
+      "descriptionNoTerritorial": "Territorial county data is missing, so the map cannot show the comparison.",
+      "loading": "Loading county data…",
+      "error": "County data could not be loaded.",
+      "chooseRegion": "Choose county",
+      "legendCompanyShare": "Share of the county's territorial emissions",
+      "legendTerritorialShare": "Share of Sweden's territorial emissions",
+      "card": {
+        "territorialLabel": "Territorial emissions {{year}}",
+        "territorialMissing": "Territorial emissions are missing for the comparison year",
+        "companyInRegion": "Company reports in the county",
+        "companyInList": "Company reports in this list",
+        "companyMissing": "No reported totals",
+        "companyNonePlaced": "No companies placed",
+        "companyCount_one": "{{count}} company",
+        "companyCount_other": "{{count}} companies",
+        "unit": "tons CO₂e",
+        "openRegion": "Open county",
+        "yearSpan": " ({{min}}–{{max}})",
+        "yearSpanSingle": " ({{year}})",
+        "relationshipRegionalShare": "Companies we can place in {{region}} report {{company}} tons CO₂e. That is {{share}} of the county's territorial emissions of {{territorial}} tons CO₂e in {{year}}. The reports follow the company, not the county border, and can be larger than the territorial emissions.",
+        "relationshipCompanyOnly": "Companies we can place in {{region}} report {{company}} tons CO₂e. The county has no territorial figure for the comparison year, so the share cannot be calculated.",
+        "relationshipPlacedWithoutEmissions": "{{count}} companies can be placed in {{region}}, but none of them has a reported total for the latest period.",
+        "relationshipNationalScale": "No company in this list can be placed in {{region}}. Together the companies report {{company}} tons CO₂e in their latest reports{{yearSpan}}. That is {{ratio}} times the county's territorial emissions of {{territorial}} tons CO₂e in {{year}}. The company total is not emissions inside the county.",
+        "relationshipRegionUnplaced": "No company in this list can be placed in {{region}}.",
+        "relationshipMissingTerritorial": "Territorial emissions are missing for {{region}} in the year we compare, so the comparison cannot be calculated."
+      }
+    },
     "visualizations": {
       "noVisualizationAvailable": "No visualization available for this KPI",
       "noDataAvailable": "No data available",
