@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import {
   Collapsible,
   CollapsibleContent,
@@ -32,7 +33,12 @@ export function ParisExplainer() {
         <p>
           <Trans
             i18nKey="companiesOverviewPage.paris.explainerBudget"
-            components={{ strong: <strong className="text-white" /> }}
+            components={[
+              <LocalizedLink
+                to="/methodology?view=carbonLaw"
+                className="underline transition-colors hover:text-white"
+              />,
+            ]}
           />
         </p>
         <p>
