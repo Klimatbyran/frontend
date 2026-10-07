@@ -75,13 +75,7 @@ export function ParisAnswerCard({
 }: ParisAnswerCardProps) {
   const { t } = useTranslation();
   const { reduceMotion, fadeDuration, ease } = useChartMotion();
-  const {
-    total,
-    onTrack,
-    offTrack,
-    unknown,
-    onTrackPercent,
-  } = summary;
+  const { total, onTrack, offTrack, unknown, onTrackPercent } = summary;
 
   if (total === 0) {
     return (
