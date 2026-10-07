@@ -1,5 +1,6 @@
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { useChartMotion } from "@/hooks/useChartMotion";
+import { useEnteredView } from "@/hooks/useEnteredView";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 function calcBarWidth(
@@ -38,6 +39,8 @@ interface InsightsListProps<T> {
   nameKey: keyof T;
   showBars?: boolean;
   colorItem: (item: T) => string;
+  /** Hold the row and bar animation until the list has scrolled into view. */
+  deferAnimationUntilVisible?: boolean;
 }
 
 function InsightsList<T>({
@@ -52,8 +55,14 @@ function InsightsList<T>({
   nameKey,
   showBars = false,
   colorItem,
+  deferAnimationUntilVisible = false,
 }: InsightsListProps<T>) {
   const { reduceMotion, barDuration, ease } = useChartMotion();
+  const { ref, entered } = useEnteredView<HTMLDivElement>({
+    enabled: deferAnimationUntilVisible && !reduceMotion,
+  });
+  const play = !deferAnimationUntilVisible || reduceMotion || entered;
+  const holdAnimation = deferAnimationUntilVisible && !play;
   const rowFadeMs = reduceMotion ? 0 : 350;
   const rowStaggerMs = reduceMotion ? 0 : 35;
   const barTransitionMs = reduceMotion ? 0 : barDuration * 1000;
@@ -68,7 +77,7 @@ function InsightsList<T>({
     : 1;
 
   return (
-    <div className="flex flex-col bg-black-2 rounded-level-2 py-6">
+    <div ref={ref} className="flex flex-col bg-black-2 rounded-level-2 py-6">
       <h3 className="text-white text-lg font-semibold px-4 md:px-6 pb-2 md:pb-2">
         {title}
       </h3>
@@ -91,6 +100,9 @@ function InsightsList<T>({
                   ? {
                       animation: `fadeSlideIn ${rowFadeMs}ms ease-out both`,
                       animationDelay: `${index * rowStaggerMs}ms`,
+                      ...(holdAnimation
+                        ? { animationPlayState: "paused" as const }
+                        : {}),
                     }
                   : undefined
               }
@@ -105,6 +117,9 @@ function InsightsList<T>({
                       ? {
                           animation: `barGrowFromLeft ${barTransitionMs}ms ${barEase} both`,
                           animationDelay: `${index * barStaggerMs}ms`,
+                          ...(holdAnimation
+                            ? { animationPlayState: "paused" as const }
+                            : {}),
                         }
                       : { width: `${barWidth}%` }),
                     transition: "opacity 0.3s ease",

@@ -7,6 +7,7 @@ import {
   isSwedishCompany,
   latestEmissions,
   shareRampColor,
+  parisDotCompanies,
   summariseParis,
   summariseReporting,
 } from "./parisOverviewUtils";
@@ -172,5 +173,22 @@ describe("fastestCutters and furthestBehind", () => {
 
   it("respects the limit", () => {
     expect(fastestCutters(companies, 1)).toHaveLength(1);
+  });
+});
+
+describe("parisDotCompanies", () => {
+  it("lists on-track companies before off-track ones and skips the unjudged", () => {
+    const dots = parisDotCompanies([
+      company("Mango", "15", true, -10, 100),
+      company("Zeta", "15", false, 5, 100),
+      company("Unknown", "15", null, null, 100),
+      company("Alpha", "15", true, -20, 100),
+    ]);
+
+    expect(dots.map((dot) => [dot.name, dot.onTrack])).toEqual([
+      ["Alpha", true],
+      ["Mango", true],
+      ["Zeta", false],
+    ]);
   });
 });
