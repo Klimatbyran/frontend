@@ -36,6 +36,8 @@ interface TerritoryMapProps {
   scrollWheelZoom?: boolean;
   className?: string;
   showTooltip?: boolean;
+  /** The story overview explains the colours beside the map, so it can hide this. */
+  showLegend?: boolean;
   fitBounds?: boolean;
   fitBoundsPadding?: L.FitBoundsOptions["padding"];
   legendPosition?: MapLegendPosition;
@@ -62,6 +64,7 @@ function TerritoryMap({
   scrollWheelZoom = true,
   className,
   showTooltip = true,
+  showLegend = true,
   fitBounds = false,
   fitBoundsPadding,
   legendPosition = "bottom-right",
@@ -142,6 +145,7 @@ function TerritoryMap({
         entityType={entityType}
         selectedKPI={selectedKPI}
         showTooltip={showTooltip}
+        showLegend={showLegend}
         legendPosition={legendPosition}
         hoveredArea={hoveredArea}
         hoveredValue={hoveredValue}

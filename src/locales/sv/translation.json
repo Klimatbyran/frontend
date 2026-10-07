@@ -1144,8 +1144,56 @@
   "regionalOverviewPage": {
     "errorTitle": "Det gick inte att hämta länsinformation",
     "errorDescription": "Försök igen senare",
-    "title": "Länsöversikt",
-    "description": "Översikt över utsläpp och omställning på länsnivå"
+    "title": "Var i Sverige minskar länen tillräckligt snabbt?",
+    "description": "Kartan visar varje län. Blått är i linje med Parisavtalet. Rosa har längre kvar.",
+    "story": {
+      "loading": "Laddar länens klimatdata",
+      "explainerTitle": "Hur avgör vi om ett län är på rätt spår?",
+      "explainerBudget": "Vi använder Carbon Law för att se om utsläppen inom länet minskar tillräckligt snabbt. Läs mer om Carbon Law <0>här</0>.",
+      "explainerVerdict": "Tillräckligt snabbt är <strong>på rätt spår</strong>. För långsamt, eller fortfarande ökande, är <strong>ur kurs</strong>. Kartan använder samma två färger.",
+      "lensLabel": "Karta",
+      "lensParis": "Parisavtalet",
+      "lensPace": "Takten sedan 2015",
+      "mapTitle": "Karta över Sveriges län",
+      "kicker": "Det korta svaret",
+      "heading_one": "av Sveriges {{count}} län minskar utsläppen tillräckligt snabbt för Parisavtalet.",
+      "heading_other": "av Sveriges {{count}} län minskar utsläppen tillräckligt snabbt för Parisavtalet.",
+      "share": "Det är {{percent}} % av dem. Välj ett län på kartan för att läsa dess berättelse.",
+      "onTrack": "På rätt spår för Paris",
+      "offTrack": "Ur kurs",
+      "unknown": "Inte tillräckligt med data",
+      "kickerPace": "Takten sedan 2015",
+      "headingPace": "är den typiska årliga förändringen i ett svenskt län.",
+      "paceShare": "{{falling}} minskar. {{rising}} ökar fortfarande.",
+      "falling": "Minskar",
+      "rising": "Ökar fortfarande",
+      "flat": "Oförändrat",
+      "emptyHeading": "Ingen länsdata ännu.",
+      "emptyBody": "Kartan fylls i när siffrorna finns.",
+      "paceTitle": "Vad färgerna består av",
+      "paceTitleOnPaceLens": "Kartans två ytterligheter",
+      "paceIntro": "Blått på kartan är på rätt spår för Paris. Rosa är det inte. Under de färgerna har det typiska länet ändrat sina utsläpp med {{median}} om året — {{falling}} minskar, {{rising}} ökar fortfarande.",
+      "paceIntroNoMedian": "Blått på kartan är på rätt spår för Paris. Rosa är det inte. Det finns ännu ingen årlig förändring att ställa bredvid färgerna.",
+      "paceIntroOnPaceLens": "Kartan visar nu den årliga förändringen sedan 2015. Djupare blått är en snabbare minskning än de flesta. Rosa är långsammare, eller fortfarande ökande.",
+      "paceLeader": "{{name}} har den brantaste minskningen i listan, med {{change}} om året.",
+      "paceLeaderNotCutting": "{{name}} ligger närmast en verklig minskning i listan, på {{change}} om året.",
+      "paceTrailer": "{{name}} ligger längst från den takten, på {{change}} om året.",
+      "fallingFastest": "Minskar snabbast",
+      "furthestBehind": "Längst från takten",
+      "tableTitle": "Varje län",
+      "tableDescription": "Sök efter ett län, eller klicka på en kolumnrubrik för att sortera. Klicka på ett namn för hela historiken.",
+      "searchPlaceholder": "Sök efter ett län…",
+      "colName": "Län",
+      "colChange": "Förändring sedan 2015",
+      "colOnTrack": "På rätt spår för Paris?",
+      "badgeOnTrack": "På rätt spår",
+      "badgeOffTrack": "Ur kurs",
+      "badgeUnknown": "Ingen data",
+      "noComparableData": "Inte tillräckligt med data",
+      "showMoreRows": "Visa {{count}} till",
+      "showingCount": "Visar {{shown}} av {{total}} län",
+      "noResults": "Inga län matchar sökningen."
+    }
   },
   "detailPage": {
     "totalEmissions": "Totala utsläpp {{year}}",
@@ -1196,8 +1244,66 @@
   "municipalitiesOverviewPage": {
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
-    "title": "Kommunöversikt",
-    "description": "Data om utsläpp och klimatomställning i kommunerna"
+    "title": "Var i Sverige minskar kommunerna tillräckligt snabbt?",
+    "description": "Kartan visar varje kommun. Blått är i linje med Parisavtalet. Rosa har längre kvar.",
+    "story": {
+      "loading": "Laddar kommunernas klimatdata",
+      "explainerTitle": "Hur avgör vi om en kommun är på rätt spår?",
+      "explainerBudget": "Vi använder Carbon Law för att se om utsläppen inom kommunen minskar tillräckligt snabbt. Läs mer om Carbon Law <0>här</0>.",
+      "explainerVerdict": "Tillräckligt snabbt är <strong>på rätt spår</strong>. För långsamt, eller fortfarande ökande, är <strong>ur kurs</strong>. Kartan använder samma två färger.",
+      "lensLabel": "Karta",
+      "lensParis": "Parisavtalet",
+      "lensPace": "Takten sedan 2015",
+      "mapTitle": "Karta över Sveriges kommuner",
+      "kicker": "Det korta svaret",
+      "heading_one": "av Sveriges {{count}} kommun minskar utsläppen tillräckligt snabbt för Parisavtalet.",
+      "heading_other": "av Sveriges {{count}} kommuner minskar utsläppen tillräckligt snabbt för Parisavtalet.",
+      "share": "Det är {{percent}} % av dem. Välj en plats på kartan för att läsa dess berättelse.",
+      "onTrack": "På rätt spår för Paris",
+      "offTrack": "Ur kurs",
+      "unknown": "Inte tillräckligt med data",
+      "kickerPace": "Takten sedan 2015",
+      "headingPace": "är den typiska årliga förändringen i en svensk kommun.",
+      "paceShare": "{{falling}} minskar. {{rising}} ökar fortfarande.",
+      "falling": "Minskar",
+      "rising": "Ökar fortfarande",
+      "flat": "Oförändrat",
+      "emptyHeading": "Ingen kommunsdata ännu.",
+      "emptyBody": "Kartan fylls i när siffrorna finns.",
+      "paceTitle": "Vad färgerna består av",
+      "paceTitleOnPaceLens": "Kartans två ytterligheter",
+      "paceIntro": "Blått på kartan är på rätt spår för Paris. Rosa är det inte. Under de färgerna har den typiska kommunen ändrat sina utsläpp med {{median}} om året — {{falling}} minskar, {{rising}} ökar fortfarande.",
+      "paceIntroNoMedian": "Blått på kartan är på rätt spår för Paris. Rosa är det inte. Det finns ännu ingen årlig förändring att ställa bredvid färgerna.",
+      "paceIntroOnPaceLens": "Kartan visar nu den årliga förändringen sedan 2015. Djupare blått är en snabbare minskning än de flesta. Rosa är långsammare, eller fortfarande ökande.",
+      "paceLeader": "{{name}} har den brantaste minskningen i listan, med {{change}} om året.",
+      "paceLeaderNotCutting": "{{name}} ligger närmast en verklig minskning i listan, på {{change}} om året.",
+      "paceTrailer": "{{name}} ligger längst från den takten, på {{change}} om året.",
+      "fallingFastest": "Minskar snabbast",
+      "furthestBehind": "Längst från takten",
+      "plansTitle": "En klimatplan är ett löfte, inte en minskning",
+      "plansLead": "{{withPlan}} av {{total}} kommuner har publicerat en klimatplan. En plan är en början. Siffrorna nedan visar hur ofta den hänger ihop med en minskning som räcker för Paris.",
+      "plansWith": "Har en publicerad plan",
+      "plansWithout": "Ingen publicerad plan",
+      "plansOnTrackWith": "av dem med plan är på rätt spår",
+      "plansOnTrackWithout": "av dem utan plan är på rätt spår",
+      "plansAria": "{{withPlan}} kommuner ({{withPlanPercent}} %) har en publicerad klimatplan. {{withoutPlan}} ({{withoutPlanPercent}} %) har det inte.",
+      "tableTitle": "Varje kommun",
+      "tableDescription": "Sök efter en plats, eller klicka på en kolumnrubrik för att sortera. Klicka på ett namn för hela historiken.",
+      "searchPlaceholder": "Sök efter en kommun…",
+      "colName": "Kommun",
+      "colChange": "Förändring sedan 2015",
+      "colOnTrack": "På rätt spår för Paris?",
+      "colPlan": "Klimatplan",
+      "badgeOnTrack": "På rätt spår",
+      "badgeOffTrack": "Ur kurs",
+      "badgeUnknown": "Ingen data",
+      "badgePlan": "Plan",
+      "badgeNoPlan": "Ingen plan",
+      "noComparableData": "Inte tillräckligt med data",
+      "showMoreRows": "Visa {{count}} till",
+      "showingCount": "Visar {{shown}} av {{total}} kommuner",
+      "noResults": "Inga kommuner matchar sökningen."
+    }
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",
@@ -1233,21 +1339,21 @@
   "sector": {
     "energy": {
       "name": "Energi",
-      "title": "Energi\u00ADsektorn",
+      "title": "Energi­sektorn",
       "industryGroups": {
         "energy": "Energi"
       }
     },
     "materials": {
       "name": "Material",
-      "title": "Material\u00ADsektorn",
+      "title": "Material­sektorn",
       "industryGroups": {
         "materials": "Material"
       }
     },
     "industrials": {
       "name": "Industri",
-      "title": "Industri\u00ADsektorn",
+      "title": "Industri­sektorn",
       "industryGroups": {
         "capitalGoods": "Kapitalvaror",
         "commercialProfessionalServices": "Kommersiella och professionella tjänster",
@@ -1256,7 +1362,7 @@
     },
     "consumerDiscretionary": {
       "name": "Sällanköpsvaror",
-      "title": "Sällanköpsvaru\u00ADsektorn",
+      "title": "Sällanköpsvaru­sektorn",
       "industryGroups": {
         "automobilesComponents": "Bilar och komponenter",
         "consumerDurablesApparel": "Konsumentvaror och kläder",
@@ -1266,7 +1372,7 @@
     },
     "consumerStaples": {
       "name": "Dagligvaror",
-      "title": "Dagligvaru\u00ADsektorn",
+      "title": "Dagligvaru­sektorn",
       "industryGroups": {
         "consumerStaplesDistributionRetail": "Distribution och detaljhandel för dagligvaror",
         "foodBeverageTobacco": "Livsmedel, drycker och tobak",
@@ -1275,7 +1381,7 @@
     },
     "healthCare": {
       "name": "Hälsovård",
-      "title": "Hälsovårds\u00ADsektorn",
+      "title": "Hälsovårds­sektorn",
       "industryGroups": {
         "healthCareEquipmentServices": "Medicinteknisk utrustning och vårdtjänster",
         "pharmaceuticalsBiotechnologyLifeSciences": "Läkemedel, bioteknik och life sciences"
@@ -1283,7 +1389,7 @@
     },
     "financials": {
       "name": "Finans",
-      "title": "Finans\u00ADsektorn",
+      "title": "Finans­sektorn",
       "industryGroups": {
         "banks": "Banker",
         "financialServices": "Finansiella tjänster",
@@ -1301,7 +1407,7 @@
     },
     "communicationServices": {
       "name": "Kommunikation",
-      "title": "Kommunikations\u00ADsektorn",
+      "title": "Kommunikations­sektorn",
       "industryGroups": {
         "telecommunicationServices": "Telekommunikationstjänster",
         "mediaEntertainment": "Media och underhållning"
@@ -1309,14 +1415,14 @@
     },
     "utilities": {
       "name": "Kraftförsörjning",
-      "title": "Kraftförsörjnings\u00ADsektorn",
+      "title": "Kraftförsörjnings­sektorn",
       "industryGroups": {
         "utilities": "Kraftförsörjning"
       }
     },
     "realEstate": {
       "name": "Fastigheter",
-      "title": "Fastighets\u00ADsektorn",
+      "title": "Fastighets­sektorn",
       "industryGroups": {
         "equityRealEstateInvestmentTrustsReits": "Equity Real Estate Investment Trusts (REITs)",
         "realEstateManagementDevelopment": "Fastighetsförvaltning och fastighetsutveckling"

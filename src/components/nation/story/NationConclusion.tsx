@@ -53,13 +53,13 @@ export function NationConclusion({ metrics }: NationConclusionProps) {
         </p>
         <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
           <LocalizedLink
-            to="/municipalities?kpi=meetsParisGoal"
+            to="/municipalities"
             className={`${CONCLUSION_CTA_BASE} bg-orange-3/25 text-orange-3 hover:bg-orange-3/35`}
           >
             {t("nation.story.conclusion.ctaMunicipalities")}
           </LocalizedLink>
           <LocalizedLink
-            to="/regions?kpi=meetsParis"
+            to="/regions"
             className={`${CONCLUSION_CTA_BASE} bg-blue-2/25 text-blue-2 hover:bg-blue-2/35`}
           >
             {t("nation.story.conclusion.ctaRegions")}

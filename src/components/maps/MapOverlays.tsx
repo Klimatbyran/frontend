@@ -22,6 +22,7 @@ interface MapOverlaysProps {
   handleReset: () => void;
   onAreaClick?: (id: string) => void;
   showTooltip?: boolean;
+  showLegend?: boolean;
   legendPosition?: MapLegendPosition;
 }
 
@@ -29,6 +30,7 @@ function MapOverlays({
   entityType,
   selectedKPI,
   showTooltip = true,
+  showLegend = true,
   legendPosition = "bottom-right",
   hoveredArea,
   hoveredValue,
@@ -65,15 +67,17 @@ function MapOverlays({
           onClick={onAreaClick ? () => onAreaClick(hoveredArea) : undefined}
         />
       )}
-      <MapLegend
-        entityType={entityType}
-        leftValue={leftValue}
-        rightValue={rightValue}
-        unit={selectedKPI.unit ?? ""}
-        selectedKPI={selectedKPI as KPIValue}
-        hasNullValues={hasNullValues}
-        position={legendPosition}
-      />
+      {showLegend && (
+        <MapLegend
+          entityType={entityType}
+          leftValue={leftValue}
+          rightValue={rightValue}
+          unit={selectedKPI.unit ?? ""}
+          selectedKPI={selectedKPI as KPIValue}
+          hasNullValues={hasNullValues}
+          position={legendPosition}
+        />
+      )}
       <MapZoomControls
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
