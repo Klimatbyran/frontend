@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -63,19 +62,8 @@ function VerdictLists({ companies }: { companies: CompanyWithKPIs[] }) {
   );
 }
 
-const DOTS_PREVIEW_SUMMARY = {
-  total: 355,
-  onTrack: 58,
-  offTrack: 102,
-  unknown: 195,
-  reducing: 120,
-  reducingNotOnTrack: 62,
-  onTrackPercent: 16,
-};
-
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const sectorNames = useSectorNames();
 
@@ -122,13 +110,6 @@ export function CompaniesOverviewPage() {
   );
 
   const summary = useMemo(() => summariseParis(inView), [inView]);
-
-  // Temporary local preview: the companies API 401s without a key.
-  if (import.meta.env.DEV && searchParams.get("dotsPreview") === "1") {
-    return (
-      <ParisAnswerCard summary={DOTS_PREVIEW_SUMMARY} industryLabel={null} />
-    );
-  }
 
   if (companiesLoading) {
     return <CompaniesOverviewSkeleton />;
