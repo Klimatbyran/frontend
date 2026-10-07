@@ -1189,6 +1189,8 @@
     "booleanBehind": "Behind most",
     "booleanWithFew": "Like most",
     "booleanUnknown": "Not enough data",
+    "booleanYes": "{{share}} yes",
+    "booleanNo": "{{share}} no",
     "tiedForBest": "Tied for best",
     "reference": {
       "region": "the region",

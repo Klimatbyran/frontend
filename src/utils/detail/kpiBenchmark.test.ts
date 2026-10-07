@@ -158,9 +158,6 @@ describe("buildBooleanBenchmark", () => {
     expect(view?.tone).toBe("good");
     expect(view?.primary.key).toBe("kpiBenchmark.booleanAhead");
     expect(view?.trueShare).toBeCloseTo(0.2);
-    expect(view?.yesCount).toBe(1);
-    expect(view?.noCount).toBe(4);
-    expect(view?.unknownCount).toBe(0);
     expect(view?.subjectValue).toBe(true);
   });
 
@@ -174,9 +171,6 @@ describe("buildBooleanBenchmark", () => {
 
     expect(view?.tone).toBe("bad");
     expect(view?.primary.key).toBe("kpiBenchmark.booleanBehind");
-    expect(view?.yesCount).toBe(4);
-    expect(view?.noCount).toBe(1);
-    expect(view?.unknownCount).toBe(0);
   });
 
   it("explains a missing value with the peer share", () => {
@@ -190,9 +184,6 @@ describe("buildBooleanBenchmark", () => {
     expect(view?.tone).toBe("unknown");
     expect(view?.primary.key).toBe("kpiBenchmark.booleanUnknown");
     expect(view?.subjectValue).toBeNull();
-    expect(view?.yesCount).toBe(2);
-    expect(view?.noCount).toBe(2);
-    expect(view?.unknownCount).toBe(0);
   });
 
   it("counts this entity in the yes share when peers were already filtered", () => {
@@ -207,9 +198,6 @@ describe("buildBooleanBenchmark", () => {
     });
 
     expect(view?.trueShare).toBeCloseTo(2 / 6);
-    expect(view?.yesCount).toBe(2);
-    expect(view?.noCount).toBe(4);
-    expect(view?.unknownCount).toBe(0);
   });
 
   it("does not drop another yes when the subject is already excluded", () => {
@@ -222,54 +210,7 @@ describe("buildBooleanBenchmark", () => {
     });
 
     expect(view?.trueShare).toBeCloseTo(1);
-    expect(view?.yesCount).toBe(2);
-    expect(view?.noCount).toBe(0);
-    expect(view?.unknownCount).toBe(0);
     expect(view?.primary.key).toBe("kpiBenchmark.booleanWithMost");
-  });
-
-  it("keeps a dot for every peer, including missing answers", () => {
-    const view = buildBooleanBenchmark({
-      value: true,
-      peers: [true, false, null, undefined],
-      higherIsBetter: true,
-      peerGroup: "companies",
-      peersIncludeSubject: false,
-    });
-
-    expect(view?.yesCount).toBe(2);
-    expect(view?.noCount).toBe(1);
-    expect(view?.unknownCount).toBe(2);
-    expect(view?.trueShare).toBeCloseTo(2 / 3);
-  });
-
-  it("counts this entity as unknown when it was left out of the peer list", () => {
-    const view = buildBooleanBenchmark({
-      value: null,
-      peers: [true, null, false],
-      higherIsBetter: true,
-      peerGroup: "municipalities",
-      peersIncludeSubject: false,
-    });
-
-    expect(view?.yesCount).toBe(1);
-    expect(view?.noCount).toBe(1);
-    expect(view?.unknownCount).toBe(2);
-    expect(view?.subjectValue).toBeNull();
-  });
-
-  it("does not add a second unknown dot when this entity is already in the list", () => {
-    const view = buildBooleanBenchmark({
-      value: null,
-      peers: [null, true, true, false],
-      higherIsBetter: true,
-      peerGroup: "regions",
-    });
-
-    expect(view?.yesCount).toBe(2);
-    expect(view?.noCount).toBe(1);
-    expect(view?.unknownCount).toBe(1);
-    expect(view?.trueShare).toBeCloseTo(2 / 3);
   });
 });
 

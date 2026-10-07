@@ -1,22 +1,25 @@
 import type React from "react";
-import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { useChartMotion } from "@/hooks/useChartMotion";
+import { useLanguage } from "@/components/LanguageProvider";
+import { formatPercent } from "@/utils/formatting/localization";
 import type {
   BenchmarkPhrase,
   BooleanBenchmarkView,
   KpiBenchmarkView,
   NumericBenchmarkView,
 } from "@/utils/detail/kpiBenchmark";
+import { booleanBenchmarkMarkerPosition } from "@/utils/detail/kpiBenchmark";
 import {
   buildComparativeBarGradient,
   buildNeutralBarGradient,
 } from "@/utils/detail/kpiBenchmarkBarGradient";
 import {
+  benchmarkToneFill,
   benchmarkToneTextClass,
   booleanBarLegendColors,
+  buildBooleanBarBackground,
   numericBarUsesNeutralGradient,
   numericBenchmarkAccent,
 } from "@/components/detail/kpiBenchmarkColors";
@@ -108,135 +111,6 @@ function NumericBenchmark({
   );
 }
 
-/** Each dot pops in; the wave finishes under ~1.6s even for a full peer set. */
-const DOT_ENTER_DURATION = 0.2;
-const DOT_WAVE_SPAN = 1.35;
-const UNKNOWN_DOT = "rgba(255,255,255,0.2)";
-
-/**
- * A detail KPI column is about 14rem wide, so the cluster stays small and
- * wraps instead of using the large overview-card dots.
- */
-function peerDotSize(total: number): number {
-  if (total <= 16) return 12;
-  if (total <= 48) return 10;
-  return 8;
-}
-
-function dotStaggerStep(count: number): number {
-  if (count <= 1) return 0;
-  return DOT_WAVE_SPAN / (count - 1);
-}
-
-interface PeerDot {
-  color: string;
-  subject: boolean;
-}
-
-function peerDots(view: BooleanBenchmarkView): PeerDot[] {
-  const colors = booleanBarLegendColors(view.higherIsBetter, view.visual);
-  const groups = [
-    {
-      count: view.yesCount,
-      color: colors.yes,
-      subject: view.subjectValue === true,
-    },
-    {
-      count: view.noCount,
-      color: colors.no,
-      subject: view.subjectValue === false,
-    },
-    { count: view.unknownCount, color: UNKNOWN_DOT, subject: false },
-  ];
-  const dots: PeerDot[] = [];
-  for (const group of groups) {
-    for (let index = 0; index < group.count; index += 1) {
-      dots.push({
-        color: group.color,
-        subject: group.subject && index === 0,
-      });
-    }
-  }
-  return dots;
-}
-
-function BooleanPeerDots({ view }: { view: BooleanBenchmarkView }) {
-  const { reduceMotion, ease } = useChartMotion();
-  const dots = peerDots(view);
-  const size = peerDotSize(dots.length);
-  const staggerStep = dotStaggerStep(dots.length);
-
-  return (
-    <motion.div
-      aria-hidden="true"
-      className="flex flex-wrap"
-      style={{ gap: 3 }}
-      initial={reduceMotion ? false : "hidden"}
-      animate="visible"
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: reduceMotion ? 0 : staggerStep,
-          },
-        },
-      }}
-    >
-      {dots.map((dot, index) => (
-        <motion.span
-          key={index}
-          className={cn("block shrink-0 rounded-full", dot.subject && "z-[1]")}
-          style={{
-            width: size,
-            height: size,
-            backgroundColor: dot.color,
-            boxShadow: dot.subject
-              ? "0 0 0 1.5px rgba(255,255,255,0.95)"
-              : undefined,
-          }}
-          variants={{
-            hidden: { opacity: 0, scale: 0.35 },
-            visible: {
-              opacity: 1,
-              scale: 1,
-              transition: {
-                duration: reduceMotion ? 0 : DOT_ENTER_DURATION,
-                ease,
-              },
-            },
-          }}
-        />
-      ))}
-    </motion.div>
-  );
-}
-
-function BooleanDotLegend({ view }: { view: BooleanBenchmarkView }) {
-  const { t } = useTranslation();
-  const colors = booleanBarLegendColors(view.higherIsBetter, view.visual);
-  const items = [
-    { color: colors.yes, label: t("yes") },
-    { color: colors.no, label: t("no") },
-    ...(view.unknownCount > 0
-      ? [{ color: UNKNOWN_DOT, label: t("unknown") }]
-      : []),
-  ];
-
-  return (
-    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs leading-none text-grey">
-      {items.map((item) => (
-        <span key={item.label} className="inline-flex items-center gap-1">
-          <span
-            className="h-1.5 w-1.5 shrink-0 rounded-full"
-            style={{ backgroundColor: item.color }}
-          />
-          {item.label}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 function BooleanBenchmark({
   view,
   className,
@@ -245,7 +119,21 @@ function BooleanBenchmark({
   className?: string;
 }) {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const primary = phraseText(t, view.primary);
+  const barBackground = buildBooleanBarBackground(
+    view.trueShare,
+    view.higherIsBetter,
+    view.visual,
+  );
+  const markerPosition = booleanBenchmarkMarkerPosition(
+    view.trueShare,
+    view.subjectValue,
+  );
+  const markerFill = benchmarkToneFill(view.tone, view.visual);
+  const legendColors = booleanBarLegendColors(view.higherIsBetter, view.visual);
+  const yesShareLabel = formatPercent(view.trueShare, currentLanguage);
+  const noShareLabel = formatPercent(1 - view.trueShare, currentLanguage);
 
   return (
     <BenchmarkShell
@@ -253,10 +141,40 @@ function BooleanBenchmark({
       textClassName={benchmarkToneTextClass(view.tone, view.visual)}
       className={className}
     >
-      <div role="img" aria-label={primary}>
-        <BooleanPeerDots view={view} />
+      <div role="img" aria-label={primary} className="px-1">
+        <div className="relative flex h-4 items-center">
+          <div
+            className="h-2 w-full rounded-full"
+            style={{ background: barBackground }}
+          />
+          {markerPosition != null && (
+            <span
+              className="absolute top-1/2 z-[2] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{
+                left: `${markerPosition * 100}%`,
+                background: markerFill,
+                boxShadow: "0 0 0 2px rgba(255,255,255,0.9)",
+              }}
+            />
+          )}
+        </div>
+        <div className="mt-1.5 flex flex-wrap justify-between gap-x-3 gap-y-0.5 text-xs text-grey">
+          <span className="inline-flex items-center gap-1.5">
+            <span
+              className="h-2 w-2 shrink-0 rounded-full"
+              style={{ backgroundColor: legendColors.yes }}
+            />
+            {t("kpiBenchmark.booleanYes", { share: yesShareLabel })}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span
+              className="h-2 w-2 shrink-0 rounded-full"
+              style={{ backgroundColor: legendColors.no }}
+            />
+            {t("kpiBenchmark.booleanNo", { share: noShareLabel })}
+          </span>
+        </div>
       </div>
-      <BooleanDotLegend view={view} />
     </BenchmarkShell>
   );
 }
