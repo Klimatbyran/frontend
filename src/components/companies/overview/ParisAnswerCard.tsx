@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
 
-interface VerdictBarProps {
+interface VerdictColumnProps {
   color: string;
   label: string;
   count: number;
@@ -11,12 +12,19 @@ interface VerdictBarProps {
   index: number;
 }
 
-function VerdictBar({ color, label, count, judged, index }: VerdictBarProps) {
+function VerdictColumn({
+  color,
+  label,
+  count,
+  judged,
+  index,
+}: VerdictColumnProps) {
   const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
   const share = judged ? (count / judged) * 100 : 0;
 
   return (
     <motion.div
+      className="flex min-w-0 flex-1 flex-col items-center"
       initial={reduceMotion ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -25,31 +33,32 @@ function VerdictBar({ color, label, count, judged, index }: VerdictBarProps) {
         ease,
       }}
     >
-      <div className="mb-1.5 flex items-baseline justify-between gap-3 text-sm">
-        <span className="inline-flex min-w-0 items-center gap-2 text-white/70">
-          <i
-            className="size-2.5 shrink-0 rounded-full"
-            style={{ backgroundColor: color }}
-          />
-          <span className="truncate">{label}</span>
-        </span>
-        <span className="shrink-0 tabular-nums">
-          <span className="font-medium">{count}</span>
-          <span className="ml-2 text-white/40">{Math.round(share)}%</span>
-        </span>
+      <div className="mb-2 text-center text-sm tabular-nums">
+        <span className="font-medium">{count}</span>
+        <span className="ml-1.5 text-white/40">{Math.round(share)}%</span>
       </div>
-      <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
+      <div
+        className="flex h-36 w-full max-w-[88px] items-end justify-center sm:h-40"
+        aria-hidden
+      >
         <motion.div
-          className="h-full origin-left rounded-full"
-          style={{ backgroundColor: color, width: `${share}%` }}
-          initial={reduceMotion ? false : { scaleX: 0 }}
-          animate={{ scaleX: 1 }}
+          className="w-full min-h-[4px] origin-bottom rounded-t-md"
+          style={{ backgroundColor: color, height: `${share}%` }}
+          initial={reduceMotion ? false : { scaleY: 0 }}
+          animate={{ scaleY: 1 }}
           transition={{
             duration: reduceMotion ? 0 : 0.7,
             delay: stagger(index, 0.08),
             ease,
           }}
         />
+      </div>
+      <div className="mt-3 flex max-w-[120px] items-start justify-center gap-2 text-center text-sm text-white/70">
+        <i
+          className="mt-1.5 size-2.5 shrink-0 rounded-full"
+          style={{ backgroundColor: color }}
+        />
+        <span className="leading-snug">{label}</span>
       </div>
     </motion.div>
   );
@@ -99,6 +108,7 @@ export function ParisAnswerCard({
     : t("companiesOverviewPage.paris.scopeAll");
 
   const judged = onTrack + offTrack;
+  const showChartPanel = judged > 0 || unknown > 0;
 
   return (
     <section className="grid items-center gap-9 rounded-level-2 bg-black-2 px-6 py-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.85fr)] md:gap-14 md:px-10 md:py-9">
@@ -144,21 +154,39 @@ export function ParisAnswerCard({
         </motion.p>
       </div>
 
-      <div>
-        {judged > 0 && (
-          <>
+      {showChartPanel && (
+        <div>
+          <div className="flex items-center gap-2">
             <p className="text-xs text-white/40">
               {t("companiesOverviewPage.paris.chartCaption")}
             </p>
-            <div className="mt-4 space-y-4">
-              <VerdictBar
+            {unknown > 0 && (
+              <InfoTooltip ariaLabel={t("companiesOverviewPage.paris.unknownNoteAria")}>
+                <p>
+                  {t("companiesOverviewPage.paris.unknownNote", {
+                    count: unknown,
+                  })}
+                </p>
+              </InfoTooltip>
+            )}
+          </div>
+          {judged > 0 && (
+            <div
+              className="mt-4 flex items-end justify-center gap-5 sm:gap-8"
+              role="img"
+              aria-label={t("companiesOverviewPage.paris.chartAria", {
+                onTrack,
+                offTrack,
+              })}
+            >
+              <VerdictColumn
                 color="var(--blue-3)"
                 label={t("companiesOverviewPage.paris.onTrack")}
                 count={onTrack}
                 judged={judged}
                 index={0}
               />
-              <VerdictBar
+              <VerdictColumn
                 color="var(--pink-3)"
                 label={t("companiesOverviewPage.paris.offTrack")}
                 count={offTrack}
@@ -166,19 +194,9 @@ export function ParisAnswerCard({
                 index={1}
               />
             </div>
-          </>
-        )}
-        {unknown > 0 && (
-          <p
-            className={`flex items-start gap-2 text-sm leading-relaxed text-white/50 ${judged > 0 ? "mt-5" : ""}`}
-          >
-            <i className="mt-1.5 size-2 shrink-0 rounded-full bg-white/25" />
-            <span>
-              {t("companiesOverviewPage.paris.unknownNote", { count: unknown })}
-            </span>
-          </p>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }
