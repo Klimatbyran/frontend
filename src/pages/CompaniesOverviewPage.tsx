@@ -14,6 +14,7 @@ import {
   type OverviewViewMode,
 } from "@/components/ranked/OverviewSplitLayout";
 import RankedList from "@/components/ranked/RankedList";
+import { CompanyRegionMapSection } from "@/components/companies/CompanyRegionMapSection";
 import CompanyInsightsPanel from "@/components/companies/rankedList/CompanyInsightsPanel";
 import { CompanyKPIVisualization } from "@/components/companies/rankedList/CompanyKPIVisualization";
 import { FilterPopover } from "@/components/explore/FilterPopover";
@@ -218,6 +219,8 @@ function CompaniesOverviewContent({
         onCompanyClick={onCompanyClick}
         onViewModeChange={onViewModeChange}
       />
+
+      <CompanyRegionMapSection companies={companiesWithKPIs} />
     </>
   );
 }

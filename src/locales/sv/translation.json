@@ -350,6 +350,38 @@
       "showGraph": "Graf",
       "showList": "Lista"
     },
+    "regionMap": {
+      "title": "Företagsrapporter och territoriella utsläpp",
+      "descriptionPlaced": "Färgen visar hur stor del av länets territoriella utsläpp {{year}} som de företagsrapporter vi kan placera där motsvarar. Ett företag räknas med när kommun, ort eller län i uppgifterna matchar en svensk kommun eller ett län. Siffran är företagets rapporterade total — ofta verksamhet och värdekedja utanför länet — och är inte en del av det territoriella utsläppet.",
+      "descriptionUnplaced": "Företagsdata har ingen kommun eller något län som går att matcha, så rapporterna kan inte summeras per län. Färgen visar i stället hur stor del av Sveriges territoriella utsläpp {{year}} som ligger i varje län. Kortet jämför det länet med den samlade senaste rapporteringen från företagen i den här listan. Det är en jämförelse av skala, inte utsläpp inom länet.",
+      "unplacedNote": "{{count}} företag i den här listan saknar en plats vi kan matcha och ingår inte i något län.",
+      "descriptionNoTerritorial": "Territoriella länsdata saknas, så kartan kan inte visa jämförelsen.",
+      "loading": "Hämtar länsdata…",
+      "error": "Länsdata kunde inte hämtas.",
+      "chooseRegion": "Välj län",
+      "legendCompanyShare": "Andel av länets territoriella utsläpp",
+      "legendTerritorialShare": "Andel av Sveriges territoriella utsläpp",
+      "card": {
+        "territorialLabel": "Territoriella utsläpp {{year}}",
+        "territorialMissing": "Territoriella utsläpp saknas för jämförelseåret",
+        "companyInRegion": "Företagsrapporter i länet",
+        "companyInList": "Företagsrapporter i listan",
+        "companyMissing": "Inga rapporterade totaler",
+        "companyNonePlaced": "Inga företag placerade",
+        "companyCount_one": "{{count}} företag",
+        "companyCount_other": "{{count}} företag",
+        "unit": "ton CO₂e",
+        "openRegion": "Öppna länet",
+        "yearSpan": " ({{min}}–{{max}})",
+        "yearSpanSingle": " ({{year}})",
+        "relationshipRegionalShare": "Företag vi kan placera i {{region}} rapporterar {{company}} ton CO₂e. Det motsvarar {{share}} av länets territoriella utsläpp på {{territorial}} ton CO₂e {{year}}. Rapporterna följer företaget, inte länsgränsen, och kan därför vara större än de territoriella utsläppen.",
+        "relationshipCompanyOnly": "Företag vi kan placera i {{region}} rapporterar {{company}} ton CO₂e. Länets territoriella siffra saknas för jämförelseåret, så andelen går inte att räkna.",
+        "relationshipPlacedWithoutEmissions": "{{count}} företag kan knytas till {{region}}, men inget av dem har en rapporterad total för den senaste perioden.",
+        "relationshipNationalScale": "Inget företag i den här listan kan placeras i {{region}}. Tillsammans rapporterar företagen {{company}} ton CO₂e i sina senaste rapporter{{yearSpan}}. Det är {{ratio}} gånger länets territoriella utsläpp på {{territorial}} ton CO₂e {{year}}. Företagssumman är inte utsläpp inne i länet.",
+        "relationshipRegionUnplaced": "Inget företag i den här listan kan knytas till {{region}}.",
+        "relationshipMissingTerritorial": "Territoriella utsläpp saknas för {{region}} det år vi jämför, så jämförelsen går inte att räkna."
+      }
+    },
     "visualizations": {
       "noVisualizationAvailable": "Ingen visualisering tillgänglig för denna KPI",
       "noDataAvailable": "Ingen data tillgänglig",

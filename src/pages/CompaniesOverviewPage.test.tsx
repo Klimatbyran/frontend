@@ -149,6 +149,18 @@ vi.mock("@/components/explore/FilterPopover", () => ({
   ),
 }));
 
+vi.mock("@/hooks/regions/useRegionsForExplore", () => ({
+  useRegionsForExplore: () => ({
+    regions: [],
+    loading: false,
+    error: null,
+  }),
+}));
+
+vi.mock("@/components/maps/TerritoryMap", () => ({
+  default: () => <div data-testid="sweden-company-map" />,
+}));
+
 vi.mock("@/components/companies/rankedList/CompanyInsightsPanel", () => ({
   default: ({
     companyData,
