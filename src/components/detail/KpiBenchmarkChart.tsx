@@ -131,10 +131,7 @@ function BooleanBenchmark({
     view.subjectValue,
   );
   const markerFill = benchmarkToneFill(view.tone, view.visual);
-  const legendColors = booleanBarLegendColors(
-    view.higherIsBetter,
-    view.visual,
-  );
+  const legendColors = booleanBarLegendColors(view.higherIsBetter, view.visual);
   const yesShareLabel = formatPercent(view.trueShare, currentLanguage);
   const noShareLabel = formatPercent(1 - view.trueShare, currentLanguage);
 
