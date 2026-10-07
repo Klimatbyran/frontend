@@ -25,7 +25,7 @@ export interface DetailHeaderProps {
   headerChip?: ReactNode;
 }
 
-function DetailStatItem({ stat, dense }: { stat: DetailStat; dense: boolean }) {
+function DetailStatItem({ stat }: { stat: DetailStat }) {
   return (
     <OverviewStat
       variant="detail"
@@ -36,7 +36,6 @@ function DetailStatItem({ stat, dense }: { stat: DetailStat; dense: boolean }) {
       info={stat.info}
       infoText={stat.infoText}
       caption={stat.caption}
-      dense={dense}
       useFlex1={false}
     />
   );
@@ -63,8 +62,6 @@ export function DetailHeader({
   supplementalData,
   headerChip,
 }: DetailHeaderProps) {
-  const dense = stats.length >= 4;
-
   return (
     <SectionWithHelp helpItems={helpItems}>
       <div className="flex items-start justify-between gap-4">
@@ -83,7 +80,7 @@ export function DetailHeader({
       {stats.length > 0 && (
         <div className={cn("mt-8 grid", statsGridClass(stats.length))}>
           {stats.map((stat, index) => (
-            <DetailStatItem key={index} stat={stat} dense={dense} />
+            <DetailStatItem key={index} stat={stat} />
           ))}
         </div>
       )}
