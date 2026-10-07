@@ -34,6 +34,9 @@ function ChipFilterSkeleton() {
   );
 }
 
+/** Mid-sized dots and a full block, matching a typical unfiltered selection. */
+const DOT_COUNT = 48;
+
 function AnswerCardSkeleton() {
   return (
     <section className="grid items-center gap-9 rounded-level-2 bg-black-2 px-6 py-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.85fr)] md:gap-14 md:px-10 md:py-9">
@@ -52,20 +55,23 @@ function AnswerCardSkeleton() {
 
       <div>
         <Block className="h-3 w-44" />
-        <div className="mt-4 space-y-4">
-          {Array.from({ length: 2 }, (_, index) => (
-            <div key={index}>
-              <div className="mb-1.5 flex items-center justify-between gap-3">
-                <Block className="h-3.5 w-36" />
-                <Block className="h-3.5 w-14" />
-              </div>
-              <Block className="h-2.5 w-full rounded-full" />
-            </div>
+        <div className="mt-2.5 flex flex-wrap gap-1.5">
+          {Array.from({ length: DOT_COUNT }, (_, index) => (
+            <Block key={index} className="size-4 rounded-full" />
           ))}
         </div>
-        <div className="mt-5 flex items-start gap-2">
-          <Block className="mt-1.5 size-2 shrink-0 rounded-full" />
-          <Block className="h-4 w-full max-w-[280px]" />
+        <div className="mt-3.5">
+          {Array.from({ length: 3 }, (_, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2.5 border-t border-white/10 py-3 last:border-b"
+            >
+              <Block className="size-2.5 shrink-0 rounded-full" />
+              <Block className="h-3.5 w-full max-w-[150px] flex-1" />
+              <Block className="h-3.5 w-8 shrink-0" />
+              <Block className="h-3.5 w-11 shrink-0" />
+            </div>
+          ))}
         </div>
       </div>
     </section>

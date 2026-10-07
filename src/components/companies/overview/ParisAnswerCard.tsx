@@ -1,34 +1,47 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { InfoTooltip } from "@/components/layout/InfoTooltip";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
 
-interface VerdictColumnProps {
+/**
+ * A handful of companies still has to fill the block, so the dots grow as the
+ * selection shrinks instead of trailing off as one sparse row.
+ */
+function dotSize(total: number): number {
+  if (total <= 24) return 22;
+  if (total <= 60) return 16;
+  return 12;
+}
+
+/** Each dot pops in; the wave finishes under ~1.6s even for the full Swedish set. */
+const DOT_ENTER_DURATION = 0.2;
+const DOT_WAVE_SPAN = 1.35;
+
+function dotStaggerStep(count: number): number {
+  if (count <= 1) return 0;
+  return DOT_WAVE_SPAN / (count - 1);
+}
+
+interface BreakdownRowProps {
   color: string;
   label: string;
   count: number;
-  judged: number;
-  maxCount: number;
+  total: number;
   index: number;
 }
 
-function VerdictColumn({
+function BreakdownRow({
   color,
   label,
   count,
-  judged,
-  maxCount,
+  total,
   index,
-}: VerdictColumnProps) {
+}: BreakdownRowProps) {
   const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
-  const share = judged ? (count / judged) * 100 : 0;
-  const barHeightPercent =
-    maxCount > 0 && count > 0 ? (count / maxCount) * 100 : 0;
 
   return (
     <motion.div
-      className="flex w-[116px] shrink-0 flex-col items-center sm:w-[128px]"
+      className="flex items-center gap-2.5 border-t border-white/10 py-3 text-sm last:border-b"
       initial={reduceMotion ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -37,40 +50,15 @@ function VerdictColumn({
         ease,
       }}
     >
-      <div className="flex h-40 w-full items-end sm:h-44" aria-hidden>
-        <motion.div
-          className="relative w-full origin-bottom rounded-t-lg"
-          style={{
-            backgroundColor: color,
-            height: `${barHeightPercent}%`,
-          }}
-          initial={reduceMotion ? false : { scaleY: 0 }}
-          animate={{ scaleY: 1 }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.7,
-            delay: stagger(index, 0.08),
-            ease,
-          }}
-        >
-          {count > 0 && (
-            <div className="absolute inset-x-0 top-0 flex flex-col items-center px-1 pt-2 text-center text-xs leading-tight tabular-nums">
-              <span className="font-medium text-white drop-shadow-sm">
-                {count}
-              </span>
-              <span className="text-white/75 drop-shadow-sm">
-                {Math.round(share)}%
-              </span>
-            </div>
-          )}
-        </motion.div>
-      </div>
-      <div className="mt-3 flex min-h-[2.75rem] w-full items-start justify-center gap-1.5 px-0.5 text-center text-xs leading-snug text-white/70">
-        <i
-          className="mt-1 size-2 shrink-0 rounded-full"
-          style={{ backgroundColor: color }}
-        />
-        <span>{label}</span>
-      </div>
+      <span
+        className="size-2.5 shrink-0 rounded-full"
+        style={{ backgroundColor: color }}
+      />
+      <span className="min-w-0 flex-1 text-white/70">{label}</span>
+      <span className="font-medium tabular-nums">{count}</span>
+      <span className="w-11 text-right tabular-nums text-white/40">
+        {total ? Math.round((count / total) * 100) : 0}%
+      </span>
     </motion.div>
   );
 }
@@ -118,9 +106,14 @@ export function ParisAnswerCard({
       })
     : t("companiesOverviewPage.paris.scopeAll");
 
-  const judged = onTrack + offTrack;
-  const showChartPanel = judged > 0 || unknown > 0;
-  const maxCount = Math.max(onTrack, offTrack);
+  const size = dotSize(total);
+  const dots = [
+    ...Array<string>(onTrack).fill("var(--blue-3)"),
+    ...Array<string>(offTrack).fill("var(--pink-3)"),
+    ...Array<string>(unknown).fill("rgba(255,255,255,0.2)"),
+  ];
+
+  const staggerStep = dotStaggerStep(dots.length);
 
   return (
     <section className="grid items-center gap-9 rounded-level-2 bg-black-2 px-6 py-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.85fr)] md:gap-14 md:px-10 md:py-9">
@@ -166,53 +159,68 @@ export function ParisAnswerCard({
         </motion.p>
       </div>
 
-      {showChartPanel && (
-        <div>
-          <div className="flex min-w-0 items-center gap-2">
-            <p className="shrink-0 whitespace-nowrap text-xs text-white/40">
-              {t("companiesOverviewPage.paris.chartCaption")}
-            </p>
-            {unknown > 0 && (
-              <InfoTooltip
-                ariaLabel={t("companiesOverviewPage.paris.unknownNoteAria")}
-              >
-                <p>
-                  {t("companiesOverviewPage.paris.unknownNote", {
-                    count: unknown,
-                  })}
-                </p>
-              </InfoTooltip>
-            )}
-          </div>
-          {judged > 0 && (
-            <div
-              className="mt-4 flex items-end justify-center gap-2 sm:gap-3"
-              role="img"
-              aria-label={t("companiesOverviewPage.paris.chartAria", {
-                onTrack,
-                offTrack,
-              })}
-            >
-              <VerdictColumn
-                color="var(--blue-3)"
-                label={t("companiesOverviewPage.paris.onTrack")}
-                count={onTrack}
-                judged={judged}
-                maxCount={maxCount}
-                index={0}
-              />
-              <VerdictColumn
-                color="var(--pink-3)"
-                label={t("companiesOverviewPage.paris.offTrack")}
-                count={offTrack}
-                judged={judged}
-                maxCount={maxCount}
-                index={1}
-              />
-            </div>
-          )}
+      <div>
+        <p className="text-xs text-white/40">
+          {t("companiesOverviewPage.paris.dotNote")}
+        </p>
+        <motion.div
+          aria-hidden="true"
+          className="mt-2.5 flex flex-wrap"
+          style={{ gap: size > 16 ? 9 : 6 }}
+          initial={reduceMotion ? false : "hidden"}
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: reduceMotion ? 0 : staggerStep,
+              },
+            },
+          }}
+        >
+          {dots.map((color, index) => (
+            <motion.span
+              key={index}
+              className="block rounded-full"
+              style={{ width: size, height: size, backgroundColor: color }}
+              variants={{
+                hidden: { opacity: 0, scale: 0.35 },
+                visible: {
+                  opacity: 1,
+                  scale: 1,
+                  transition: {
+                    duration: reduceMotion ? 0 : DOT_ENTER_DURATION,
+                    ease,
+                  },
+                },
+              }}
+            />
+          ))}
+        </motion.div>
+        <div className="mt-3.5">
+          <BreakdownRow
+            color="var(--blue-3)"
+            label={t("companiesOverviewPage.paris.onTrack")}
+            count={onTrack}
+            total={total}
+            index={0}
+          />
+          <BreakdownRow
+            color="var(--pink-3)"
+            label={t("companiesOverviewPage.paris.offTrack")}
+            count={offTrack}
+            total={total}
+            index={1}
+          />
+          <BreakdownRow
+            color="rgba(255,255,255,0.2)"
+            label={t("companiesOverviewPage.paris.notEnoughData")}
+            count={unknown}
+            total={total}
+            index={2}
+          />
         </div>
-      )}
+      </div>
     </section>
   );
 }

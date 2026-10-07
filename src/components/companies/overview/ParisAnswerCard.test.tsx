@@ -9,9 +9,6 @@ vi.mock("react-i18next", () => ({
       if (options && "count" in options) {
         return `${key}:${options.count}`;
       }
-      if (options && "onTrack" in options && "offTrack" in options) {
-        return `${key}:${options.onTrack}:${options.offTrack}`;
-      }
       return key;
     },
   }),
@@ -36,29 +33,28 @@ const baseSummary: ParisSummary = {
 };
 
 describe("ParisAnswerCard", () => {
-  it("shows chart caption with info helper when some companies are excluded", () => {
-    render(<ParisAnswerCard summary={baseSummary} industryLabel={null} />);
+  it("shows one animated dot per company and the three-way breakdown", () => {
+    const { container } = render(
+      <ParisAnswerCard summary={baseSummary} industryLabel={null} />,
+    );
 
     expect(
-      screen.getByText("companiesOverviewPage.paris.chartCaption"),
+      screen.getByText("companiesOverviewPage.paris.dotNote"),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", {
-        name: "companiesOverviewPage.paris.unknownNoteAria",
-      }),
+      container.querySelector('[aria-hidden="true"]')?.querySelectorAll("span"),
+    ).toHaveLength(10);
+    expect(
+      screen.getByText("companiesOverviewPage.paris.onTrack"),
     ).toBeInTheDocument();
     expect(
-      screen.queryByText(/companiesOverviewPage.paris.unknownNote/),
-    ).not.toBeInTheDocument();
-  });
-
-  it("renders a vertical bar chart for on track and off track", () => {
-    render(<ParisAnswerCard summary={baseSummary} industryLabel={null} />);
-
-    expect(
-      screen.getByRole("img", {
-        name: "companiesOverviewPage.paris.chartAria:3:5",
-      }),
+      screen.getByText("companiesOverviewPage.paris.offTrack"),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("companiesOverviewPage.paris.notEnoughData"),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("3").length).toBeGreaterThan(0);
+    expect(screen.getByText("5")).toBeInTheDocument();
+    expect(screen.getByText("2")).toBeInTheDocument();
   });
 });
