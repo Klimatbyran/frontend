@@ -15,6 +15,10 @@ interface OverviewStatProps {
   variant?: "overview" | "detail";
   info?: boolean;
   infoText?: string;
+  /** Short plain-language line under the value. */
+  caption?: string;
+  /** Slightly smaller type so four headline numbers fit on one desktop row. */
+  dense?: boolean;
   useFlex1?: boolean;
 }
 
@@ -28,6 +32,8 @@ export function OverviewStat({
   variant = "overview",
   info = false,
   infoText,
+  caption,
+  dense = false,
   useFlex1 = true,
 }: OverviewStatProps) {
   const isDetailVariant = variant === "detail";
@@ -38,7 +44,13 @@ export function OverviewStat({
       if (isDetailVariant) {
         return (
           <div className="flex gap-2">
-            <Text className="text-lg md:text-xl">{label}</Text>
+            <Text
+              className={
+                dense ? "text-sm md:text-base" : "text-base md:text-lg"
+              }
+            >
+              {label}
+            </Text>
             {info && infoText && (
               <span className="text-grey">
                 <InfoTooltip ariaLabel="Additional information">
@@ -49,22 +61,32 @@ export function OverviewStat({
           </div>
         );
       }
-      return <Text className="lg:text-lg md:text-base text-sm">{label}</Text>;
+      return <Text className="lg:text-base md:text-sm text-sm">{label}</Text>;
     }
     return label;
   };
 
+  const detailValueClassName = cn(
+    dense ? "text-3xl xl:text-4xl" : "text-3xl md:text-5xl",
+    "max-w-full break-words [overflow-wrap:anywhere]",
+    valueClassName,
+  );
+
   // Handle value and unit rendering
   const renderValue = () => {
-    if (isDetailVariant && unit) {
-      // Detail variant: separate Text components in flex container
+    if (isDetailVariant) {
       return (
-        <div className="flex items-baseline space-x-2">
-          <Text className={cn("text-4xl md:text-6xl", valueClassName)}>
-            {value}
-          </Text>
+        <div className="flex flex-wrap items-baseline gap-x-2">
+          <Text className={detailValueClassName}>{value}</Text>
           {unit && (
-            <Text className="text-md md:text-2xl text-grey">{unit}</Text>
+            <Text
+              className={cn(
+                "text-grey",
+                dense ? "text-base" : "text-sm md:text-xl",
+              )}
+            >
+              {unit}
+            </Text>
           )}
         </div>
       );
@@ -75,13 +97,13 @@ export function OverviewStat({
       <div className="flex items-start gap-2">
         <Text
           className={cn(
-            "text-4xl md:text-6xl font-light tracking-tighter leading-none",
+            "text-3xl md:text-5xl font-light tracking-tighter leading-none max-w-full break-words [overflow-wrap:anywhere]",
             valueClassName,
           )}
         >
           {value}
           {unit && (
-            <span className="text-lg lg:text-2xl md:text-lg sm:text-sm ml-2 text-grey">
+            <span className="text-base lg:text-xl md:text-base sm:text-sm ml-2 text-grey">
               {unit}
             </span>
           )}
@@ -92,11 +114,14 @@ export function OverviewStat({
   };
 
   return (
-    <div className={cn(useFlex1 && "flex-1", className)}>
+    <div className={cn(useFlex1 && "flex-1", "max-w-full", className)}>
       <div className={isDetailVariant ? "" : "mb-1 md:mb-2"}>
         {renderLabel()}
       </div>
       {renderValue()}
+      {caption && (
+        <Text className="mt-2 text-xs text-grey md:text-sm">{caption}</Text>
+      )}
     </div>
   );
 }

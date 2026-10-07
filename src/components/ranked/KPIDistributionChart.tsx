@@ -18,6 +18,10 @@ import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { KPIValue } from "@/types/rankings";
 import { COLORS } from "@/lib/colors";
 import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
+import {
+  getPositiveIndicatorColor,
+  isMeetsParisKpiKey,
+} from "@/utils/ui/colors";
 import { formatPercent } from "@/utils/formatting/localization";
 
 interface KPIDistributionChartProps<T> {
@@ -269,10 +273,13 @@ function useBooleanValues<T>(
           defaultValue: t("unknown"),
         })
       : selectedKPI.nullValues || t("unknown");
-    // When higherIsBetter: true = good (blue), false = bad (pink).
-    // When !higherIsBetter: true = bad (pink), false = good (blue).
-    const trueColor = selectedKPI.higherIsBetter ? COLORS.blue3 : COLORS.pink3;
-    const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : COLORS.blue3;
+    // When higherIsBetter: true = good, false = bad (pink).
+    // Meets-Paris KPIs use green for the positive side; others use blue.
+    const goodColor = getPositiveIndicatorColor(
+      isMeetsParisKpiKey(String(selectedKPI.key)),
+    );
+    const trueColor = selectedKPI.higherIsBetter ? goodColor : COLORS.pink3;
+    const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : goodColor;
     const slices: BooleanPieSlice[] = [
       {
         name: trueLabel,

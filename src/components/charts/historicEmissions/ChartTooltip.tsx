@@ -145,7 +145,7 @@ function TooltipDataRow({
   currentLanguage: string;
   t: ReturnType<typeof useTranslation>["t"];
 }) {
-  if (entry.dataKey === "gap") return null;
+  if (entry.dataKey === "gap" || entry.dataKey === "parisBase") return null;
 
   const name = formatName(String(entry.name || entry.dataKey || ""), entry);
   const isTurnoverEntry = entry.dataKey === "turnover";
@@ -215,7 +215,7 @@ function TrendInfo({
       })}
       <br />
       <span
-        className={cn(trendData.slope >= 0 ? "text-pink-3" : "text-green-3")}
+        className={cn(trendData.slope >= 0 ? "text-pink-3" : "text-blue-3")}
       >
         Trend: {trendData.slope >= 0 ? "↗ Increasing" : "↘ Decreasing"}
       </span>

@@ -31,28 +31,6 @@ export const LEGEND_CONFIGS = {
     isHidden: false,
     isDashed: true,
   },
-  // Scope legend items
-  scope1: {
-    nameKey: "companies.emissionsHistory.scope1",
-    color: "var(--pink-3)",
-    isClickable: true,
-    isHidden: false,
-    isDashed: false,
-  },
-  scope2: {
-    nameKey: "companies.emissionsHistory.scope2",
-    color: "var(--green-2)",
-    isClickable: true,
-    isHidden: false,
-    isDashed: false,
-  },
-  scope3: {
-    nameKey: "companies.emissionsHistory.scope3",
-    color: "var(--blue-2)",
-    isClickable: true,
-    isHidden: false,
-    isDashed: false,
-  },
 } as const;
 
 // Legend container configurations
@@ -63,13 +41,6 @@ export const LEGEND_CONTAINER_CONFIGS = {
     maxHeight: "200px",
     mobileMaxHeight: "150px",
     forceExpandable: false,
-  },
-  interactive: {
-    showMetadata: false,
-    allowClickToHide: true,
-    maxHeight: "200px",
-    mobileMaxHeight: "150px",
-    forceExpandable: true,
   },
   sectors: {
     showMetadata: false,

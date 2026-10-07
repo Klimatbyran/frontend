@@ -148,9 +148,9 @@ export const RequestAccessModal = ({
           </div>
 
           {status === "success" && (
-            <div className="mt-4 flex items-center rounded border border-green-1 bg-green-4/30 p-3">
-              <CheckCircle className="mr-2 h-5 w-5 text-green-1" />
-              <p className="text-sm text-green-1">
+            <div className="mt-4 flex items-center rounded border border-blue-1 bg-blue-4/30 p-3">
+              <CheckCircle className="mr-2 h-5 w-5 text-blue-1" />
+              <p className="text-sm text-blue-1">
                 {t("dataDownloadPage.requestAccess.successMessage")}
               </p>
             </div>

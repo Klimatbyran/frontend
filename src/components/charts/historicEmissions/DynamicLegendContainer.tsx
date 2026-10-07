@@ -38,7 +38,7 @@ export const DynamicLegendContainer: React.FC<DynamicLegendContainerProps> = ({
 
   return (
     <TooltipProvider>
-      <div ref={containerRef} className={`${className} -ml-2 md:ml-0`}>
+      <div ref={containerRef} className={className}>
         {shouldShowExpandable && isMobile ? (
           // Mobile: Use scrolling container
           <div

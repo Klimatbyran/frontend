@@ -158,9 +158,9 @@ export function NewsletterPopover({
 
                 {/* Success Message */}
                 {status === "success" && (
-                  <div className="mt-4 p-3 bg-green-4/30 border border-green-1 rounded flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-1 mr-2" />
-                    <p className="text-sm text-green-1">
+                  <div className="mt-4 p-3 bg-blue-4/30 border border-blue-1 rounded flex items-center">
+                    <CheckCircle className="w-5 h-5 text-blue-1 mr-2" />
+                    <p className="text-sm text-blue-1">
                       {t("newsletter.successMessage")}
                     </p>
                   </div>

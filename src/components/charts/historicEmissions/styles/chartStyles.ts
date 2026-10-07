@@ -30,7 +30,7 @@ export const CHART_COLORS = {
   primary: "white", // Historical/solid white
   secondary: "var(--grey)", // Estimated/dashed grey
   trend: "var(--pink-3)", // Trend/dashed pink
-  paris: "var(--green-2)", // Paris/dashed green
+  paris: "var(--green-3)", // Paris / carbon law target line
 } as const;
 
 // Chart dimensions
@@ -41,8 +41,8 @@ export const CHART_DIMENSIONS = {
   },
   margin: {
     top: 20,
-    right: 0,
-    left: -5, // Increased for tilted Y-axis labels
+    right: 4,
+    left: 4,
     bottom: 0,
   },
   padding: {
@@ -74,11 +74,6 @@ export const LINE_CONFIGS = {
     type: "trend" as const,
     color: CHART_COLORS.paris,
     style: LINE_STYLES.trend,
-  },
-  scope: {
-    type: "primary" as const,
-    color: "var(--pink-3)", // Will be overridden by stroke prop
-    style: LINE_STYLES.primary,
   },
   category: {
     type: "primary" as const,

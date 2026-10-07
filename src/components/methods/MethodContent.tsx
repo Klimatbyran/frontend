@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useState, useEffect, forwardRef } from "react";
+import { forwardRef } from "react";
 import { getMethodById } from "@/lib/methods/methodologyData";
 import { getMethodContentComponent } from "./methodContentRegistry";
 
@@ -12,16 +12,7 @@ export const MethodologyContent = forwardRef<
   MethodologyContentProps
 >(({ method }, ref) => {
   const { t } = useTranslation();
-  const [isVisible, setIsVisible] = useState(true);
   const methodData = getMethodById(method);
-
-  useEffect(() => {
-    setIsVisible(false);
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [method]);
 
   if (!methodData) {
     return (
@@ -34,11 +25,7 @@ export const MethodologyContent = forwardRef<
   const ContentComponent = getMethodContentComponent(method);
 
   return (
-    <div
-      ref={ref}
-      id="methodology-content"
-      className={`transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`}
-    >
+    <div ref={ref} id="methodology-content" className="scroll-mt-20">
       <div className="bg-black-2 rounded-level-2 p-4 pt-6 sm:p-8 md:p-16">
         <div className="border-b border-black-1 pb-6 mb-6">
           <h1 className="text-2xl font-bold text-white mb-2">

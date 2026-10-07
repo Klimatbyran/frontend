@@ -78,10 +78,11 @@ export function formatPercent(
   value: number,
   currentLanguage: SupportedLanguage,
   isAlreadyPercentage: boolean = false,
+  maximumFractionDigits: number = 1,
 ) {
   return new Intl.NumberFormat(lookupLocale(currentLanguage), {
     style: "percent",
     minimumFractionDigits: 0,
-    maximumFractionDigits: 1,
+    maximumFractionDigits,
   }).format(isAlreadyPercentage ? value / 100 : value);
 }

@@ -54,7 +54,7 @@ function getClimatePlanStatusColor(
   }
 
   if (climatePlanHasPlan === true) {
-    return "text-green-3";
+    return "text-blue-3";
   }
   if (climatePlanHasPlan === false) {
     return "text-pink-3";

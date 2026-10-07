@@ -9,7 +9,7 @@ import { HeaderLanguageButtons } from "./HeaderLanguageButtons";
 import { isNavLinkActive } from "./navActive";
 import { NavSubGroupSection } from "./NavSubGroupSection";
 import { NavSubLinkItem } from "./NavSubLinkItem";
-import { NAV_TITLE_CLASS } from "./navStyles";
+import { NAV_LINK_CLASS } from "./navStyles";
 import { isNavSubGroup, NavLink } from "./types";
 
 export function HeaderMobileMenu({
@@ -35,8 +35,8 @@ export function HeaderMobileMenu({
 
   return (
     <>
-      {showTitle && (
-        <span className="absolute left-1/2 transform -translate-x-1/2 lg:hidden">
+      {showTitle && headerTitle && (
+        <span className="pointer-events-none absolute left-1/2 top-1/2 max-w-[min(10rem,calc(100%-13.5rem))] -translate-x-1/2 -translate-y-1/2 truncate text-sm text-white lg:hidden">
           {headerTitle}
         </span>
       )}
@@ -44,6 +44,7 @@ export function HeaderMobileMenu({
         <HeaderSearchButton
           className="w-full lg:hidden"
           closeMobileNav={onCloseMobileNav}
+          iconOnly={showTitle && !!headerTitle}
         />
 
         <button
@@ -95,7 +96,7 @@ export function HeaderMobileMenu({
                             <NavSubLinkItem
                               key={item.path}
                               sublink={item}
-                              className={NAV_TITLE_CLASS}
+                              className={NAV_LINK_CLASS}
                               onNavigate={onToggleMenu}
                             />
                           ),

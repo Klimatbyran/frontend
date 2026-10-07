@@ -75,7 +75,7 @@ export function buildMunicipalityComparisonDetails(
       ? localizeUnit(evcp, currentLanguage)
       : t("municipalityDetailPage.noChargePoints"),
     electricCarsPerChargePointColorClass:
-      evcp && evcp > 10 ? "text-pink-3" : "text-green-3",
+      evcp && evcp > 10 ? "text-pink-3" : "text-blue-3",
     bicycleMetrePerCapita: localizeUnit(
       municipality.bicycleMetrePerCapita,
       currentLanguage,
@@ -86,7 +86,7 @@ export function buildMunicipalityComparisonDetails(
     ),
     procurementColorClass:
       municipality.procurementScore === 2
-        ? "text-green-3"
+        ? "text-blue-3"
         : municipality.procurementScore === 1
           ? "text-orange-2"
           : "text-pink-3",

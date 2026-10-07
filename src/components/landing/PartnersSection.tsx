@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Text } from "../ui/text";
 import { partners } from "@/lib/constants/footer";
+import { cn } from "@/lib/utils";
 
 export const PartnersSection = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const PartnersSection = () => {
           </Text>
         </div>
 
-        <div className="grid w-full grid-cols-4 gap-2 sm:gap-3 md:grid-cols-5 lg:grid-cols-10">
+        <div className="grid w-full grid-cols-4 gap-2 sm:gap-3 md:grid-cols-5 lg:grid-cols-11">
           {partners.map((logo, index) => {
             const isCenteredLastRowItem =
               mobileRemainder === 2 && index >= partners.length - 2;
@@ -42,7 +43,10 @@ export const PartnersSection = () => {
                   <img
                     src={logo.src}
                     alt={logo.alt}
-                    className="h-16 max-w-full object-contain opacity-90 transition-opacity group-hover:opacity-100"
+                    className={cn(
+                      "h-16 max-w-full object-contain opacity-90 transition-opacity group-hover:opacity-100",
+                      logo.invert && "invert",
+                    )}
                     loading="lazy"
                   />
                 </span>

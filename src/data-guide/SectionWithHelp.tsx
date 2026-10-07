@@ -32,7 +32,7 @@ export const SectionWithHelp = ({
         {children}
       </div>
       {showDataGuide && (
-        <div className="mt-2 md:mt-4 pt-1 md:pt-2 px-2 md:px-0">
+        <div className="mt-2 md:mt-3 pt-0 px-2 md:px-0">
           <ProgressiveDataGuide items={helpItems} style="sectionFooter" />
         </div>
       )}

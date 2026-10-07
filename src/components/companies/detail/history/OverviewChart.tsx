@@ -1,6 +1,7 @@
 import { FC, useMemo } from "react";
 import {
-  LineChart,
+  Area,
+  ComposedChart,
   Line,
   ReferenceLine,
   ResponsiveContainer,
@@ -9,20 +10,15 @@ import {
   YAxis,
 } from "recharts";
 import { useTranslation } from "react-i18next";
-import { isMobile } from "react-device-detect";
 import { ChartData } from "@/types/emissions";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   ChartYearControls,
-  getConsistentLineProps,
   EnhancedLegend,
-  createOverviewLegendItems,
   getXAxisProps,
-  getYAxisProps,
   getBaseYearReferenceLineProps,
-  getCurrentYearReferenceLineProps,
   getChartContainerProps,
   getLineChartProps,
-  getResponsiveChartMargin,
   ChartWrapper,
   ChartArea,
   ChartFooter,
@@ -31,9 +27,24 @@ import {
   createCustomTickRenderer,
   filterValidTotalData,
   mergeChartDataWithApproximated,
-  ChartTooltip,
 } from "@/components/charts";
 import { useLanguage } from "@/components/LanguageProvider";
+import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
+import { createTwoFuturesLegendItems } from "@/components/charts/twoFutures/createTwoFuturesLegendItems";
+import { getTodayReferenceLineProps } from "@/components/charts/twoFutures/getTodayReferenceLineProps";
+import {
+  FUTURE_LINE_DASH,
+  TwoFuturesTooltip,
+} from "@/components/charts/twoFutures/TwoFuturesTooltip";
+import {
+  getTwoFuturesChartMargin,
+  getTwoFuturesYAxisProps,
+} from "@/components/charts/twoFutures/twoFuturesChartAxis";
+import {
+  buildTwoFuturesRows,
+  compareFuturePathTotals,
+} from "@/components/territories/emissionsGraph/twoFuturesChartData";
+import type { DataPoint } from "@/types/emissions";
 
 interface OverviewChartProps {
   data: ChartData[];
@@ -46,6 +57,8 @@ interface OverviewChartProps {
   onYearSelect: (year: number) => void;
   yearControlsPlacement?: "footer" | "top-right";
 }
+
+const TRANSLATION_PREFIX = "companies.emissionsHistory";
 
 export const OverviewChart: FC<OverviewChartProps> = ({
   data,
@@ -60,35 +73,68 @@ export const OverviewChart: FC<OverviewChartProps> = ({
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
   const currentYear = new Date().getFullYear();
 
-  const filteredData = useMemo(() => {
-    return filterValidTotalData(data);
-  }, [data]);
-
+  const filteredData = useMemo(() => filterValidTotalData(data), [data]);
   const firstDataYear = filteredData[0]?.year || 2000;
 
-  // Merge data similar to municipality structure for tooltip compatibility
-  const chartData = useMemo(() => {
+  const mergedForProjection = useMemo(() => {
     const merged = mergeChartDataWithApproximated(
       filteredData,
       approximatedData,
     );
-    // Filter to only include data from firstDataYear onwards to prevent empty space
     return merged.filter((d) => d.year >= firstDataYear);
   }, [filteredData, approximatedData, firstDataYear]);
 
-  const isFirstYear = companyBaseYear === filteredData[0]?.year;
+  const projectedData: DataPoint[] = useMemo(
+    () =>
+      mergedForProjection.map((point) => ({
+        year: point.year,
+        total: point.total,
+        trend: point.trend,
+        approximated: point.approximated,
+        carbonLaw: point.carbonLaw,
+      })),
+    [mergedForProjection],
+  );
 
-  const legendItems = useMemo(() => {
-    const hiddenItems = new Set<string>();
-    if (!approximatedData) {
-      hiddenItems.add("approximated");
-      hiddenItems.add("trend");
-      hiddenItems.add("carbonLaw");
+  const rows = useMemo(
+    () => buildTwoFuturesRows(projectedData, currentYear),
+    [projectedData, currentYear],
+  );
+
+  const filteredRows = useMemo(
+    () =>
+      rows.filter(
+        (point) => point.year >= firstDataYear && point.year <= chartEndYear,
+      ),
+    [rows, firstDataYear, chartEndYear],
+  );
+
+  const isFirstYear = companyBaseYear === filteredData[0]?.year;
+  const hasFuturePaths = Boolean(approximatedData);
+
+  const legendItems = useMemo(
+    () => createTwoFuturesLegendItems(t, TRANSLATION_PREFIX, hasFuturePaths),
+    [t, hasFuturePaths],
+  );
+
+  const pathComparison = useMemo(() => {
+    if (!hasFuturePaths) {
+      return { totalTrend: 0, totalParis: 0, endTrend: 0, endParis: 0 };
     }
-    return createOverviewLegendItems(t, hiddenItems, false);
-  }, [t, approximatedData]);
+    return compareFuturePathTotals(projectedData, currentYear, chartEndYear);
+  }, [hasFuturePaths, projectedData, currentYear, chartEndYear]);
+
+  const tooltipLabels = useMemo(
+    () => ({
+      history: t(`${TRANSLATION_PREFIX}.pastPath`),
+      trend: t(`${TRANSLATION_PREFIX}.trendPath`),
+      paris: t(`${TRANSLATION_PREFIX}.parisPath`),
+    }),
+    [t],
+  );
 
   const ticks = generateChartTicks(
     firstDataYear,
@@ -98,6 +144,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   );
 
   const handleClick = createChartClickHandler(onYearSelect);
+  const unit = t("companies.tooltip.tonsCO2e");
 
   return (
     <ChartWrapper className="relative">
@@ -116,11 +163,11 @@ export const OverviewChart: FC<OverviewChartProps> = ({
         className={yearControlsPlacement === "top-right" ? "pt-14" : ""}
       >
         <ResponsiveContainer {...getChartContainerProps()}>
-          <LineChart
+          <ComposedChart
             {...getLineChartProps(
-              chartData,
+              filteredRows,
               handleClick,
-              getResponsiveChartMargin(isMobile),
+              getTwoFuturesChartMargin(isMobile),
             )}
           >
             {companyBaseYear && (
@@ -133,21 +180,17 @@ export const OverviewChart: FC<OverviewChartProps> = ({
               />
             )}
 
-            {/* Current year reference line - only show if within chart domain */}
             {currentYear <= chartEndYear && (
               <ReferenceLine
-                {...getCurrentYearReferenceLineProps(currentYear)}
+                {...getTodayReferenceLineProps(
+                  currentYear,
+                  t(`${TRANSLATION_PREFIX}.todayMarker`),
+                )}
               />
             )}
 
             <Tooltip
-              content={
-                <ChartTooltip
-                  dataView="overview"
-                  companyBaseYear={companyBaseYear}
-                  unit={t("companies.tooltip.tonsCO2e")}
-                />
-              }
+              content={<TwoFuturesTooltip unit={unit} labels={tooltipLabels} />}
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 
@@ -156,70 +199,96 @@ export const OverviewChart: FC<OverviewChartProps> = ({
                 "year",
                 [firstDataYear, chartEndYear],
                 ticks,
-                createCustomTickRenderer(companyBaseYear),
+                createCustomTickRenderer(companyBaseYear, true, [
+                  firstDataYear,
+                  chartEndYear,
+                ]),
               )}
               type="number"
             />
 
-            <YAxis {...getYAxisProps(currentLanguage)} />
+            <YAxis {...getTwoFuturesYAxisProps(currentLanguage, isMobile)} />
 
-            {/* Main total emissions line */}
-            <Line
-              type="monotone"
-              dataKey="total"
-              {...getConsistentLineProps(
-                "historical",
-                isMobile,
-                t("companies.emissionsHistory.totalEmissions"),
-              )}
-              connectNulls={false}
-            />
-
-            {/* Approximated data lines */}
-            {approximatedData && (
+            {hasFuturePaths && (
               <>
-                <Line
-                  type="linear"
-                  dataKey="approximated"
-                  {...getConsistentLineProps(
-                    "estimated",
-                    isMobile,
-                    t("companies.emissionsHistory.approximated"),
-                    "var(--grey)",
-                  )}
+                <Area
+                  dataKey="parisBase"
+                  stackId="overshoot"
+                  stroke="none"
+                  fill="transparent"
+                  isAnimationActive={false}
+                  legendType="none"
                 />
-                <Line
-                  type="monotone"
-                  dataKey="trend"
-                  {...getConsistentLineProps(
-                    "trend",
-                    isMobile,
-                    t("companies.emissionsHistory.trend"),
-                  )}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="carbonLaw"
-                  {...getConsistentLineProps(
-                    "paris",
-                    isMobile,
-                    t("companies.emissionsHistory.carbonLaw"),
-                  )}
+                <Area
+                  dataKey="gap"
+                  stackId="overshoot"
+                  stroke="none"
+                  fill="var(--pink-3)"
+                  fillOpacity={0.22}
+                  isAnimationActive={false}
+                  legendType="none"
                 />
               </>
             )}
-          </LineChart>
+
+            <Line
+              type="monotone"
+              dataKey="history"
+              stroke="#ffffff"
+              strokeWidth={2.5}
+              dot={false}
+              connectNulls={false}
+              isAnimationActive={false}
+              name={tooltipLabels.history}
+            />
+
+            {hasFuturePaths && (
+              <>
+                <Line
+                  type="monotone"
+                  dataKey="trend"
+                  stroke="var(--pink-3)"
+                  strokeWidth={2.5}
+                  strokeDasharray={FUTURE_LINE_DASH}
+                  dot={false}
+                  connectNulls={false}
+                  isAnimationActive={false}
+                  name={tooltipLabels.trend}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="paris"
+                  stroke="var(--green-2)"
+                  strokeWidth={2.5}
+                  strokeDasharray={FUTURE_LINE_DASH}
+                  dot={false}
+                  connectNulls={false}
+                  isAnimationActive={false}
+                  name={tooltipLabels.paris}
+                />
+              </>
+            )}
+          </ComposedChart>
         </ResponsiveContainer>
       </ChartArea>
 
-      <ChartFooter>
+      <ChartFooter className="mb-0 space-y-2 md:space-y-2.5">
         <EnhancedLegend items={legendItems} />
+        {hasFuturePaths && (
+          <FutureTotalsCaption
+            year={chartEndYear}
+            trend={pathComparison.endTrend}
+            paris={pathComparison.endParis}
+            translationPrefix={TRANSLATION_PREFIX}
+          />
+        )}
         {yearControlsPlacement === "footer" && (
           <ChartYearControls
             chartEndYear={chartEndYear}
             shortEndYear={shortEndYear}
             longEndYear={longEndYear}
             setChartEndYear={setChartEndYear}
+            className="!mt-0"
           />
         )}
       </ChartFooter>

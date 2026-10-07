@@ -163,7 +163,7 @@ export function StoryShareLinks({ className }: { className?: string }) {
         }
       >
         {copied ? (
-          <Check className="h-5 w-5 text-green-3" aria-hidden />
+          <Check className="h-5 w-5 text-blue-3" aria-hidden />
         ) : (
           <Link2 className="h-5 w-5 opacity-90 transition-opacity group-hover:opacity-100" />
         )}

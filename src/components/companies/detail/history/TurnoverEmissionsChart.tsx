@@ -9,8 +9,8 @@ import {
   YAxis,
 } from "recharts";
 import { useTranslation } from "react-i18next";
-import { isMobile } from "react-device-detect";
 import { ChartData } from "@/types/emissions";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import {
   getConsistentLineProps,
   EnhancedLegend,
@@ -47,6 +47,7 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
   const currentYear = new Date().getFullYear();
 
   const baseYearSettings = useMemo(
@@ -132,7 +133,10 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
                 "year",
                 [firstDataYear, lastDataYear],
                 ticks,
-                createCustomTickRenderer(baseYear),
+                createCustomTickRenderer(baseYear, true, [
+                  firstDataYear,
+                  lastDataYear,
+                ]),
               )}
               type="number"
             />

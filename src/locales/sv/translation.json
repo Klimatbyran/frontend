@@ -98,7 +98,7 @@
     },
     "valet2026Banner": {
       "badge": "Nyhet!",
-      "title": "Utforska Sveriges egentliga utsläpp 2025"
+      "title": "Utforska Sveriges egentliga utsläpp"
     },
     "companiesSection": {
       "title": "Hur går det med företagens utsläpp?",
@@ -909,7 +909,7 @@
           "title": "Konsumtionsbaserade utsläpp utomlands",
           "paragraph1": "Dessa siffror omfattar utsläpp orsakade av svensk slutlig efterfrågan (hushåll, offentlig konsumtion och investeringar) som uppstår utanför Sverige. Inhemska utsläpp som redan ingår i den produktionsbaserade serien tas bort så att de två kan summeras utan dubbelräkning.",
           "paragraph2": "För 2008–2023 utgår vi från SCB:s konsumtionsbaserade statistik (summan av inhemska efterfrågekomponenter). För 2024–2025 håller vi 2023 års nivå för den SCB-baserade delen. För 1990–2007 skalas Global Carbon Projects konsumtionsbaserade CO₂ för Sverige upp till alla växthusgaser med global GHG/CO₂-kvot från EDGAR, som spårar SCB:s kvot inom cirka 5 procent för 2008–2023.",
-          "paragraph3": "Utrikesflyg: i likhet med Stockholm Environment Institute ersätter vi SCB:s flygutsläpp med Chalmers beräkningar för svenskarnas utrikesflyg (1990–2017), framskrivna till 2025 med Trafikanalys personkilometer, för att få med bland annat höghöjdseffekten. En liknande SEI-ansats skiljer sig som mest med cirka 1,6 procent i överlappande år.",
+          "paragraph3": "Utrikesflyg: i likhet med Stockholm Environment Institute (SEI) ersätter vi SCB:s flygutsläpp med Chalmers beräkningar för svenskarnas utrikesflyg (1990–2017), framskrivna till 2025 med Trafikanalys personkilometer, för att få med bland annat höghöjdseffekten. En liknande SEI-ansats skiljer sig som mest med cirka 1,6 procent i överlappande år.",
           "paragraph4": "Privat e-handel från utlandet (2020–2025): försändelser till privatpersoner under vissa trösklar saknas i stor utsträckning i SCB:s konsumtionskategorier. Vi skattar utsläpp med Svensk Handels omsättning för utländsk e-handel multiplicerad med den konsumtionsbaserade utsläppsintensiteten för kläder (COICOP 03.1.2). Kläder och elektronik dominerar svensk e-handel; intensiteterna är likartade. Uppskattningen för 2025 är cirka 326 000 ton CO₂e – ungefär motsvarande utsläppen i Gävle kommun under 2024.",
           "paragraph5": "Så byggs serien “enbart utomlands” (förenklat): ta bort SCB:s flygutsläpp från konsumtionstotalen; ta bort andelen kvarvarande utsläpp med uppkomst i Sverige; lägg till Chalmers/Trafikanalys utrikesflyg; lägg till e-handelsuppskattningen från 2020. För åren före 2008 bakåtskrivs flyg- och importandelar med SCB:s monetära data samt BNP/import, och korskontrolleras mot SCB för 2008–2023.",
           "paragraph6": "Osäkerhet finns kring e-handel (Svensk Handels värdeutveckling kontra paketvolymer i Transportföretagens Paketindex) och kring inbäddade transporter i intensiteterna. Vi dokumenterar antagandena snarare än att behandla serien som officiell statistik.",
@@ -919,7 +919,8 @@
             "scb": "SCB – Miljöpåverkan från konsumtion efter produktgrupp",
             "chalmers": "Kamb & Larsson (Chalmers) – Klimatpåverkan från svenskars flygresor 1990–2017",
             "trafa": "Trafikanalys – luftfartsstatistik",
-            "svenskHandel": "Svensk Handel – E-handelsindikatorn helår 2025"
+            "svenskHandel": "Svensk Handel – E-handelsindikatorn helår 2025",
+            "sei": "SEI – Konsumtionskompassen, verktyg och metod om konsumtionsbaserade utsläpp"
           }
         },
         "biogenic": {
@@ -1153,6 +1154,9 @@
     "inTons": "I ton CO₂e",
     "annualChange": "Årlig förändring",
     "meetsParisGoal": "Klarar Parisavtalet",
+    "meetsParisOnTrack": "Utsläppen minskar tillräckligt snabbt.",
+    "meetsParisOffTrack": "Utsläppen behöver minska snabbare.",
+    "meetsParisUnknown": "Inte tillräckligt med data för att säga ännu.",
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
     "sectorEmissions": "Utsläppskällor",
     "sectorEmissionsYear": "Utsläpp per sektor år {{year}}",
@@ -1177,7 +1181,16 @@
       "estimated": "Uppskattat",
       "trend": "Trend",
       "carbonLaw": "Parisavtalet",
-      "noData": "Inga data tillgängliga"
+      "noData": "Inga data tillgängliga",
+      "pastPath": "Det som hänt",
+      "trendPath": "Vart dagens takt leder",
+      "parisPath": "Det Parisavtalet kräver",
+      "todayMarker": "idag",
+      "twoFuturesOvershoot": "År {{year}} ger dagens takt <0>{{factor}}</0> gånger mer utsläpp än Parisbanan.",
+      "twoFuturesOvershootMild": "År {{year}} ger dagens takt mer utsläpp än Parisbanan.",
+      "twoFuturesUndershoot": "År {{year}} ger dagens takt <0>{{factor}}</0> gånger mindre utsläpp än Parisbanan.",
+      "twoFuturesUndershootMild": "År {{year}} ger dagens takt mindre utsläpp än Parisbanan.",
+      "twoFuturesAligned": "År {{year}} ligger dagens takt i linje med Parisbanan."
     }
   },
   "municipalitiesOverviewPage": {
@@ -1473,12 +1486,6 @@
       "scope1": "Scope 1",
       "scope2": "Scope 2"
     },
-    "dataView": {
-      "overview": "Översikt",
-      "scopes": "Scope 1-3",
-      "categories": "Scope 3-kategorier",
-      "selectView": "Välj visning"
-    },
     "emissionsHistory": {
       "noReportingPeriods": "Inga rapporteringsperioder tillgängliga",
       "title": "Utsläppsutveckling",
@@ -1491,6 +1498,15 @@
       "approximated": "Approximerat",
       "trend": "Trend",
       "carbonLaw": "Parisavtalet",
+      "pastPath": "Det som hänt",
+      "trendPath": "Vart dagens takt leder",
+      "parisPath": "Det Parisavtalet kräver",
+      "todayMarker": "idag",
+      "twoFuturesOvershoot": "År {{year}} ger dagens takt <0>{{factor}}</0> gånger mer utsläpp än Parisbanan.",
+      "twoFuturesOvershootMild": "År {{year}} ger dagens takt mer utsläpp än Parisbanan.",
+      "twoFuturesUndershoot": "År {{year}} ger dagens takt <0>{{factor}}</0> gånger mindre utsläpp än Parisbanan.",
+      "twoFuturesUndershootMild": "År {{year}} ger dagens takt mindre utsläpp än Parisbanan.",
+      "twoFuturesAligned": "År {{year}} ligger dagens takt i linje med Parisbanan.",
       "scope1": "Scope 1 - Direkta utsläpp",
       "scope2": "Scope 2 - Indirekta utsläpp",
       "scope3": "Scope 3 - Tillskrivna värdekedje- och produktlivscykelutsläpp",

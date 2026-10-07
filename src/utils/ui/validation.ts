@@ -16,9 +16,9 @@ export function validateValue({
   const valueChanged = String(value) !== String(originalValue);
   let badgeIconClass = "";
   if (originalVerified && !valueChanged) {
-    badgeIconClass = "text-green-4";
+    badgeIconClass = "text-blue-4";
   } else if (verified && valueChanged) {
-    badgeIconClass = "text-green-3";
+    badgeIconClass = "text-blue-3";
   }
   const isDisabled = originalVerified && !valueChanged;
   return [isDisabled, badgeIconClass];

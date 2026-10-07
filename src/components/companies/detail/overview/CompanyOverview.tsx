@@ -79,6 +79,7 @@ export function CompanyOverview({
   return (
     <SectionWithHelp
       helpItems={[
+        "onTrackForParis",
         "totalEmissions",
         "co2units",
         "companySectors",

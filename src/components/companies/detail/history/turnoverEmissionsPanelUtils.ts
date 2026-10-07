@@ -1,7 +1,7 @@
 import type { DecouplingVerdict } from "@/utils/data/turnoverChartData";
 
 export const VERDICT_COLOR_CLASS: Record<DecouplingVerdict, string> = {
-  yes: "text-green-3",
+  yes: "text-blue-3",
   "no-red": "text-pink-3",
   "no-yellow": "text-orange-2",
 };
@@ -21,7 +21,7 @@ export const VERDICT_EXPLANATION_KEY: Record<DecouplingVerdict, string> = {
 };
 
 export function getEmissionsChangeColorClass(changePercent: number): string {
-  if (changePercent < 0) return "text-green-3";
+  if (changePercent < 0) return "text-blue-3";
   if (changePercent > 0) return "text-pink-3";
   return "text-orange-2";
 }

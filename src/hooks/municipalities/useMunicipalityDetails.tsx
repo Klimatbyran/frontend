@@ -7,6 +7,7 @@ import {
 } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { DetailStat } from "@/components/detail/DetailHeader";
+import { createMeetsParisStat } from "@/components/detail/meetsParisStat";
 import { getMunicipalityDetails } from "@/lib/api";
 import { Municipality } from "@/types/municipality";
 
@@ -46,16 +47,7 @@ export function useMunicipalityDetailHeaderStats(
 
   const stats: DetailStat[] = municipality
     ? [
-        {
-          label: t("detailPage.totalEmissions", {
-            year: lastYear,
-          }),
-          value: lastYearEmissionsTon,
-          unit: t("emissionsUnit"),
-          valueClassName: "text-orange-2",
-          info: true,
-          infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
-        },
+        createMeetsParisStat(municipality.meetsParisGoal, t),
         {
           label: t("municipalityDetailPage.annualChangeSince2015"),
           value: formatPercentChange(
@@ -67,6 +59,16 @@ export function useMunicipalityDetailHeaderStats(
               ? "text-pink-3"
               : "text-orange-2",
           ),
+        },
+        {
+          label: t("detailPage.totalEmissions", {
+            year: lastYear,
+          }),
+          value: lastYearEmissionsTon,
+          unit: t("emissionsUnit"),
+          valueClassName: "text-orange-2",
+          info: true,
+          infoText: t("municipalityDetailPage.totalEmissionsTooltip"),
         },
         {
           label: t("municipalityDetailPage.consumptionEmissionsPerCapita"),

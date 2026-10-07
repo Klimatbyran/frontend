@@ -138,6 +138,10 @@ export const NationEmissionsLayersContent = () => {
               labelKey: `${base}.consumption.sources.svenskHandel`,
               href: "https://www.svenskhandel.se/rapporter/e-handelsindikatorn/e-handelsindikatorn-helar-2025",
             },
+            {
+              labelKey: `${base}.consumption.sources.sei`,
+              href: "https://www.sei.org/projects/konsumtionskompassen-2-0/#nyheter-och-publikationer",
+            },
           ]}
         />
       </MethodSection>
