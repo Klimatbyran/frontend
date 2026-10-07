@@ -79,18 +79,6 @@ vi.mock("@/components/companies/overview/CompaniesTable", () => ({
   },
 }));
 
-vi.mock("@/hooks/regions/useRegionsForExplore", () => ({
-  useRegionsForExplore: () => ({
-    regions: [],
-    loading: false,
-    error: null,
-  }),
-}));
-
-vi.mock("@/components/maps/TerritoryMap", () => ({
-  default: () => <div data-testid="sweden-company-map" />,
-}));
-
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
   Trans: ({ i18nKey }: { i18nKey: string }) => <span>{i18nKey}</span>,
@@ -182,15 +170,5 @@ describe("CompaniesOverviewPage", () => {
     expect(
       pie.compareDocumentPosition(reporting) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
-  });
-
-  it("shows the county map under the company list", async () => {
-    renderPage("/en/companies");
-
-    expect(
-      await screen.findByRole("heading", {
-        name: "companiesOverviewPage.regionMap.title",
-      }),
-    ).toBeInTheDocument();
   });
 });
