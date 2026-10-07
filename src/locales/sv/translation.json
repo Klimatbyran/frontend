@@ -339,7 +339,7 @@
     "description": "Jämför företag baserat på viktiga klimatindikatorer",
     "paris": {
       "title": "Vilka stora svenska företag gör tillräckligt för klimatet?",
-      "lead": "Att klara Parisavtalet betyder att ungefär halvera utsläppen det här årtiondet. Så här går det för Sveriges största börsbolag.",
+      "lead": "Att klara Parisavtalet betyder att ungefär halvera utsläppen det här årtiondet. Så här går det för Sveriges största bolag.",
       "explainerTitle": "Hur avgör vi om ett företag är på rätt väg?",
       "explainerBudget": "Vi använder Carbon Law för att beräkna om ett företag minskar sina utsläpp i tillräckligt snabb takt. Läs mer om Carbon Law <0>här</0>.",
       "explainerVerdict": "Tillräckligt snabbt är <strong>på rätt väg</strong>. För långsamt, eller ingen minskning alls, är <strong>inte på rätt väg</strong>. Företag som ännu inte rapporterat tillräckligt många år visas som <strong>för lite data</strong>.",
