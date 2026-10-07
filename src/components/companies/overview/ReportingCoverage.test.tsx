@@ -1,13 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ReportingCoverage } from "./ReportingCoverage";
-import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
+import type { CompanyWithKPIs } from "@/types/company";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: Record<string, unknown>) => {
-      if (options && "enough" in options && "tooLittle" in options) {
-        return `${key}:${options.enough}:${options.tooLittle}`;
+      if (
+        options &&
+        "longCount" in options &&
+        "enough" in options &&
+        "thin" in options
+      ) {
+        return `${key}:${options.longCount}:${options.enough}:${options.thin}`;
       }
       return key;
     },
@@ -24,42 +29,49 @@ vi.mock("@/hooks/useChartMotion", () => ({
   }),
 }));
 
-const summary: ParisSummary = {
-  total: 10,
-  onTrack: 3,
-  offTrack: 5,
-  unknown: 2,
-  reducingNotOnTrack: 2,
-  onTrackPercent: 30,
-};
+function companyWithYears(count: number): CompanyWithKPIs {
+  return {
+    reportingPeriods: Array.from({ length: count }, (_, index) => ({
+      endDate: `${2010 + index}-12-31`,
+      emissions: { calculatedTotalEmissions: 1 },
+    })),
+  } as unknown as CompanyWithKPIs;
+}
 
 describe("ReportingCoverage", () => {
-  it("splits companies that have a readable trend from those that reported too little", () => {
-    render(<ReportingCoverage summary={summary} />);
+  it("stacks a long record, the minimum trend, and companies with too little", () => {
+    render(
+      <ReportingCoverage
+        companies={[
+          companyWithYears(7),
+          companyWithYears(4),
+          companyWithYears(3),
+          companyWithYears(1),
+          companyWithYears(0),
+        ]}
+      />,
+    );
 
     expect(
       screen.getByRole("img", {
-        name: "companiesOverviewPage.paris.reportingAria:8:2",
+        name: "companiesOverviewPage.paris.reportingAria:1:2:2",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("8")).toBeInTheDocument();
-    expect(screen.getByText("2")).toBeInTheDocument();
-    expect(screen.getByText("80%")).toBeInTheDocument();
-    expect(screen.getByText("20%")).toBeInTheDocument();
+    expect(
+      screen.getByText("companiesOverviewPage.paris.reportingLong"),
+    ).toBeInTheDocument();
     expect(
       screen.getByText("companiesOverviewPage.paris.reportingEnough"),
     ).toBeInTheDocument();
     expect(
       screen.getByText("companiesOverviewPage.paris.reportingTooLittle"),
     ).toBeInTheDocument();
+    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(screen.getAllByText("2")).toHaveLength(2);
   });
 
   it("renders nothing when the view is empty", () => {
-    const { container } = render(
-      <ReportingCoverage
-        summary={{ ...summary, total: 0, onTrack: 0, offTrack: 0, unknown: 0 }}
-      />,
-    );
+    const { container } = render(<ReportingCoverage companies={[]} />);
 
     expect(container).toBeEmptyDOMElement();
   });

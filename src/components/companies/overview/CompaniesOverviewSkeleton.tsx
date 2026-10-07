@@ -206,16 +206,10 @@ export function CompaniesOverviewSkeleton() {
             <Block className="h-4 w-full" />
             <Block className="h-4 w-2/3" />
           </div>
-          <Block className="mt-6 h-4 w-full rounded-full" />
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <div>
-              <Block className="h-9 w-16" />
-              <Block className="mt-2 h-4 w-44" />
-            </div>
-            <div>
-              <Block className="h-9 w-16" />
-              <Block className="mt-2 h-4 w-40" />
-            </div>
+          <div className="mx-auto mt-8 flex w-full max-w-3xl flex-col items-center gap-6">
+            <Block className="h-11 w-2/5 rounded-md" />
+            <Block className="h-11 w-3/5 rounded-md" />
+            <Block className="h-11 w-full rounded-md" />
           </div>
         </section>
 

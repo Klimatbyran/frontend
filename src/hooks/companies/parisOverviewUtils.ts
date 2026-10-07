@@ -137,6 +137,75 @@ export function fastestCutters(
     .slice(0, limit);
 }
 
+/**
+ * A company trend needs at least this many years with an emissions total.
+ * The methodology only draws a trendline from three valid years.
+ */
+export const TREND_MIN_YEARS = 3;
+
+/** Long record at the top of the reporting pyramid: the minimum plus three. */
+export const LONG_RECORD_YEARS = 6;
+
+export interface ReportingPyramid {
+  total: number;
+  /** At least {@link LONG_RECORD_YEARS} distinct years. */
+  longRecord: number;
+  /** From {@link TREND_MIN_YEARS} up to, but not including, the long record. */
+  enough: number;
+  /** Fewer than {@link TREND_MIN_YEARS} years, including no report at all. */
+  tooLittle: number;
+}
+
+/** Distinct years that include a numeric emissions total. */
+export function reportedEmissionYears(company: {
+  reportingPeriods?: Array<{
+    endDate?: string | null;
+    emissions?: { calculatedTotalEmissions?: number | null } | null;
+  }> | null;
+}): number {
+  const years = new Set<string>();
+  let undated = 0;
+
+  for (const period of company.reportingPeriods ?? []) {
+    const value = period.emissions?.calculatedTotalEmissions;
+    if (typeof value !== "number" || !Number.isFinite(value)) continue;
+
+    if (period.endDate) {
+      const year = new Date(period.endDate).getUTCFullYear();
+      if (Number.isFinite(year)) {
+        years.add(String(year));
+        continue;
+      }
+    }
+
+    undated += 1;
+  }
+
+  return years.size + undated;
+}
+
+export function buildReportingPyramid(
+  companies: Array<Parameters<typeof reportedEmissionYears>[0]>,
+): ReportingPyramid {
+  let longRecord = 0;
+  let enough = 0;
+  let tooLittle = 0;
+
+  for (const company of companies) {
+    const years = reportedEmissionYears(company);
+    if (years >= LONG_RECORD_YEARS) longRecord += 1;
+    else if (years >= TREND_MIN_YEARS) enough += 1;
+    else tooLittle += 1;
+  }
+
+  return {
+    total: companies.length,
+    longRecord,
+    enough,
+    tooLittle,
+  };
+}
+
 /** Off track, worst first: still growing, or shrinking far too slowly. */
 export function furthestBehind(
   companies: CompanyWithKPIs[],

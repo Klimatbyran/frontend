@@ -2,10 +2,12 @@ import { describe, expect, it } from "vitest";
 import type { CompanyWithKPIs } from "@/types/company";
 import {
   buildIndustryBreakdown,
+  buildReportingPyramid,
   fastestCutters,
   furthestBehind,
   isSwedishCompany,
   latestEmissions,
+  reportedEmissionYears,
   shareRampColor,
   summariseParis,
 } from "./parisOverviewUtils";
@@ -28,6 +30,62 @@ function company(
     emissionsChangeFromBaseYear: change,
   } as unknown as CompanyWithKPIs;
 }
+
+describe("reportedEmissionYears", () => {
+  it("counts distinct years and ignores a repeated year", () => {
+    expect(
+      reportedEmissionYears({
+        reportingPeriods: [
+          {
+            endDate: "2022-12-31",
+            emissions: { calculatedTotalEmissions: 10 },
+          },
+          {
+            endDate: "2022-06-30",
+            emissions: { calculatedTotalEmissions: 11 },
+          },
+          {
+            endDate: "2023-12-31",
+            emissions: { calculatedTotalEmissions: 9 },
+          },
+          {
+            endDate: "2021-12-31",
+            emissions: { calculatedTotalEmissions: null },
+          },
+        ],
+      }),
+    ).toBe(2);
+  });
+});
+
+describe("buildReportingPyramid", () => {
+  function withYears(count: number) {
+    return {
+      reportingPeriods: Array.from({ length: count }, (_, index) => ({
+        endDate: `${2010 + index}-12-31`,
+        emissions: { calculatedTotalEmissions: 1 },
+      })),
+    };
+  }
+
+  it("stacks a long record, the minimum trend, and everyone below it", () => {
+    expect(
+      buildReportingPyramid([
+        withYears(6),
+        withYears(8),
+        withYears(3),
+        withYears(5),
+        withYears(2),
+        withYears(0),
+      ]),
+    ).toEqual({
+      total: 6,
+      longRecord: 2,
+      enough: 2,
+      tooLittle: 2,
+    });
+  });
+});
 
 describe("latestEmissions", () => {
   it("returns null when the latest total is missing", () => {
