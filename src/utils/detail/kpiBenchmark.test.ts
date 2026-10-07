@@ -322,11 +322,28 @@ describe("how the average is calculated", () => {
     });
 
     // 20 is at 20/41 of the bar. 21 shares the next slot, at 21.5/41.
-    // The gap is about 3.7 points, inside the 5-point "near the average" band.
+    // That is within five rank points on the bar, so it reads as near the median.
     expect(view?.averagePosition).toBeCloseTo(20 / 41);
     expect(view?.position).toBeCloseTo(21.5 / 41);
     expect(view?.primary).toMatchObject({
       key: "kpiBenchmark.similarToReference",
+      reference: "all",
+    });
+  });
+
+  it("does not call a value near the median when rank says it is further away", () => {
+    // One peer at 100 widens the numeric span. A value of 4 is only one above
+    // the median 3, but it sits well to the right of the median on the bar.
+    const view = buildNumericBenchmark({
+      value: 4,
+      peers: [1, 2, 3, 4, 100],
+      higherIsBetter: false,
+      peerGroup: "municipalities",
+      peersIncludeSubject: false,
+    });
+
+    expect(view?.primary).toMatchObject({
+      key: "kpiBenchmark.worseThanReference",
       reference: "all",
     });
   });

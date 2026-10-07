@@ -175,12 +175,9 @@ function relate(
   valuePosition: number,
   referencePosition: number,
   higherIsBetter: boolean | null,
-  span: number,
 ): Relation {
-  const valueGap = Math.abs(value - reference);
-  const epsilon = Math.max(Math.abs(span) * 0.02, Math.abs(reference) * 0.01);
   const rankGap = Math.abs(valuePosition - referencePosition);
-  if (valueGap <= epsilon || rankGap <= SIMILAR_RANK_GAP) return "similar";
+  if (rankGap <= SIMILAR_RANK_GAP) return "similar";
 
   const isHigher = value > reference;
   if (higherIsBetter === null) return isHigher ? "higher" : "lower";
@@ -266,9 +263,6 @@ export function buildNumericBenchmark(
     input.peersIncludeSubject === false || !scaleSource.includes(input.value)
       ? [...scaleSource, input.value]
       : scaleSource;
-  const sorted = [...scale].sort((a, b) => a - b);
-  const span = sorted[sorted.length - 1] - sorted[0];
-
   const referenceValue = median(scaleSource);
   const position = rankPosition(input.value, scale);
   const averagePosition = rankPosition(referenceValue, scale);
@@ -288,7 +282,6 @@ export function buildNumericBenchmark(
     position,
     averagePosition,
     input.higherIsBetter,
-    span,
   );
 
   const parts = splitShares(input.value, others, input.higherIsBetter);
