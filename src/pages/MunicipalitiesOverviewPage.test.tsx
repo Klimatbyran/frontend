@@ -49,8 +49,16 @@ vi.mock("@/components/municipalities/MunicipalityRankedList", () => ({
 vi.mock(
   "@/components/municipalities/rankedList/MunicipalityInsightsPanel",
   () => ({
-    default: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
-      <div data-testid="insights-panel">{String(selectedKPI.key)}</div>
+    default: ({
+      selectedKPI,
+      section,
+    }: {
+      selectedKPI: { key: unknown };
+      section?: string;
+    }) => (
+      <div data-testid={`insights-${section ?? "all"}`}>
+        {String(selectedKPI.key)}
+      </div>
     ),
   }),
 );
@@ -65,6 +73,7 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string) => key,
   }),
+  Trans: ({ i18nKey }: { i18nKey: string }) => <span>{i18nKey}</span>,
 }));
 
 describe("MunicipalitiesOverviewPage", () => {
@@ -85,5 +94,16 @@ describe("MunicipalitiesOverviewPage", () => {
     expect(screen.getByTestId("kpi-selector")).toHaveTextContent(
       "bicycleMetrePerCapita",
     );
+    expect(screen.getByTestId("territory-map")).toBeInTheDocument();
+    expect(screen.getByTestId("ranked-list")).toBeInTheDocument();
+    expect(screen.getByTestId("insights-stats")).toBeInTheDocument();
+    expect(screen.getByTestId("insights-top")).toBeInTheDocument();
+    expect(screen.getByTestId("insights-bottom")).toBeInTheDocument();
+    expect(
+      screen.queryByTestId("insights-distribution"),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("municipalities.list.viewToggle.showList"),
+    ).not.toBeInTheDocument();
   });
 });

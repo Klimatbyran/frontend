@@ -1,9 +1,8 @@
 import { useState, useMemo } from "react";
-import { ArrowDownCircle, Leaf, Map, List } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { ArrowDownCircle, Leaf } from "lucide-react";
+import { Trans, useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
-import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap, { DataItem } from "@/components/maps/TerritoryMap";
 import { OVERVIEW_MAP_DEFAULT_CENTER } from "@/components/maps/mapConstants";
 import regionGeoJson from "@/data/regionGeo.json";
@@ -20,11 +19,8 @@ import { toRegionMapDataItem } from "@/utils/territoryMapData";
 import { RegionalRankedList } from "@/components/regions/RegionalRankedList";
 import { DataChipSelector } from "@/components/ranked/DataChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
-import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
-import {
-  OverviewSplitLayout,
-  OVERVIEW_PANEL_MD_HEIGHT,
-} from "@/components/ranked/OverviewSplitLayout";
+import { TerritoryOverviewLayout } from "@/components/ranked/TerritoryOverviewLayout";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import { createEntityClickHandler } from "@/utils/routing";
 import { RankedListItem } from "@/types/rankings";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -47,26 +43,16 @@ export function RegionalOverviewPage() {
 
   const navigate = useNavigate();
 
-  const {
-    selectedKPI,
-    setSelectedKPI,
-    viewMode,
-    setKPIInURL,
-    setViewModeInURL,
-  } = useRankedRegionsURLParams(regionalKPIs);
+  const { selectedKPI, setSelectedKPI, setKPIInURL } =
+    useRankedRegionsURLParams(regionalKPIs);
 
-  const handleRegionClick = createEntityClickHandler(
-    navigate,
-    "region",
-    viewMode,
-  );
+  const handleRegionClick = createEntityClickHandler(navigate, "region");
 
   const handleRegionAreaClick = (name: string) => {
     const region = resolveRegionFromMapName(name, regionsData);
     handleRegionClick(region?.name ?? name);
   };
 
-  // Transform regions data from regional KPIs endpoint into required formats
   const regionEntities: RankedListItem[] = useMemo(() => {
     return regionsData.map((regionData: RegionKPIData) => {
       const mapName = toMapRegionName(regionData.name);
@@ -120,87 +106,67 @@ export function RegionalOverviewPage() {
     );
   }
 
-  const viewToggle = (
-    <ViewModeToggle
-      viewMode={viewMode}
-      modes={["map", "list"]}
-      onChange={setViewModeInURL}
-      titles={{
-        map: t("viewModeToggle.map"),
-        list: t("viewModeToggle.list"),
-      }}
-      showTitles
-      icons={{
-        map: <Map className="w-4 h-4" />,
-        list: <List className="w-4 h-4" />,
-      }}
-    />
-  );
-
-  const regionalRankedList = (
-    <RegionalRankedList
-      regionEntities={regionEntities}
-      selectedKPI={selectedKPI}
-      onItemClick={handleRegionClick}
-      headerAction={viewToggle}
-    />
-  );
-
-  const mapPanel = (
-    <TerritoryMap
-      entityType="regions"
-      geoData={geoData as FeatureCollection}
-      data={mapData}
-      selectedKPI={selectedKPI}
-      onAreaClick={handleRegionAreaClick}
-      defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
-      defaultZoom={isMobile ? 4 : undefined}
-      className="max-w-none"
-    />
-  );
-
   return (
-    <>
-      <PageHeader
-        variant="title-only"
-        title={t("regionalOverviewPage.title")}
-      />
-
-      <DataChipSelector<Region>
-        selectedKPI={selectedKPI}
-        kpis={regionalKPIs}
-        onKPIChange={(kpi) => {
-          setSelectedKPI(kpi);
-          setKPIInURL(String(kpi.key));
-        }}
-        iconMap={REGION_KPI_ICONS}
-        translationPrefix="regions.list"
-        label={t("regions.list.dataSelector.label")}
-      />
-
-      <div className="space-y-6">
-        {/* Row 1: map/list toggle | stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
-          <OverviewSplitLayout
-            viewMode={viewMode}
-            visualizationMode="map"
-            visualization={mapPanel}
-            list={regionalRankedList}
-            toggle={viewToggle}
-          />
-          <div
-            className={`min-h-0 h-full min-w-0 overflow-visible ${OVERVIEW_PANEL_MD_HEIGHT}`}
-          >
-            <RegionalInsightsPanel
-              regionsData={regionsAsEntities}
-              selectedKPI={selectedKPI}
-              section="stats"
+    <TerritoryOverviewLayout
+      title={t("regionalOverviewPage.title")}
+      lead={t("regionalOverviewPage.lead")}
+      explainerTitle={t("regionalOverviewPage.explainerTitle")}
+      explainer={
+        <>
+          <p>{t("regionalOverviewPage.explainerIndicators")}</p>
+          <p>
+            <Trans
+              i18nKey="regionalOverviewPage.explainerColours"
+              components={[
+                <LocalizedLink
+                  to="/methodology?view=carbonLaw"
+                  className="underline transition-colors hover:text-white"
+                />,
+              ]}
             />
-          </div>
-        </div>
-
-        {!selectedKPI.isBoolean && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          </p>
+        </>
+      }
+      selector={
+        <DataChipSelector<Region>
+          className="mb-0"
+          selectedKPI={selectedKPI}
+          kpis={regionalKPIs}
+          onKPIChange={(kpi) => {
+            setSelectedKPI(kpi);
+            setKPIInURL(String(kpi.key));
+          }}
+          iconMap={REGION_KPI_ICONS}
+          translationPrefix="regions.list"
+          label={t("regions.list.dataSelector.label")}
+        />
+      }
+      mapTitle={t("regionalOverviewPage.mapTitle")}
+      mapDescription={t("regionalOverviewPage.mapDescription")}
+      map={
+        <TerritoryMap
+          entityType="regions"
+          geoData={geoData as FeatureCollection}
+          data={mapData}
+          selectedKPI={selectedKPI}
+          onAreaClick={handleRegionAreaClick}
+          defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
+          defaultZoom={isMobile ? 4 : undefined}
+          className="max-w-none"
+        />
+      }
+      stats={
+        <RegionalInsightsPanel
+          regionsData={regionsAsEntities}
+          selectedKPI={selectedKPI}
+          section="stats"
+        />
+      }
+      comparisonTitle={t("regionalOverviewPage.comparisonTitle")}
+      comparisonDescription={t("regionalOverviewPage.comparisonDescription")}
+      comparison={
+        selectedKPI.isBoolean ? undefined : (
+          <>
             <RegionalInsightsPanel
               regionsData={regionsAsEntities}
               selectedKPI={selectedKPI}
@@ -211,14 +177,18 @@ export function RegionalOverviewPage() {
               selectedKPI={selectedKPI}
               section="bottom"
             />
-            <RegionalInsightsPanel
-              regionsData={regionsAsEntities}
-              selectedKPI={selectedKPI}
-              section="distribution"
-            />
-          </div>
-        )}
-      </div>
-    </>
+          </>
+        )
+      }
+      listTitle={t("regionalOverviewPage.listTitle")}
+      listDescription={t("regionalOverviewPage.listDescription")}
+      list={
+        <RegionalRankedList
+          regionEntities={regionEntities}
+          selectedKPI={selectedKPI}
+          onItemClick={handleRegionClick}
+        />
+      }
+    />
   );
 }

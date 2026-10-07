@@ -6,18 +6,14 @@ import {
   FileCheck,
   Zap,
   ArrowUpCircle,
-  Map,
-  List,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
-import { PageHeader } from "@/components/layout/PageHeader";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import { OVERVIEW_MAP_DEFAULT_CENTER } from "@/components/maps/mapConstants";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
-import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
   useMunicipalityKPIs,
   useMunicipalityKPIDefinitions,
@@ -29,14 +25,11 @@ import {
   normalizeMunicipalityKpiApiItem,
   toMunicipalityMapDataItem,
 } from "@/utils/territoryMapData";
-import {
-  OverviewSplitLayout,
-  OVERVIEW_PANEL_MD_HEIGHT,
-  type OverviewViewMode,
-} from "@/components/ranked/OverviewSplitLayout";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { DataChipSelector } from "@/components/ranked/DataChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
+import { TerritoryOverviewLayout } from "@/components/ranked/TerritoryOverviewLayout";
+import { LocalizedLink } from "@/components/LocalizedLink";
 import type { Municipality } from "@/types/municipality";
 
 const MUNICIPALITY_KPI_ICONS: Record<string, React.ReactNode> = {
@@ -71,18 +64,7 @@ function useMunicipalityUrlState(municipalityKPIs: KPIValue<Municipality>[]) {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = useCallback((): OverviewViewMode => {
-    const params = new URLSearchParams(location.search);
-    return params.get("view") === "list" ? "list" : "map";
-  }, [location.search]);
-
-  const setViewModeInURL = (mode: OverviewViewMode) => {
-    const params = new URLSearchParams(location.search);
-    params.set("view", mode);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
-  return { getKPIFromURL, setKPIInURL, getViewModeFromURL, setViewModeInURL };
+  return { getKPIFromURL, setKPIInURL };
 }
 
 function MunicipalitiesOverviewContent({
@@ -90,9 +72,7 @@ function MunicipalitiesOverviewContent({
   municipalityEntities,
   mapData,
   selectedKPI,
-  viewMode,
   onKPIChange,
-  onViewModeChange,
   onMunicipalityClick,
   onMunicipalityAreaClick,
 }: {
@@ -100,9 +80,7 @@ function MunicipalitiesOverviewContent({
   municipalityEntities: RankedListItem[];
   mapData: ReturnType<typeof toMunicipalityMapDataItem>[];
   selectedKPI: KPIValue<Municipality>;
-  viewMode: OverviewViewMode;
   onKPIChange: (kpi: KPIValue<Municipality>) => void;
-  onViewModeChange: (mode: OverviewViewMode) => void;
   onMunicipalityClick: (item: Municipality | string) => void;
   onMunicipalityAreaClick: (name: string) => void;
 }) {
@@ -111,78 +89,65 @@ function MunicipalitiesOverviewContent({
   const municipalityKPIs = useMunicipalityKPIDefinitions();
   const [geoData] = useState(municipalityGeoJson);
 
-  const viewToggle = (
-    <ViewModeToggle
-      viewMode={viewMode}
-      modes={["map", "list"]}
-      onChange={onViewModeChange}
-      titles={{
-        map: t("municipalities.list.viewToggle.showMap"),
-        list: t("municipalities.list.viewToggle.showList"),
-      }}
-      showTitles
-      icons={{
-        map: <Map className="w-4 h-4" />,
-        list: <List className="w-4 h-4" />,
-      }}
-    />
-  );
-
   return (
-    <>
-      <PageHeader
-        variant="title-only"
-        title={t("municipalitiesOverviewPage.title")}
-      />
-
-      <DataChipSelector<Municipality>
-        selectedKPI={selectedKPI}
-        kpis={municipalityKPIs}
-        onKPIChange={onKPIChange}
-        iconMap={MUNICIPALITY_KPI_ICONS}
-        translationPrefix="municipalities.list"
-      />
-
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
-          <OverviewSplitLayout
-            viewMode={viewMode}
-            visualizationMode="map"
-            visualization={
-              <TerritoryMap
-                entityType="municipalities"
-                geoData={geoData as FeatureCollection}
-                data={mapData}
-                selectedKPI={selectedKPI}
-                onAreaClick={onMunicipalityAreaClick}
-                defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
-                defaultZoom={isMobile ? 4 : undefined}
-                className="max-w-none"
-              />
-            }
-            list={
-              <MunicipalityRankedList
-                municipalityEntities={municipalityEntities}
-                selectedKPI={selectedKPI}
-                onItemClick={onMunicipalityClick}
-                headerAction={viewToggle}
-              />
-            }
-            toggle={viewToggle}
-          />
-          <div
-            className={`min-h-0 h-full min-w-0 overflow-visible ${OVERVIEW_PANEL_MD_HEIGHT}`}
-          >
-            <InsightsPanel
-              municipalityData={municipalities}
-              selectedKPI={selectedKPI}
-              section="stats"
+    <TerritoryOverviewLayout
+      title={t("municipalitiesOverviewPage.title")}
+      lead={t("municipalitiesOverviewPage.lead")}
+      explainerTitle={t("municipalitiesOverviewPage.explainerTitle")}
+      explainer={
+        <>
+          <p>{t("municipalitiesOverviewPage.explainerIndicators")}</p>
+          <p>
+            <Trans
+              i18nKey="municipalitiesOverviewPage.explainerColours"
+              components={[
+                <LocalizedLink
+                  to="/methodology?view=carbonLaw"
+                  className="underline transition-colors hover:text-white"
+                />,
+              ]}
             />
-          </div>
-        </div>
-
-        {!selectedKPI.isBoolean && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          </p>
+        </>
+      }
+      selector={
+        <DataChipSelector<Municipality>
+          className="mb-0"
+          selectedKPI={selectedKPI}
+          kpis={municipalityKPIs}
+          onKPIChange={onKPIChange}
+          iconMap={MUNICIPALITY_KPI_ICONS}
+          translationPrefix="municipalities.list"
+        />
+      }
+      mapTitle={t("municipalitiesOverviewPage.mapTitle")}
+      mapDescription={t("municipalitiesOverviewPage.mapDescription")}
+      map={
+        <TerritoryMap
+          entityType="municipalities"
+          geoData={geoData as FeatureCollection}
+          data={mapData}
+          selectedKPI={selectedKPI}
+          onAreaClick={onMunicipalityAreaClick}
+          defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
+          defaultZoom={isMobile ? 4 : undefined}
+          className="max-w-none"
+        />
+      }
+      stats={
+        <InsightsPanel
+          municipalityData={municipalities}
+          selectedKPI={selectedKPI}
+          section="stats"
+        />
+      }
+      comparisonTitle={t("municipalitiesOverviewPage.comparisonTitle")}
+      comparisonDescription={t(
+        "municipalitiesOverviewPage.comparisonDescription",
+      )}
+      comparison={
+        selectedKPI.isBoolean ? undefined : (
+          <>
             <InsightsPanel
               municipalityData={municipalities}
               selectedKPI={selectedKPI}
@@ -193,15 +158,19 @@ function MunicipalitiesOverviewContent({
               selectedKPI={selectedKPI}
               section="bottom"
             />
-            <InsightsPanel
-              municipalityData={municipalities}
-              selectedKPI={selectedKPI}
-              section="distribution"
-            />
-          </div>
-        )}
-      </div>
-    </>
+          </>
+        )
+      }
+      listTitle={t("municipalitiesOverviewPage.listTitle")}
+      listDescription={t("municipalitiesOverviewPage.listDescription")}
+      list={
+        <MunicipalityRankedList
+          municipalityEntities={municipalityEntities}
+          selectedKPI={selectedKPI}
+          onItemClick={onMunicipalityClick}
+        />
+      }
+    />
   );
 }
 
@@ -225,7 +194,6 @@ export function MunicipalitiesOverviewPage() {
 
   const urlState = useMunicipalityUrlState(municipalityKPIs);
   const [selectedKPI, setSelectedKPI] = useState(urlState.getKPIFromURL());
-  const viewMode = urlState.getViewModeFromURL();
 
   useEffect(() => {
     const kpiFromUrl = urlState.getKPIFromURL();
@@ -237,7 +205,6 @@ export function MunicipalitiesOverviewPage() {
   const handleMunicipalityClick = createEntityClickHandler(
     navigate,
     "municipality",
-    viewMode,
   );
 
   const mapData = useMemo(
@@ -292,12 +259,10 @@ export function MunicipalitiesOverviewPage() {
       municipalityEntities={municipalityEntities}
       mapData={mapData}
       selectedKPI={selectedKPI}
-      viewMode={viewMode}
       onKPIChange={(kpi) => {
         setSelectedKPI(kpi);
         urlState.setKPIInURL(String(kpi.key));
       }}
-      onViewModeChange={urlState.setViewModeInURL}
       onMunicipalityClick={handleMunicipalityClick}
       onMunicipalityAreaClick={handleMunicipalityAreaClick}
     />

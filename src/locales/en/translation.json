@@ -1088,7 +1088,17 @@
     "errorTitle": "Failed to retrieve regional information",
     "errorDescription": "Please try again later",
     "title": "Regional Overview",
-    "description": "Overview of emissions and transition at the regional level"
+    "description": "Overview of emissions and transition at the regional level",
+    "lead": "Meeting the Paris Agreement means cutting emissions roughly in half this decade. Here is how Sweden's regions are doing.",
+    "explainerTitle": "How do we compare regions?",
+    "explainerIndicators": "Regions are compared on two indicators: how emissions have changed since the Paris Agreement in 2015, and whether that pace is fast enough to meet the goal. The map, the summary, and the lists all follow the one you pick.",
+    "explainerColours": "Blue means a better result, pink a worse one. For the Paris indicator we use the Carbon Law. Read more about it <0>here</0>.",
+    "mapTitle": "On the map",
+    "mapDescription": "Each area is one region, coloured for the indicator you picked. Blue is a better result, pink a worse one. The summary beside the map explains that indicator.",
+    "comparisonTitle": "Furthest ahead and furthest behind",
+    "comparisonDescription": "The strongest and weakest results for this indicator, on the same blue and pink scale as the map.",
+    "listTitle": "Every region",
+    "listDescription": "Search for a name. Click a region to open its page."
   },
   "detailPage": {
     "totalEmissions": "Total Emissions {{year}}",
@@ -1140,7 +1150,17 @@
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
     "title": "Municipalities Overview",
-    "description": "Data on emissions and climate transition in municipalities"
+    "description": "Data on emissions and climate transition in municipalities",
+    "lead": "Meeting the Paris Agreement means cutting emissions roughly in half this decade. Here is how Sweden's municipalities are doing.",
+    "explainerTitle": "How do we compare municipalities?",
+    "explainerIndicators": "Each chip is one indicator: emissions since 2015, the Paris Agreement, consumption per person, climate plans, electric cars, charging points, and cycle paths. The map, the summary, and the lists all follow the one you pick.",
+    "explainerColours": "Blue means a better result for that indicator, pink a worse one. For the Paris indicator we use the Carbon Law. Read more about it <0>here</0>.",
+    "mapTitle": "On the map",
+    "mapDescription": "Each area is one municipality, coloured for the indicator you picked. Blue is a better result, pink a worse one. The summary beside the map explains that indicator.",
+    "comparisonTitle": "Furthest ahead and furthest behind",
+    "comparisonDescription": "The strongest and weakest results for this indicator, on the same blue and pink scale as the map.",
+    "listTitle": "Every municipality",
+    "listDescription": "Search for a name. Click a municipality to open its page."
   },
   "municipalityDetailPage": {
     "metaTitle": "Data on emissions and transition",

@@ -17,6 +17,7 @@ interface DataChipSelectorProps<T> {
   label?: string;
   /** Optional controls rendered on the same row as the data selector */
   actions?: React.ReactNode;
+  className?: string;
 }
 
 export function DataChipSelector<T>({
@@ -27,6 +28,7 @@ export function DataChipSelector<T>({
   translationPrefix,
   label,
   actions,
+  className,
 }: DataChipSelectorProps<T>) {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -76,7 +78,7 @@ export function DataChipSelector<T>({
   };
 
   return (
-    <div className="mb-4 space-y-2">
+    <div className={cn("mb-4 space-y-2", className)}>
       {selectorLabel && (
         <p className="text-xs text-white/50 uppercase tracking-wider px-1">
           {selectorLabel}

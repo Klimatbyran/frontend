@@ -1,7 +1,7 @@
 import {
   OVERVIEW_PANEL_HEIGHT,
   OVERVIEW_PANEL_MD_HEIGHT,
-} from "@/components/ranked/OverviewSplitLayout";
+} from "@/components/ranked/overviewPanel";
 
 export type OverviewPageSkeletonVariant = "municipalities" | "regions";
 
@@ -19,23 +19,47 @@ function SkeletonBlock({ className = "" }: { className?: string }) {
   return <div className={`${SHIMMER} ${className}`} />;
 }
 
+function HeaderSkeleton() {
+  return (
+    <div className="space-y-5">
+      <div className="space-y-3">
+        <SkeletonBlock className="h-9 w-3/4 max-w-[420px]" />
+        <SkeletonBlock className="h-4 w-full max-w-[600px]" />
+        <SkeletonBlock className="h-4 w-2/3 max-w-[420px]" />
+      </div>
+      <div className="flex max-w-[640px] items-center justify-between gap-4 rounded-2xl bg-black-2 px-5 py-4">
+        <SkeletonBlock className="h-4 w-52" />
+        <SkeletonBlock className="size-4 shrink-0" />
+      </div>
+    </div>
+  );
+}
+
 function DataChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
   return (
-    <div className="mb-4 space-y-2">
-      <SkeletonBlock className="h-3 w-36 mx-1" />
+    <div className="space-y-2">
+      <SkeletonBlock className="mx-1 h-3 w-36" />
       <div className="flex flex-col gap-2">
-        <SkeletonBlock className="md:hidden h-12 w-full rounded-xl" />
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="hidden md:flex gap-2 flex-wrap min-w-0">
-            {Array.from({ length: chipCount }, (_, i) => (
-              <SkeletonBlock
-                key={i}
-                className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
-              />
-            ))}
-          </div>
+        <SkeletonBlock className="h-12 w-full rounded-xl md:hidden" />
+        <div className="hidden flex-wrap gap-2 md:flex">
+          {Array.from({ length: chipCount }, (_, i) => (
+            <SkeletonBlock
+              key={i}
+              className={`h-9 rounded-full ${CHIP_WIDTHS[i % CHIP_WIDTHS.length]}`}
+            />
+          ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function SectionIntroSkeleton() {
+  return (
+    <div className="space-y-2">
+      <SkeletonBlock className="h-6 w-48" />
+      <SkeletonBlock className="h-4 w-full max-w-[560px]" />
+      <SkeletonBlock className="h-4 w-2/3 max-w-[380px]" />
     </div>
   );
 }
@@ -43,33 +67,33 @@ function DataChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
 function StatsPanelSkeleton() {
   return (
     <div
-      className={`p-6 md:p-8 flex flex-col gap-6 md:gap-0 md:justify-between h-auto md:h-full min-h-0 bg-white/5 rounded-level-2 shadow-lg ${OVERVIEW_PANEL_MD_HEIGHT}`}
+      className={`flex h-auto min-h-0 flex-col gap-6 rounded-level-2 bg-white/5 p-6 shadow-lg md:h-full md:justify-between md:gap-0 md:p-8 ${OVERVIEW_PANEL_MD_HEIGHT}`}
     >
-      <div className="space-y-3 shrink-0">
-        <SkeletonBlock className="h-8 md:h-9 w-3/4" />
+      <div className="shrink-0 space-y-3">
+        <SkeletonBlock className="h-8 w-3/4 md:h-9" />
         <SkeletonBlock className="h-4 w-full" />
         <SkeletonBlock className="h-4 w-5/6" />
         <SkeletonBlock className="h-7 w-36 rounded-full" />
       </div>
 
-      <div className="p-5 md:p-4 bg-white/10 rounded-2xl space-y-2 shrink-0">
+      <div className="shrink-0 space-y-2 rounded-2xl bg-white/10 p-5 md:p-4">
         <SkeletonBlock className="h-3 w-16" />
         <SkeletonBlock className="h-5 w-2/3" />
         <SkeletonBlock className="h-4 w-1/3" />
       </div>
 
-      <div className="p-5 md:p-4 bg-white/10 rounded-2xl space-y-2 shrink-0">
+      <div className="shrink-0 space-y-2 rounded-2xl bg-white/10 p-5 md:p-4">
         <SkeletonBlock className="h-3 w-16" />
         <SkeletonBlock className="h-5 w-2/3" />
         <SkeletonBlock className="h-4 w-1/3" />
       </div>
 
-      <div className="p-4 bg-white/10 rounded-2xl shrink-0 space-y-2">
+      <div className="shrink-0 space-y-2 rounded-2xl bg-white/10 p-4">
         <SkeletonBlock className="h-3 w-20" />
         <SkeletonBlock className="h-9 w-24" />
       </div>
 
-      <div className="space-y-4 md:space-y-3 shrink-0">
+      <div className="shrink-0 space-y-4 md:space-y-3">
         <SkeletonBlock className="h-3 w-full rounded-full" />
         <div className="space-y-3 md:space-y-2">
           <div className="flex items-center justify-between gap-3">
@@ -88,23 +112,14 @@ function StatsPanelSkeleton() {
   );
 }
 
-function VisualizationPanelSkeleton() {
-  return (
-    <div className={`flex flex-col ${OVERVIEW_PANEL_HEIGHT}`}>
-      <SkeletonBlock className="md:hidden shrink-0 mb-3 h-10 w-full rounded-xl" />
-      <SkeletonBlock className="flex-1 min-h-0 w-full rounded-level-2" />
-    </div>
-  );
-}
-
 function RankedListPanelSkeleton() {
   return (
-    <div className="bg-white/5 rounded-level-2 p-6 h-full min-h-[320px] md:min-h-[400px] flex flex-col gap-4">
+    <div className="flex h-full min-h-[280px] flex-col gap-4 rounded-level-2 bg-white/5 p-6 md:min-h-0">
       <SkeletonBlock className="h-6 w-3/4" />
-      {Array.from({ length: 8 }, (_, i) => (
+      {Array.from({ length: 5 }, (_, i) => (
         <div key={i} className="flex items-center gap-3">
           <SkeletonBlock className="h-4 w-6 shrink-0" />
-          <SkeletonBlock className="h-4 flex-1 max-w-[45%]" />
+          <SkeletonBlock className="h-4 max-w-[45%] flex-1" />
           <SkeletonBlock className="h-3 flex-1 rounded-full" />
           <SkeletonBlock className="h-4 w-12 shrink-0" />
         </div>
@@ -113,15 +128,17 @@ function RankedListPanelSkeleton() {
   );
 }
 
-function DistributionPanelSkeleton() {
+function FullListSkeleton() {
   return (
-    <div className="bg-white/5 rounded-level-2 p-6 flex flex-col h-full min-h-[320px] md:min-h-[400px] gap-6">
-      <div className="space-y-2">
-        <SkeletonBlock className="h-7 w-1/2" />
-        <SkeletonBlock className="h-4 w-full" />
-        <SkeletonBlock className="h-4 w-5/6" />
-      </div>
-      <SkeletonBlock className="w-full flex-1 min-h-[180px] rounded-level-1" />
+    <div className="flex flex-col gap-4 rounded-level-2 bg-black-2 p-4">
+      <SkeletonBlock className="h-10 w-full rounded-xl" />
+      {Array.from({ length: 8 }, (_, i) => (
+        <div key={i} className="flex items-center gap-3 px-2 py-2">
+          <SkeletonBlock className="h-4 w-6 shrink-0" />
+          <SkeletonBlock className="h-4 max-w-[40%] flex-1" />
+          <SkeletonBlock className="h-4 w-12 shrink-0" />
+        </div>
+      ))}
     </div>
   );
 }
@@ -132,25 +149,32 @@ export function OverviewPageSkeleton({
   chipCount = variant === "regions" ? 2 : 7,
 }: OverviewPageSkeletonProps) {
   return (
-    <>
-      <SkeletonBlock className="h-9 w-56 md:w-72 mb-2 md:mb-3" />
-
+    <div className="space-y-8 md:space-y-10">
+      <HeaderSkeleton />
       <DataChipSelectorSkeleton chipCount={chipCount} />
 
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 items-stretch">
-          <VisualizationPanelSkeleton />
-          <div className="min-h-0 h-full min-w-0 overflow-visible">
-            <StatsPanelSkeleton />
-          </div>
+      <section className="space-y-4 md:space-y-5">
+        <SectionIntroSkeleton />
+        <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2">
+          <SkeletonBlock
+            className={`w-full rounded-level-2 ${OVERVIEW_PANEL_HEIGHT}`}
+          />
+          <StatsPanelSkeleton />
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+      <section className="space-y-4 md:space-y-5">
+        <SectionIntroSkeleton />
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2">
           <RankedListPanelSkeleton />
           <RankedListPanelSkeleton />
-          <DistributionPanelSkeleton />
         </div>
-      </div>
-    </>
+      </section>
+
+      <section className="space-y-4 md:space-y-5">
+        <SectionIntroSkeleton />
+        <FullListSkeleton />
+      </section>
+    </div>
   );
 }

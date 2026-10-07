@@ -1137,7 +1137,17 @@
     "errorTitle": "Det gick inte att hämta länsinformation",
     "errorDescription": "Försök igen senare",
     "title": "Länsöversikt",
-    "description": "Översikt över utsläpp och omställning på länsnivå"
+    "description": "Översikt över utsläpp och omställning på länsnivå",
+    "lead": "Att klara Parisavtalet betyder att ungefär halvera utsläppen det här årtiondet. Så här går det för Sveriges län.",
+    "explainerTitle": "Hur jämför vi län?",
+    "explainerIndicators": "Länen jämförs på två indikatorer: hur utsläppen har förändrats sedan Parisavtalet 2015, och om den takten räcker för att klara målet. Kartan, sammanfattningen och listorna följer den du väljer.",
+    "explainerColours": "Blått betyder ett bättre resultat, rosa ett sämre. För Parisindikatorn använder vi Carbon Law. Läs mer om den <0>här</0>.",
+    "mapTitle": "På kartan",
+    "mapDescription": "Varje område är ett län, färgat efter indikatorn du valt. Blått är ett bättre resultat, rosa ett sämre. Sammanfattningen bredvid kartan förklarar indikatorn.",
+    "comparisonTitle": "Längst fram och längst bak",
+    "comparisonDescription": "De starkaste och de svagaste resultaten för den här indikatorn, med samma blå och rosa skala som på kartan.",
+    "listTitle": "Alla län",
+    "listDescription": "Sök efter ett namn. Klicka på ett län för att öppna sidan."
   },
   "detailPage": {
     "totalEmissions": "Totala utsläpp {{year}}",
@@ -1189,7 +1199,17 @@
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommunöversikt",
-    "description": "Data om utsläpp och klimatomställning i kommunerna"
+    "description": "Data om utsläpp och klimatomställning i kommunerna",
+    "lead": "Att klara Parisavtalet betyder att ungefär halvera utsläppen det här årtiondet. Så här går det för Sveriges kommuner.",
+    "explainerTitle": "Hur jämför vi kommuner?",
+    "explainerIndicators": "Varje chip är en indikator: utsläpp sedan 2015, Parisavtalet, konsumtion per person, klimatplaner, elbilar, laddpunkter och cykelvägar. Kartan, sammanfattningen och listorna följer den du väljer.",
+    "explainerColours": "Blått betyder ett bättre resultat för den indikatorn, rosa ett sämre. För Parisindikatorn använder vi Carbon Law. Läs mer om den <0>här</0>.",
+    "mapTitle": "På kartan",
+    "mapDescription": "Varje område är en kommun, färgad efter indikatorn du valt. Blått är ett bättre resultat, rosa ett sämre. Sammanfattningen bredvid kartan förklarar indikatorn.",
+    "comparisonTitle": "Längst fram och längst bak",
+    "comparisonDescription": "De starkaste och de svagaste resultaten för den här indikatorn, med samma blå och rosa skala som på kartan.",
+    "listTitle": "Alla kommuner",
+    "listDescription": "Sök efter ett namn. Klicka på en kommun för att öppna sidan."
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",

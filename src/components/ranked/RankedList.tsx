@@ -221,7 +221,7 @@ export function RankedList<T extends Record<string, unknown>>({
     <button
       key={String(index)}
       onClick={() => onItemClick?.(item)}
-      className="w-full px-4 hover:bg-black/70 transition-colors flex items-center gap-4 group"
+      className="w-full px-4 py-3 hover:bg-black/70 transition-colors flex items-center gap-4 group"
     >
       <span className="text-white/30 text-sm w-8 shrink-0 tabular-nums text-left">
         {selectedDataPoint.isBoolean
@@ -251,9 +251,7 @@ export function RankedList<T extends Record<string, unknown>>({
   );
 
   return (
-    <div
-      className={cn("bg-black-2 rounded-2xl flex flex-col h-full", className)}
-    >
+    <div className={cn("bg-black-2 rounded-2xl flex flex-col", className)}>
       <div className="p-4 bg-black-1/40">
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
@@ -305,22 +303,16 @@ export function RankedList<T extends Record<string, unknown>>({
           </div>
         )}
       </div>
-      <div className="overflow-y-auto ranked-list-items flex-1 min-h-0">
-        <div className="h-full grid grid-cols-1 auto-rows-fr">
-          {paginatedData.map((item, index) =>
-            renderItem
-              ? renderItem(item, index, startIndex, getOriginalRank(item))
-              : defaultRenderItem(
-                  item,
-                  index,
-                  colorItem ? colorItem(item) : defaultColorItem(item),
-                ),
-          )}
-          {paginatedData.length < itemsPerPage &&
-            Array(itemsPerPage - paginatedData.length)
-              .fill(0)
-              .map((_, i) => <div key={`empty-${i}`} />)}
-        </div>
+      <div className="ranked-list-items">
+        {paginatedData.map((item, index) =>
+          renderItem
+            ? renderItem(item, index, startIndex, getOriginalRank(item))
+            : defaultRenderItem(
+                item,
+                index,
+                colorItem ? colorItem(item) : defaultColorItem(item),
+              ),
+        )}
       </div>
       {totalPages > 1 && (
         <MultiPagePagination
