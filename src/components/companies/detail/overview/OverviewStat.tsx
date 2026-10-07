@@ -66,6 +66,7 @@ export function OverviewStat({
 
   const detailValueClassName = cn(
     dense ? "text-4xl xl:text-5xl" : "text-4xl md:text-6xl",
+    "max-w-full break-words [overflow-wrap:anywhere]",
     valueClassName,
   );
 
@@ -94,7 +95,7 @@ export function OverviewStat({
       <div className="flex items-start gap-2">
         <Text
           className={cn(
-            "text-4xl md:text-6xl font-light tracking-tighter leading-none",
+            "text-4xl md:text-6xl font-light tracking-tighter leading-none max-w-full break-words [overflow-wrap:anywhere]",
             valueClassName,
           )}
         >
@@ -111,7 +112,7 @@ export function OverviewStat({
   };
 
   return (
-    <div className={cn(useFlex1 && "flex-1", "min-w-0", className)}>
+    <div className={cn(useFlex1 && "flex-1", "max-w-full", className)}>
       <div className={isDetailVariant ? "" : "mb-1 md:mb-2"}>
         {renderLabel()}
       </div>

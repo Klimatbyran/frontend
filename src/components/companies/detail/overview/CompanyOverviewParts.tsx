@@ -8,6 +8,11 @@ import {
 } from "@/utils/formatting/localization";
 import { getMeetsParisDisplay } from "@/components/detail/meetsParisStat";
 import { EmissionsAssessmentButton } from "../emissions-assessment/EmissionsAssessmentButton";
+import {
+  detailStatItemClassName,
+  detailStatsRowClassName,
+} from "@/components/detail/detailStatsLayout";
+import { cn } from "@/lib/utils";
 import { OverviewStat } from "./OverviewStat";
 import { FinancialsTooltip } from "./FinancialsTooltip";
 import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
@@ -62,14 +67,18 @@ export function CompanyOverviewMainStats({
   const meetsParisDisplay = getMeetsParisDisplay(meetsParis, t);
 
   return (
-    <div className="mb-8 grid grid-cols-1 gap-8 md:mb-12 md:grid-cols-3 md:items-start md:gap-12">
+    <div className={`mb-8 md:mb-12 ${detailStatsRowClassName}`}>
       <OverviewStat
+        className={detailStatItemClassName}
+        useFlex1={false}
         label={t("detailPage.meetsParisGoal")}
         value={meetsParisDisplay.value}
         valueClassName={meetsParisDisplay.valueClassName}
         caption={meetsParisDisplay.caption}
       />
       <OverviewStat
+        className={detailStatItemClassName}
+        useFlex1={false}
         label={
           <div className="flex items-center gap-2">
             <Text variant="body" className="lg:text-lg md:text-base text-sm">
@@ -91,6 +100,8 @@ export function CompanyOverviewMainStats({
       />
 
       <OverviewStat
+        className={detailStatItemClassName}
+        useFlex1={false}
         label={
           <div className="flex items-center gap-2">
             <Text className="mb-1 md:mb-2 lg:text-lg md:text-base sm:text-sm">

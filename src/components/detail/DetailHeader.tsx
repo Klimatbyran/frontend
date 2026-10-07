@@ -3,6 +3,10 @@ import { Text } from "@/components/ui/text";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { DataGuideItemId } from "@/data-guide/items";
+import {
+  detailStatItemClassName,
+  detailStatsRowClassName,
+} from "@/components/detail/detailStatsLayout";
 import { cn } from "@/lib/utils";
 
 export interface DetailStat {
@@ -41,19 +45,6 @@ function DetailStatItem({ stat }: { stat: DetailStat }) {
   );
 }
 
-function statsGridClass(count: number) {
-  if (count >= 4) {
-    return "grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4 xl:gap-10";
-  }
-  if (count === 3) {
-    return "grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12";
-  }
-  if (count === 2) {
-    return "grid-cols-1 gap-8 md:grid-cols-2 md:gap-12";
-  }
-  return "grid-cols-1 gap-8";
-}
-
 export function DetailHeader({
   name,
   logoUrl,
@@ -78,9 +69,11 @@ export function DetailHeader({
         )}
       </div>
       {stats.length > 0 && (
-        <div className={cn("mt-8 grid", statsGridClass(stats.length))}>
+        <div className={`mt-8 ${detailStatsRowClassName}`}>
           {stats.map((stat, index) => (
-            <DetailStatItem key={index} stat={stat} />
+            <div key={index} className={detailStatItemClassName}>
+              <DetailStatItem stat={stat} />
+            </div>
           ))}
         </div>
       )}
