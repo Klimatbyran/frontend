@@ -15,31 +15,17 @@ import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
-import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
 import { yearFromIsoDate } from "@/utils/date";
+import {
+  periodForComparisonYear,
+  yearOverYearForComparisonYear,
+} from "@/utils/detail/companyPeriodMetrics";
 
-function sortPeriodsByDate(periods: ReportingPeriod[]): ReportingPeriod[] {
-  return [...periods].sort(
-    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
-  );
-}
-
-function selectPeriod(
-  sortedPeriods: ReportingPeriod[],
-  selectedYear: string,
-): ReportingPeriod {
-  if (selectedYear === "latest") return sortedPeriods[0];
-  return (
-    sortedPeriods.find((p) => yearFromIsoDate(p.endDate) === selectedYear) ||
-    sortedPeriods[0]
-  );
-}
-
-function computeEmissionsChangeInfo(
+function emissionsChangeStatus(
   selectedPeriod: ReportingPeriod,
-  previousPeriod?: ReportingPeriod,
+  previousPeriod: ReportingPeriod | undefined,
 ) {
   const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
   const validEmissionsChangeNumber = prevEmissions
@@ -47,19 +33,11 @@ function computeEmissionsChangeInfo(
         selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions,
       )
     : null;
-  const emissionsChangeStatus =
+  const status =
     selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions > 0
       ? "increased"
       : "decreased";
-  const yearOverYearChange = calculateEmissionsChange(
-    selectedPeriod,
-    previousPeriod,
-  );
-  return {
-    validEmissionsChangeNumber,
-    emissionsChangeStatus,
-    yearOverYearChange,
-  };
+  return { validEmissionsChangeNumber, status };
 }
 
 function CompanyDetailContent({
@@ -97,21 +75,24 @@ function CompanyDetailContent({
     );
   }
 
-  const sortedPeriods = sortPeriodsByDate(company.reportingPeriods);
-  const selectedPeriod = selectPeriod(sortedPeriods, selectedYear);
-  const selectedIndex = sortedPeriods.findIndex(
-    (p) => p.endDate === selectedPeriod.endDate,
+  const requestedPeriod = periodForComparisonYear(
+    company.reportingPeriods,
+    selectedYear,
   );
-  const previousPeriod =
-    selectedIndex < sortedPeriods.length - 1
-      ? sortedPeriods[selectedIndex + 1]
-      : undefined;
+  const resolvedPeriod =
+    requestedPeriod ??
+    periodForComparisonYear(company.reportingPeriods, "latest");
+  if (!resolvedPeriod) return null;
 
-  const {
-    validEmissionsChangeNumber,
-    emissionsChangeStatus,
-    yearOverYearChange,
-  } = computeEmissionsChangeInfo(selectedPeriod, previousPeriod);
+  const comparisonYear = requestedPeriod ? selectedYear : "latest";
+  const yearOverYearChange = yearOverYearForComparisonYear(
+    company.reportingPeriods,
+    comparisonYear,
+  );
+  const { validEmissionsChangeNumber, status } = emissionsChangeStatus(
+    resolvedPeriod.selected,
+    resolvedPeriod.previous,
+  );
 
   return (
     <>
@@ -119,9 +100,10 @@ function CompanyDetailContent({
       <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
         <CompanyOverview
           company={company}
-          selectedPeriod={selectedPeriod}
-          previousPeriod={previousPeriod}
+          selectedPeriod={resolvedPeriod.selected}
+          previousPeriod={resolvedPeriod.previous}
           yearOverYearChange={yearOverYearChange}
+          comparisonYear={comparisonYear}
           headerChip={comparisonChip}
         />
         {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
@@ -129,7 +111,7 @@ function CompanyDetailContent({
             emissionsChange={validEmissionsChangeNumber}
             currentLanguage={currentLanguage}
             companyName={company.name}
-            emissionsChangeStatus={emissionsChangeStatus}
+            emissionsChangeStatus={status}
             yearOverYearChange={yearOverYearChange}
           />
         )}
@@ -138,7 +120,7 @@ function CompanyDetailContent({
           company={company}
           onYearSelect={onYearSelect}
         />
-        <CompanyScope3 emissions={selectedPeriod.emissions!} />
+        <CompanyScope3 emissions={resolvedPeriod.selected.emissions!} />
       </div>
     </>
   );

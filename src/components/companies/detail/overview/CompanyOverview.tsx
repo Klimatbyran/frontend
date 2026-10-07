@@ -20,16 +20,16 @@ import { CompanyDescription } from "./CompanyDescription";
 import { OverviewStatistics } from "./OverviewStatistics";
 import { yearFromIsoDate } from "@/utils/date";
 import { CompanyDetailHeader } from "../CompanyDetailHeader";
-import {
-  CompanyOverviewActions,
-  CompanyOverviewMainStats,
-} from "./CompanyOverviewParts";
+import { CompanyOverviewActions } from "./CompanyOverviewParts";
+import { KpiComparisonSection } from "@/components/detail/KpiComparisonSection";
+import { useCompanyKpiCards } from "@/hooks/companies/useCompanyKpiCards";
 
 interface CompanyOverviewProps {
   company: CompanyDetails;
   selectedPeriod: ReportingPeriod;
   previousPeriod?: ReportingPeriod;
   yearOverYearChange: number | null;
+  comparisonYear: string;
   headerChip?: ReactNode;
 }
 
@@ -38,6 +38,7 @@ export function CompanyOverview({
   selectedPeriod,
   previousPeriod,
   yearOverYearChange,
+  comparisonYear,
   headerChip,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
@@ -75,40 +76,48 @@ export function CompanyOverview({
   const meetsParis = trendAnalysis
     ? calculateMeetsParis(company, trendAnalysis)
     : null;
+  const kpiCards = useCompanyKpiCards(
+    {
+      wikidataId: company.wikidataId,
+      meetsParis,
+      yearOverYearChange,
+      totalEmissions: calculatedTotalEmissions,
+      periodYear,
+      totalEmissionsAi: totalEmissionsAIGenerated,
+      yearOverYearAi: !!yearOverYearAIGenerated,
+      sectorCode,
+    },
+    comparisonYear,
+  );
 
   return (
-    <SectionWithHelp
-      helpItems={[
-        "onTrackForParis",
-        "totalEmissions",
-        "co2units",
-        "companySectors",
-        "companyMissingData",
-        "yearOverYearChange",
-      ]}
-    >
-      <div className="mb-4 space-y-4 md:mb-12">
-        <CompanyDetailHeader
-          name={company.name}
-          logoUrl={company.logoUrl}
-          headerChip={headerChip}
-        />
-        <CompanyOverviewActions
-          companyId={company.id}
-          sortedPeriods={sortedPeriods}
-        />
-        <CompanyDescription description={description} />
-      </div>
+    <div className="space-y-8 md:space-y-10">
+      <SectionWithHelp helpItems={[]}>
+        <div className="space-y-4">
+          <CompanyDetailHeader
+            name={company.name}
+            logoUrl={company.logoUrl}
+            headerChip={headerChip}
+          />
+          <CompanyOverviewActions
+            companyId={company.id}
+            sortedPeriods={sortedPeriods}
+          />
+          <CompanyDescription description={description} />
+        </div>
+      </SectionWithHelp>
 
-      <CompanyOverviewMainStats
-        periodYear={periodYear}
-        sectorCode={sectorCode}
-        calculatedTotalEmissions={calculatedTotalEmissions}
-        currentLanguage={currentLanguage}
-        totalEmissionsAIGenerated={totalEmissionsAIGenerated}
-        yearOverYearChange={yearOverYearChange}
-        yearOverYearAIGenerated={!!yearOverYearAIGenerated}
-        meetsParis={meetsParis}
+      <KpiComparisonSection
+        title={t("detailPage.kpiPlacement.companyTitle")}
+        helpItems={[
+          "onTrackForParis",
+          "totalEmissions",
+          "co2units",
+          "companySectors",
+          "companyMissingData",
+          "yearOverYearChange",
+        ]}
+        cards={kpiCards}
       />
 
       <OverviewStatistics
@@ -119,8 +128,8 @@ export function CompanyOverview({
         formattedEmployeeCount={formattedEmployeeCount}
         turnoverAIGenerated={turnoverAIGenerated}
         employeesAIGenerated={employeesAIGenerated}
-        className="lg:flex lg:justify-between"
+        className="mt-0 lg:flex lg:justify-between"
       />
-    </SectionWithHelp>
+    </div>
   );
 }

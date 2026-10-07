@@ -1,17 +1,10 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
-import type { TFunction } from "i18next";
-import {
-  useMunicipalityDetails,
-  useMunicipalityDetailHeaderStats,
-} from "@/hooks/municipalities/useMunicipalityDetails";
-import { Municipality, transformEmissionsData } from "@/types/municipality";
-import {
-  formatEmissionsAbsolute,
-  formatPercent,
-  localizeUnit,
-} from "@/utils/formatting/localization";
+import { useMunicipalityDetails } from "@/hooks/municipalities/useMunicipalityDetails";
+import { useMunicipalityKpiCards } from "@/hooks/municipalities/useMunicipalityKpiCards";
+import { transformEmissionsData } from "@/types/municipality";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
 import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
@@ -20,99 +13,19 @@ import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
-import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
-import { LinkCard } from "@/components/detail/DetailLinkCard";
 import { DetailHeader } from "@/components/detail/DetailHeader";
+import { KpiComparisonSection } from "@/components/detail/KpiComparisonSection";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { TerritorySupplementalData } from "@/components/detail/TerritorySupplementalData";
-import { DetailSection } from "@/components/detail/DetailSection";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
 import { useSectors } from "@/hooks/territories/useSectors";
-import { DetailLinkCardGrid } from "@/components/detail/DetailGrid";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
-import type { SupportedLanguage } from "@/lib/languageDetection";
 import type { DataGuideItemId } from "@/data-guide/items";
 import { Seo } from "@/components/SEO/Seo";
 import { generateMunicipalitySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
 import { getEntityDetailPath } from "@/utils/routing";
-
-function MunicipalityLinkCards({
-  municipality,
-  requirementsInProcurement,
-  t,
-}: {
-  municipality: Municipality;
-  requirementsInProcurement: string;
-  t: TFunction;
-}) {
-  return (
-    <DetailLinkCardGrid>
-      <LinkCard
-        title={t("municipalityDetailPage.climatePlan")}
-        description={
-          municipality.climatePlanYear
-            ? t("municipalityDetailPage.adopted", {
-                year: municipality.climatePlanYear,
-              })
-            : t("municipalityDetailPage.noClimatePlan")
-        }
-        link={
-          municipality.climatePlanLink
-            ? municipality.climatePlanLink
-            : undefined
-        }
-        descriptionClassName={
-          municipality.climatePlanYear ? "text-blue-3" : "text-pink-3"
-        }
-      />
-      <LinkCard
-        title={t("municipalityDetailPage.procurementRequirements")}
-        description={requirementsInProcurement}
-        link={municipality.procurementLink || undefined}
-        descriptionClassName={
-          municipality.procurementScore === 2
-            ? "text-blue-3"
-            : municipality.procurementScore === 1
-              ? "text-orange-2"
-              : "text-pink-3"
-        }
-      />
-    </DetailLinkCardGrid>
-  );
-}
-
-function getSustainableTransportItems(
-  municipality: Municipality,
-  currentLanguage: SupportedLanguage,
-  t: TFunction,
-) {
-  const evcp = municipality.electricVehiclePerChargePoints;
-  return [
-    {
-      title: t("municipalityDetailPage.electricCarChange"),
-      value: `${formatPercent(
-        municipality.electricCarChangePercent,
-        currentLanguage,
-        true,
-      )}`,
-      valueClassName: "text-orange-2",
-    },
-    {
-      title: t("municipalityDetailPage.electricCarsPerChargePoint"),
-      value: evcp
-        ? localizeUnit(evcp, currentLanguage)
-        : t("municipalityDetailPage.noChargePoints"),
-      valueClassName: evcp && evcp > 10 ? "text-pink-3" : "text-blue-3",
-    },
-    {
-      title: t("municipalityDetailPage.bicycleMetrePerCapita"),
-      value: localizeUnit(municipality.bicycleMetrePerCapita, currentLanguage),
-      valueClassName: "text-orange-2",
-    },
-  ];
-}
 
 function useMunicipalityPageData(id: string | undefined) {
   const { t } = useTranslation();
@@ -133,16 +46,6 @@ function useMunicipalityPageData(id: string | undefined) {
     ? formatEmissionsAbsolute(lastYearEmissions.value, currentLanguage)
     : t("noData");
 
-  const headerStats = useMunicipalityDetailHeaderStats(
-    municipality,
-    lastYear,
-    lastYearEmissionsTon,
-  );
-
-  const requirementsInProcurement = municipality
-    ? getProcurementRequirementsText(municipality.procurementScore, t)
-    : "";
-
   const emissionsData = municipality
     ? transformEmissionsData(municipality)
     : [];
@@ -157,31 +60,25 @@ function useMunicipalityPageData(id: string | undefined) {
     municipality,
     loading,
     error,
-    currentLanguage,
     sectorEmissions,
     getSectorInfo,
     filteredSectors,
     setFilteredSectors,
     lastYear,
     lastYearEmissionsTon,
-    headerStats,
-    requirementsInProcurement,
     emissionsData,
     availableYears,
     currentYear,
   };
 }
 
-const HEADER_HELP_ITEMS: DataGuideItemId[] = [
+const KPI_HELP_ITEMS: DataGuideItemId[] = [
   "onTrackForParis",
   "municipalityTotalEmissions",
   "detailWhyDataDelay",
   "municipalityDeeperChanges",
   "municipalityConsumptionEmissionPerPerson",
   "municipalityLocalVsConsumption",
-];
-
-const SUSTAINABLE_TRANSPORT_HELP_ITEMS: DataGuideItemId[] = [
   "municipalityClimatePlans",
   "municipalityProcurement",
   "municipalityElectricCarShare",
@@ -197,24 +94,20 @@ export function MunicipalityDetailPage() {
     municipality,
     loading,
     error,
-    currentLanguage,
     sectorEmissions,
     getSectorInfo,
     filteredSectors,
     setFilteredSectors,
     lastYear,
     lastYearEmissionsTon,
-    headerStats,
-    requirementsInProcurement,
     emissionsData,
     availableYears,
     currentYear,
   } = useMunicipalityPageData(id);
+  const kpiCards = useMunicipalityKpiCards(municipality);
 
-  // Generate data-driven SEO meta (memoized to prevent re-renders)
   const seoMeta = useMemo(() => {
     if (!municipality) {
-      // Fallback to route-level SEO when data not available
       return getSeoForRoute(location.pathname, { id: id || "" });
     }
 
@@ -236,8 +129,8 @@ export function MunicipalityDetailPage() {
         <DetailHeader
           name={municipality.name}
           logoUrl={municipality.logoUrl}
-          helpItems={HEADER_HELP_ITEMS}
-          stats={headerStats}
+          helpItems={[]}
+          stats={[]}
           headerChip={
             <ComparisonDetailChip
               linkTo={buildComparisonLinkTo("municipality", municipality.name)}
@@ -259,6 +152,12 @@ export function MunicipalityDetailPage() {
           }
         />
 
+        <KpiComparisonSection
+          title={t("detailPage.kpiPlacement.municipalityTitle")}
+          helpItems={KPI_HELP_ITEMS}
+          cards={kpiCards}
+        />
+
         <TerritoryEmissions
           emissionsData={emissionsData}
           sectorEmissions={sectorEmissions}
@@ -272,18 +171,6 @@ export function MunicipalityDetailPage() {
           filteredSectors={filteredSectors}
           onFilteredSectorsChange={setFilteredSectors}
           helpItems={["municipalityAndRegionEmissionSources"]}
-        />
-
-        <MunicipalityLinkCards
-          municipality={municipality}
-          requirementsInProcurement={requirementsInProcurement}
-          t={t}
-        />
-
-        <DetailSection
-          title={t("municipalityDetailPage.sustainableTransport")}
-          items={getSustainableTransportItems(municipality, currentLanguage, t)}
-          helpItems={SUSTAINABLE_TRANSPORT_HELP_ITEMS}
         />
       </DetailWrapper>
     </>

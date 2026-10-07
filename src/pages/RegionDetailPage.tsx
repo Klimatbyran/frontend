@@ -1,25 +1,29 @@
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useRegionPageData } from "@/hooks/regions/useRegionPageData";
 import { TerritoryEmissions } from "@/components/territories/TerritoryEmissions";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { DetailHeader } from "@/components/detail/DetailHeader";
+import { KpiComparisonSection } from "@/components/detail/KpiComparisonSection";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import { DetailWrapper } from "@/components/detail/DetailWrapper";
+import { useRegionKpiCards } from "@/hooks/regions/useRegionKpiCards";
 import { EntityListBox } from "@/components/detail/EntityListBox";
 import { SectorEmissionsChart } from "@/components/charts/sectorChart/SectorEmissions";
 
 export function RegionDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const {
     region,
     loading,
     error,
     regionMunicipalities,
     emissionsData,
-    headerStats,
+    lastYear,
     sectorEmissions,
     getSectorInfo,
     filteredSectors,
@@ -27,6 +31,7 @@ export function RegionDetailPage() {
     availableYears,
     currentYear,
   } = useRegionPageData(id || "");
+  const kpiCards = useRegionKpiCards(region, lastYear);
 
   if (loading) return <PageLoading />;
   if (error) return <PageError />;
@@ -38,12 +43,8 @@ export function RegionDetailPage() {
         <DetailHeader
           name={region.name}
           logoUrl={region.logoUrl}
-          helpItems={[
-            "onTrackForParis",
-            "regionTotalEmissions",
-            "detailWhyDataDelay",
-          ]}
-          stats={headerStats}
+          helpItems={[]}
+          stats={[]}
           headerChip={
             <ComparisonDetailChip
               linkTo={buildComparisonLinkTo("region", region.name)}
@@ -51,6 +52,16 @@ export function RegionDetailPage() {
               name={region.name}
             />
           }
+        />
+
+        <KpiComparisonSection
+          title={t("detailPage.kpiPlacement.regionTitle")}
+          helpItems={[
+            "onTrackForParis",
+            "regionTotalEmissions",
+            "detailWhyDataDelay",
+          ]}
+          cards={kpiCards}
         />
 
         <TerritoryEmissions
