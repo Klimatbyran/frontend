@@ -198,6 +198,25 @@ export function CompaniesOverviewSkeleton() {
           <VerdictListSkeleton />
         </div>
 
+        <section className="rounded-level-2 bg-black-2 p-6 md:p-7">
+          <Block className="h-6 w-72 md:h-7" />
+          <div className="mt-2 space-y-2">
+            <Block className="h-4 w-full max-w-[560px]" />
+            <Block className="h-4 w-2/3 max-w-[380px]" />
+          </div>
+          <Block className="mt-6 h-4 w-full rounded-full" />
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <Block className="h-9 w-16" />
+              <Block className="mt-2 h-4 w-44" />
+            </div>
+            <div>
+              <Block className="h-9 w-16" />
+              <Block className="mt-2 h-4 w-40" />
+            </div>
+          </div>
+        </section>
+
         <IndustryPieSkeleton />
         <CompaniesTableSkeleton />
       </div>
