@@ -64,20 +64,17 @@ export function OverviewStat({
     return label;
   };
 
+  const detailValueClassName = cn(
+    dense ? "text-4xl xl:text-5xl" : "text-4xl md:text-6xl",
+    valueClassName,
+  );
+
   // Handle value and unit rendering
   const renderValue = () => {
-    if (isDetailVariant && unit) {
-      // Detail variant: separate Text components in flex container
+    if (isDetailVariant) {
       return (
         <div className="flex flex-wrap items-baseline gap-x-2">
-          <Text
-            className={cn(
-              dense ? "text-4xl xl:text-5xl" : "text-4xl md:text-6xl",
-              valueClassName,
-            )}
-          >
-            {value}
-          </Text>
+          <Text className={detailValueClassName}>{value}</Text>
           {unit && (
             <Text
               className={cn(
