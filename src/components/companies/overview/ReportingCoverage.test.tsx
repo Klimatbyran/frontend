@@ -52,6 +52,10 @@ describe("ReportingCoverage", () => {
         name: "companiesOverviewPage.paris.reportingAria:3:2:60:40",
       }),
     ).toBeInTheDocument();
+    const description = screen.getByText(
+      "companiesOverviewPage.paris.reportingDescription",
+    );
+    expect(description.className).not.toContain("max-w-");
     expect(
       screen.getByText("companiesOverviewPage.paris.reportingEnough"),
     ).toBeInTheDocument();

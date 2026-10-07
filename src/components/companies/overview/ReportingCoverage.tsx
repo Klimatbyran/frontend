@@ -43,7 +43,7 @@ export function ReportingCoverage({
       <h2 className="text-xl font-light md:text-[21px]">
         {t("companiesOverviewPage.paris.reportingTitle")}
       </h2>
-      <p className="mt-2 max-w-[640px] text-sm leading-relaxed text-white/60">
+      <p className="mt-2 text-sm leading-relaxed text-white/60">
         {t("companiesOverviewPage.paris.reportingDescription", yearCopy)}
       </p>
 
@@ -90,14 +90,14 @@ export function ReportingCoverage({
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <CoverageFigure
           color={ENOUGH_COLOR}
-          label={t("companiesOverviewPage.paris.reportingEnough", yearCopy)}
+          label={t("companiesOverviewPage.paris.reportingEnough")}
           count={split.enough}
           percent={enoughPercent}
           index={0}
         />
         <CoverageFigure
           color={TOO_LITTLE_COLOR}
-          label={t("companiesOverviewPage.paris.reportingTooLittle", yearCopy)}
+          label={t("companiesOverviewPage.paris.reportingTooLittle")}
           count={split.tooLittle}
           percent={tooLittlePercent}
           index={1}
