@@ -1,4 +1,5 @@
 import {
+  booleanBenchmarkMarkerPosition,
   buildBooleanBenchmark,
   buildNumericBenchmark,
   rankPosition,
@@ -157,6 +158,7 @@ describe("buildBooleanBenchmark", () => {
     expect(view?.tone).toBe("good");
     expect(view?.primary.key).toBe("kpiBenchmark.booleanAhead");
     expect(view?.trueShare).toBeCloseTo(0.2);
+    expect(view?.subjectValue).toBe(true);
   });
 
   it("says no is behind when most peers are yes", () => {
@@ -181,6 +183,7 @@ describe("buildBooleanBenchmark", () => {
 
     expect(view?.tone).toBe("unknown");
     expect(view?.primary.key).toBe("kpiBenchmark.booleanUnknown");
+    expect(view?.subjectValue).toBeNull();
   });
 
   it("counts this entity in the yes share when peers were already filtered", () => {
@@ -208,6 +211,14 @@ describe("buildBooleanBenchmark", () => {
 
     expect(view?.trueShare).toBeCloseTo(1);
     expect(view?.primary.key).toBe("kpiBenchmark.booleanWithMost");
+  });
+});
+
+describe("booleanBenchmarkMarkerPosition", () => {
+  it("places the dot in the middle of the yes or no segment", () => {
+    expect(booleanBenchmarkMarkerPosition(0.4, true)).toBeCloseTo(0.2);
+    expect(booleanBenchmarkMarkerPosition(0.4, false)).toBeCloseTo(0.7);
+    expect(booleanBenchmarkMarkerPosition(0.4, null)).toBeNull();
   });
 });
 

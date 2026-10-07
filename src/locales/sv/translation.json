@@ -1240,6 +1240,8 @@
     "booleanBehind": "Efter de flesta",
     "booleanWithFew": "Som de flesta",
     "booleanUnknown": "Inte tillräckligt med data",
+    "booleanYes": "{{share}} ja",
+    "booleanNo": "{{share}} nej",
     "tiedForBest": "Delad förstaplats",
     "reference": {
       "region": "länet",

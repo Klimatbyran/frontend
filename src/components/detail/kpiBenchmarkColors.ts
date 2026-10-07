@@ -51,26 +51,44 @@ export function numericBenchmarkAccent(view: NumericBenchmarkView): {
   };
 }
 
+function booleanBarSegmentColors(
+  higherIsBetter: boolean,
+  visual?: BenchmarkVisual,
+): { yes: string; no: string } {
+  const yes =
+    higherIsBetter && visual?.goodAccent === "green"
+      ? "var(--green-3)"
+      : higherIsBetter
+        ? "var(--blue-3)"
+        : "var(--pink-3)";
+  const no = higherIsBetter ? "var(--pink-3)" : "var(--blue-3)";
+  return { yes, no };
+}
+
 export function buildBooleanBarBackground(
   trueShare: number,
   higherIsBetter: boolean,
   visual?: BenchmarkVisual,
 ): string {
   const share = trueShare * 100;
+  const { yes: favorableEnd, no: unfavorableEnd } = booleanBarSegmentColors(
+    higherIsBetter,
+    visual,
+  );
   const favorableStart =
     higherIsBetter && visual?.goodAccent === "green"
       ? "var(--green-4)"
       : higherIsBetter
         ? "var(--blue-4)"
         : "var(--pink-4)";
-  const favorableEnd =
-    higherIsBetter && visual?.goodAccent === "green"
-      ? "var(--green-3)"
-      : higherIsBetter
-        ? "var(--blue-3)"
-        : "var(--pink-3)";
   const unfavorableStart = higherIsBetter ? "var(--pink-4)" : "var(--blue-4)";
-  const unfavorableEnd = higherIsBetter ? "var(--pink-3)" : "var(--blue-3)";
 
   return `linear-gradient(to right, ${favorableStart} 0%, ${favorableEnd} ${share}%, ${unfavorableStart} ${share}%, ${unfavorableEnd} 100%)`;
+}
+
+export function booleanBarLegendColors(
+  higherIsBetter: boolean,
+  visual?: BenchmarkVisual,
+): { yes: string; no: string } {
+  return booleanBarSegmentColors(higherIsBetter, visual);
 }

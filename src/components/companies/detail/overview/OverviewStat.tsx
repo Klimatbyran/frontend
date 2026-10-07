@@ -43,6 +43,8 @@ export function OverviewStat({
 }: OverviewStatProps) {
   const isDetailVariant = variant === "detail";
   const showCaption = Boolean(caption) && !(isDetailVariant && benchmark);
+  const alignNumericBenchmarks =
+    alignBenchmarks && benchmark?.kind === "numeric";
 
   const renderLabel = () => {
     if (typeof label === "string") {
@@ -121,7 +123,7 @@ export function OverviewStat({
     <div
       className={cn(
         isDetailVariant &&
-          alignBenchmarks &&
+          alignNumericBenchmarks &&
           "min-h-[2.25rem] md:min-h-[2.5rem]",
       )}
     >
@@ -135,7 +137,7 @@ export function OverviewStat({
     <div
       className={cn(
         isDetailVariant &&
-          alignBenchmarks &&
+          alignNumericBenchmarks &&
           "flex min-h-[2.75rem] items-end md:min-h-[3.25rem]",
       )}
     >
@@ -160,6 +162,10 @@ export function OverviewStat({
         useFlex1 && "flex-1",
         "min-w-0 max-w-full",
         isDetailVariant && alignBenchmarks && "flex h-full flex-col",
+        isDetailVariant &&
+          alignBenchmarks &&
+          benchmark?.kind === "boolean" &&
+          "justify-start",
         className,
       )}
     >

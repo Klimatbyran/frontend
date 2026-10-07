@@ -34,8 +34,25 @@ export interface BooleanBenchmarkView {
   /** Share of decisive peers that are true, including this entity. */
   trueShare: number;
   higherIsBetter: boolean;
+  /** This entity's yes/no answer, when known. */
+  subjectValue: boolean | null;
   primary: BenchmarkPhrase;
   visual?: BenchmarkVisual;
+}
+
+/** Dot position on the boolean share bar (0 = all no, 1 = all yes). */
+export function booleanBenchmarkMarkerPosition(
+  trueShare: number,
+  subjectValue: boolean | null | undefined,
+): number | null {
+  if (subjectValue !== true && subjectValue !== false) {
+    return null;
+  }
+  if (subjectValue === true) {
+    return trueShare <= 0 ? 0.02 : Math.min(trueShare / 2, 0.98);
+  }
+  const noShare = 1 - trueShare;
+  return noShare <= 0 ? 0.98 : Math.min(trueShare + noShare / 2, 0.98);
 }
 
 export type KpiBenchmarkView = NumericBenchmarkView | BooleanBenchmarkView;
@@ -409,6 +426,8 @@ export function buildBooleanBenchmark(
     tone,
     trueShare,
     higherIsBetter: input.higherIsBetter,
+    subjectValue:
+      input.value === true || input.value === false ? input.value : null,
     primary,
     visual: input.visual,
   };
