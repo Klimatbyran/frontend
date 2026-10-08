@@ -19,6 +19,9 @@ vi.mock("react-i18next", () => ({
       if (options && "percent" in options && "count" in options) {
         return `${key}:${options.percent}:${options.count}`;
       }
+      if (options && "total" in options) {
+        return `${key}:${options.total}`;
+      }
       if (options && "count" in options) {
         return `${key}:${options.count}`;
       }
@@ -116,6 +119,21 @@ describe("ParisAnswerCard", () => {
       screen.getByText("companiesOverviewPage.paris.tooLittle:2", {
         exact: false,
       }),
+    ).toBeInTheDocument();
+    // 3 on track + 5 off track. The 2 without a verdict are not in the total.
+    expect(
+      screen.getByText("companiesOverviewPage.paris.heading:8"),
+    ).toBeInTheDocument();
+  });
+
+  it("keeps the full company count when nobody can be judged yet", () => {
+    renderCard({ ...baseSummary, onTrack: 0, offTrack: 0, unknown: 10 }, [
+      dotCompany("UnknownA", null),
+      dotCompany("UnknownB", null),
+    ]);
+
+    expect(
+      screen.getByText("companiesOverviewPage.paris.heading:10"),
     ).toBeInTheDocument();
   });
 

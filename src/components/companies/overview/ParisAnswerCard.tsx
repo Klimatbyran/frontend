@@ -112,6 +112,9 @@ export function ParisAnswerCard({
     : t("companiesOverviewPage.paris.scopeAll");
 
   const judged = onTrack + offTrack;
+  // Dots only draw companies we can judge. Use that same count in the
+  // sentence so "of the N companies" matches the dots.
+  const headingTotal = judged > 0 ? judged : total;
   const onTrackShare = judged === 0 ? 0 : Math.round((onTrack / judged) * 100);
   const offTrackShare =
     offTrack === 0 ? 0 : onTrack === 0 ? 100 : 100 - onTrackShare;
@@ -144,10 +147,10 @@ export function ParisAnswerCard({
             }}
           >
             {t("companiesOverviewPage.paris.heading", {
-              total,
+              total: headingTotal,
               scope,
               companies: t("companiesOverviewPage.paris.companyNoun", {
-                count: total,
+                count: headingTotal,
               }),
               verb: t("companiesOverviewPage.paris.headingVerb", {
                 count: onTrack,
