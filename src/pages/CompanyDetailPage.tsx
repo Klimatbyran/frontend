@@ -135,14 +135,14 @@ export function CompanyDetailPage() {
         {overview.emissionsChangeAbsolute != null &&
           overview.emissionsChangeAbsolute > 100 &&
           overview.emissionsChangeStatus != null && (
-          <RelatableNumbers
-            emissionsChange={overview.emissionsChangeAbsolute}
-            currentLanguage={currentLanguage}
-            companyName={header.name}
-            emissionsChangeStatus={overview.emissionsChangeStatus}
-            yearOverYearChange={overview.emissionsChangeLastTwoYears}
-          />
-        )}
+            <RelatableNumbers
+              emissionsChange={overview.emissionsChangeAbsolute}
+              currentLanguage={currentLanguage}
+              companyName={header.name}
+              emissionsChangeStatus={overview.emissionsChangeStatus}
+              yearOverYearChange={overview.emissionsChangeLastTwoYears}
+            />
+          )}
         {emissionsHistory && (
           <EmissionsHistory
             history={emissionsHistory}

@@ -26,9 +26,7 @@ vi.mock("@/hooks/useChartMotion", () => ({
 describe("ReportingCoverage", () => {
   it("splits companies with a verdict from those with none", () => {
     render(
-      <ReportingCoverage
-        reporting={{ total: 5, enough: 3, tooLittle: 2 }}
-      />,
+      <ReportingCoverage reporting={{ total: 5, enough: 3, tooLittle: 2 }} />,
     );
 
     expect(
@@ -61,9 +59,7 @@ describe("ReportingCoverage", () => {
 
   it("gives the only populated side the full bar", () => {
     render(
-      <ReportingCoverage
-        reporting={{ total: 2, enough: 2, tooLittle: 0 }}
-      />,
+      <ReportingCoverage reporting={{ total: 2, enough: 2, tooLittle: 0 }} />,
     );
 
     expect(screen.getByText("100%")).toBeInTheDocument();

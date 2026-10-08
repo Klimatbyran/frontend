@@ -83,10 +83,16 @@ export function CompaniesOverviewPage() {
   const urlState = useCompaniesOverviewUrlState(availableSectors);
   const selectedSector = urlState.getSectorFromURL() as SectorCode | null;
 
-  const { companies, loading: listLoading, error: listError } =
-    usePageCompaniesOverviewList({ sector: selectedSector });
-  const { summary, loading: summaryLoading, error: summaryError } =
-    usePageCompaniesOverviewSummary({ sector: selectedSector });
+  const {
+    companies,
+    loading: listLoading,
+    error: listError,
+  } = usePageCompaniesOverviewList({ sector: selectedSector });
+  const {
+    summary,
+    loading: summaryLoading,
+    error: summaryError,
+  } = usePageCompaniesOverviewSummary({ sector: selectedSector });
 
   const loading = chrome.loading || listLoading || summaryLoading;
   const error = chrome.error || listError || summaryError;
