@@ -58,4 +58,73 @@ describe("KpiComparisonCard", () => {
       screen.getByText("detailPage.kpiPlacement.tied:::2"),
     ).toBeInTheDocument();
   });
+
+  it("shows how a yes or no result is split across the dataset", () => {
+    render(
+      <KpiComparisonCard
+        id="meetsParis"
+        label="Meets the Paris Agreement"
+        value="Yes"
+        comparison="distribution"
+        scopes={[
+          {
+            id: "national",
+            label: "Nationally",
+            pending: false,
+            placement: null,
+            distribution: {
+              total: 6,
+              buckets: [
+                {
+                  id: "yes",
+                  label: "Yes",
+                  count: 4,
+                  tone: "good",
+                  active: true,
+                },
+                {
+                  id: "no",
+                  label: "No",
+                  count: 2,
+                  tone: "poor",
+                  active: false,
+                },
+              ],
+            },
+          },
+          {
+            id: "regional",
+            label: "In Stockholm",
+            pending: false,
+            placement: null,
+            distribution: {
+              total: 3,
+              buckets: [
+                {
+                  id: "yes",
+                  label: "Yes",
+                  count: 2,
+                  tone: "good",
+                  active: true,
+                },
+                {
+                  id: "no",
+                  label: "No",
+                  count: 1,
+                  tone: "poor",
+                  active: false,
+                },
+              ],
+            },
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByText("Nationally")).toBeInTheDocument();
+    expect(screen.getByText("In Stockholm")).toBeInTheDocument();
+    expect(screen.getAllByText("4").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("67%").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Yes").length).toBeGreaterThan(0);
+  });
 });

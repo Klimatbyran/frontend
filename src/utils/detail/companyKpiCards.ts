@@ -6,6 +6,10 @@ import {
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import {
+  booleanDistributionSpecs,
+  resolveDistribution,
+} from "@/utils/insights/kpiDistribution";
+import {
   resolvePlacement,
   valuesForPlacement,
   type PlacementStatus,
@@ -59,6 +63,11 @@ export function buildCompanyKpiCards(
   const isSubject = (peer: CompanyPeer) =>
     peer.wikidataId === subject.wikidataId;
   const paris = getMeetsParisDisplay(subject.meetsParis, t);
+  const yesNo = booleanDistributionSpecs({
+    yes: t("yes"),
+    no: t("no"),
+    unknown: t("unknown"),
+  });
 
   const datasetScope = (
     read: (peer: CompanyPeer) => number | boolean | null | undefined,
@@ -81,11 +90,26 @@ export function buildCompanyKpiCards(
       label: t("detailPage.meetsParisGoal"),
       value: paris.value,
       valueClassName: paris.valueClassName,
-      scopes: datasetScope(
-        (peer) => peer.meetsParis ?? null,
-        subject.meetsParis,
-        true,
-      ),
+      comparison: "distribution",
+      scopes: [
+        {
+          id: "dataset",
+          label: datasetLabel,
+          placement: null,
+          ...resolveDistribution(
+            status,
+            peers,
+            valuesForPlacement(
+              peers,
+              isSubject,
+              subject.meetsParis,
+              (peer) => peer.meetsParis ?? null,
+            ),
+            subject.meetsParis,
+            yesNo,
+          ),
+        },
+      ],
     },
     {
       id: "yearOverYear",

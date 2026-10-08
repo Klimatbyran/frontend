@@ -8,6 +8,10 @@ import {
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import {
+  booleanDistributionSpecs,
+  resolveDistribution,
+} from "@/utils/insights/kpiDistribution";
+import {
   resolvePlacement,
   valuesForPlacement,
   type PlacementStatus,
@@ -53,6 +57,11 @@ export function buildRegionKpiCards(
   const isSubject = (peer: RegionKpiPeer) => peer.name === region.name;
   const total = emissionValueInYear(region.emissions, lastYear);
   const paris = getMeetsParisDisplay(region.meetsParis, t);
+  const yesNo = booleanDistributionSpecs({
+    yes: t("yes"),
+    no: t("no"),
+    unknown: t("unknown"),
+  });
 
   const nationalScope = (
     id: string,
@@ -76,12 +85,26 @@ export function buildRegionKpiCards(
       label: t("detailPage.meetsParisGoal"),
       value: paris.value,
       valueClassName: paris.valueClassName,
-      scopes: nationalScope(
-        "national",
-        (peer) => peer.meetsParis,
-        region.meetsParis,
-        true,
-      ),
+      comparison: "distribution",
+      scopes: [
+        {
+          id: "national",
+          label: nationalLabel,
+          placement: null,
+          ...resolveDistribution(
+            status,
+            peers,
+            valuesForPlacement(
+              peers,
+              isSubject,
+              region.meetsParis,
+              (peer) => peer.meetsParis,
+            ),
+            region.meetsParis,
+            yesNo,
+          ),
+        },
+      ],
     },
     {
       id: "changeSince2015",

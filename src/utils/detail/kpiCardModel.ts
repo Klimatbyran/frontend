@@ -1,8 +1,11 @@
+import type { KpiDistribution } from "@/utils/insights/kpiDistribution";
 import type { ResolvedPlacement } from "@/utils/insights/kpiPlacement";
 
 export type KpiCardScope = ResolvedPlacement & {
   id: string;
   label: string;
+  /** Set for yes/no and stepped scores. Ranked metrics leave this empty. */
+  distribution?: KpiDistribution | null;
 };
 
 export type KpiCardModel = {
@@ -14,5 +17,10 @@ export type KpiCardModel = {
   href?: string;
   infoText?: string;
   showAiIcon?: boolean;
+  /**
+   * Yes/no and stepped scores show how the dataset splits.
+   * Everything else is ranked.
+   */
+  comparison?: "rank" | "distribution";
   scopes: KpiCardScope[];
 };

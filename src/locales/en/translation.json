@@ -1112,7 +1112,8 @@
       "rankOf": "of {{total}}",
       "tied": "Tied with {{count}}",
       "noComparison": "Not enough data to compare",
-      "openLink": "Open"
+      "openLink": "Open",
+      "thisOne": "this one"
     },
     "changeSince2015": "Annual emission change since 2015",
     "sectorEmissions": "Emission sources",

@@ -77,6 +77,14 @@ describe("buildCompanyKpiCards", () => {
     expect(cards[0].scopes[0].label).toBe(
       "detailPage.kpiPlacement.allCompanies",
     );
+    expect(cards[0].comparison).toBe("distribution");
+    expect(cards[0].scopes[0].distribution).toMatchObject({
+      total: 3,
+      buckets: [
+        { id: "yes", count: 1, active: true },
+        { id: "no", count: 2, active: false },
+      ],
+    });
   });
 
   it("uses each company's own latest report when the page is on latest", () => {

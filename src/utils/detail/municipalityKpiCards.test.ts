@@ -79,6 +79,28 @@ describe("buildMunicipalityKpiCards", () => {
     expect(change?.scopes[1].placement).toMatchObject({ rank: 1, total: 2 });
   });
 
+  it("shows how yes, no, and stepped scores are split instead of a rank", () => {
+    const paris = cards.find((card) => card.id === "meetsParis");
+    const procurement = cards.find((card) => card.id === "procurement");
+
+    expect(paris?.comparison).toBe("distribution");
+    expect(paris?.scopes[0].placement).toBeNull();
+    expect(paris?.scopes[0].distribution).toMatchObject({
+      total: 4,
+      buckets: [
+        { id: "yes", count: 2, active: true },
+        { id: "no", count: 2, active: false },
+      ],
+    });
+    expect(paris?.scopes[1].distribution?.buckets).toEqual([
+      expect.objectContaining({ id: "yes", count: 1, active: true }),
+      expect.objectContaining({ id: "no", count: 1, active: false }),
+    ]);
+    expect(procurement?.scopes[0].distribution?.buckets).toEqual([
+      expect.objectContaining({ id: "low", count: 4, active: true }),
+    ]);
+  });
+
   it("compares total emissions for the same reported year", () => {
     expect(emissions?.scopes[0].placement).toMatchObject({
       rank: 3,

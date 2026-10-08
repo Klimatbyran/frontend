@@ -9,6 +9,7 @@ import {
   type KpiPlacement,
 } from "@/utils/insights/kpiPlacement";
 import type { KpiCardModel } from "@/utils/detail/kpiCardModel";
+import { DistributionBlock } from "./KpiDistributionBlock";
 
 const TONE_TEXT = {
   good: "text-blue-2",
@@ -103,6 +104,7 @@ export function KpiComparisonCard({
   showAiIcon,
   scopes,
   labelExtra,
+  comparison = "rank",
 }: KpiCardModel & { labelExtra?: ReactNode }) {
   const { t } = useTranslation();
   const openLabel = t("detailPage.kpiPlacement.openLink");
@@ -158,15 +160,25 @@ export function KpiComparisonCard({
           scopes.length > 1 && "grid-cols-2",
         )}
       >
-        {scopes.map((scope) => (
-          <PlacementBlock
-            key={scope.id}
-            label={scope.label}
-            placement={scope.placement}
-            pending={scope.pending}
-            spread={scopes.length === 1}
-          />
-        ))}
+        {scopes.map((scope) =>
+          comparison === "distribution" ? (
+            <DistributionBlock
+              key={scope.id}
+              label={scope.label}
+              distribution={scope.distribution ?? null}
+              pending={scope.pending}
+              spread={scopes.length === 1}
+            />
+          ) : (
+            <PlacementBlock
+              key={scope.id}
+              label={scope.label}
+              placement={scope.placement}
+              pending={scope.pending}
+              spread={scopes.length === 1}
+            />
+          ),
+        )}
       </div>
     </article>
   );

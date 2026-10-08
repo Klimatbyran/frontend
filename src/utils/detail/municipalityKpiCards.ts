@@ -10,6 +10,12 @@ import {
   localizeUnit,
 } from "@/utils/formatting/localization";
 import {
+  booleanDistributionSpecs,
+  procurementDistributionSpecs,
+  resolveDistribution,
+  type DistributionBucketSpec,
+} from "@/utils/insights/kpiDistribution";
+import {
   resolvePlacement,
   valuesForPlacement,
   type PlacementStatus,
@@ -76,6 +82,52 @@ export function buildMunicipalityKpiCards(
     ];
   };
 
+  const distributionFor = (
+    subjectValue: number | boolean | null | undefined,
+    readPeer: (peer: Municipality) => number | boolean | null | undefined,
+    specs: readonly DistributionBucketSpec[],
+  ) => {
+    const national = resolveDistribution(
+      status,
+      peers,
+      valuesForPlacement(peers, isSubject, subjectValue, readPeer),
+      subjectValue,
+      specs,
+    );
+    const regional = resolveDistribution(
+      status,
+      regionalPeers,
+      valuesForPlacement(regionalPeers, isSubject, subjectValue, readPeer),
+      subjectValue,
+      specs,
+    );
+    return [
+      {
+        id: "national",
+        label: nationalLabel,
+        placement: null,
+        ...national,
+      },
+      {
+        id: "regional",
+        label: regionalLabel,
+        placement: null,
+        ...regional,
+      },
+    ];
+  };
+
+  const yesNo = booleanDistributionSpecs({
+    yes: t("yes"),
+    no: t("no"),
+    unknown: t("unknown"),
+  });
+  const procurementSteps = procurementDistributionSpecs({
+    high: t("municipalityDetailPage.procurementScore.high"),
+    medium: t("municipalityDetailPage.procurementScore.medium"),
+    low: t("municipalityDetailPage.procurementScore.low"),
+  });
+
   const paris = getMeetsParisDisplay(municipality.meetsParisGoal, t);
   const latest = latestReportedEmission(municipality);
   const evPerCharger = municipality.electricVehiclePerChargePoints;
@@ -86,10 +138,11 @@ export function buildMunicipalityKpiCards(
       label: t("detailPage.meetsParisGoal"),
       value: paris.value,
       valueClassName: paris.valueClassName,
-      scopes: scopesFor(
+      comparison: "distribution",
+      scopes: distributionFor(
         municipality.meetsParisGoal,
         (peer) => peer.meetsParisGoal,
-        true,
+        yesNo,
       ),
     },
     {
@@ -146,10 +199,11 @@ export function buildMunicipalityKpiCards(
         ? "text-blue-3"
         : "text-pink-3",
       href: municipality.climatePlanLink ?? undefined,
-      scopes: scopesFor(
+      comparison: "distribution",
+      scopes: distributionFor(
         municipality.climatePlanYear !== null,
         (peer) => peer.climatePlanYear !== null,
-        true,
+        yesNo,
       ),
     },
     {
@@ -158,10 +212,11 @@ export function buildMunicipalityKpiCards(
       value: getProcurementRequirementsText(municipality.procurementScore, t),
       valueClassName: procurementClass(municipality.procurementScore),
       href: municipality.procurementLink ?? undefined,
-      scopes: scopesFor(
+      comparison: "distribution",
+      scopes: distributionFor(
         municipality.procurementScore,
         (peer) => peer.procurementScore,
-        true,
+        procurementSteps,
       ),
     },
     {

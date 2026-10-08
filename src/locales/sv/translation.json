@@ -1161,7 +1161,8 @@
       "rankOf": "av {{total}}",
       "tied": "Lika med {{count}}",
       "noComparison": "Inte tillräckligt med data att jämföra",
-      "openLink": "Öppna"
+      "openLink": "Öppna",
+      "thisOne": "den här"
     },
     "changeSince2015": "Årlig utsläppsförändring sedan 2015",
     "sectorEmissions": "Utsläppskällor",
