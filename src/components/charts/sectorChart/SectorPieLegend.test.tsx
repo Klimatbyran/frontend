@@ -22,6 +22,7 @@ vi.mock("@/hooks/useChartMotion", () => ({
 
 const data: PieChartItem[] = [
   { key: "15", name: "Materials", value: 1000, color: "#fff" },
+  { key: "35", name: "Health Care", value: 500, color: "#aaa" },
 ];
 
 describe("SectorPieLegend", () => {
@@ -44,5 +45,20 @@ describe("SectorPieLegend", () => {
 
     const row = screen.getByText("Materials").closest("div.flex");
     expect(row).toHaveClass("cursor-pointer");
+  });
+
+  it("highlights the selected sector and dims the rest", () => {
+    const { container } = render(
+      <SectorPieLegend data={data} total={1500} highlightedKey="35" />,
+    );
+
+    const selected = screen.getByText("Health Care").closest("div.flex");
+    const other = screen.getByText("Materials").closest("div.flex");
+
+    expect(selected).toHaveAttribute("aria-current", "true");
+    expect(selected).toHaveClass("bg-blue-5/40");
+    expect(other).not.toHaveAttribute("aria-current");
+    expect(other).toHaveStyle({ opacity: "0.4" });
+    expect(container.querySelectorAll('[aria-current="true"]')).toHaveLength(1);
   });
 });

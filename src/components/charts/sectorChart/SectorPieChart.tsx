@@ -36,6 +36,8 @@ interface SectorPieChartProps {
   maxOuterRadius?: number;
   animationKey?: string;
   restSliceOptions?: PieChartRestSliceOptions;
+  /** When set, this slice stays vivid and the others recede. */
+  highlightedKey?: string | null;
 }
 
 const PIE_CORNER_RADIUS = 8;
@@ -55,6 +57,7 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
   maxOuterRadius,
   animationKey,
   restSliceOptions,
+  highlightedKey,
 }) => {
   const { isMobile } = useScreenSize();
   const { pieDuration, reduceMotion } = useChartMotion();
@@ -189,14 +192,24 @@ const SectorPieChart: React.FC<SectorPieChartProps> = ({
             animationDuration={pieDuration}
             animationEasing="ease-out"
           >
-            {pieDataWithTotal.map((entry) => (
-              <Cell
-                key={entry.key}
-                fill={entry.color}
-                stroke={entry.color}
-                style={{ cursor: isInteractive ? "pointer" : "default" }}
-              />
-            ))}
+            {pieDataWithTotal.map((entry) => {
+              const highlighted =
+                highlightedKey != null && entry.key === highlightedKey;
+              const dimmed = highlightedKey != null && !highlighted;
+
+              return (
+                <Cell
+                  key={entry.key}
+                  fill={entry.color}
+                  stroke={highlighted ? "#ffffff" : entry.color}
+                  strokeWidth={highlighted ? 2.5 : 1}
+                  style={{
+                    cursor: isInteractive ? "pointer" : "default",
+                    opacity: dimmed ? 0.28 : 1,
+                  }}
+                />
+              );
+            })}
           </Pie>
           <Tooltip
             content={
