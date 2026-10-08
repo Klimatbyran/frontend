@@ -18,7 +18,7 @@ import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
 export interface IndustryEmissionsPieProps {
   rows: IndustryBreakdownRow[];
-  /** Drives chart re-animation when the chip filter changes. */
+  /** Sector to mark in the chart and legend. Null keeps every slice equal. */
   selected: SectorCode | null;
 }
 
@@ -38,7 +38,6 @@ export function IndustryEmissionsPie({
     enabled: !reduceMotion,
   });
   const show = reduceMotion || entered;
-  const pieAnimationKey = selected ?? "all";
 
   const data = useMemo<PieChartItem[]>(
     () =>
@@ -73,8 +72,8 @@ export function IndustryEmissionsPie({
             {show ? (
               <SectorPieChart
                 data={data}
-                animationKey={pieAnimationKey}
                 fillContainer
+                highlightedKey={selected}
               />
             ) : (
               <div className="min-h-[200px] w-full" />
@@ -89,7 +88,7 @@ export function IndustryEmissionsPie({
                 gridColumns={1}
                 compact
                 fillHeight
-                animationKey={pieAnimationKey}
+                highlightedKey={selected}
               />
             )}
           </div>

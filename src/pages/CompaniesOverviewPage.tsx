@@ -99,8 +99,8 @@ export function CompaniesOverviewPage() {
   const urlState = useCompaniesOverviewUrlState(availableSectors);
   const selectedSector = urlState.getSectorFromURL() as SectorCode | null;
 
-  // The industry breakdown ignores the industry filter so it stays usable as
-  // a selector after one has been picked.
+  // Always the full set of industries. Chips and the pie stay a comparison
+  // after one is picked; the selected sector is highlighted in the chart.
   const industryRows = useMemo(
     () => buildIndustryBreakdown(swedishCompanies),
     [swedishCompanies],
@@ -118,7 +118,6 @@ export function CompaniesOverviewPage() {
   );
 
   const summary = useMemo(() => summariseParis(inView), [inView]);
-  const pieRows = useMemo(() => buildIndustryBreakdown(inView), [inView]);
 
   if (companiesLoading) {
     return <CompaniesOverviewSkeleton />;
@@ -173,7 +172,7 @@ export function CompaniesOverviewPage() {
 
       <VerdictLists companies={inView} />
 
-      <IndustryEmissionsPie rows={pieRows} selected={selectedSector} />
+      <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
 
       <ReportingCoverage companies={inView} />
 

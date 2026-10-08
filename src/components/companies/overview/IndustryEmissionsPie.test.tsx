@@ -76,7 +76,30 @@ describe("IndustryEmissionsPie", () => {
 
     expect(chartCall.onItemClick).toBeUndefined();
     expect(chartCall.customActionLabel).toBeUndefined();
+    expect(chartCall.highlightedKey).toBeNull();
     expect(legendCall.onItemClick).toBeUndefined();
     expect(legendCall.getActionTooltip).toBeUndefined();
+    expect(legendCall.highlightedKey).toBeNull();
+  });
+
+  it("highlights the selected sector without dropping the others", () => {
+    chartProps.mockClear();
+    legendProps.mockClear();
+
+    render(<IndustryEmissionsPie rows={rows} selected="35" />);
+
+    const chartCall = chartProps.mock.calls.at(-1)?.[0] as {
+      highlightedKey?: string | null;
+      data?: Array<{ key: string }>;
+    };
+    const legendCall = legendProps.mock.calls.at(-1)?.[0] as {
+      highlightedKey?: string | null;
+      data?: Array<{ key: string }>;
+    };
+
+    expect(chartCall.highlightedKey).toBe("35");
+    expect(legendCall.highlightedKey).toBe("35");
+    expect(chartCall.data?.map((item) => item.key)).toEqual(["15", "35"]);
+    expect(legendCall.data?.map((item) => item.key)).toEqual(["15", "35"]);
   });
 });
