@@ -68,11 +68,14 @@ export interface ParisAnswerCardProps {
   summary: ParisSummary;
   /** Translated industry name when one is selected, otherwise null. */
   industryLabel: string | null;
+  /** Sector title when one is selected, such as "Industrials Sector". */
+  sectorTitle?: string | null;
 }
 
 export function ParisAnswerCard({
   summary,
   industryLabel,
+  sectorTitle = null,
 }: ParisAnswerCardProps) {
   const { t } = useTranslation();
   const { reduceMotion, fadeDuration, ease } = useChartMotion();
@@ -158,10 +161,16 @@ export function ParisAnswerCard({
             ease,
           }}
         >
-          {t("companiesOverviewPage.paris.share", {
-            percent: onTrackPercent,
-            count: total,
-          })}
+          {sectorTitle
+            ? t("companiesOverviewPage.paris.shareSector", {
+                percent: onTrackPercent,
+                count: total,
+                sector: sectorTitle,
+              })
+            : t("companiesOverviewPage.paris.share", {
+                percent: onTrackPercent,
+                count: total,
+              })}
         </motion.p>
       </div>
 

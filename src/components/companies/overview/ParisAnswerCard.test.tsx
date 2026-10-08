@@ -6,6 +6,14 @@ import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: Record<string, unknown>) => {
+      if (
+        options &&
+        "percent" in options &&
+        "count" in options &&
+        "sector" in options
+      ) {
+        return `${key}:${options.percent}:${options.count}:${options.sector}`;
+      }
       if (options && "percent" in options && "count" in options) {
         return `${key}:${options.percent}:${options.count}`;
       }
@@ -64,5 +72,24 @@ describe("ParisAnswerCard", () => {
     expect(
       screen.getByText("companiesOverviewPage.paris.share:30:10"),
     ).toBeInTheDocument();
+  });
+
+  it("talks about the selected sector instead of all of Sweden's largest companies", () => {
+    render(
+      <ParisAnswerCard
+        summary={baseSummary}
+        industryLabel="Industrials"
+        sectorTitle="Industrials Sector"
+      />,
+    );
+
+    expect(
+      screen.getByText(
+        "companiesOverviewPage.paris.shareSector:30:10:Industrials Sector",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("companiesOverviewPage.paris.share:30:10"),
+    ).not.toBeInTheDocument();
   });
 });

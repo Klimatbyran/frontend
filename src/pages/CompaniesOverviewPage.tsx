@@ -10,7 +10,10 @@ import { ParisExplainer } from "@/components/companies/overview/ParisExplainer";
 import { IndustryChipFilter } from "@/components/companies/overview/IndustryChipFilter";
 import { IndustryEmissionsPie } from "@/components/companies/overview/IndustryEmissionsPie";
 import { ReportingCoverage } from "@/components/companies/overview/ReportingCoverage";
-import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import {
+  useSectorNames,
+  useSectorTitles,
+} from "@/hooks/companies/useCompanySectors";
 import { enrichCompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import type { CompanyWithKPIs } from "@/types/company";
 import type { SectorCode } from "@/lib/constants/sectors";
@@ -66,6 +69,7 @@ export function CompaniesOverviewPage() {
   const { t } = useTranslation();
   const { companies, companiesLoading, companiesError } = useCompanies();
   const sectorNames = useSectorNames();
+  const sectorTitles = useSectorTitles();
 
   // Sweden-only page: scope once, so nothing downstream reasons about country.
   const swedishCompanies = useMemo<CompanyWithKPIs[]>(
@@ -158,6 +162,7 @@ export function CompaniesOverviewPage() {
           key={selectedSector ?? "all"}
           summary={summary}
           industryLabel={selectedSector ? sectorNames[selectedSector] : null}
+          sectorTitle={selectedSector ? sectorTitles[selectedSector] : null}
         />
       </div>
 
