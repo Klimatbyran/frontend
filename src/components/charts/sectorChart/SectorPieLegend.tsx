@@ -31,6 +31,8 @@ interface LegendProps {
   animationKey?: string;
   /** Stretch the legend to the full height of its grid cell (scroll when needed). */
   fillHeight?: boolean;
+  /** When set, this row stays vivid and the others recede. */
+  highlightedKey?: string | null;
 }
 
 const SectorPieLegend: React.FC<LegendProps> = ({
@@ -47,6 +49,7 @@ const SectorPieLegend: React.FC<LegendProps> = ({
   emissionsUnitClassName,
   animationKey = "default",
   fillHeight = false,
+  highlightedKey,
 }) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -103,20 +106,31 @@ const SectorPieLegend: React.FC<LegendProps> = ({
               ? "<0.1%"
               : formatPercent(entry.value / total, currentLanguage);
           const isFiltered = filteredSectors.has(entry.key);
+          const isHighlighted =
+            highlightedKey != null && entry.key === highlightedKey;
+          const isDimmed = highlightedKey != null ? !isHighlighted : isFiltered;
           const displayName = (entry.name as string | undefined) ?? entry.key;
 
           const row = (
             <motion.div
+              aria-current={isHighlighted ? "true" : undefined}
               className={`flex items-center rounded-md transition-colors ${
                 isInteractive
                   ? "hover:bg-black-1 cursor-pointer"
                   : "cursor-default"
-              } ${compact ? "gap-1.5 p-1.5" : "gap-2 p-2"}`}
+              } ${compact ? "gap-1.5 p-1.5" : "gap-2 p-2"} ${
+                isHighlighted
+                  ? "bg-blue-5/40 ring-1 ring-inset ring-blue-3/60"
+                  : ""
+              }`}
               onClick={
                 isInteractive ? () => handleLegendItemClick(entry) : undefined
               }
               initial={reduceMotion ? false : { opacity: 0, x: -10 }}
-              animate={{ opacity: isFiltered ? 0.5 : 1, x: 0 }}
+              animate={{
+                opacity: isDimmed ? (highlightedKey != null ? 0.4 : 0.5) : 1,
+                x: 0,
+              }}
               transition={{
                 duration: fadeDuration,
                 delay: stagger(index, 0.04),
