@@ -24,10 +24,9 @@ type MetricColumn = "county" | "value" | "paris";
 
 const PAGE_SIZE = 12;
 
-const DEFAULT_DIRECTION: Record<SortKey, "asc" | "desc"> = {
+const DEFAULT_DIRECTION: Record<Exclude<SortKey, "value">, "asc" | "desc"> = {
   name: "asc",
   county: "asc",
-  value: "asc",
   paris: "desc",
 };
 
@@ -225,11 +224,14 @@ export function TerritoryOverviewTable({
         switch (sortKey) {
           case "name":
             return factor * a.name.localeCompare(b.name, currentLanguage);
-          case "county":
-            return (
-              factor *
-              (a.county ?? "").localeCompare(b.county ?? "", currentLanguage)
-            );
+          case "county": {
+            const aCounty = a.county ?? "";
+            const bCounty = b.county ?? "";
+            if (!aCounty && !bCounty) return 0;
+            if (!aCounty) return 1;
+            if (!bCounty) return -1;
+            return factor * aCounty.localeCompare(bCounty, currentLanguage);
+          }
           case "value":
             return compareNullableNumber(
               numericValue(a.kpiValue),
@@ -243,19 +245,24 @@ export function TerritoryOverviewTable({
 
     const factor = direction === "asc" ? 1 : -1;
     const sortedRows = [...filtered].sort(compare(factor));
-    // Rank follows the measure's better-first order, even when another column is sorted.
-    const rankRows = [...filtered].sort((a, b) =>
+    // Rank is the place among every territory on this measure, so search and
+    // column sorts keep the number. Missing values stay unranked.
+    const rankRows = [...rows].sort((a, b) =>
       compareNullableNumber(
         numericValue(a.kpiValue),
         numericValue(b.kpiValue),
         higherIsBetter ? -1 : 1,
       ),
     );
+    const rankById = new Map<string, number>();
+    let place = 1;
+    for (const row of rankRows) {
+      if (numericValue(row.kpiValue) == null) continue;
+      rankById.set(row.id, place);
+      place += 1;
+    }
 
-    return {
-      sorted: sortedRows,
-      rankById: new Map(rankRows.map((row, index) => [row.id, index + 1])),
-    };
+    return { sorted: sortedRows, rankById };
   }, [rows, query, sortKey, direction, currentLanguage, higherIsBetter]);
 
   const shown = sorted.slice(0, limit);
@@ -418,7 +425,7 @@ export function TerritoryOverviewTable({
               return (
                 <TableRow key={row.id} className="border-white/5">
                   <TableCell className="py-3 text-right font-mono text-xs text-white/30">
-                    {rankById.get(row.id)}
+                    {rankById.get(row.id) ?? "–"}
                   </TableCell>
                   <TableCell className="py-3">
                     <LocalizedLink

@@ -1139,7 +1139,8 @@
   "territoryOverview": {
     "kicker": "Det korta svaret",
     "averageLead": "är genomsnittet för {{metric}}.",
-    "booleanLead": "{{count}} av {{total}} {{entities}} {{verdict}}",
+    "booleanLead_one": "{{count}} av {{total}} {{entities}} {{verdict}}",
+    "booleanLead_other": "{{count}} av {{total}} {{entities}} {{verdict}}",
     "lowerIsBetter": "Lägre är bättre",
     "higherIsBetter": "Högre är bättre",
     "bestList": "De starkaste resultaten på det här måttet.",

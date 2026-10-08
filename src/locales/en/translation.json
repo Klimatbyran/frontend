@@ -1092,7 +1092,8 @@
   "territoryOverview": {
     "kicker": "The short answer",
     "averageLead": "is the average {{metric}}.",
-    "booleanLead": "{{count}} of {{total}} {{entities}} {{verdict}}",
+    "booleanLead_one": "{{count}} of {{total}} {{entities}} {{verdictOne}}",
+    "booleanLead_other": "{{count}} of {{total}} {{entities}} {{verdict}}",
     "lowerIsBetter": "Lower is better",
     "higherIsBetter": "Higher is better",
     "bestList": "The strongest results on this measure.",

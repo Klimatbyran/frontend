@@ -90,15 +90,16 @@ export function MunicipalitiesOverviewPage() {
     [municipalitiesData],
   );
 
-  const urlState = useMunicipalityUrlState(municipalityKPIs);
-  const [selectedKPI, setSelectedKPI] = useState(urlState.getKPIFromURL());
+  const { getKPIFromURL, setKPIInURL } =
+    useMunicipalityUrlState(municipalityKPIs);
+  const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL);
 
   useEffect(() => {
-    const kpiFromUrl = urlState.getKPIFromURL();
-    if (String(kpiFromUrl.key) !== String(selectedKPI.key)) {
-      setSelectedKPI(kpiFromUrl);
-    }
-  }, [urlState, selectedKPI.key]);
+    const kpiFromUrl = getKPIFromURL();
+    setSelectedKPI((current) =>
+      String(kpiFromUrl.key) === String(current.key) ? current : kpiFromUrl,
+    );
+  }, [getKPIFromURL]);
 
   const handleMunicipalityClick = createEntityClickHandler(
     navigate,
@@ -166,7 +167,7 @@ export function MunicipalitiesOverviewPage() {
           kpis={municipalityKPIs}
           onKPIChange={(kpi) => {
             setSelectedKPI(kpi);
-            urlState.setKPIInURL(String(kpi.key));
+            setKPIInURL(String(kpi.key));
           }}
           iconMap={MUNICIPALITY_KPI_ICONS}
           translationPrefix="municipalities.list"

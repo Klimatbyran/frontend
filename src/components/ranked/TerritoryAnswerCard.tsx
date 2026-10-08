@@ -35,6 +35,11 @@ function displayMinus(value: string): string {
   return value.replace("-", "−");
 }
 
+/** English verdicts start with "are" or "have". Singular needs "is" or "has". */
+function singularVerdict(verdict: string): string {
+  return verdict.replace(/^are\b/, "is").replace(/^have\b/, "has");
+}
+
 interface TerritoryAnswerCardProps<T extends { name: string }> {
   entities: T[];
   selectedKPI: KPIValue<T>;
@@ -110,13 +115,15 @@ export function TerritoryAnswerCard<T extends { name: string }>({
     ? String(trueCount)
     : displayMinus(statistics.formattedAverage ?? "");
 
+  const verdict =
+    selectedKPI.aboveString ?? selectedKPI.booleanLabels?.true ?? "";
   const lead = selectedKPI.isBoolean
     ? t("territoryOverview.booleanLead", {
         count: trueCount,
         total: statistics.validData.length,
         entities: entityPlural,
-        verdict:
-          selectedKPI.aboveString ?? selectedKPI.booleanLabels?.true ?? "",
+        verdict,
+        verdictOne: singularVerdict(verdict),
       })
     : t("territoryOverview.averageLead", { metric });
 

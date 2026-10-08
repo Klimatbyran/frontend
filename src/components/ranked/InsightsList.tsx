@@ -81,7 +81,9 @@ function InsightsList<T>({
 
   return (
     <div ref={ref} className="flex flex-col bg-black-2 rounded-level-2 py-6">
-      <h3 className="text-white text-lg font-semibold px-4 md:px-6 pb-1">
+      <h3
+        className={`text-white text-lg font-semibold px-4 md:px-6 ${description ? "pb-1" : "pb-2"}`}
+      >
         {title}
       </h3>
       {description && (
