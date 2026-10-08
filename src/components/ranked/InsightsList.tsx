@@ -1,5 +1,6 @@
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { useChartMotion } from "@/hooks/useChartMotion";
+import { useEnteredView } from "@/hooks/useEnteredView";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
 
 function calcBarWidth(
@@ -40,6 +41,8 @@ interface InsightsListProps<T> {
   nameKey: keyof T;
   showBars?: boolean;
   colorItem: (item: T) => string;
+  /** Hold the row and bar animation until the list has scrolled into view. */
+  deferAnimationUntilVisible?: boolean;
 }
 
 function InsightsList<T>({
@@ -55,8 +58,14 @@ function InsightsList<T>({
   nameKey,
   showBars = false,
   colorItem,
+  deferAnimationUntilVisible = false,
 }: InsightsListProps<T>) {
   const { reduceMotion, barDuration, ease } = useChartMotion();
+  const { ref, entered } = useEnteredView<HTMLDivElement>({
+    enabled: deferAnimationUntilVisible && !reduceMotion,
+  });
+  const play = !deferAnimationUntilVisible || reduceMotion || entered;
+  const holdAnimation = deferAnimationUntilVisible && !play;
   const rowFadeMs = reduceMotion ? 0 : 350;
   const rowStaggerMs = reduceMotion ? 0 : 35;
   const barTransitionMs = reduceMotion ? 0 : barDuration * 1000;
@@ -71,7 +80,7 @@ function InsightsList<T>({
     : 1;
 
   return (
-    <div className="flex flex-col bg-black-2 rounded-level-2 py-6">
+    <div ref={ref} className="flex flex-col bg-black-2 rounded-level-2 py-6">
       <h3
         className={`text-white text-lg font-semibold px-4 md:px-6 ${
           description ? "pb-1" : "pb-2"
@@ -101,8 +110,12 @@ function InsightsList<T>({
               style={
                 rowFadeMs
                   ? {
-                      animation: `fadeSlideIn ${rowFadeMs}ms ease-out both`,
+                      animationName: "fadeSlideIn",
+                      animationDuration: `${rowFadeMs}ms`,
+                      animationTimingFunction: "ease-out",
                       animationDelay: `${index * rowStaggerMs}ms`,
+                      animationFillMode: "both",
+                      animationPlayState: holdAnimation ? "paused" : "running",
                     }
                   : undefined
               }
@@ -115,8 +128,14 @@ function InsightsList<T>({
                     backgroundColor: color ?? "currentColor",
                     ...(barTransitionMs
                       ? {
-                          animation: `barGrowFromLeft ${barTransitionMs}ms ${barEase} both`,
+                          animationName: "barGrowFromLeft",
+                          animationDuration: `${barTransitionMs}ms`,
+                          animationTimingFunction: barEase,
                           animationDelay: `${index * barStaggerMs}ms`,
+                          animationFillMode: "both",
+                          animationPlayState: holdAnimation
+                            ? "paused"
+                            : "running",
                         }
                       : { width: `${barWidth}%` }),
                     transition: "opacity 0.3s ease",
