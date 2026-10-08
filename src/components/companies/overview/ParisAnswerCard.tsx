@@ -66,7 +66,7 @@ function BreakdownRow({
 
 export interface ParisAnswerCardProps {
   summary: ParisSummary;
-  /** Translated industry name when one is selected, otherwise null. */
+  /** Sector title when one is selected, such as "Industrials Sector". */
   industryLabel: string | null;
 }
 

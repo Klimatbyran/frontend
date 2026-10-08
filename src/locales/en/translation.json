@@ -349,7 +349,7 @@
       "loading": "Loading company climate data",
       "kicker": "The short answer",
       "scopeAll": "we track",
-      "scopeIndustry": "we track in {{industry}}",
+      "scopeIndustry": "we track in the {{industry}}",
       "companyNoun_one": "company",
       "companyNoun_other": "companies",
       "headingVerb_one": "is cutting",
