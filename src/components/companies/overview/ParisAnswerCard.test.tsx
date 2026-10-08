@@ -119,11 +119,9 @@ describe("ParisAnswerCard", () => {
   });
 
   it("keeps the full company count when nobody can be judged yet", () => {
-    render(
-      <ParisAnswerCard
-        summary={{ ...baseSummary, onTrack: 0, offTrack: 0, unknown: 10 }}
-        industryLabel={null}
-      />,
+    renderCard(
+      { ...baseSummary, onTrack: 0, offTrack: 0, unknown: 10 },
+      [dotCompany("UnknownA", null), dotCompany("UnknownB", null)],
     );
 
     expect(
