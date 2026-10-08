@@ -356,6 +356,8 @@
       "headingVerb_other": "are cutting",
       "heading": "of the {{total}} Swedish {{companies}} {{scope}} {{verb}} emissions fast enough for the Paris goal.",
       "share": "That is {{percent}}% of Sweden's {{count}} largest companies.",
+      "tooLittle_one": "{{count}} company reports too little to judge.",
+      "tooLittle_other": "{{count}} companies report too little to judge.",
       "dotNote": "Each dot is one company",
       "dotHint": "Point at a dot to see the company.",
       "onTrack": "On track for Paris",

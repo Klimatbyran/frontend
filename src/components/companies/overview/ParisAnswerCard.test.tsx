@@ -100,8 +100,23 @@ describe("ParisAnswerCard", () => {
     expect(screen.getByText("38%")).toBeInTheDocument();
     expect(screen.getByText("62%")).toBeInTheDocument();
     expect(
-      screen.getByText("companiesOverviewPage.paris.share:30:10"),
+      screen.getByText("companiesOverviewPage.paris.share:30:10", {
+        exact: false,
+      }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("companiesOverviewPage.paris.tooLittle:2", {
+        exact: false,
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("leaves out the too-little sentence when every company can be judged", () => {
+    renderCard({ ...baseSummary, unknown: 0 });
+
+    expect(
+      screen.queryByText(/companiesOverviewPage\.paris\.tooLittle/),
+    ).not.toBeInTheDocument();
   });
 
   it("names the company under the pointer and links to it", () => {

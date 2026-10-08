@@ -88,7 +88,7 @@ export function ParisAnswerCard({
   const { t } = useTranslation();
   const { reduceMotion, fadeDuration, ease } = useChartMotion();
   const [emphasis, setEmphasis] = useState<"on" | "off" | null>(null);
-  const { total, onTrack, offTrack, onTrackPercent } = summary;
+  const { total, onTrack, offTrack, unknown, onTrackPercent } = summary;
 
   if (total === 0) {
     return (
@@ -170,6 +170,12 @@ export function ParisAnswerCard({
             percent: onTrackPercent,
             count: total,
           })}
+          {unknown > 0 && (
+            <>
+              {" "}
+              {t("companiesOverviewPage.paris.tooLittle", { count: unknown })}
+            </>
+          )}
         </motion.p>
       </div>
 

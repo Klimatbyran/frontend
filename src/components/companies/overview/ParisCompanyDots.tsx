@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 function dotSize(total: number): number {
   if (total <= 24) return 22;
   if (total <= 60) return 16;
-  return 12;
+  return 14;
 }
 
 /** Each dot pops in; the wave finishes under ~1.6s even for the full Swedish set. */
