@@ -1,16 +1,11 @@
-import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useChartMotion } from "@/hooks/useChartMotion";
 import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/charts/sectorChart/SectorPieLegend";
-import {
-  SHARE_RAMP_STOPS,
-  shareRampColor,
-  type IndustryBreakdownRow,
-} from "@/hooks/companies/parisOverviewUtils";
+import type { IndustryBreakdownRow } from "@/hooks/companies/parisOverviewUtils";
+import { sectorColors } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 
@@ -21,9 +16,8 @@ export interface IndustryEmissionsPieProps {
 }
 
 /**
- * Slice size is the industry's share of emissions; slice colour is the share
- * of its companies on track. Two encodings, so the ramp is spelled out below
- * the chart rather than left for the reader to infer.
+ * Each slice is one sector. Size is that sector's share of total emissions,
+ * and colour is the sector colour used everywhere else on the page.
  */
 export function IndustryEmissionsPie({
   rows,
@@ -31,7 +25,6 @@ export function IndustryEmissionsPie({
 }: IndustryEmissionsPieProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
-  const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
   const pieAnimationKey = selected ?? "all";
 
   const data = useMemo<PieChartItem[]>(
@@ -40,7 +33,7 @@ export function IndustryEmissionsPie({
         key: row.code,
         name: sectorNames[row.code],
         value: row.emissions,
-        color: shareRampColor(row.onTrackShare),
+        color: sectorColors[row.code].base,
       })),
     [rows, sectorNames],
   );
@@ -79,38 +72,6 @@ export function IndustryEmissionsPie({
             fillHeight
             animationKey={pieAnimationKey}
           />
-        </div>
-
-        <div className="order-2 min-w-0 w-full lg:order-3">
-          <div className="flex">
-            {SHARE_RAMP_STOPS.map((stop, index) => (
-              <motion.i
-                key={stop}
-                className={`h-2.5 flex-1 ${
-                  index === 0
-                    ? "rounded-l-sm"
-                    : index === SHARE_RAMP_STOPS.length - 1
-                      ? "rounded-r-sm"
-                      : ""
-                }`}
-                style={{
-                  backgroundColor: stop,
-                  transformOrigin: "bottom",
-                }}
-                initial={reduceMotion ? false : { opacity: 0, scaleY: 0 }}
-                animate={{ opacity: 1, scaleY: 1 }}
-                transition={{
-                  duration: fadeDuration,
-                  delay: stagger(index, 0.05),
-                  ease,
-                }}
-              />
-            ))}
-          </div>
-          <div className="mt-1.5 flex justify-between text-[11px] text-grey">
-            <span>{t("companiesOverviewPage.paris.rampLow")}</span>
-            <span>{t("companiesOverviewPage.paris.rampHigh")}</span>
-          </div>
         </div>
       </div>
     </section>

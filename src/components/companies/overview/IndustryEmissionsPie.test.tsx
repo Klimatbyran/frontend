@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { IndustryEmissionsPie } from "./IndustryEmissionsPie";
 import type { IndustryBreakdownRow } from "@/hooks/companies/parisOverviewUtils";
@@ -24,15 +24,6 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
-vi.mock("@/hooks/useChartMotion", () => ({
-  useChartMotion: () => ({
-    reduceMotion: true,
-    fadeDuration: 0,
-    stagger: () => 0,
-    ease: "linear",
-  }),
-}));
-
 vi.mock("@/hooks/companies/useCompanySectors", () => ({
   useSectorNames: () => ({
     "15": "Materials",
@@ -45,13 +36,11 @@ const rows: IndustryBreakdownRow[] = [
     code: "15",
     emissions: 1000,
     companyCount: 2,
-    onTrackShare: 0.5,
   },
   {
     code: "35",
     emissions: 500,
     companyCount: 2,
-    onTrackShare: 0.25,
   },
 ];
 
@@ -78,5 +67,23 @@ describe("IndustryEmissionsPie", () => {
     expect(chartCall.customActionLabel).toBeUndefined();
     expect(legendCall.onItemClick).toBeUndefined();
     expect(legendCall.getActionTooltip).toBeUndefined();
+  });
+
+  it("colours each sector with its own colour, sized by emissions", () => {
+    chartProps.mockClear();
+
+    render(<IndustryEmissionsPie rows={rows} selected={null} />);
+
+    const chartCall = chartProps.mock.calls.at(-1)?.[0] as {
+      data: Array<{ key: string; value: number; color: string }>;
+    };
+
+    expect(chartCall.data).toEqual([
+      { key: "15", name: "Materials", value: 1000, color: "var(--blue-4)" },
+      { key: "35", name: "Health Care", value: 500, color: "var(--blue-3)" },
+    ]);
+    expect(
+      screen.queryByText("companiesOverviewPage.paris.rampLow"),
+    ).toBeNull();
   });
 });

@@ -6,7 +6,6 @@ import {
   furthestBehind,
   isSwedishCompany,
   latestEmissions,
-  shareRampColor,
   summariseParis,
   summariseReporting,
 } from "./parisOverviewUtils";
@@ -107,43 +106,25 @@ describe("buildIndustryBreakdown", () => {
     ]);
   });
 
-  it("totals emissions and scores the on-track share per industry", () => {
+  it("totals emissions per industry", () => {
     const [healthcare, materials] = buildIndustryBreakdown(companies);
 
     expect(healthcare).toMatchObject({
       companyCount: 2,
       emissions: 800,
-      onTrackShare: 50,
     });
-    expect(materials).toMatchObject({ companyCount: 1, onTrackShare: 100 });
+    expect(materials).toMatchObject({ companyCount: 1, emissions: 10 });
   });
 
-  it("drops industries with no companies and marks unjudgeable ones null", () => {
+  it("drops industries with no companies", () => {
     const rows = buildIndustryBreakdown([company("X", "15", null, null, 5)]);
 
     expect(rows).toHaveLength(1);
-    expect(rows[0].onTrackShare).toBeNull();
-  });
-
-  it("counts companies that cannot be judged as not on track", () => {
-    const rows = buildIndustryBreakdown([
-      company("Judged", "15", true, -10, 10),
-      company("Unknown", "15", null, null, 10),
-    ]);
-
-    expect(rows[0].onTrackShare).toBe(50);
-  });
-});
-
-describe("shareRampColor", () => {
-  it("runs pink for low shares through to blue for high ones", () => {
-    expect(shareRampColor(0)).toBe("var(--pink-5)");
-    expect(shareRampColor(45)).toBe("var(--pink-3)");
-    expect(shareRampColor(100)).toBe("var(--blue-3)");
-  });
-
-  it("falls back to a neutral colour when nothing can be judged", () => {
-    expect(shareRampColor(null)).toBe("var(--black-1)");
+    expect(rows[0]).toMatchObject({
+      code: "15",
+      companyCount: 1,
+      emissions: 5,
+    });
   });
 });
 
