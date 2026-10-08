@@ -49,6 +49,7 @@ function AnswerCardSkeleton() {
         </div>
         <div className="mt-4 space-y-2">
           <Block className="h-4 w-full" />
+          <Block className="h-4 w-4/5" />
           <Block className="h-4 w-3/5" />
         </div>
       </div>

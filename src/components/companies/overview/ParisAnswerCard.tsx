@@ -1,26 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
-
-/**
- * A handful of companies still has to fill the block, so the dots grow as the
- * selection shrinks instead of trailing off as one sparse row.
- */
-function dotSize(total: number): number {
-  if (total <= 24) return 22;
-  if (total <= 60) return 16;
-  return 12;
-}
-
-/** Each dot pops in; the wave finishes under ~1.6s even for the full Swedish set. */
-const DOT_ENTER_DURATION = 0.2;
-const DOT_WAVE_SPAN = 1.35;
-
-function dotStaggerStep(count: number): number {
-  if (count <= 1) return 0;
-  return DOT_WAVE_SPAN / (count - 1);
-}
+import type { CompanyWithKPIs } from "@/types/company";
+import { ParisCompanyDots } from "./ParisCompanyDots";
+import { cn } from "@/lib/utils";
 
 interface BreakdownRowProps {
   color: string;
@@ -29,6 +14,9 @@ interface BreakdownRowProps {
   /** Share of the companies these two rows cover, so the pair adds up to 100. */
   percent: number;
   index: number;
+  pressed?: boolean;
+  dimmed?: boolean;
+  onToggle?: () => void;
 }
 
 function BreakdownRow({
@@ -37,20 +25,26 @@ function BreakdownRow({
   count,
   percent,
   index,
+  pressed = false,
+  dimmed = false,
+  onToggle,
 }: BreakdownRowProps) {
   const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
-
-  return (
-    <motion.div
-      className="flex items-center gap-2.5 border-t border-white/10 py-3 text-sm last:border-b"
-      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: fadeDuration,
-        delay: stagger(index, 0.06),
-        ease,
-      }}
-    >
+  const motionProps = {
+    className: cn(
+      "flex w-full items-center gap-2.5 border-t border-white/10 py-3 text-sm last:border-b",
+      onToggle && "cursor-pointer rounded-md px-1 text-left hover:bg-white/5",
+    ),
+    initial: reduceMotion ? false : { opacity: 0, y: 8 },
+    animate: { opacity: dimmed ? 0.4 : 1, y: 0 },
+    transition: {
+      duration: fadeDuration,
+      delay: stagger(index, 0.06),
+      ease,
+    },
+  };
+  const body = (
+    <>
       <span
         className="size-2.5 shrink-0 rounded-full"
         style={{ backgroundColor: color }}
@@ -60,26 +54,41 @@ function BreakdownRow({
       <span className="w-11 text-right tabular-nums text-white/40">
         {percent}%
       </span>
-    </motion.div>
+    </>
   );
+
+  if (onToggle) {
+    return (
+      <motion.button
+        type="button"
+        aria-pressed={pressed}
+        onClick={onToggle}
+        {...motionProps}
+      >
+        {body}
+      </motion.button>
+    );
+  }
+
+  return <motion.div {...motionProps}>{body}</motion.div>;
 }
 
 export interface ParisAnswerCardProps {
   summary: ParisSummary;
-  /** Translated industry name when one is selected, otherwise null. */
-  industryLabel: string | null;
+  companies: CompanyWithKPIs[];
   /** Sector title when one is selected, such as "Industrials Sector". */
-  sectorTitle?: string | null;
+  industryLabel: string | null;
 }
 
 export function ParisAnswerCard({
   summary,
+  companies,
   industryLabel,
-  sectorTitle = null,
 }: ParisAnswerCardProps) {
   const { t } = useTranslation();
   const { reduceMotion, fadeDuration, ease } = useChartMotion();
-  const { total, onTrack, offTrack, onTrackPercent } = summary;
+  const [emphasis, setEmphasis] = useState<"on" | "off" | null>(null);
+  const { total, onTrack, offTrack, unknown, onTrackPercent } = summary;
 
   if (total === 0) {
     return (
@@ -107,13 +116,9 @@ export function ParisAnswerCard({
   const onTrackShare = judged === 0 ? 0 : Math.round((onTrack / judged) * 100);
   const offTrackShare =
     offTrack === 0 ? 0 : onTrack === 0 ? 100 : 100 - onTrackShare;
-  const size = dotSize(judged);
-  const dots = [
-    ...Array<string>(onTrack).fill("var(--blue-3)"),
-    ...Array<string>(offTrack).fill("var(--pink-3)"),
-  ];
-
-  const staggerStep = dotStaggerStep(dots.length);
+  const toggleEmphasis = (next: "on" | "off") => {
+    setEmphasis((current) => (current === next ? null : next));
+  };
 
   return (
     <section className="grid items-center gap-9 rounded-level-2 bg-black-2 px-6 py-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.85fr)] md:gap-14 md:px-10 md:py-9">
@@ -161,61 +166,27 @@ export function ParisAnswerCard({
             ease,
           }}
         >
-          {sectorTitle
+          {industryLabel
             ? t("companiesOverviewPage.paris.shareSector", {
                 percent: onTrackPercent,
                 count: total,
-                sector: sectorTitle,
+                sector: industryLabel,
               })
             : t("companiesOverviewPage.paris.share", {
                 percent: onTrackPercent,
                 count: total,
               })}
+          {unknown > 0 && (
+            <>
+              {" "}
+              {t("companiesOverviewPage.paris.tooLittle", { count: unknown })}
+            </>
+          )}
         </motion.p>
       </div>
 
       <div>
-        {dots.length > 0 && (
-          <>
-            <p className="text-xs text-white/40">
-              {t("companiesOverviewPage.paris.dotNote")}
-            </p>
-            <motion.div
-              aria-hidden="true"
-              className="mt-2.5 flex flex-wrap"
-              style={{ gap: size > 16 ? 9 : 6 }}
-              initial={reduceMotion ? false : "hidden"}
-              animate="visible"
-              variants={{
-                hidden: {},
-                visible: {
-                  transition: {
-                    staggerChildren: reduceMotion ? 0 : staggerStep,
-                  },
-                },
-              }}
-            >
-              {dots.map((color, index) => (
-                <motion.span
-                  key={index}
-                  className="block rounded-full"
-                  style={{ width: size, height: size, backgroundColor: color }}
-                  variants={{
-                    hidden: { opacity: 0, scale: 0.35 },
-                    visible: {
-                      opacity: 1,
-                      scale: 1,
-                      transition: {
-                        duration: reduceMotion ? 0 : DOT_ENTER_DURATION,
-                        ease,
-                      },
-                    },
-                  }}
-                />
-              ))}
-            </motion.div>
-          </>
-        )}
+        <ParisCompanyDots companies={companies} emphasis={emphasis} />
         <div className="mt-3.5">
           <BreakdownRow
             color="var(--blue-3)"
@@ -223,6 +194,9 @@ export function ParisAnswerCard({
             count={onTrack}
             percent={onTrackShare}
             index={0}
+            pressed={emphasis === "on"}
+            dimmed={emphasis === "off"}
+            onToggle={onTrack > 0 ? () => toggleEmphasis("on") : undefined}
           />
           <BreakdownRow
             color="var(--pink-3)"
@@ -230,6 +204,9 @@ export function ParisAnswerCard({
             count={offTrack}
             percent={offTrackShare}
             index={1}
+            pressed={emphasis === "off"}
+            dimmed={emphasis === "on"}
+            onToggle={offTrack > 0 ? () => toggleEmphasis("off") : undefined}
           />
         </div>
       </div>
