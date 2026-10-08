@@ -38,9 +38,8 @@ const mockCompanies = [
   createCompany("5", "Oslo Corp", MATERIALS_SECTOR, ["norway"], true),
 ];
 
-const { capturedLists, capturedPieSectors } = vi.hoisted(() => ({
+const { capturedLists } = vi.hoisted(() => ({
   capturedLists: [] as string[][],
-  capturedPieSectors: [] as string[][],
 }));
 
 vi.mock("@/hooks/companies/useCompanies", () => ({
@@ -66,10 +65,7 @@ vi.mock("@/components/layout/PageHeader", () => ({
 }));
 
 vi.mock("@/components/companies/overview/IndustryEmissionsPie", () => ({
-  IndustryEmissionsPie: ({ rows }: { rows: Array<{ code: string }> }) => {
-    capturedPieSectors.push(rows.map((row) => row.code));
-    return <div data-testid="industry-pie" />;
-  },
+  IndustryEmissionsPie: () => <div data-testid="industry-pie" />,
 }));
 
 vi.mock("@/components/ranked/InsightsList", () => ({
@@ -114,7 +110,6 @@ function renderPage(initialEntry: string) {
 describe("CompaniesOverviewPage", () => {
   beforeEach(() => {
     capturedLists.length = 0;
-    capturedPieSectors.length = 0;
   });
 
   it("shows only Swedish companies", async () => {
@@ -151,7 +146,7 @@ describe("CompaniesOverviewPage", () => {
     await waitFor(() => {
       expect(capturedLists.at(-1)).toEqual(["Health One", "Health Two"]);
     });
-    expect(capturedPieSectors.at(-1)).toEqual([HEALTHCARE_SECTOR]);
+    expect(screen.queryByTestId("industry-pie")).not.toBeInTheDocument();
   });
 
   it("preserves the industry from the URL after company data loads", async () => {
