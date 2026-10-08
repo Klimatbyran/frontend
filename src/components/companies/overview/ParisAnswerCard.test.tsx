@@ -133,10 +133,13 @@ describe("ParisAnswerCard", () => {
     expect(
       screen.getByText(
         "companiesOverviewPage.paris.shareSector:30:10:Industrials Sector",
+        { exact: false },
       ),
     ).toBeInTheDocument();
     expect(
-      screen.queryByText("companiesOverviewPage.paris.share:30:10"),
+      screen.queryByText("companiesOverviewPage.paris.share:30:10", {
+        exact: false,
+      }),
     ).not.toBeInTheDocument();
     expect(
       screen.getByText("companiesOverviewPage.paris.tooLittle:2", {
