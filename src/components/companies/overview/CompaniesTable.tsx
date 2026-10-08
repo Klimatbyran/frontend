@@ -229,25 +229,41 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
     return map;
   }, [companies]);
 
-  const rows = useMemo(() => {
+  const { sorted, rankById } = useMemo(() => {
     const needle = query.trim().toLowerCase();
     const filtered = needle
       ? companies.filter((c) => c.name.toLowerCase().includes(needle))
       : companies;
 
-    const factor = direction === "asc" ? 1 : -1;
+    const compare =
+      (factor: number) => (a: CompanyWithKPIs, b: CompanyWithKPIs) =>
+        compareCompanies(
+          a,
+          b,
+          sortKey,
+          factor,
+          currentLanguage,
+          sectorNames,
+          sourceIndex,
+        );
 
-    return [...filtered].sort((a, b) =>
-      compareCompanies(
-        a,
-        b,
-        sortKey,
-        factor,
-        currentLanguage,
-        sectorNames,
-        sourceIndex,
+    const factor = direction === "asc" ? 1 : -1;
+    const sortedRows = [...filtered].sort(compare(factor));
+
+    // Rank is the company's place in this column's default direction, so
+    // reversing the sort keeps the number on the company.
+    const defaultFactor = DEFAULT_DIRECTION[sortKey] === "asc" ? 1 : -1;
+    const ranked =
+      direction === DEFAULT_DIRECTION[sortKey]
+        ? sortedRows
+        : [...filtered].sort(compare(defaultFactor));
+
+    return {
+      sorted: sortedRows,
+      rankById: new Map(
+        ranked.map((company, index) => [company.id, index + 1]),
       ),
-    );
+    };
   }, [
     companies,
     query,
@@ -258,7 +274,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
     sourceIndex,
   ]);
 
-  const shown = rows.slice(0, limit);
+  const shown = sorted.slice(0, limit);
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -362,7 +378,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {shown.map((company, index) => {
+            {shown.map((company) => {
               const sector = company.industry?.industryGics?.sectorCode as
                 | SectorCode
                 | undefined;
@@ -386,7 +402,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   onAuxClick={goToDetail}
                 >
                   <TableCell className="py-3 text-right font-mono text-xs text-white/30">
-                    {index + 1}
+                    {rankById.get(company.id)}
                   </TableCell>
                   <TableCell className="py-3 sm:max-w-0 sm:overflow-hidden">
                     <div className="w-[20rem] sm:w-auto">
@@ -460,7 +476,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
-        {limit < rows.length && (
+        {limit < sorted.length && (
           <button
             type="button"
             onClick={() => setLimit((value) => value + PAGE_SIZE)}
@@ -474,7 +490,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
         <span className="text-xs text-grey">
           {t("companiesOverviewPage.paris.showingCount", {
             shown: shown.length,
-            total: rows.length,
+            total: sorted.length,
           })}
         </span>
       </div>
