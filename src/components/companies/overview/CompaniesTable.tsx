@@ -267,7 +267,6 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
       setSortKey(key);
       setDirection(DEFAULT_DIRECTION[key]);
     }
-    setLimit(PAGE_SIZE);
   };
 
   return (

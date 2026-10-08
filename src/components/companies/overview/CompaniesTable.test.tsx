@@ -154,6 +154,26 @@ describe("CompaniesTable", () => {
     expect(document.querySelectorAll("tbody tr")).toHaveLength(20);
   });
 
+  it("keeps the expanded list when a column is sorted", () => {
+    const many = Array.from({ length: 20 }, (_, i) =>
+      company(`Co ${String(i).padStart(2, "0")}`, true, -30, 100 - i),
+    );
+    renderTable(many);
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /companiesOverviewPage\.paris\.showMoreRows/,
+      }),
+    );
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /companiesOverviewPage\.paris\.colEmissions/,
+      }),
+    );
+
+    expect(document.querySelectorAll("tbody tr")).toHaveLength(20);
+  });
+
   it("links each company to its detail page", () => {
     renderTable();
     expect(screen.getByRole("link", { name: /Bravo/ })).toHaveAttribute(
