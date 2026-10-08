@@ -162,7 +162,7 @@ describe("CompaniesTable", () => {
     );
   });
 
-  it("navigates when a row is clicked outside the name link", () => {
+  it("does not navigate when a value cell is clicked", () => {
     function LocationProbe() {
       return <div data-testid="location">{useLocation().pathname}</div>;
     }
@@ -192,8 +192,8 @@ describe("CompaniesTable", () => {
     fireEvent.click(within(bravoRow).getAllByRole("cell")[0]);
 
     expect(screen.getByTestId("location")).toHaveTextContent(
-      "/en/companies/Q-Bravo",
+      "/en/companies-overview",
     );
-    expect(screen.getByText("Detail")).toBeInTheDocument();
+    expect(screen.queryByText("Detail")).not.toBeInTheDocument();
   });
 });
