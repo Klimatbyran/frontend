@@ -41,6 +41,26 @@ describe("InsightsList", () => {
     expect(screen.getAllByText("Duni AB")).toHaveLength(2);
   });
 
+  it("explains the values when a description is provided", () => {
+    render(
+      <InsightsList
+        title="Cutting the fastest"
+        description="Percent change in emissions since the base year."
+        entities={[{ id: "company-a", name: "Acme AB", value: -12.4 }]}
+        dataPointKey="value"
+        unit="%"
+        totalCount={1}
+        entityType="companies"
+        nameKey="name"
+        colorItem={() => "#ffffff"}
+      />,
+    );
+
+    expect(
+      screen.getByText("Percent change in emissions since the base year."),
+    ).toBeInTheDocument();
+  });
+
   it("grows ranking bars from the left when showBars is enabled", () => {
     const { container } = render(
       <InsightsList

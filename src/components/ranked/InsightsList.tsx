@@ -28,6 +28,8 @@ function getEntityKey<T>(
 
 interface InsightsListProps<T> {
   title: string;
+  /** What the value next to each name means, shown under the title. */
+  description?: string;
   entities: T[];
   dataPointKey: keyof T;
   unit: string;
@@ -42,6 +44,7 @@ interface InsightsListProps<T> {
 
 function InsightsList<T>({
   title,
+  description,
   entities,
   dataPointKey,
   unit,
@@ -69,9 +72,18 @@ function InsightsList<T>({
 
   return (
     <div className="flex flex-col bg-black-2 rounded-level-2 py-6">
-      <h3 className="text-white text-lg font-semibold px-4 md:px-6 pb-2 md:pb-2">
+      <h3
+        className={`text-white text-lg font-semibold px-4 md:px-6 ${
+          description ? "pb-1" : "pb-2"
+        }`}
+      >
         {title}
       </h3>
+      {description && (
+        <p className="px-4 md:px-6 pb-2 text-sm font-normal leading-snug text-white/60">
+          {description}
+        </p>
+      )}
       <div className="space-y-1 h-full px-4 md:px-6 py-2">
         {entities.map((entity, index) => {
           const position = isBottomRanking ? totalCount - index : index + 1;

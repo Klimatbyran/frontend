@@ -30,11 +30,16 @@ function VerdictLists({ companies }: { companies: CompanyWithKPIs[] }) {
 
   if (doingWell.length === 0 && fallingBehind.length === 0) return null;
 
+  const changeDescription = t(
+    "companiesOverviewPage.paris.changeSinceBaseYear",
+  );
+
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2">
       {doingWell.length > 0 && (
         <InsightsList<CompanyWithKPIs>
           title={t("companiesOverviewPage.paris.doingWellTitle")}
+          description={changeDescription}
           entities={doingWell}
           dataPointKey="emissionsChangeFromBaseYear"
           unit="%"
@@ -48,6 +53,7 @@ function VerdictLists({ companies }: { companies: CompanyWithKPIs[] }) {
       {fallingBehind.length > 0 && (
         <InsightsList<CompanyWithKPIs>
           title={t("companiesOverviewPage.paris.fallingBehindTitle")}
+          description={changeDescription}
           entities={fallingBehind}
           dataPointKey="emissionsChangeFromBaseYear"
           unit="%"

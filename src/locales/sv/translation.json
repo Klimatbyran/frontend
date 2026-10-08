@@ -361,6 +361,7 @@
       "emptyBody": "Ta bort ett filter för att bredda urvalet igen.",
       "doingWellTitle": "Minskar snabbast",
       "fallingBehindTitle": "Minskar inte tillräckligt snabbt",
+      "changeSinceBaseYear": "Procentuell förändring av utsläppen sedan basåret.",
       "reportingTitle": "Hur många företag har rapporterat tillräckligt?",
       "reportingDescription": "För att se om ett företag minskar utsläppen tillräckligt snabbt behövs minst {{min}} års siffror. Företag med färre år, inklusive de som inte har rapporterat, går inte att bedöma. Den bristen på rapportering är ett problem i sig. Utan siffrorna går det inte att se om de minskar tillräckligt snabbt.",
       "reportingEnough": "Tillräckligt med rapportering för att bedöma",

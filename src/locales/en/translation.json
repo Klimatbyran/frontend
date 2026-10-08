@@ -363,6 +363,7 @@
       "emptyBody": "Try removing a filter to widen the selection again.",
       "doingWellTitle": "Cutting the fastest",
       "fallingBehindTitle": "Not cutting fast enough",
+      "changeSinceBaseYear": "Percent change in emissions since the base year.",
       "reportingTitle": "How many companies have reported enough?",
       "reportingDescription": "Reading whether a company is cutting emissions fast enough takes at least {{min}} years of figures. Companies with fewer years, including those that have not reported, cannot be judged. That lack of reporting is a problem in itself. Without the figures, it is not possible to see if they are cutting fast enough.",
       "reportingEnough": "Enough reporting to judge",
