@@ -226,14 +226,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
     const factor = direction === "asc" ? 1 : -1;
 
     return [...filtered].sort((a, b) =>
-      compareCompanies(
-        a,
-        b,
-        sortKey,
-        factor,
-        currentLanguage,
-        sectorNames,
-      ),
+      compareCompanies(a, b, sortKey, factor, currentLanguage, sectorNames),
     );
   }, [companies, query, sortKey, direction, currentLanguage, sectorNames]);
 

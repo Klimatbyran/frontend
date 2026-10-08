@@ -127,7 +127,9 @@ describe("CompaniesTable", () => {
 
   it("shows the rank as a label rather than a sort control", () => {
     renderTable();
-    expect(screen.queryByRole("button", { name: /^#$/ })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /^#$/ }),
+    ).not.toBeInTheDocument();
     expect(screen.getByText("#")).toBeInTheDocument();
   });
 
