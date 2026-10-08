@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
-import type { CompanyWithKPIs } from "@/types/company";
 import { ParisCompanyDots } from "./ParisCompanyDots";
 import { cn } from "@/lib/utils";
 

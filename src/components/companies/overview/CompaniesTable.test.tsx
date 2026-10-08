@@ -66,6 +66,12 @@ function rowNames(): string[] {
     .map((row) => row.querySelector("td:nth-child(2) a")?.textContent ?? "");
 }
 
+function rowRanks(): string[] {
+  return within(document.querySelector("tbody")!)
+    .getAllByRole("row")
+    .map((row) => row.querySelector("td")?.textContent?.trim() ?? "");
+}
+
 describe("CompaniesTable", () => {
   it("renders one row per company", () => {
     renderTable();
@@ -119,6 +125,19 @@ describe("CompaniesTable", () => {
       }),
     );
     expect(rowNames()).toEqual(["Alpha", "Charlie", "Bravo"]);
+  });
+
+  it("keeps each company's rank when the sort is reversed", () => {
+    renderTable();
+    const emissions = screen.getByRole("button", {
+      name: /companiesOverviewPage\.paris\.colEmissions/,
+    });
+    fireEvent.click(emissions);
+    expect(rowRanks()).toEqual(["1", "2", "3"]);
+
+    fireEvent.click(emissions);
+    expect(rowNames()).toEqual(["Bravo", "Charlie", "Alpha"]);
+    expect(rowRanks()).toEqual(["3", "2", "1"]);
   });
 
   it("flips the sort direction when the active column header is clicked again", () => {
