@@ -4,9 +4,11 @@ import { useTranslation } from "react-i18next";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
-import { parisDotCompanies } from "@/hooks/companies/parisOverviewUtils";
+import {
+  parisDotCompanies,
+  type OverviewCompany,
+} from "@/hooks/companies/parisOverviewUtils";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
-import type { CompanyWithKPIs } from "@/types/company";
 import { cn } from "@/lib/utils";
 
 /**
@@ -32,7 +34,7 @@ export function ParisCompanyDots({
   companies,
   emphasis,
 }: {
-  companies: CompanyWithKPIs[];
+  companies: OverviewCompany[];
   /** When set, the other group's dots recede so one verdict reads at a time. */
   emphasis: "on" | "off" | null;
 }) {

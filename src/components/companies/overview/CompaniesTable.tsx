@@ -20,9 +20,12 @@ import { sectorColors } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
-import { latestEmissions } from "@/hooks/companies/parisOverviewUtils";
+import {
+  latestEmissions,
+  overviewSectorCode,
+  type OverviewCompany,
+} from "@/hooks/companies/parisOverviewUtils";
 import { buildSearchRegex } from "@/utils/data/search";
-import type { CompanyWithKPIs } from "@/types/company";
 import { cn } from "@/lib/utils";
 
 type SortKey = "name" | "industry" | "emissions" | "change" | "paris";
@@ -66,11 +69,11 @@ const DEFAULT_DIRECTION: Record<SortKey, "asc" | "desc"> = {
   paris: "desc",
 };
 
-function sectorCode(company: CompanyWithKPIs): SectorCode | undefined {
-  return company.industry?.industryGics?.sectorCode as SectorCode | undefined;
+function sectorCode(company: OverviewCompany): SectorCode | undefined {
+  return overviewSectorCode(company);
 }
 
-function parisScore(company: CompanyWithKPIs): number {
+function parisScore(company: OverviewCompany): number {
   if (company.meetsParis === true) return 1;
   if (company.meetsParis === false) return 0;
   return -1;
@@ -102,8 +105,8 @@ function compareStringsEmptyLast(
 }
 
 function compareCompanies(
-  a: CompanyWithKPIs,
-  b: CompanyWithKPIs,
+  a: OverviewCompany,
+  b: OverviewCompany,
   sortKey: SortKey,
   factor: number,
   locale: string,
@@ -211,7 +214,7 @@ function SortableColumnHead({
 }
 
 export interface CompaniesTableProps {
-  companies: CompanyWithKPIs[];
+  companies: OverviewCompany[];
 }
 
 /** The overview's own list: one row per company with the two figures the page
@@ -242,7 +245,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
       : companies;
 
     const compare =
-      (factor: number) => (a: CompanyWithKPIs, b: CompanyWithKPIs) =>
+      (factor: number) => (a: OverviewCompany, b: OverviewCompany) =>
         compareCompanies(a, b, sortKey, factor, currentLanguage, sectorNames);
 
     const factor = direction === "asc" ? 1 : -1;
@@ -402,9 +405,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
           </TableHeader>
           <TableBody>
             {shown.map((company) => {
-              const sector = company.industry?.industryGics?.sectorCode as
-                | SectorCode
-                | undefined;
+              const sector = sectorCode(company);
               const change = company.emissionsChangeFromBaseYear;
               const emissions = latestEmissions(company);
 

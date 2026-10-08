@@ -1,8 +1,5 @@
 import { type TFunction } from "i18next";
-import type { RankedCompany } from "@/types/company";
-import { calculateTrendline } from "@/lib/calculations/trends/analysis";
-import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
-import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
+import type { PageExploreCompany } from "@/types/pages";
 import {
   CompanySector,
   INDUSTRY_GROUP_OPTIONS,
@@ -26,7 +23,6 @@ import {
 import { FilterBadge } from "@/components/companies/list/FilterBadges";
 import { buildSearchRegex as buildLocalizedSearchRegex } from "@/utils/data/search";
 import { SupportedLanguage } from "@/lib/languageDetection";
-import { getCompanySectorName } from "@/utils/data/industryGrouping";
 
 type MeetsParisFilter = "all" | "yes" | "no" | "unknown";
 
@@ -44,31 +40,30 @@ type CompanyFilterParams = {
 };
 
 function matchesSector(
-  company: RankedCompany,
+  company: PageExploreCompany,
   sectors: CompanySector[],
 ): boolean {
   return (
     sectors.includes("all") ||
-    (company.industry?.industryGics?.sectorCode != null &&
-      sectors.includes(company.industry?.industryGics?.sectorCode ?? ""))
+    (company.sectorCode != null && sectors.includes(company.sectorCode))
   );
 }
 
 function matchesIndustryGroup(
-  company: RankedCompany,
+  company: PageExploreCompany,
   industryGroups: IndustryGroupOption[],
 ): boolean {
   return (
     industryGroups.includes("all") ||
-    (company.industry?.industryGics?.groupCode != null &&
+    (company.industryGroupCode != null &&
       industryGroups.includes(
-        company.industry.industryGics.groupCode as IndustryGroupCode,
+        company.industryGroupCode as IndustryGroupCode,
       ))
   );
 }
 
 function matchesSearch(
-  company: RankedCompany,
+  company: PageExploreCompany,
   nameSearchPatterns: RegExp[],
   industrySearchPatterns: RegExp[],
   matchedIndustryGroups: string[],
@@ -81,29 +76,25 @@ function matchesSearch(
     return true;
   }
 
-  const sectorName = getCompanySectorName(company, sectorNames);
+  const sectorName = company.sectorCode
+    ? (sectorNames[company.sectorCode] ?? company.sectorCode)
+    : "";
 
   return (
     industrySearchPatterns.some((pattern) => pattern.test(sectorName)) ||
-    matchedIndustryGroups.some(
-      (s) => s === company.industry?.industryGics.groupCode,
-    )
+    matchedIndustryGroups.some((s) => s === company.industryGroupCode)
   );
 }
 
 function matchesMeetsParis(
-  company: RankedCompany,
+  company: PageExploreCompany,
   meetsParisFilter: MeetsParisFilter,
 ): boolean {
   if (meetsParisFilter === "all") {
     return true;
   }
 
-  const trendAnalysis = calculateTrendline(company);
-  const meetsParis = trendAnalysis
-    ? calculateMeetsParis(company, trendAnalysis)
-    : null;
-
+  const meetsParis = company.meetsParis;
   if (meetsParisFilter === "yes") return meetsParis === true;
   if (meetsParisFilter === "no") return meetsParis === false;
   if (meetsParisFilter === "unknown") return meetsParis === null;
@@ -111,58 +102,50 @@ function matchesMeetsParis(
 }
 
 function compareEmissionsReduction(
-  a: RankedCompany,
-  b: RankedCompany,
+  a: PageExploreCompany,
+  b: PageExploreCompany,
   sortDirection: SortDirection,
 ): number {
-  const aChange = calculateEmissionsChange(a.reportingPeriods[0]) || 0;
-  const bChange = calculateEmissionsChange(b.reportingPeriods[0]) || 0;
+  const aChange = a.emissionsChangeLastTwoYears || 0;
+  const bChange = b.emissionsChangeLastTwoYears || 0;
   return sortDirection === "asc" ? aChange - bChange : bChange - aChange;
 }
 
 function compareTotalEmissions(
-  a: RankedCompany,
-  b: RankedCompany,
+  a: PageExploreCompany,
+  b: PageExploreCompany,
   sortDirection: SortDirection,
 ): number {
-  const aEmissions =
-    a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
-  const bEmissions =
-    b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0;
+  const aEmissions = a.latestTotalEmissions || 0;
+  const bEmissions = b.latestTotalEmissions || 0;
   return sortDirection === "asc"
     ? aEmissions - bEmissions
     : bEmissions - aEmissions;
 }
 
 function compareScope3Coverage(
-  a: RankedCompany,
-  b: RankedCompany,
+  a: PageExploreCompany,
+  b: PageExploreCompany,
   sortDirection: SortDirection,
 ): number {
-  const aHasCategories =
-    (a.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0) > 0
-      ? 1
-      : 0;
-  const bHasCategories =
-    (b.reportingPeriods[0]?.emissions?.scope3?.categories?.length || 0) > 0
-      ? 1
-      : 0;
+  const aHasCategories = a.hasScope3Coverage ? 1 : 0;
+  const bHasCategories = b.hasScope3Coverage ? 1 : 0;
   return sortDirection === "asc"
     ? bHasCategories - aHasCategories
     : aHasCategories - bHasCategories;
 }
 
-function getMeetsParisSortValue(company: RankedCompany): number {
-  const trendAnalysis = calculateTrendline(company);
-  const meetsParis = trendAnalysis
-    ? calculateMeetsParis(company, trendAnalysis)
-    : null;
-  return meetsParis === true ? 2 : meetsParis === false ? 1 : 0;
+function getMeetsParisSortValue(company: PageExploreCompany): number {
+  return company.meetsParis === true
+    ? 2
+    : company.meetsParis === false
+      ? 1
+      : 0;
 }
 
 function compareMeetsParis(
-  a: RankedCompany,
-  b: RankedCompany,
+  a: PageExploreCompany,
+  b: PageExploreCompany,
   sortDirection: SortDirection,
 ): number {
   const aValue = getMeetsParisSortValue(a);
@@ -171,8 +154,8 @@ function compareMeetsParis(
 }
 
 function compareNames(
-  a: RankedCompany,
-  b: RankedCompany,
+  a: PageExploreCompany,
+  b: PageExploreCompany,
   sortDirection: SortDirection,
 ): number {
   return sortDirection === "asc"
@@ -181,8 +164,8 @@ function compareNames(
 }
 
 function compareCompanies(
-  a: RankedCompany,
-  b: RankedCompany,
+  a: PageExploreCompany,
+  b: PageExploreCompany,
   sortBy: CompanySortBy,
   sortDirection: SortDirection,
 ): number {
@@ -202,9 +185,9 @@ function compareCompanies(
 }
 
 export function filterAndSortCompanies(
-  companies: RankedCompany[],
+  companies: PageExploreCompany[],
   params: CompanyFilterParams,
-): RankedCompany[] {
+): PageExploreCompany[] {
   const {
     sectors,
     industryGroups,

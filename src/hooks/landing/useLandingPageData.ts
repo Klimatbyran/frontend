@@ -1,41 +1,32 @@
 import { useMemo } from "react";
-import { useCompanies } from "@/hooks/companies/useCompanies";
-import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
+import { useQuery } from "@tanstack/react-query";
+import { getPageLanding } from "@/lib/pagesApi";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
 
-const TOP_LIST_COUNT = 5;
 export const SCROLL_FADE_THRESHOLD = 200;
 
 export function useLandingPageData() {
-  const { companies } = useCompanies();
-  const { getTopMunicipalities } = useMunicipalities();
+  const { data } = useQuery({
+    queryKey: ["pages", "landing"],
+    queryFn: getPageLanding,
+    staleTime: 1_800_000,
+  });
 
-  // Get top companies by total emissions
   const largestCompanyEmitters = useMemo(() => {
-    return companies
-      .sort(
-        (a, b) =>
-          (b.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0) -
-          (a.reportingPeriods[0]?.emissions?.calculatedTotalEmissions || 0),
-      )
-      .slice(0, TOP_LIST_COUNT)
-      .map((company) => ({
-        name: company.name,
-        value:
-          company.reportingPeriods.at(0)?.emissions?.calculatedTotalEmissions ||
-          0,
-        link: getCompanyDetailPath(company),
-      }));
-  }, [companies]);
+    return (data?.companies ?? []).map((company) => ({
+      name: company.name,
+      value: company.latestTotalEmissions,
+      link: getCompanyDetailPath(company),
+    }));
+  }, [data?.companies]);
 
-  // Get top municipalities by emissions reduction
   const topMunicipalities = useMemo(() => {
-    return getTopMunicipalities(TOP_LIST_COUNT).map((municipality) => ({
+    return (data?.municipalities ?? []).map((municipality) => ({
       name: municipality.name,
       value: municipality.historicalEmissionChangePercent,
       link: `/municipalities/${municipality.name}`,
     }));
-  }, [getTopMunicipalities]);
+  }, [data?.municipalities]);
 
   return {
     largestCompanyEmitters,

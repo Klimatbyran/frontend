@@ -1,4 +1,4 @@
-import { useCompanies } from "@/hooks/companies/useCompanies";
+import { usePageExploreCompanies } from "@/hooks/pages/usePageExploreCompanies";
 import useTransformCompanyListCard from "@/hooks/companies/useTransformCompanyListCard";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import useTransformMunicipalityListCard from "@/hooks/municipalities/useTransformMunicipalityListCard";
@@ -16,7 +16,7 @@ export function useComparisonSourceCards({
   loadMunicipalities,
   loadRegions,
 }: UseComparisonSourceCardsOptions) {
-  const { companies, companiesLoading } = useCompanies({
+  const { companies, companiesLoading } = usePageExploreCompanies({
     enabled: loadCompanies,
   });
   const { municipalities, municipalitiesLoading } = useMunicipalities({

@@ -7,7 +7,7 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
-import type { CompanyWithKPIs } from "@/types/company";
+import type { OverviewCompany } from "@/hooks/companies/parisOverviewUtils";
 import { CompaniesTable } from "./CompaniesTable";
 
 vi.mock("react-i18next", () => ({
@@ -34,16 +34,16 @@ function company(
   change: number | null,
   emissions: number,
   sectorCode = "15",
-): CompanyWithKPIs {
+): OverviewCompany {
   return {
     id: name,
     name,
     wikidataId: `Q-${name}`,
-    industry: { industryGics: { sectorCode } },
-    reportingPeriods: [{ emissions: { calculatedTotalEmissions: emissions } }],
+    sectorCode,
     meetsParis,
     emissionsChangeFromBaseYear: change,
-  } as unknown as CompanyWithKPIs;
+    latestTotalEmissions: emissions,
+  };
 }
 
 const companies = [
@@ -52,7 +52,7 @@ const companies = [
   company("Charlie", null, null, 500, "35"),
 ];
 
-function renderTable(list: CompanyWithKPIs[] = companies) {
+function renderTable(list: OverviewCompany[] = companies) {
   return render(
     <MemoryRouter>
       <CompaniesTable companies={list} />

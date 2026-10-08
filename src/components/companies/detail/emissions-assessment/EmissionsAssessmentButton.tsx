@@ -2,13 +2,12 @@ import { AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useEmissionsAssessment } from "@/hooks/companies/useEmissionsAssessment";
 import { Button } from "@/components/ui/button";
-import type { ReportingPeriod } from "@/types/company";
 import { EmissionsAssessmentDialog } from "./EmissionsAssessmentDialog";
 import { YearSelectionModal } from "./YearSelectionModal";
 
 interface EmissionsAssessmentButtonProps {
   companyId: string;
-  sortedPeriods: ReportingPeriod[];
+  sortedPeriods: Array<{ startDate: string; endDate: string }>;
   disabled?: boolean;
 }
 

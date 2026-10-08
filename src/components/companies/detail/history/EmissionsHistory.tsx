@@ -2,42 +2,54 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import { Text } from "@/components/ui/text";
-import type { EmissionsHistoryProps } from "@/types/emissions";
+import type { PageCompanyEmissionsHistory } from "@/types/pages";
 import { useTimeSeriesChartState } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
-import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { calculateTrendline } from "@/lib/calculations/trends/analysis";
 import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
-import { getChartData } from "../../../../utils/data/chartData";
+import { chartDataFromEmissionsHistory } from "@/utils/pages/companyDetailAdapters";
 import { OverviewChart } from "./OverviewChart";
 
+interface EmissionsHistoryProps {
+  history: PageCompanyEmissionsHistory;
+  onYearSelect?: (year: string) => void;
+}
+
 export function EmissionsHistory({
-  company,
+  history,
   onYearSelect,
 }: EmissionsHistoryProps) {
   const { t } = useTranslation();
-  const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
-
-  const isFinancialsSector =
-    company.industry?.industryGics?.sectorCode === "40";
+  const isFinancialsSector = history.sectorCode === "40";
 
   const { chartEndYear, setChartEndYear, shortEndYear, longEndYear } =
     useTimeSeriesChartState();
 
-  const companyBaseYear = company.baseYear?.year;
-
-  const processedPeriods = useMemo(
-    () => company.reportingPeriods,
-    [company.reportingPeriods],
-  );
-
+  const companyBaseYear = history.baseYear ?? undefined;
   const chartData = useMemo(
-    () => getChartData(processedPeriods, isAIGenerated, isEmissionsAIGenerated),
-    [processedPeriods, isAIGenerated, isEmissionsAIGenerated],
+    () => chartDataFromEmissionsHistory(history),
+    [history],
   );
 
-  const trendAnalysis = useMemo(() => calculateTrendline(company), [company]);
+  const companyForTrend = useMemo(
+    () => ({
+      futureEmissionsTrendSlope: history.futureEmissionsTrendSlope,
+      baseYear: history.baseYear != null ? { year: history.baseYear } : null,
+      reportingPeriods: history.periods
+        .filter((period) => period.total != null)
+        .map((period) => ({
+          endDate: `${period.year}-12-31`,
+          emissions: { calculatedTotalEmissions: period.total },
+        })),
+    }),
+    [history],
+  );
+
+  const trendAnalysis = useMemo(
+    () => calculateTrendline(companyForTrend),
+    [companyForTrend],
+  );
 
   const handleYearSelect = (year: number) => {
     onYearSelect?.(year.toString());
@@ -51,11 +63,10 @@ export function EmissionsHistory({
         trendAnalysis.coefficients,
       );
     }
-
     return null;
   }, [chartData, chartEndYear, trendAnalysis]);
 
-  if (!company.reportingPeriods?.length) {
+  if (!history.periods.length) {
     return (
       <div className="text-center py-12">
         <Text variant="body">

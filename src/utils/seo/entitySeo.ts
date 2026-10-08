@@ -1,8 +1,18 @@
 import { SeoMeta } from "@/types/seo";
-import { CompanyDetails } from "@/types/company";
 import { Municipality } from "@/types/municipality";
 import { getCompanyIndustryFromData } from "@/utils/data/industryGrouping";
 import { DEFAULT_OG_IMAGE } from "@/utils/seo";
+
+type CompanySeoInput = {
+  name: string;
+  industry?: {
+    industryGics?: { sectorCode?: string | null };
+  } | null;
+  reportingPeriods?: Array<{
+    endDate: string;
+    emissions?: { calculatedTotalEmissions?: number | null } | null;
+  }>;
+};
 
 /**
  * TODO: Expand entity SEO coverage
@@ -84,7 +94,7 @@ function buildDescriptionFromParts(
  * @returns SEO description string
  */
 export function buildCompanySeoDescription(
-  company: CompanyDetails,
+  company: CompanySeoInput,
   latestYear?: number,
 ): string {
   const parts: string[] = [];
@@ -200,7 +210,7 @@ function generateEntitySeoMeta(
  * @returns SeoMeta object
  */
 export function generateCompanySeoMeta(
-  company: CompanyDetails,
+  company: CompanySeoInput,
   pathname: string,
   options?: {
     latestYear?: number;

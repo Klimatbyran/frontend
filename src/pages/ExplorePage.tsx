@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useCompanies } from "@/hooks/companies/useCompanies";
+import { usePageExploreCompanies } from "@/hooks/pages/usePageExploreCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
@@ -50,9 +50,10 @@ export function ExplorePage() {
 
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities({ enabled: isMunicipalitiesTab });
-  const { companies, companiesLoading, companiesError } = useCompanies({
-    enabled: isCompaniesTab,
-  });
+  const { companies, companiesLoading, companiesError } =
+    usePageExploreCompanies({
+      enabled: isCompaniesTab,
+    });
   const {
     regions,
     loading: regionsLoading,

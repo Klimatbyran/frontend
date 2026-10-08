@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { ParisAnswerCard } from "./ParisAnswerCard";
 import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
-import type { CompanyWithKPIs } from "@/types/company";
+import type { OverviewCompany } from "@/hooks/companies/parisOverviewUtils";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -47,13 +47,16 @@ const baseSummary: ParisSummary = {
   onTrackPercent: 30,
 };
 
-function dotCompany(name: string, meetsParis: boolean | null): CompanyWithKPIs {
+function dotCompany(name: string, meetsParis: boolean | null): OverviewCompany {
   return {
     id: name,
     name,
     wikidataId: `Q${name}`,
+    sectorCode: "15",
     meetsParis,
-  } as unknown as CompanyWithKPIs;
+    emissionsChangeFromBaseYear: null,
+    latestTotalEmissions: 1,
+  };
 }
 
 const judgedCompanies = [
@@ -71,7 +74,7 @@ const judgedCompanies = [
 
 function renderCard(
   summary: ParisSummary = baseSummary,
-  companies: CompanyWithKPIs[] = judgedCompanies,
+  companies: OverviewCompany[] = judgedCompanies,
 ) {
   return render(
     <MemoryRouter>

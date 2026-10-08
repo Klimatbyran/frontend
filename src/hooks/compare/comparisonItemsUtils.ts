@@ -1,6 +1,6 @@
 import type { TFunction } from "i18next";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import type { RankedCompany } from "@/types/company";
+import type { PageExploreCompany } from "@/types/pages";
 import type { Municipality } from "@/types/municipality";
 import type { RegionForExplore } from "@/hooks/regions/useRegionsForExplore";
 import type { SupportedLanguage } from "@/utils/formatting/localization";
@@ -16,13 +16,10 @@ type ComparisonVariant = "company" | "municipality" | "region";
 
 type EnrichContext = {
   municipalities?: Municipality[];
-  companies?: RankedCompany[];
+  companies?: PageExploreCompany[];
   regions?: RegionForExplore[];
   currentLanguage: SupportedLanguage;
   t: TFunction;
-  isAIGenerated?: <T extends { metadata?: unknown }>(
-    data: T | undefined | null,
-  ) => boolean;
 };
 
 function enrichMunicipalityCards(
@@ -48,18 +45,17 @@ function enrichCompanyCards(
   cards: ListCardProps[],
   context: EnrichContext,
 ): ListCardProps[] {
-  const { companies = [], currentLanguage, t, isAIGenerated } = context;
+  const { companies = [], currentLanguage, t } = context;
 
   return cards.map((card) => {
     const company = companies.find((c) =>
-      isSameComparisonLink(getCompanyLinkTo(c.wikidataId), card.linkTo),
+      isSameComparisonLink(getCompanyLinkTo(c), card.linkTo),
     );
 
     return enrichComparisonItem(card, {
       company,
       currentLanguage,
       t,
-      isAIGenerated,
     });
   });
 }

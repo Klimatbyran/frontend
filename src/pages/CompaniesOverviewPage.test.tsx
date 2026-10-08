@@ -1,7 +1,7 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
-import type { RankedCompany } from "@/types/company";
+import type { PageCompanyOverviewItem } from "@/types/pages";
 import { CompaniesOverviewPage } from "./CompaniesOverviewPage";
 
 const MATERIALS_SECTOR = "15";
@@ -11,31 +11,29 @@ function createCompany(
   id: string,
   name: string,
   sectorCode: string,
-  tags: string[],
   meetsParis: boolean | null,
-): RankedCompany {
+): PageCompanyOverviewItem {
   return {
     id,
     name,
     wikidataId: `Q${id}`,
-    tags,
-    baseYear: { year: 2019 },
-    industry: { industryGics: { sectorCode } },
-    reportingPeriods: [
-      { endDate: "2024-12-31", emissions: { calculatedTotalEmissions: 1000 } },
-      { endDate: "2019-12-31", emissions: { calculatedTotalEmissions: 2000 } },
-    ],
-    metrics: { emissionsReduction: 50, displayReduction: "50.0" },
+    tags: ["sweden"],
+    logoUrl: null,
+    sectorCode,
+    industryGroupCode: null,
+    baseYear: 2019,
     meetsParis,
-  } as unknown as RankedCompany;
+    emissionsChangeFromBaseYear: -50,
+    latestYear: 2024,
+    latestTotalEmissions: 1000,
+  };
 }
 
 const mockCompanies = [
-  createCompany("1", "Duni AB", MATERIALS_SECTOR, ["sweden"], true),
-  createCompany("2", "Materials Two", MATERIALS_SECTOR, ["sweden"], false),
-  createCompany("3", "Health One", HEALTHCARE_SECTOR, ["sweden"], true),
-  createCompany("4", "Health Two", HEALTHCARE_SECTOR, ["sweden"], false),
-  createCompany("5", "Oslo Corp", MATERIALS_SECTOR, ["norway"], true),
+  createCompany("1", "Duni AB", MATERIALS_SECTOR, true),
+  createCompany("2", "Materials Two", MATERIALS_SECTOR, false),
+  createCompany("3", "Health One", HEALTHCARE_SECTOR, true),
+  createCompany("4", "Health Two", HEALTHCARE_SECTOR, false),
 ];
 
 const { capturedLists, capturedPieSectors, capturedPieSelected } = vi.hoisted(
@@ -46,21 +44,11 @@ const { capturedLists, capturedPieSectors, capturedPieSelected } = vi.hoisted(
   }),
 );
 
-vi.mock("@/hooks/companies/useCompanies", () => ({
-  useCompanies: () => ({
+vi.mock("@/hooks/pages/usePageCompaniesOverview", () => ({
+  usePageCompaniesOverviewList: () => ({
     companies: mockCompanies,
-    companiesLoading: false,
-    companiesError: null,
-  }),
-}));
-
-// The page reads meetsParis straight off the enriched company, so the fixture
-// carries the verdict and enrichment just passes it through.
-vi.mock("@/hooks/companies/useCompanyKPIs", () => ({
-  useCompanyKPIs: () => [],
-  enrichCompanyWithKPIs: (company: RankedCompany) => ({
-    ...company,
-    emissionsChangeFromBaseYear: -50,
+    loading: false,
+    error: null,
   }),
 }));
 
@@ -98,17 +86,28 @@ vi.mock("react-i18next", () => ({
   Trans: ({ i18nKey }: { i18nKey: string }) => <span>{i18nKey}</span>,
 }));
 
+vi.mock("@/hooks/companies/useCompanySectors", () => ({
+  useSectorTitles: () => ({
+    [MATERIALS_SECTOR]: "Materials",
+    [HEALTHCARE_SECTOR]: "Health Care",
+  }),
+  useSectorNames: () => ({
+    [MATERIALS_SECTOR]: "Materials",
+    [HEALTHCARE_SECTOR]: "Health Care",
+  }),
+}));
+
 function LocationDisplay() {
   const location = useLocation();
-  return <div data-testid="location-search">{location.search}</div>;
+  return <div data-testid="location">{location.search}</div>;
 }
 
-function renderPage(initialEntry: string) {
+function renderPage(initialEntry = "/companies") {
   return render(
     <MemoryRouter initialEntries={[initialEntry]}>
       <Routes>
         <Route
-          path="/en/companies"
+          path="/companies"
           element={
             <>
               <CompaniesOverviewPage />
@@ -128,74 +127,34 @@ describe("CompaniesOverviewPage", () => {
     capturedPieSelected.length = 0;
   });
 
-  it("shows only Swedish companies", async () => {
-    renderPage("/en/companies");
+  it("loads page companies into the table and full industry pie", async () => {
+    renderPage();
 
     await waitFor(() => {
-      expect(capturedLists.at(-1)).toEqual([
-        "Duni AB",
-        "Materials Two",
-        "Health One",
-        "Health Two",
-      ]);
+      expect(screen.getByTestId("companies-table")).toBeInTheDocument();
     });
-    expect(capturedLists.at(-1)).not.toContain("Oslo Corp");
-  });
 
-  it("scopes the page to an industry picked from the chips", async () => {
-    renderPage("/en/companies");
-
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: /companiesOverviewPage\.paris\.showMore/,
-      }),
-    );
-    fireEvent.click(
-      screen.getByRole("button", { name: /sector\.healthCare\.name/ }),
-    );
-
-    await waitFor(() => {
-      expect(screen.getByTestId("location-search")).toHaveTextContent(
-        `sector=${HEALTHCARE_SECTOR}`,
-      );
-    });
-    await waitFor(() => {
-      expect(capturedLists.at(-1)).toEqual(["Health One", "Health Two"]);
-    });
+    expect(capturedLists.at(-1)).toEqual([
+      "Duni AB",
+      "Materials Two",
+      "Health One",
+      "Health Two",
+    ]);
     expect(capturedPieSectors.at(-1)).toEqual([
       MATERIALS_SECTOR,
       HEALTHCARE_SECTOR,
     ]);
-    expect(capturedPieSelected.at(-1)).toBe(HEALTHCARE_SECTOR);
-    expect(screen.getByTestId("industry-pie")).toBeInTheDocument();
+    expect(capturedPieSelected.at(-1)).toBeNull();
   });
 
-  it("preserves the industry from the URL after company data loads", async () => {
-    renderPage(`/en/companies?sector=${MATERIALS_SECTOR}`);
+  it("scopes the table when a sector is already in the URL", async () => {
+    renderPage(`/companies?sector=${MATERIALS_SECTOR}`);
 
     await waitFor(() => {
-      expect(capturedLists.at(-1)).toEqual(["Duni AB", "Materials Two"]);
+      expect(screen.getByTestId("companies-table")).toBeInTheDocument();
     });
-    expect(
-      screen.getByRole("button", { name: /sector\.materials\.name/ }),
-    ).toHaveAttribute("aria-pressed", "true");
-    expect(capturedPieSectors.at(-1)).toEqual([
-      MATERIALS_SECTOR,
-      HEALTHCARE_SECTOR,
-    ]);
+
+    expect(capturedLists.at(-1)).toEqual(["Duni AB", "Materials Two"]);
     expect(capturedPieSelected.at(-1)).toBe(MATERIALS_SECTOR);
-  });
-
-  it("places the reporting bar under the sectors chart", async () => {
-    renderPage("/en/companies");
-
-    const pie = await screen.findByTestId("industry-pie");
-    const reporting = screen.getByRole("heading", {
-      name: "companiesOverviewPage.paris.reportingTitle",
-    });
-
-    expect(
-      pie.compareDocumentPosition(reporting) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy();
   });
 });

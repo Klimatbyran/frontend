@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ReportingCoverage } from "./ReportingCoverage";
-import type { CompanyWithKPIs } from "@/types/company";
+import type { OverviewCompany } from "@/hooks/companies/parisOverviewUtils";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -24,8 +24,15 @@ vi.mock("@/hooks/useChartMotion", () => ({
   }),
 }));
 
-function companyWithVerdict(meetsParis: boolean | null): CompanyWithKPIs {
-  return { meetsParis } as unknown as CompanyWithKPIs;
+function companyWithVerdict(meetsParis: boolean | null): OverviewCompany {
+  return {
+    id: "id",
+    name: "name",
+    sectorCode: "15",
+    meetsParis,
+    emissionsChangeFromBaseYear: null,
+    latestTotalEmissions: null,
+  };
 }
 
 describe("ReportingCoverage", () => {

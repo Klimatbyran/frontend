@@ -1,39 +1,31 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
-import type { EmissionsHistoryProps } from "@/types/emissions";
+import type { PageCompanyTurnoverHistory } from "@/types/pages";
 import { getDynamicChartHeight } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
-import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { getChartData } from "@/utils/data/chartData";
 import { getTurnoverEmissionsSection } from "@/utils/data/turnoverChartData";
+import { chartDataFromTurnoverHistory } from "@/utils/pages/companyDetailAdapters";
 import { TurnoverEmissionsChart } from "./TurnoverEmissionsChart";
 import { TurnoverEmissionsIntensityPanel } from "./TurnoverEmissionsIntensityPanel";
 
-export function TurnoverEmissionsHistory({
-  company,
-  onYearSelect,
-}: EmissionsHistoryProps) {
-  const { t } = useTranslation();
-  const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
+interface TurnoverEmissionsHistoryProps {
+  history: PageCompanyTurnoverHistory;
+  onYearSelect?: (year: string) => void;
+}
 
-  const companyBaseYear = company.baseYear?.year;
+export function TurnoverEmissionsHistory({
+  history,
+  onYearSelect,
+}: TurnoverEmissionsHistoryProps) {
+  const { t } = useTranslation();
+  const companyBaseYear = history.baseYear ?? undefined;
 
   const section = useMemo(() => {
-    const chartData = getChartData(
-      company.reportingPeriods,
-      isAIGenerated,
-      isEmissionsAIGenerated,
-    );
-
+    const chartData = chartDataFromTurnoverHistory(history);
     return getTurnoverEmissionsSection(chartData, companyBaseYear);
-  }, [
-    company.reportingPeriods,
-    companyBaseYear,
-    isAIGenerated,
-    isEmissionsAIGenerated,
-  ]);
+  }, [history, companyBaseYear]);
 
   if (!section) return null;
 
@@ -59,12 +51,12 @@ export function TurnoverEmissionsHistory({
           <TurnoverEmissionsChart
             displayData={section.displayData}
             companyBaseYear={companyBaseYear}
-            onYearSelect={(year) => onYearSelect?.(year.toString())}
+            onYearSelect={
+              onYearSelect ? (year) => onYearSelect(year.toString()) : undefined
+            }
           />
         </div>
-        <div className="flex w-full flex-col lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-full lg:min-h-0">
-          <TurnoverEmissionsIntensityPanel comparison={section.comparison} />
-        </div>
+        <TurnoverEmissionsIntensityPanel comparison={section.comparison} />
       </div>
     </SectionWithHelp>
   );

@@ -8,7 +8,7 @@ import {
   summariseReporting,
   TREND_MIN_YEARS,
 } from "@/hooks/companies/parisOverviewUtils";
-import type { CompanyWithKPIs } from "@/types/company";
+import type { OverviewCompany } from "@/hooks/companies/parisOverviewUtils";
 
 const ENOUGH_COLOR = "var(--blue-3)";
 const TOO_LITTLE_COLOR = "var(--pink-3)";
@@ -22,7 +22,7 @@ function percentLabel(part: number, total: number, other: number): number {
 export function ReportingCoverage({
   companies,
 }: {
-  companies: CompanyWithKPIs[];
+  companies: OverviewCompany[];
 }) {
   const { t } = useTranslation();
   const { reduceMotion, barDuration, ease } = useChartMotion();

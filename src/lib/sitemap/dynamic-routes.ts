@@ -1,4 +1,5 @@
-import { getCompanies, getMunicipalities } from "../api.js";
+import { getMunicipalities } from "../api.js";
+import { getPageSitemap } from "../pagesApi.js";
 import { createSlug } from "../utils.js";
 import type { SitemapEntry } from "./static-routes";
 
@@ -44,7 +45,8 @@ async function fetchMunicipalityRoutes(
 async function fetchCompanyRoutes(
   currentDate: string,
 ): Promise<SitemapEntry[]> {
-  const companies = await getCompanies();
+  const sitemap = await getPageSitemap();
+  const companies = sitemap.companies;
   if (!companies || companies.length === 0) {
     return [];
   }

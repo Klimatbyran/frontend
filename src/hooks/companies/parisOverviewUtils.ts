@@ -1,20 +1,27 @@
 import { SECTOR_ORDER, type SectorCode } from "@/lib/constants/sectors";
-import type { CompanyWithKPIs } from "@/types/company";
+import type { PageCompanyOverviewItem } from "@/types/pages";
 
-/**
- * The companies overview is a Sweden page. Geography is carried on companies
- * as a tag slug rather than a field, so the scope is applied by tag.
- */
-export const SWEDEN_TAG = "sweden";
+/** Shape shared by `/pages/companies-overview` rows and overview UI helpers. */
+export type OverviewCompany = Pick<
+  PageCompanyOverviewItem,
+  | "id"
+  | "wikidataId"
+  | "name"
+  | "sectorCode"
+  | "meetsParis"
+  | "emissionsChangeFromBaseYear"
+  | "latestTotalEmissions"
+>;
 
-export function isSwedishCompany(company: { tags?: string[] }): boolean {
-  return (company.tags ?? []).includes(SWEDEN_TAG);
+export function latestEmissions(company: OverviewCompany): number | null {
+  const value = company.latestTotalEmissions;
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-export function latestEmissions(company: CompanyWithKPIs): number | null {
-  const value =
-    company.reportingPeriods?.[0]?.emissions?.calculatedTotalEmissions;
-  return typeof value === "number" && Number.isFinite(value) ? value : null;
+export function overviewSectorCode(
+  company: OverviewCompany,
+): SectorCode | undefined {
+  return (company.sectorCode as SectorCode | null) ?? undefined;
 }
 
 export interface ParisSummary {
@@ -36,7 +43,7 @@ export interface ParisDotCompany {
 
 /** Judged companies as dots: on track first, then off track, by name. */
 export function parisDotCompanies(
-  companies: CompanyWithKPIs[],
+  companies: OverviewCompany[],
 ): ParisDotCompany[] {
   const onTrack: ParisDotCompany[] = [];
   const offTrack: ParisDotCompany[] = [];
@@ -65,7 +72,7 @@ export function parisDotCompanies(
   return [...onTrack, ...offTrack];
 }
 
-export function summariseParis(companies: CompanyWithKPIs[]): ParisSummary {
+export function summariseParis(companies: OverviewCompany[]): ParisSummary {
   const judged = companies.filter((c) => typeof c.meetsParis === "boolean");
   const onTrack = judged.filter((c) => c.meetsParis === true).length;
 
@@ -88,12 +95,10 @@ export interface IndustryBreakdownRow {
 
 /** Biggest emitter first, so the pie reads clockwise from the top. */
 export function buildIndustryBreakdown(
-  companies: CompanyWithKPIs[],
+  companies: OverviewCompany[],
 ): IndustryBreakdownRow[] {
   return SECTOR_ORDER.map((code) => {
-    const rows = companies.filter(
-      (company) => company.industry?.industryGics?.sectorCode === code,
-    );
+    const rows = companies.filter((company) => company.sectorCode === code);
 
     return {
       code,
@@ -111,9 +116,9 @@ export function buildIndustryBreakdown(
 /** Deepest cutters that are also on track, so a big cut by a company still
  * overshooting its budget isn't presented as a success story. */
 export function fastestCutters(
-  companies: CompanyWithKPIs[],
+  companies: OverviewCompany[],
   limit = 5,
-): CompanyWithKPIs[] {
+): OverviewCompany[] {
   return companies
     .filter(
       (c) =>
@@ -162,9 +167,9 @@ export function summariseReporting(
 
 /** Off track, worst first: still growing, or shrinking far too slowly. */
 export function furthestBehind(
-  companies: CompanyWithKPIs[],
+  companies: OverviewCompany[],
   limit = 5,
-): CompanyWithKPIs[] {
+): OverviewCompany[] {
   return companies
     .filter(
       (c) =>

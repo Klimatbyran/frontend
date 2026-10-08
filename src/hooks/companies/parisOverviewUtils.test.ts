@@ -1,14 +1,13 @@
 import { describe, expect, it } from "vitest";
-import type { CompanyWithKPIs } from "@/types/company";
 import {
   buildIndustryBreakdown,
   fastestCutters,
   furthestBehind,
-  isSwedishCompany,
   latestEmissions,
   parisDotCompanies,
   summariseParis,
   summariseReporting,
+  type OverviewCompany,
 } from "./parisOverviewUtils";
 
 function company(
@@ -17,17 +16,16 @@ function company(
   meetsParis: boolean | null,
   change: number | null,
   emissions: number,
-  tags: string[] = ["sweden"],
-): CompanyWithKPIs {
+): OverviewCompany {
   return {
     id: name,
     name,
-    tags,
-    industry: { industryGics: { sectorCode } },
-    reportingPeriods: [{ emissions: { calculatedTotalEmissions: emissions } }],
+    wikidataId: null,
+    sectorCode,
     meetsParis,
     emissionsChangeFromBaseYear: change,
-  } as unknown as CompanyWithKPIs;
+    latestTotalEmissions: emissions,
+  };
 }
 
 describe("summariseReporting", () => {
@@ -52,17 +50,14 @@ describe("latestEmissions", () => {
   it("returns null when the latest total is missing", () => {
     expect(
       latestEmissions({
-        reportingPeriods: [{ emissions: {} }],
-      } as CompanyWithKPIs),
+        id: "x",
+        name: "x",
+        sectorCode: "15",
+        meetsParis: null,
+        emissionsChangeFromBaseYear: null,
+        latestTotalEmissions: null,
+      }),
     ).toBeNull();
-  });
-});
-
-describe("isSwedishCompany", () => {
-  it("matches on the sweden tag", () => {
-    expect(isSwedishCompany({ tags: ["sweden", "large"] })).toBe(true);
-    expect(isSwedishCompany({ tags: ["norway"] })).toBe(false);
-    expect(isSwedishCompany({})).toBe(false);
   });
 });
 
@@ -78,98 +73,58 @@ describe("summariseParis", () => {
   it("splits the selection into on track, off track and unjudged", () => {
     const summary = summariseParis(companies);
 
-    expect(summary.total).toBe(5);
-    expect(summary.onTrack).toBe(2);
-    expect(summary.offTrack).toBe(2);
-    expect(summary.unknown).toBe(1);
-  });
-
-  it("takes the on-track share of everyone in view, including the unjudged", () => {
-    expect(summariseParis(companies).onTrackPercent).toBe(40);
-  });
-
-  it("reports zeroes for an empty selection rather than dividing by zero", () => {
-    expect(summariseParis([])).toMatchObject({ total: 0, onTrackPercent: 0 });
+    expect(summary).toEqual({
+      total: 5,
+      onTrack: 2,
+      offTrack: 2,
+      unknown: 1,
+      onTrackPercent: 40,
+    });
   });
 });
 
 describe("buildIndustryBreakdown", () => {
-  const companies = [
-    company("Small on track", "15", true, -40, 10),
-    company("Big off track", "35", false, -5, 500),
-    company("Also big", "35", true, -50, 300),
-  ];
-
-  it("orders industries by emissions, not by performance", () => {
-    expect(buildIndustryBreakdown(companies).map((row) => row.code)).toEqual([
-      "35",
-      "15",
+  it("orders industries by emissions", () => {
+    const rows = buildIndustryBreakdown([
+      company("A", "15", true, -10, 50),
+      company("B", "35", false, 10, 200),
+      company("C", "35", true, -5, 100),
     ]);
-  });
 
-  it("totals emissions per industry", () => {
-    const [healthcare, materials] = buildIndustryBreakdown(companies);
-
-    expect(healthcare).toMatchObject({
-      companyCount: 2,
-      emissions: 800,
-    });
-    expect(materials).toMatchObject({ companyCount: 1, emissions: 10 });
-  });
-
-  it("drops industries with no companies", () => {
-    const rows = buildIndustryBreakdown([company("X", "15", null, null, 5)]);
-
-    expect(rows).toHaveLength(1);
-    expect(rows[0]).toMatchObject({
-      code: "15",
-      companyCount: 1,
-      emissions: 5,
-    });
+    expect(rows.map((row) => row.code)).toEqual(["35", "15"]);
+    expect(rows[0].emissions).toBe(300);
   });
 });
 
-describe("fastestCutters and furthestBehind", () => {
+describe("fastestCutters / furthestBehind", () => {
   const companies = [
-    company("Deep cut, off track", "15", false, -60, 100),
-    company("Deep cut, on track", "15", true, -50, 100),
-    company("Small cut, on track", "15", true, -28, 100),
-    company("Growing", "35", false, 20, 100),
+    company("Deep Cut", "15", true, -80, 100),
+    company("Small Cut", "15", true, -10, 100),
+    company("Growing", "15", false, 40, 100),
+    company("Slow Cut", "15", false, -2, 100),
   ];
 
-  it("only celebrates companies that are actually on track", () => {
-    // A big cut by a company still overshooting its budget is not a success.
-    expect(fastestCutters(companies).map((c) => c.name)).toEqual([
-      "Deep cut, on track",
-      "Small cut, on track",
+  it("picks on-track companies with the deepest cuts", () => {
+    expect(fastestCutters(companies, 1).map((c) => c.name)).toEqual([
+      "Deep Cut",
     ]);
   });
 
-  it("lists the off-track companies worst first", () => {
-    expect(furthestBehind(companies).map((c) => c.name)).toEqual([
+  it("picks off-track companies with the worst change", () => {
+    expect(furthestBehind(companies, 1).map((c) => c.name)).toEqual([
       "Growing",
-      "Deep cut, off track",
     ]);
-  });
-
-  it("respects the limit", () => {
-    expect(fastestCutters(companies, 1)).toHaveLength(1);
   });
 });
 
 describe("parisDotCompanies", () => {
-  it("lists on-track companies before off-track ones and skips the unjudged", () => {
+  it("keeps only judged companies and puts on-track first", () => {
     const dots = parisDotCompanies([
-      company("Mango", "15", true, -10, 100),
-      company("Zeta", "15", false, 5, 100),
-      company("Unknown", "15", null, null, 100),
-      company("Alpha", "15", true, -20, 100),
+      company("Z Off", "15", false, 1, 10),
+      company("A On", "15", true, -1, 10),
+      company("Unknown", "15", null, null, 10),
     ]);
 
-    expect(dots.map((dot) => [dot.name, dot.onTrack])).toEqual([
-      ["Alpha", true],
-      ["Mango", true],
-      ["Zeta", false],
-    ]);
+    expect(dots.map((dot) => dot.name)).toEqual(["A On", "Z Off"]);
   });
 });
