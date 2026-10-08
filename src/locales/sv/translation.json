@@ -373,6 +373,7 @@
       "everyCompanyTitle": "Alla företag i den här vyn",
       "everyCompanyDescription": "Sök efter ett företag, eller klicka på en kolumnrubrik för att sortera. Klicka på ett namn för hela historiken.",
       "searchPlaceholder": "Sök efter ett företag…",
+      "showColumn": "Visa också",
       "colCompany": "Företag",
       "colIndustry": "Sektor",
       "colEmissions": "Utsläpp senaste året",
