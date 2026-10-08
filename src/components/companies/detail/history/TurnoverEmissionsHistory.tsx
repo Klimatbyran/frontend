@@ -5,8 +5,7 @@ import type { PageCompanyTurnoverHistory } from "@/types/pages";
 import { getDynamicChartHeight } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { getTurnoverEmissionsSection } from "@/utils/data/turnoverChartData";
-import { chartDataFromTurnoverHistory } from "@/utils/pages/companyDetailAdapters";
+import { chartDataFromTurnoverDecoupling } from "@/utils/pages/companyDetailAdapters";
 import { TurnoverEmissionsChart } from "./TurnoverEmissionsChart";
 import { TurnoverEmissionsIntensityPanel } from "./TurnoverEmissionsIntensityPanel";
 
@@ -21,13 +20,14 @@ export function TurnoverEmissionsHistory({
 }: TurnoverEmissionsHistoryProps) {
   const { t } = useTranslation();
   const companyBaseYear = history.baseYear ?? undefined;
+  const decoupling = history.decoupling;
 
-  const section = useMemo(() => {
-    const chartData = chartDataFromTurnoverHistory(history);
-    return getTurnoverEmissionsSection(chartData, companyBaseYear);
-  }, [history, companyBaseYear]);
+  const displayData = useMemo(
+    () => chartDataFromTurnoverDecoupling(history),
+    [history],
+  );
 
-  if (!section) return null;
+  if (!decoupling || displayData.length === 0) return null;
 
   return (
     <SectionWithHelp helpItems={["companyTurnover", "historicalEmissions"]}>
@@ -49,14 +49,14 @@ export function TurnoverEmissionsHistory({
           }}
         >
           <TurnoverEmissionsChart
-            displayData={section.displayData}
+            displayData={displayData}
             companyBaseYear={companyBaseYear}
             onYearSelect={
               onYearSelect ? (year) => onYearSelect(year.toString()) : undefined
             }
           />
         </div>
-        <TurnoverEmissionsIntensityPanel comparison={section.comparison} />
+        <TurnoverEmissionsIntensityPanel comparison={decoupling.comparison} />
       </div>
     </SectionWithHelp>
   );

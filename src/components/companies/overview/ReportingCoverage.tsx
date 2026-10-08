@@ -1,14 +1,10 @@
 import { motion } from "framer-motion";
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
 import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
-import {
-  summariseReporting,
-  TREND_MIN_YEARS,
-} from "@/hooks/companies/parisOverviewUtils";
-import type { OverviewCompany } from "@/hooks/companies/parisOverviewUtils";
+import { TREND_MIN_YEARS } from "@/hooks/companies/parisOverviewUtils";
+import type { PageCompaniesOverviewSummary } from "@/types/pages";
 
 const ENOUGH_COLOR = "var(--blue-3)";
 const TOO_LITTLE_COLOR = "var(--pink-3)";
@@ -20,9 +16,9 @@ function percentLabel(part: number, total: number, other: number): number {
 }
 
 export function ReportingCoverage({
-  companies,
+  reporting,
 }: {
-  companies: OverviewCompany[];
+  reporting: PageCompaniesOverviewSummary["reporting"];
 }) {
   const { t } = useTranslation();
   const { reduceMotion, barDuration, ease } = useChartMotion();
@@ -30,7 +26,7 @@ export function ReportingCoverage({
     enabled: !reduceMotion,
   });
   const show = reduceMotion || entered;
-  const split = useMemo(() => summariseReporting(companies), [companies]);
+  const split = reporting;
 
   if (split.total === 0) return null;
 

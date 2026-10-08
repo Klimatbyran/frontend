@@ -7,46 +7,117 @@ import { CompaniesOverviewPage } from "./CompaniesOverviewPage";
 const MATERIALS_SECTOR = "15";
 const HEALTHCARE_SECTOR = "35";
 
-function createCompany(
-  id: string,
-  name: string,
-  sectorCode: string,
-  meetsParis: boolean | null,
-): PageCompanyOverviewItem {
+const {
+  mockCompanies,
+  buildSummary,
+  capturedLists,
+  capturedPieSectors,
+  capturedPieSelected,
+} = vi.hoisted(() => {
+  const MATERIALS = "15";
+  const HEALTHCARE = "35";
+
+  function createCompany(
+    id: string,
+    name: string,
+    sectorCode: string,
+    meetsParis: boolean | null,
+  ): PageCompanyOverviewItem {
+    return {
+      id,
+      name,
+      wikidataId: `Q${id}`,
+      tags: ["sweden"],
+      logoUrl: null,
+      sectorCode,
+      industryGroupCode: null,
+      baseYear: 2019,
+      meetsParis,
+      emissionsChangeFromBaseYear: -50,
+      latestYear: 2024,
+      latestTotalEmissions: 1000,
+    };
+  }
+
+  const companies = [
+    createCompany("1", "Duni AB", MATERIALS, true),
+    createCompany("2", "Materials Two", MATERIALS, false),
+    createCompany("3", "Health One", HEALTHCARE, true),
+    createCompany("4", "Health Two", HEALTHCARE, false),
+  ];
+
+  function summaryFor(sector: string | null) {
+    const inView = sector
+      ? companies.filter((company) => company.sectorCode === sector)
+      : companies;
+    const judged = inView.filter((c) => typeof c.meetsParis === "boolean");
+    const onTrack = judged.filter((c) => c.meetsParis === true).length;
+    return {
+      paris: {
+        total: inView.length,
+        onTrack,
+        offTrack: judged.length - onTrack,
+        unknown: inView.length - judged.length,
+        onTrackPercent: inView.length
+          ? Math.round((onTrack / inView.length) * 100)
+          : 0,
+      },
+      reporting: {
+        total: inView.length,
+        enough: judged.length,
+        tooLittle: inView.length - judged.length,
+      },
+      industries: [],
+      industryFilters: [
+        {
+          code: MATERIALS,
+          companyCount: 2,
+          emissions: 2000,
+          onTrackShare: 50,
+        },
+        {
+          code: HEALTHCARE,
+          companyCount: 2,
+          emissions: 2000,
+          onTrackShare: 50,
+        },
+      ],
+      companyCount: companies.length,
+      doingWell: [],
+      fallingBehind: [],
+      parisDots: judged.map((company) => ({
+        id: company.id,
+        wikidataId: company.wikidataId,
+        name: company.name,
+        onTrack: company.meetsParis === true,
+      })),
+    };
+  }
+
   return {
-    id,
-    name,
-    wikidataId: `Q${id}`,
-    tags: ["sweden"],
-    logoUrl: null,
-    sectorCode,
-    industryGroupCode: null,
-    baseYear: 2019,
-    meetsParis,
-    emissionsChangeFromBaseYear: -50,
-    latestYear: 2024,
-    latestTotalEmissions: 1000,
-  };
-}
-
-const mockCompanies = [
-  createCompany("1", "Duni AB", MATERIALS_SECTOR, true),
-  createCompany("2", "Materials Two", MATERIALS_SECTOR, false),
-  createCompany("3", "Health One", HEALTHCARE_SECTOR, true),
-  createCompany("4", "Health Two", HEALTHCARE_SECTOR, false),
-];
-
-const { capturedLists, capturedPieSectors, capturedPieSelected } = vi.hoisted(
-  () => ({
+    mockCompanies: companies,
+    buildSummary: summaryFor,
     capturedLists: [] as string[][],
     capturedPieSectors: [] as string[][],
     capturedPieSelected: [] as Array<string | null>,
-  }),
-);
+  };
+});
 
 vi.mock("@/hooks/pages/usePageCompaniesOverview", () => ({
-  usePageCompaniesOverviewList: () => ({
-    companies: mockCompanies,
+  usePageCompaniesOverviewList: (options?: { sector?: string | null }) => ({
+    companies: options?.sector
+      ? mockCompanies.filter((company) => company.sectorCode === options.sector)
+      : mockCompanies,
+    loading: false,
+    error: null,
+  }),
+  usePageCompaniesOverviewSummary: (options?: { sector?: string | null }) => ({
+    summary: buildSummary(options?.sector ?? null),
+    loading: false,
+    error: null,
+  }),
+  usePageCompaniesOverviewChrome: () => ({
+    summary: buildSummary(null),
     loading: false,
     error: null,
   }),

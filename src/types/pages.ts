@@ -37,6 +37,13 @@ export type PageIndustryBreakdown = {
   onTrackShare: number | null;
 };
 
+export type PageParisDotCompany = {
+  id: string;
+  wikidataId?: string | null;
+  name: string;
+  onTrack: boolean;
+};
+
 export type PageCompaniesOverviewSummary = {
   paris: {
     total: number;
@@ -51,10 +58,11 @@ export type PageCompaniesOverviewSummary = {
     tooLittle: number;
   };
   industries: PageIndustryBreakdown[];
-  industryFilters: Array<{ code: string; companyCount: number }>;
+  industryFilters: PageIndustryBreakdown[];
   companyCount: number;
   doingWell: PageOverviewVerdictCompany[];
   fallingBehind: PageOverviewVerdictCompany[];
+  parisDots: PageParisDotCompany[];
 };
 
 export type PageExploreCompany = PageCompanyOverviewItem & {
@@ -113,6 +121,8 @@ export type PageCompanyOverview = {
   meetsParis: boolean | null;
   totalEmissions: number | null;
   emissionsChangeLastTwoYears: number | null;
+  emissionsChangeAbsolute: number | null;
+  emissionsChangeStatus: "increased" | "decreased" | null;
   emissionsIsAIGenerated: boolean;
   changeRateIsAIGenerated: boolean;
   turnover: number | null;
@@ -129,6 +139,19 @@ export type PageCompanyOverview = {
 export type PageAiValue = {
   value: number | null;
   isAIGenerated: boolean;
+};
+
+export type PageCompanyTrend = {
+  slope: number;
+  intercept: number;
+  yearlyPercentageChange: number;
+  trendDirection: "increasing" | "decreasing" | "stable";
+};
+
+export type PageCompanyProjectionPoint = {
+  year: number;
+  approximated: number | null;
+  carbonLaw: number | null;
 };
 
 export type PageCompanyEmissionsHistory = {
@@ -148,6 +171,20 @@ export type PageCompanyEmissionsHistory = {
       isAIGenerated: boolean;
     }>;
   }>;
+  trend: PageCompanyTrend | null;
+  projections: PageCompanyProjectionPoint[];
+};
+
+export type PageDecouplingComparison = {
+  startYear: number;
+  endYear: number;
+  turnoverChangePercent: number;
+  emissionsChangePercent: number;
+  startIntensity: number;
+  endIntensity: number;
+  intensityChangePercent: number;
+  verdict: "yes" | "no-red" | "no-yellow";
+  usedBaseYear: boolean;
 };
 
 export type PageCompanyTurnoverHistory = {
@@ -160,6 +197,17 @@ export type PageCompanyTurnoverHistory = {
     turnoverCurrency: string | null;
     turnoverIsAIGenerated: boolean;
   }>;
+  decoupling: {
+    displayPeriods: Array<{
+      year: number;
+      total: number;
+      isAIGenerated: boolean;
+      turnover: number;
+      turnoverCurrency: string | null;
+      turnoverIsAIGenerated: boolean;
+    }>;
+    comparison: PageDecouplingComparison;
+  } | null;
 };
 
 export type PageCompanyScope3 = {

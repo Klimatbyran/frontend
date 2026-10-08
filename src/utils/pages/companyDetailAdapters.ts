@@ -16,6 +16,7 @@ export function periodsFromAvailableYears(years: number[]) {
     }));
 }
 
+/** Shape reported periods for the emissions chart (plus short future stubs). */
 export function chartDataFromEmissionsHistory(
   history: PageCompanyEmissionsHistory,
 ): ChartData[] {
@@ -91,23 +92,46 @@ export function chartDataFromEmissionsHistory(
   return [...historical, ...future];
 }
 
-export function chartDataFromTurnoverHistory(
-  history: PageCompanyTurnoverHistory,
-): ChartData[] {
-  return [...history.periods]
-    .sort((a, b) => a.year - b.year)
-    .map((period) => ({
-      year: period.year,
-      total: period.total ?? 0,
-      isAIGenerated: period.isAIGenerated,
-      turnover: period.turnover ?? undefined,
-      turnoverCurrency: period.turnoverCurrency ?? undefined,
-      turnoverIsAIGenerated: period.turnoverIsAIGenerated,
+/** API trend/Paris projections sliced to the chart end year. */
+export function approximatedDataFromEmissionsHistory(
+  history: PageCompanyEmissionsHistory,
+  endYear: number,
+): ChartData[] | null {
+  if (!history.trend || history.projections.length === 0) return null;
+
+  return history.projections
+    .filter((point) => point.year <= endYear)
+    .map((point) => ({
+      year: point.year,
+      total: undefined,
+      approximated: point.approximated ?? undefined,
+      carbonLaw: point.carbonLaw ?? undefined,
+      isAIGenerated: false,
       scope1: undefined,
       scope2: undefined,
       scope3: undefined,
       scope3Categories: [],
     }));
+}
+
+export function chartDataFromTurnoverDecoupling(
+  history: PageCompanyTurnoverHistory,
+): ChartData[] {
+  const displayPeriods = history.decoupling?.displayPeriods;
+  if (!displayPeriods?.length) return [];
+
+  return displayPeriods.map((period) => ({
+    year: period.year,
+    total: period.total,
+    isAIGenerated: period.isAIGenerated,
+    turnover: period.turnover,
+    turnoverCurrency: period.turnoverCurrency ?? undefined,
+    turnoverIsAIGenerated: period.turnoverIsAIGenerated,
+    scope1: undefined,
+    scope2: undefined,
+    scope3: undefined,
+    scope3Categories: [],
+  }));
 }
 
 export function scope3EmissionsFromPage(

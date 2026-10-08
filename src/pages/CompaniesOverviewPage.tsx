@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { usePageCompaniesOverviewList } from "@/hooks/pages/usePageCompaniesOverview";
+import {
+  usePageCompaniesOverviewChrome,
+  usePageCompaniesOverviewList,
+  usePageCompaniesOverviewSummary,
+} from "@/hooks/pages/usePageCompaniesOverview";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { CompaniesOverviewSkeleton } from "@/components/companies/overview/CompaniesOverviewSkeleton";
 import InsightsList from "@/components/ranked/InsightsList";
@@ -13,20 +17,18 @@ import { ReportingCoverage } from "@/components/companies/overview/ReportingCove
 import { useSectorTitles } from "@/hooks/companies/useCompanySectors";
 import { ParisScrollProgress } from "@/components/companies/overview/ParisScrollProgress";
 import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
-import type { OverviewCompany } from "@/hooks/companies/parisOverviewUtils";
 import type { SectorCode } from "@/lib/constants/sectors";
-import {
-  buildIndustryBreakdown,
-  fastestCutters,
-  furthestBehind,
-  summariseParis,
-} from "@/hooks/companies/parisOverviewUtils";
+import type { PageOverviewVerdictCompany } from "@/types/pages";
 import { useCompaniesOverviewUrlState } from "./companiesOverviewPageUtils";
 
-function VerdictLists({ companies }: { companies: OverviewCompany[] }) {
+function VerdictLists({
+  doingWell,
+  fallingBehind,
+}: {
+  doingWell: PageOverviewVerdictCompany[];
+  fallingBehind: PageOverviewVerdictCompany[];
+}) {
   const { t } = useTranslation();
-  const doingWell = fastestCutters(companies);
-  const fallingBehind = furthestBehind(companies);
 
   if (doingWell.length === 0 && fallingBehind.length === 0) return null;
 
@@ -34,7 +36,7 @@ function VerdictLists({ companies }: { companies: OverviewCompany[] }) {
     <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2">
       {doingWell.length > 0 && (
         <ScrollReveal>
-          <InsightsList<OverviewCompany>
+          <InsightsList<PageOverviewVerdictCompany>
             title={t("companiesOverviewPage.paris.doingWellTitle")}
             entities={doingWell}
             dataPointKey="emissionsChangeFromBaseYear"
@@ -50,7 +52,7 @@ function VerdictLists({ companies }: { companies: OverviewCompany[] }) {
       )}
       {fallingBehind.length > 0 && (
         <ScrollReveal delay={0.08}>
-          <InsightsList<OverviewCompany>
+          <InsightsList<PageOverviewVerdictCompany>
             title={t("companiesOverviewPage.paris.fallingBehindTitle")}
             entities={fallingBehind}
             dataPointKey="emissionsChangeFromBaseYear"
@@ -70,46 +72,30 @@ function VerdictLists({ companies }: { companies: OverviewCompany[] }) {
 
 export function CompaniesOverviewPage() {
   const { t } = useTranslation();
-  const { companies, loading, error } = usePageCompaniesOverviewList();
   const sectorTitles = useSectorTitles();
+  const chrome = usePageCompaniesOverviewChrome();
 
   const availableSectors = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          companies
-            .map((company) => company.sectorCode)
-            .filter((code): code is string => Boolean(code)),
-        ),
-      ).sort(),
-    [companies],
+    () => chrome.summary?.industryFilters.map((row) => row.code) ?? [],
+    [chrome.summary],
   );
 
   const urlState = useCompaniesOverviewUrlState(availableSectors);
   const selectedSector = urlState.getSectorFromURL() as SectorCode | null;
 
-  // Always the full set of industries. Chips and the pie stay a comparison
-  // after one is picked; the selected sector is highlighted in the chart.
-  const industryRows = useMemo(
-    () => buildIndustryBreakdown(companies),
-    [companies],
-  );
+  const { companies, loading: listLoading, error: listError } =
+    usePageCompaniesOverviewList({ sector: selectedSector });
+  const { summary, loading: summaryLoading, error: summaryError } =
+    usePageCompaniesOverviewSummary({ sector: selectedSector });
 
-  const inView = useMemo(
-    () =>
-      selectedSector
-        ? companies.filter((company) => company.sectorCode === selectedSector)
-        : companies,
-    [companies, selectedSector],
-  );
-
-  const summary = useMemo(() => summariseParis(inView), [inView]);
+  const loading = chrome.loading || listLoading || summaryLoading;
+  const error = chrome.error || listError || summaryError;
 
   if (loading) {
     return <CompaniesOverviewSkeleton />;
   }
 
-  if (error) {
+  if (error || !chrome.summary || !summary) {
     return (
       <div className="py-24 text-center">
         <h3 className="mb-4 text-xl text-red-500">
@@ -121,6 +107,8 @@ export function CompaniesOverviewPage() {
       </div>
     );
   }
+
+  const industryRows = chrome.summary.industryFilters;
 
   return (
     <div className="space-y-8 md:space-y-10">
@@ -140,30 +128,40 @@ export function CompaniesOverviewPage() {
 
         <IndustryChipFilter
           options={industryRows.map((row) => ({
-            code: row.code,
+            code: row.code as SectorCode,
             companyCount: row.companyCount,
           }))}
           selected={selectedSector}
-          totalCount={companies.length}
+          totalCount={chrome.summary.companyCount}
           onSelect={(code) => urlState.setSectorInURL(code)}
         />
 
         <ParisAnswerCard
           key={selectedSector ?? "all"}
-          summary={summary}
-          companies={inView}
+          summary={summary.paris}
+          parisDots={summary.parisDots}
           industryLabel={selectedSector ? sectorTitles[selectedSector] : null}
         />
       </div>
 
-      <VerdictLists companies={inView} />
+      <VerdictLists
+        doingWell={summary.doingWell}
+        fallingBehind={summary.fallingBehind}
+      />
 
-      <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
+      <IndustryEmissionsPie
+        rows={industryRows.map((row) => ({
+          code: row.code as SectorCode,
+          companyCount: row.companyCount,
+          emissions: row.emissions,
+        }))}
+        selected={selectedSector}
+      />
 
-      <ReportingCoverage companies={inView} />
+      <ReportingCoverage reporting={summary.reporting} />
 
       <ScrollReveal>
-        <CompaniesTable companies={inView} />
+        <CompaniesTable companies={companies} />
       </ScrollReveal>
     </div>
   );

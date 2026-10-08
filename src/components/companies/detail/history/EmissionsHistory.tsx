@@ -6,9 +6,10 @@ import type { PageCompanyEmissionsHistory } from "@/types/pages";
 import { useTimeSeriesChartState } from "@/components/charts";
 import { CardHeader } from "@/components/layout/CardHeader";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import { calculateTrendline } from "@/lib/calculations/trends/analysis";
-import { generateApproximatedData } from "@/lib/calculations/trends/approximatedData";
-import { chartDataFromEmissionsHistory } from "@/utils/pages/companyDetailAdapters";
+import {
+  approximatedDataFromEmissionsHistory,
+  chartDataFromEmissionsHistory,
+} from "@/utils/pages/companyDetailAdapters";
 import { OverviewChart } from "./OverviewChart";
 
 interface EmissionsHistoryProps {
@@ -31,40 +32,14 @@ export function EmissionsHistory({
     () => chartDataFromEmissionsHistory(history),
     [history],
   );
-
-  const companyForTrend = useMemo(
-    () => ({
-      futureEmissionsTrendSlope: history.futureEmissionsTrendSlope,
-      baseYear: history.baseYear != null ? { year: history.baseYear } : null,
-      reportingPeriods: history.periods
-        .filter((period) => period.total != null)
-        .map((period) => ({
-          endDate: `${period.year}-12-31`,
-          emissions: { calculatedTotalEmissions: period.total },
-        })),
-    }),
-    [history],
-  );
-
-  const trendAnalysis = useMemo(
-    () => calculateTrendline(companyForTrend),
-    [companyForTrend],
+  const approximatedData = useMemo(
+    () => approximatedDataFromEmissionsHistory(history, chartEndYear),
+    [history, chartEndYear],
   );
 
   const handleYearSelect = (year: number) => {
     onYearSelect?.(year.toString());
   };
-
-  const approximatedData = useMemo(() => {
-    if (trendAnalysis?.coefficients) {
-      return generateApproximatedData(
-        chartData,
-        chartEndYear,
-        trendAnalysis.coefficients,
-      );
-    }
-    return null;
-  }, [chartData, chartEndYear, trendAnalysis]);
 
   if (!history.periods.length) {
     return (

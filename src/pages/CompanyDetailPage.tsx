@@ -123,20 +123,6 @@ export function CompanyDetailPage() {
     );
   }
 
-  const previousTotal =
-    emissionsHistory?.periods.find((p) => p.year === overview.previousYear)
-      ?.total ?? null;
-  const validEmissionsChangeNumber =
-    overview.totalEmissions != null && previousTotal != null
-      ? Math.abs(overview.totalEmissions - previousTotal)
-      : null;
-  const status =
-    overview.totalEmissions != null &&
-    previousTotal != null &&
-    overview.totalEmissions - previousTotal > 0
-      ? "increased"
-      : "decreased";
-
   return (
     <>
       <Seo meta={seoMeta} />
@@ -146,12 +132,14 @@ export function CompanyDetailPage() {
           overview={overview}
           headerChip={comparisonChip}
         />
-        {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
+        {overview.emissionsChangeAbsolute != null &&
+          overview.emissionsChangeAbsolute > 100 &&
+          overview.emissionsChangeStatus != null && (
           <RelatableNumbers
-            emissionsChange={validEmissionsChangeNumber}
+            emissionsChange={overview.emissionsChangeAbsolute}
             currentLanguage={currentLanguage}
             companyName={header.name}
-            emissionsChangeStatus={status}
+            emissionsChangeStatus={overview.emissionsChangeStatus}
             yearOverYearChange={overview.emissionsChangeLastTwoYears}
           />
         )}
