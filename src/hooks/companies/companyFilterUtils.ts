@@ -56,9 +56,7 @@ function matchesIndustryGroup(
   return (
     industryGroups.includes("all") ||
     (company.industryGroupCode != null &&
-      industryGroups.includes(
-        company.industryGroupCode as IndustryGroupCode,
-      ))
+      industryGroups.includes(company.industryGroupCode as IndustryGroupCode))
   );
 }
 
@@ -136,11 +134,7 @@ function compareScope3Coverage(
 }
 
 function getMeetsParisSortValue(company: PageExploreCompany): number {
-  return company.meetsParis === true
-    ? 2
-    : company.meetsParis === false
-      ? 1
-      : 0;
+  return company.meetsParis === true ? 2 : company.meetsParis === false ? 1 : 0;
 }
 
 function compareMeetsParis(

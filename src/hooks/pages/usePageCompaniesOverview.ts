@@ -49,7 +49,9 @@ export function usePageCompaniesOverviewSummary(options?: {
 }
 
 /** Unfiltered summary: industry chips/pie stay comparable after a sector pick. */
-export function usePageCompaniesOverviewChrome(options?: { enabled?: boolean }) {
+export function usePageCompaniesOverviewChrome(options?: {
+  enabled?: boolean;
+}) {
   return usePageCompaniesOverviewSummary({
     sector: null,
     enabled: options?.enabled,

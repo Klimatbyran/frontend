@@ -104,10 +104,7 @@ export function CompanyDetailPage() {
 
   const comparisonChip = (
     <ComparisonDetailChip
-      linkTo={buildComparisonLinkTo(
-        "company",
-        header.wikidataId ?? header.id,
-      )}
+      linkTo={buildComparisonLinkTo("company", header.wikidataId ?? header.id)}
       variant="company"
       name={header.name}
     />

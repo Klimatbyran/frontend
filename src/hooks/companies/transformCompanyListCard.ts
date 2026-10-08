@@ -43,9 +43,8 @@ export function transformCompanyToListCard(
     ? (sectorNames[company.sectorCode] ?? company.sectorCode)
     : "";
   const industryGroupName = company.industryGroupCode
-    ? (industryGroupNames[
-        company.industryGroupCode as IndustryGroupCode
-      ] ?? company.industryGroupCode)
+    ? (industryGroupNames[company.industryGroupCode as IndustryGroupCode] ??
+      company.industryGroupCode)
     : "";
   const emissionsChange = company.emissionsChangeLastTwoYears;
 

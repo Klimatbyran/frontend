@@ -110,7 +110,10 @@ export function chartDataFromTurnoverHistory(
     }));
 }
 
-export function scope3EmissionsFromPage(scope3: PageCompanyScope3, unit: string) {
+export function scope3EmissionsFromPage(
+  scope3: PageCompanyScope3,
+  unit: string,
+) {
   if (!scope3.categories.length) return null;
   return {
     scope3: {

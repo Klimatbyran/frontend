@@ -30,13 +30,7 @@ const useTransformCompanyListCard = ({
         t,
       }),
     );
-  }, [
-    filteredCompanies,
-    sectorNames,
-    industryGroupNames,
-    currentLanguage,
-    t,
-  ]);
+  }, [filteredCompanies, sectorNames, industryGroupNames, currentLanguage, t]);
 
   return transformedCards;
 };
