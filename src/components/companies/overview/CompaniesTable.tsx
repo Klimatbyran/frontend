@@ -25,13 +25,12 @@ import { latestEmissions } from "@/hooks/companies/parisOverviewUtils";
 import type { CompanyWithKPIs } from "@/types/company";
 import { cn } from "@/lib/utils";
 
-type SortKey = "index" | "name" | "industry" | "emissions" | "change" | "paris";
+type SortKey = "name" | "industry" | "emissions" | "change" | "paris";
 
 const PAGE_SIZE = 12;
 
 /** Default direction per column the first time it is selected. */
 const DEFAULT_DIRECTION: Record<SortKey, "asc" | "desc"> = {
-  index: "asc",
   name: "asc",
   industry: "asc",
   emissions: "desc",
@@ -81,13 +80,8 @@ function compareCompanies(
   factor: number,
   locale: string,
   sectorNames: Record<string, string>,
-  sourceIndex: Map<string, number>,
 ): number {
   switch (sortKey) {
-    case "index":
-      return (
-        factor * ((sourceIndex.get(a.id) ?? 0) - (sourceIndex.get(b.id) ?? 0))
-      );
     case "name":
       return factor * a.name.localeCompare(b.name, locale);
     case "industry": {
@@ -223,12 +217,6 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
   const [limit, setLimit] = useState(PAGE_SIZE);
 
-  const sourceIndex = useMemo(() => {
-    const map = new Map<string, number>();
-    companies.forEach((company, index) => map.set(company.id, index));
-    return map;
-  }, [companies]);
-
   const rows = useMemo(() => {
     const needle = query.trim().toLowerCase();
     const filtered = needle
@@ -245,18 +233,9 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
         factor,
         currentLanguage,
         sectorNames,
-        sourceIndex,
       ),
     );
-  }, [
-    companies,
-    query,
-    sortKey,
-    direction,
-    currentLanguage,
-    sectorNames,
-    sourceIndex,
-  ]);
+  }, [companies, query, sortKey, direction, currentLanguage, sectorNames]);
 
   const shown = rows.slice(0, limit);
 
@@ -301,16 +280,9 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
         <Table className="min-w-[36rem] sm:min-w-0 sm:table-fixed">
           <TableHeader>
             <TableRow className="border-white/10 hover:bg-transparent">
-              <SortableColumnHead
-                columnKey="index"
-                activeKey={sortKey}
-                direction={direction}
-                onSort={toggleSort}
-                align="end"
-                className="w-8 text-white/40 md:w-10"
-              >
+              <TableHead className="w-8 text-right text-white/40 md:w-10">
                 #
-              </SortableColumnHead>
+              </TableHead>
               <SortableColumnHead
                 columnKey="name"
                 activeKey={sortKey}

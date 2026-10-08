@@ -125,10 +125,10 @@ describe("CompaniesTable", () => {
     expect(rowNames()).toEqual(["Bravo", "Alpha", "Charlie"]);
   });
 
-  it("sorts by source list order when # is clicked", () => {
+  it("shows the rank as a label rather than a sort control", () => {
     renderTable();
-    fireEvent.click(screen.getByRole("button", { name: /^#$/ }));
-    expect(rowNames()).toEqual(["Alpha", "Bravo", "Charlie"]);
+    expect(screen.queryByRole("button", { name: /^#$/ })).not.toBeInTheDocument();
+    expect(screen.getByText("#")).toBeInTheDocument();
   });
 
   it("filters by search query", () => {
