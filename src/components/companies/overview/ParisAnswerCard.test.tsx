@@ -119,10 +119,10 @@ describe("ParisAnswerCard", () => {
   });
 
   it("keeps the full company count when nobody can be judged yet", () => {
-    renderCard(
-      { ...baseSummary, onTrack: 0, offTrack: 0, unknown: 10 },
-      [dotCompany("UnknownA", null), dotCompany("UnknownB", null)],
-    );
+    renderCard({ ...baseSummary, onTrack: 0, offTrack: 0, unknown: 10 }, [
+      dotCompany("UnknownA", null),
+      dotCompany("UnknownB", null),
+    ]);
 
     expect(
       screen.getByText("companiesOverviewPage.paris.heading:10"),
