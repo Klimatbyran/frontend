@@ -1,7 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { MemoryRouter } from "react-router-dom";
 import { ParisAnswerCard } from "./ParisAnswerCard";
 import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
+import type { CompanyWithKPIs } from "@/types/company";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -34,18 +36,54 @@ const baseSummary: ParisSummary = {
   onTrackPercent: 30,
 };
 
+function dotCompany(name: string, meetsParis: boolean | null): CompanyWithKPIs {
+  return {
+    id: name,
+    name,
+    wikidataId: `Q${name}`,
+    meetsParis,
+  } as unknown as CompanyWithKPIs;
+}
+
+const judgedCompanies = [
+  dotCompany("OnA", true),
+  dotCompany("OnB", true),
+  dotCompany("OnC", true),
+  dotCompany("OffA", false),
+  dotCompany("OffB", false),
+  dotCompany("OffC", false),
+  dotCompany("OffD", false),
+  dotCompany("OffE", false),
+  dotCompany("UnknownA", null),
+  dotCompany("UnknownB", null),
+];
+
+function renderCard(
+  summary: ParisSummary = baseSummary,
+  companies: CompanyWithKPIs[] = judgedCompanies,
+) {
+  return render(
+    <MemoryRouter>
+      <ParisAnswerCard
+        summary={summary}
+        companies={companies}
+        industryLabel={null}
+      />
+    </MemoryRouter>,
+  );
+}
+
 describe("ParisAnswerCard", () => {
   it("shows one animated dot per judged company and leaves out companies without enough data", () => {
-    const { container } = render(
-      <ParisAnswerCard summary={baseSummary} industryLabel={null} />,
-    );
+    renderCard();
 
     expect(
       screen.getByText("companiesOverviewPage.paris.dotNote"),
     ).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /, / })).toHaveLength(8);
     expect(
-      container.querySelector('[aria-hidden="true"]')?.querySelectorAll("span"),
-    ).toHaveLength(8);
+      screen.queryByRole("button", { name: /UnknownA/ }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByText("companiesOverviewPage.paris.onTrack"),
     ).toBeInTheDocument();
@@ -64,5 +102,40 @@ describe("ParisAnswerCard", () => {
     expect(
       screen.getByText("companiesOverviewPage.paris.share:30:10"),
     ).toBeInTheDocument();
+  });
+
+  it("names the company under the pointer and links to it", () => {
+    renderCard();
+
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByRole("button", { name: /OnA,/ }));
+
+    expect(screen.getByRole("link", { name: "OnA" })).toHaveAttribute(
+      "href",
+      "/sv/companies/QOnA",
+    );
+    expect(
+      screen.getByText("companiesOverviewPage.paris.badgeOnTrack"),
+    ).toBeInTheDocument();
+  });
+
+  it("dims the other dots while a verdict row is pressed", () => {
+    renderCard();
+
+    const onTrack = screen.getByRole("button", {
+      name: /^companiesOverviewPage\.paris\.onTrack/,
+    });
+    fireEvent.click(onTrack);
+
+    expect(onTrack).toHaveAttribute("aria-pressed", "true");
+    expect(
+      screen.getByRole("button", { name: /OffA,/ }).querySelector("span"),
+    ).toHaveClass("opacity-25");
+
+    fireEvent.click(onTrack);
+    expect(onTrack).toHaveAttribute("aria-pressed", "false");
+    expect(
+      screen.getByRole("button", { name: /OffA,/ }).querySelector("span"),
+    ).not.toHaveClass("opacity-25");
   });
 });

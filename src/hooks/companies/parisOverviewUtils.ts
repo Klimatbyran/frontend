@@ -27,6 +27,44 @@ export interface ParisSummary {
   onTrackPercent: number;
 }
 
+export interface ParisDotCompany {
+  id: string;
+  name: string;
+  wikidataId?: string | null;
+  onTrack: boolean;
+}
+
+/** Judged companies as dots: on track first, then off track, by name. */
+export function parisDotCompanies(
+  companies: CompanyWithKPIs[],
+): ParisDotCompany[] {
+  const onTrack: ParisDotCompany[] = [];
+  const offTrack: ParisDotCompany[] = [];
+
+  for (const company of companies) {
+    if (company.meetsParis !== true && company.meetsParis !== false) continue;
+    if (!company.id || !company.name) continue;
+    const dot: ParisDotCompany = {
+      id: company.id,
+      name: company.name,
+      wikidataId: company.wikidataId,
+      onTrack: company.meetsParis === true,
+    };
+    if (dot.onTrack) onTrack.push(dot);
+    else offTrack.push(dot);
+  }
+
+  const byName = (a: ParisDotCompany, b: ParisDotCompany) => {
+    const byLabel = a.name.localeCompare(b.name, "sv");
+    if (byLabel !== 0) return byLabel;
+    return a.id.localeCompare(b.id);
+  };
+
+  onTrack.sort(byName);
+  offTrack.sort(byName);
+  return [...onTrack, ...offTrack];
+}
+
 export function summariseParis(companies: CompanyWithKPIs[]): ParisSummary {
   const judged = companies.filter((c) => typeof c.meetsParis === "boolean");
   const onTrack = judged.filter((c) => c.meetsParis === true).length;
@@ -42,39 +80,10 @@ export function summariseParis(companies: CompanyWithKPIs[]): ParisSummary {
   };
 }
 
-/**
- * The site's pink-to-blue ramp, keyed on the share of an industry's companies
- * that are on track. Blue reads as good everywhere else on the site, so the
- * same direction applies here.
- */
-const SHARE_RAMP = [
-  "var(--pink-5)",
-  "var(--pink-4)",
-  "var(--pink-3)",
-  "var(--blue-2)",
-  "var(--blue-3)",
-];
-const SHARE_BREAKS = [20, 35, 50, 65];
-
-export function shareRampColor(share: number | null): string {
-  if (share === null) return "var(--black-1)";
-  let index = 0;
-  while (index < SHARE_BREAKS.length && share >= SHARE_BREAKS[index]) index++;
-  return SHARE_RAMP[index];
-}
-
-export const SHARE_RAMP_STOPS = SHARE_RAMP;
-
 export interface IndustryBreakdownRow {
   code: SectorCode;
   companyCount: number;
   emissions: number;
-  /**
-   * Share of the industry's companies that are on track, or null when none
-   * can be judged. Companies without a verdict count as not on track, so one
-   * judged company cannot paint the whole industry blue.
-   */
-  onTrackShare: number | null;
 }
 
 /** Biggest emitter first, so the pie reads clockwise from the top. */
@@ -85,8 +94,6 @@ export function buildIndustryBreakdown(
     const rows = companies.filter(
       (company) => company.industry?.industryGics?.sectorCode === code,
     );
-    const judged = rows.filter((c) => typeof c.meetsParis === "boolean");
-    const onTrack = judged.filter((c) => c.meetsParis === true).length;
 
     return {
       code,
@@ -95,7 +102,6 @@ export function buildIndustryBreakdown(
         const value = latestEmissions(c);
         return value === null ? sum : sum + value;
       }, 0),
-      onTrackShare: judged.length ? (onTrack / rows.length) * 100 : null,
     };
   })
     .filter((row) => row.companyCount > 0)
