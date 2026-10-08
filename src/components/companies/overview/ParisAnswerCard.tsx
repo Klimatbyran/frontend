@@ -75,6 +75,8 @@ function BreakdownRow({
 
 export interface ParisAnswerCardProps {
   summary: ParisSummary;
+  /** Companies in view, drawn as one dot per judged company. */
+  companies: CompanyWithKPIs[];
   /** Sector title when one is selected, such as "Industrials Sector". */
   industryLabel: string | null;
 }

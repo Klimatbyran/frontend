@@ -171,6 +171,7 @@ export function CompaniesOverviewPage() {
         <ParisAnswerCard
           key={selectedSector ?? "all"}
           summary={summary}
+          companies={inView}
           industryLabel={selectedSector ? sectorTitles[selectedSector] : null}
         />
       </div>
