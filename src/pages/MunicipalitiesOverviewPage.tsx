@@ -32,6 +32,7 @@ import { TerritoryAnswerCard } from "@/components/ranked/TerritoryAnswerCard";
 import { TerritoryOverviewTable } from "@/components/ranked/TerritoryOverviewTable";
 import type { TerritoryTableRow } from "@/components/ranked/TerritoryOverviewTable";
 import { isMeetsParisKpiKey } from "@/utils/ui/colors";
+import { getRegionForMunicipality } from "@/lib/constants/regions";
 import type { Municipality } from "@/types/municipality";
 
 const MUNICIPALITY_KPI_ICONS: Record<string, React.ReactNode> = {
@@ -119,7 +120,7 @@ export function MunicipalitiesOverviewPage() {
           id: municipality.name,
           name: municipality.name,
           href: getEntityDetailPath("municipality", municipality),
-          county: municipality.region,
+          county: getRegionForMunicipality(municipality.name) ?? null,
           kpiValue,
           paris:
             typeof municipality.meetsParisGoal === "boolean"

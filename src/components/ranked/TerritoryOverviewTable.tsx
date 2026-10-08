@@ -431,9 +431,10 @@ export function TerritoryOverviewTable({
                   {showCounty && (
                     <TableCell
                       className={cn(
-                        "py-3 text-grey",
+                        "truncate py-3 text-grey",
                         columnClass("county", ""),
                       )}
+                      title={row.county ?? undefined}
                     >
                       {row.county}
                     </TableCell>
