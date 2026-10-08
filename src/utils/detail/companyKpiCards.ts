@@ -81,7 +81,6 @@ export function buildCompanyKpiCards(
       label: t("detailPage.meetsParisGoal"),
       value: paris.value,
       valueClassName: paris.valueClassName,
-      caption: paris.caption,
       scopes: datasetScope(
         (peer) => peer.meetsParis ?? null,
         subject.meetsParis,

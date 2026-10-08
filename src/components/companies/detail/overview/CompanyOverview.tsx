@@ -92,7 +92,16 @@ export function CompanyOverview({
 
   return (
     <div className="space-y-8 md:space-y-10">
-      <SectionWithHelp helpItems={[]}>
+      <SectionWithHelp
+        helpItems={[
+          "onTrackForParis",
+          "totalEmissions",
+          "co2units",
+          "companySectors",
+          "companyMissingData",
+          "yearOverYearChange",
+        ]}
+      >
         <div className="space-y-4">
           <CompanyDetailHeader
             name={company.name}
@@ -105,20 +114,11 @@ export function CompanyOverview({
           />
           <CompanyDescription description={description} />
         </div>
+        <KpiComparisonSection
+          title={t("detailPage.kpiPlacement.companyTitle")}
+          cards={kpiCards}
+        />
       </SectionWithHelp>
-
-      <KpiComparisonSection
-        title={t("detailPage.kpiPlacement.companyTitle")}
-        helpItems={[
-          "onTrackForParis",
-          "totalEmissions",
-          "co2units",
-          "companySectors",
-          "companyMissingData",
-          "yearOverYearChange",
-        ]}
-        cards={kpiCards}
-      />
 
       <OverviewStatistics
         selectedPeriod={selectedPeriod}

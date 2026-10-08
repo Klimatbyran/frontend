@@ -11,7 +11,6 @@ export type KpiCardModel = {
   value: string;
   valueClassName?: string;
   unit?: string;
-  caption?: string;
   href?: string;
   infoText?: string;
   showAiIcon?: boolean;

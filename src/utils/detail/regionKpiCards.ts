@@ -76,7 +76,6 @@ export function buildRegionKpiCards(
       label: t("detailPage.meetsParisGoal"),
       value: paris.value,
       valueClassName: paris.valueClassName,
-      caption: paris.caption,
       scopes: nationalScope(
         "national",
         (peer) => peer.meetsParis,

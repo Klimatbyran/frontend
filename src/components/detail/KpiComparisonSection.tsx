@@ -1,27 +1,23 @@
 import type { ReactNode } from "react";
-import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
-import type { DataGuideItemId } from "@/data-guide/items";
+import { cn } from "@/lib/utils";
 import { KpiComparisonCard } from "./KpiComparisonCard";
 import type { KpiCardModel } from "@/utils/detail/kpiCardModel";
 
 export function KpiComparisonSection({
   title,
-  helpItems,
   cards,
   labelExtra,
+  className,
 }: {
   title: string;
-  helpItems: DataGuideItemId[];
   cards: KpiCardModel[];
   labelExtra?: (card: KpiCardModel) => ReactNode;
+  className?: string;
 }) {
   if (cards.length === 0) return null;
 
   return (
-    <SectionWithHelp
-      helpItems={helpItems}
-      className="bg-transparent px-0 py-0 rounded-none md:rounded-none md:px-0 md:py-0"
-    >
+    <div className={cn("mt-8", className)}>
       <h2 className="mb-4 text-xl font-light md:mb-5 md:text-[21px]">
         {title}
       </h2>
@@ -34,6 +30,6 @@ export function KpiComparisonSection({
           />
         ))}
       </div>
-    </SectionWithHelp>
+    </div>
   );
 }

@@ -28,6 +28,8 @@ export interface DetailHeaderProps {
   supplementalData?: ReactNode;
   /** Compare chip or other actions shown below the title (keeps logo unobstructed). */
   headerChip?: ReactNode;
+  /** KPI comparisons, rendered in the same block as the name. */
+  children?: ReactNode;
 }
 
 function DetailStatItem({ stat }: { stat: DetailStat }) {
@@ -53,6 +55,7 @@ export function DetailHeader({
   stats,
   supplementalData,
   headerChip,
+  children,
 }: DetailHeaderProps) {
   return (
     <SectionWithHelp helpItems={helpItems}>
@@ -79,6 +82,7 @@ export function DetailHeader({
         </div>
       )}
       {supplementalData}
+      {children}
     </SectionWithHelp>
   );
 }

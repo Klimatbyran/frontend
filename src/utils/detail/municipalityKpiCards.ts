@@ -86,7 +86,6 @@ export function buildMunicipalityKpiCards(
       label: t("detailPage.meetsParisGoal"),
       value: paris.value,
       valueClassName: paris.valueClassName,
-      caption: paris.caption,
       scopes: scopesFor(
         municipality.meetsParisGoal,
         (peer) => peer.meetsParisGoal,

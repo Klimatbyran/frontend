@@ -129,7 +129,7 @@ export function MunicipalityDetailPage() {
         <DetailHeader
           name={municipality.name}
           logoUrl={municipality.logoUrl}
-          helpItems={[]}
+          helpItems={KPI_HELP_ITEMS}
           stats={[]}
           headerChip={
             <ComparisonDetailChip
@@ -150,13 +150,12 @@ export function MunicipalityDetailPage() {
               politicalKSO={municipality.politicalKSO}
             />
           }
-        />
-
-        <KpiComparisonSection
-          title={t("detailPage.kpiPlacement.municipalityTitle")}
-          helpItems={KPI_HELP_ITEMS}
-          cards={kpiCards}
-        />
+        >
+          <KpiComparisonSection
+            title={t("detailPage.kpiPlacement.municipalityTitle")}
+            cards={kpiCards}
+          />
+        </DetailHeader>
 
         <TerritoryEmissions
           emissionsData={emissionsData}

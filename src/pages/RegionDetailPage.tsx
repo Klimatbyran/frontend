@@ -43,7 +43,11 @@ export function RegionDetailPage() {
         <DetailHeader
           name={region.name}
           logoUrl={region.logoUrl}
-          helpItems={[]}
+          helpItems={[
+            "onTrackForParis",
+            "regionTotalEmissions",
+            "detailWhyDataDelay",
+          ]}
           stats={[]}
           headerChip={
             <ComparisonDetailChip
@@ -52,17 +56,12 @@ export function RegionDetailPage() {
               name={region.name}
             />
           }
-        />
-
-        <KpiComparisonSection
-          title={t("detailPage.kpiPlacement.regionTitle")}
-          helpItems={[
-            "onTrackForParis",
-            "regionTotalEmissions",
-            "detailWhyDataDelay",
-          ]}
-          cards={kpiCards}
-        />
+        >
+          <KpiComparisonSection
+            title={t("detailPage.kpiPlacement.regionTitle")}
+            cards={kpiCards}
+          />
+        </DetailHeader>
 
         <TerritoryEmissions
           emissionsData={emissionsData}
