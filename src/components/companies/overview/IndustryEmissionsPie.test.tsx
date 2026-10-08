@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { IndustryEmissionsPie } from "./IndustryEmissionsPie";
 import type { IndustryBreakdownRow } from "@/hooks/companies/parisOverviewUtils";
@@ -45,13 +45,11 @@ const rows: IndustryBreakdownRow[] = [
     code: "15",
     emissions: 1000,
     companyCount: 2,
-    onTrackShare: 0.5,
   },
   {
     code: "35",
     emissions: 500,
     companyCount: 2,
-    onTrackShare: 0.25,
   },
 ];
 
@@ -76,7 +74,48 @@ describe("IndustryEmissionsPie", () => {
 
     expect(chartCall.onItemClick).toBeUndefined();
     expect(chartCall.customActionLabel).toBeUndefined();
+    expect(chartCall.highlightedKey).toBeNull();
     expect(legendCall.onItemClick).toBeUndefined();
     expect(legendCall.getActionTooltip).toBeUndefined();
+    expect(legendCall.highlightedKey).toBeNull();
+  });
+
+  it("highlights the selected sector without dropping the others", () => {
+    chartProps.mockClear();
+    legendProps.mockClear();
+
+    render(<IndustryEmissionsPie rows={rows} selected="35" />);
+
+    const chartCall = chartProps.mock.calls.at(-1)?.[0] as {
+      highlightedKey?: string | null;
+      data?: Array<{ key: string }>;
+    };
+    const legendCall = legendProps.mock.calls.at(-1)?.[0] as {
+      highlightedKey?: string | null;
+      data?: Array<{ key: string }>;
+    };
+
+    expect(chartCall.highlightedKey).toBe("35");
+    expect(legendCall.highlightedKey).toBe("35");
+    expect(chartCall.data?.map((item) => item.key)).toEqual(["15", "35"]);
+    expect(legendCall.data?.map((item) => item.key)).toEqual(["15", "35"]);
+  });
+
+  it("colours each sector with its own colour, sized by emissions", () => {
+    chartProps.mockClear();
+
+    render(<IndustryEmissionsPie rows={rows} selected={null} />);
+
+    const chartCall = chartProps.mock.calls.at(-1)?.[0] as {
+      data: Array<{ key: string; value: number; color: string }>;
+    };
+
+    expect(chartCall.data).toEqual([
+      { key: "15", name: "Materials", value: 1000, color: "var(--blue-4)" },
+      { key: "35", name: "Health Care", value: 500, color: "var(--blue-3)" },
+    ]);
+    expect(
+      screen.queryByText("companiesOverviewPage.paris.rampLow"),
+    ).toBeNull();
   });
 });

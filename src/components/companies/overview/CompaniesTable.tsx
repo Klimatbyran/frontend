@@ -29,7 +29,35 @@ import { cn } from "@/lib/utils";
 
 type SortKey = "index" | "name" | "industry" | "emissions" | "change" | "paris";
 
+type MetricColumn = "industry" | "emissions" | "change" | "paris";
+
+const METRIC_COLUMNS: MetricColumn[] = [
+  "industry",
+  "emissions",
+  "change",
+  "paris",
+];
+
+const METRIC_LABEL: Record<MetricColumn, string> = {
+  industry: "companiesOverviewPage.paris.colIndustry",
+  emissions: "companiesOverviewPage.paris.colEmissions",
+  change: "companiesOverviewPage.paris.colChange",
+  paris: "companiesOverviewPage.paris.colOnTrack",
+};
+
 const PAGE_SIZE = 12;
+
+/** On small screens one metric sits beside the name. The rest return at md. */
+function metricColumnClass(
+  column: MetricColumn,
+  selected: MetricColumn,
+  desktopWidth: string,
+) {
+  return cn(
+    column === selected ? "table-cell w-[8.5rem]" : "hidden md:table-cell",
+    desktopWidth,
+  );
+}
 
 /** Default direction per column the first time it is selected. */
 const DEFAULT_DIRECTION: Record<SortKey, "asc" | "desc"> = {
@@ -172,7 +200,7 @@ function SortableColumnHead({
             : undefined
         }
         className={cn(
-          "inline-flex w-max items-center gap-1 whitespace-nowrap font-normal transition-colors hover:text-white/70 sm:w-full sm:min-w-0 sm:whitespace-normal",
+          "inline-flex w-full min-w-0 items-center gap-1 font-normal transition-colors hover:text-white/70",
           align === "end" && "justify-end",
           align === "center" && "justify-center",
           active ? "text-white/70" : "text-inherit",
@@ -224,6 +252,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>("paris");
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
   const [limit, setLimit] = useState(PAGE_SIZE);
+  const [mobileColumn, setMobileColumn] = useState<MetricColumn>("paris");
 
   const sourceIndex = useMemo(() => {
     const map = new Map<string, number>();
@@ -305,10 +334,31 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
         />
       </div>
 
-      {/* Below sm the list is wider than the card and scrolls inside it.
-          sm+ keeps the fixed columns that fit the card without page scroll. */}
-      <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)] overflow-x-auto sm:overflow-visible [&>div]:overflow-visible sm:[&>div]:overflow-auto">
-        <Table className="min-w-[36rem] sm:min-w-0 sm:table-fixed">
+      <label
+        htmlFor="company-metric-column"
+        className="mt-4 flex items-center gap-3 text-sm text-white/60 md:hidden"
+      >
+        <span className="shrink-0">
+          {t("companiesOverviewPage.paris.showColumn")}
+        </span>
+        <select
+          id="company-metric-column"
+          value={mobileColumn}
+          onChange={(event) =>
+            setMobileColumn(event.target.value as MetricColumn)
+          }
+          className="h-10 min-w-0 flex-1 rounded-full bg-black-1 px-4 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-3/60"
+        >
+          {METRIC_COLUMNS.map((column) => (
+            <option key={column} value={column}>
+              {t(METRIC_LABEL[column])}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)]">
+        <Table className="table-fixed">
           <TableHeader>
             <TableRow className="border-white/10 hover:bg-transparent">
               <SortableColumnHead
@@ -335,7 +385,10 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 activeKey={sortKey}
                 direction={direction}
                 onSort={toggleSort}
-                className="hidden text-white/40 md:table-cell md:w-[18%]"
+                className={cn(
+                  "text-white/40",
+                  metricColumnClass("industry", mobileColumn, "md:w-[18%]"),
+                )}
               >
                 {t("companiesOverviewPage.paris.colIndustry")}
               </SortableColumnHead>
@@ -345,7 +398,10 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="end"
-                className="hidden text-white/40 sm:table-cell sm:w-[16%]"
+                className={cn(
+                  "text-white/40",
+                  metricColumnClass("emissions", mobileColumn, "md:w-[16%]"),
+                )}
               >
                 {t("companiesOverviewPage.paris.colEmissions")}
               </SortableColumnHead>
@@ -355,7 +411,14 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="end"
-                className="text-white/40 sm:w-[5.75rem] md:w-[6.5rem] lg:w-[9rem]"
+                className={cn(
+                  "text-white/40",
+                  metricColumnClass(
+                    "change",
+                    mobileColumn,
+                    "md:w-[6.5rem] lg:w-[9rem]",
+                  ),
+                )}
               >
                 {t("companiesOverviewPage.paris.colChange")}
               </SortableColumnHead>
@@ -365,7 +428,14 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                 direction={direction}
                 onSort={toggleSort}
                 align="center"
-                className="text-white/40 sm:w-[7.5rem] md:w-[9.5rem] lg:w-[11.5rem]"
+                className={cn(
+                  "text-white/40",
+                  metricColumnClass(
+                    "paris",
+                    mobileColumn,
+                    "md:w-[9.5rem] lg:w-[11.5rem]",
+                  ),
+                )}
               >
                 {t("companiesOverviewPage.paris.colOnTrack")}
               </SortableColumnHead>
@@ -398,17 +468,20 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   <TableCell className="py-3 text-right font-mono text-xs text-white/30">
                     {index + 1}
                   </TableCell>
-                  <TableCell className="py-3 sm:max-w-0 sm:overflow-hidden">
-                    <div className="w-[20rem] sm:w-auto">
-                      <LocalizedLink
-                        to={detailPath}
-                        className="block truncate hover:underline"
-                      >
-                        {company.name}
-                      </LocalizedLink>
-                    </div>
+                  <TableCell className="max-w-0 overflow-hidden py-3">
+                    <LocalizedLink
+                      to={detailPath}
+                      className="block truncate hover:underline"
+                    >
+                      {company.name}
+                    </LocalizedLink>
                   </TableCell>
-                  <TableCell className="hidden py-3 text-grey md:table-cell">
+                  <TableCell
+                    className={cn(
+                      "py-3 text-grey",
+                      metricColumnClass("industry", mobileColumn, "md:w-[18%]"),
+                    )}
+                  >
                     {sector && (
                       <span className="inline-flex items-center gap-2">
                         <i
@@ -423,7 +496,12 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "hidden py-3 text-right tabular-nums sm:table-cell",
+                      "py-3 text-right tabular-nums",
+                      metricColumnClass(
+                        "emissions",
+                        mobileColumn,
+                        "md:w-[16%]",
+                      ),
                       emissions === null && "text-white/30",
                     )}
                   >
@@ -444,6 +522,11 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   <TableCell
                     className={cn(
                       "py-3 text-right tabular-nums",
+                      metricColumnClass(
+                        "change",
+                        mobileColumn,
+                        "md:w-[6.5rem] lg:w-[9rem]",
+                      ),
                       change === null || change === undefined
                         ? "text-white/30"
                         : change < 0
@@ -459,7 +542,16 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                       </span>
                     )}
                   </TableCell>
-                  <TableCell className="py-3 text-center">
+                  <TableCell
+                    className={cn(
+                      "py-3 text-center",
+                      metricColumnClass(
+                        "paris",
+                        mobileColumn,
+                        "md:w-[9.5rem] lg:w-[11.5rem]",
+                      ),
+                    )}
+                  >
                     <ParisBadge value={company.meetsParis} />
                   </TableCell>
                 </TableRow>

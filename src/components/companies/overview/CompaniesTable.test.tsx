@@ -72,11 +72,37 @@ describe("CompaniesTable", () => {
     expect(document.querySelectorAll("tbody tr")).toHaveLength(3);
   });
 
-  it("scrolls a wider table inside the card below the sm breakpoint", () => {
+  it("shows one extra column on small screens and the rest from md", () => {
     renderTable();
     const table = document.querySelector("table");
-    expect(table).toHaveClass("min-w-[36rem]", "sm:min-w-0", "sm:table-fixed");
-    expect(table?.parentElement?.parentElement).toHaveClass("overflow-x-auto");
+    expect(table).toHaveClass("table-fixed");
+    expect(table).not.toHaveClass("min-w-[36rem]");
+    expect(table?.parentElement?.parentElement).not.toHaveClass(
+      "overflow-x-auto",
+    );
+
+    const header = (name: RegExp) =>
+      screen.getByRole("button", { name }).closest("th")!;
+    const cells = () => document.querySelectorAll("tbody tr:first-child td");
+
+    expect(header(/colOnTrack/)).toHaveClass("table-cell");
+    expect(header(/colOnTrack/)).not.toHaveClass("hidden");
+    expect(header(/colIndustry/)).toHaveClass("hidden", "md:table-cell");
+    expect(header(/colEmissions/)).toHaveClass("hidden", "md:table-cell");
+    expect(header(/colChange/)).toHaveClass("hidden", "md:table-cell");
+    expect(cells()[5]).toHaveClass("table-cell");
+    expect(cells()[3]).toHaveClass("hidden");
+
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "emissions" },
+    });
+
+    expect(header(/colEmissions/)).toHaveClass("table-cell");
+    expect(header(/colEmissions/)).not.toHaveClass("hidden");
+    expect(header(/colOnTrack/)).toHaveClass("hidden", "md:table-cell");
+    expect(cells()[3]).toHaveClass("table-cell");
+    expect(cells()[3]).not.toHaveClass("hidden");
+    expect(cells()[5]).toHaveClass("hidden");
   });
 
   it("sorts on-track companies first by default", () => {
