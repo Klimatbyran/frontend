@@ -1158,6 +1158,7 @@
       "inThisRegion": "I länet",
       "allCompanies": "Alla företag",
       "rank": "#{{rank}} av {{total}}",
+      "rankOf": "av {{total}}",
       "tied": "Lika med {{count}}",
       "noComparison": "Inte tillräckligt med data att jämföra",
       "openLink": "Öppna"

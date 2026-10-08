@@ -1109,6 +1109,7 @@
       "inThisRegion": "In this region",
       "allCompanies": "All companies",
       "rank": "#{{rank}} of {{total}}",
+      "rankOf": "of {{total}}",
       "tied": "Tied with {{count}}",
       "noComparison": "Not enough data to compare",
       "openLink": "Open"

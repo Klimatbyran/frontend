@@ -16,55 +16,79 @@ const TONE_TEXT = {
   poor: "text-pink-3",
 } as const;
 
-function PlacementRow({
+function PlacementBlock({
   label,
   placement,
   pending,
+  spread,
 }: {
   label: string;
   placement: KpiPlacement | null;
   pending: boolean;
+  /** One comparison gets the full card width. Several share it in columns. */
+  spread: boolean;
 }) {
   const { t } = useTranslation();
   const tone = placement ? placementTone(placement) : null;
-  const rankLabel = placement
-    ? t("detailPage.kpiPlacement.rank", {
-        rank: placement.rank,
-        total: placement.total,
-      })
-    : null;
   const tiedCount = placement ? placement.tiedWith - 1 : 0;
+
+  const rankValue = placement ? (
+    <p
+      className={cn(
+        "font-light leading-none tracking-tight tabular-nums",
+        spread ? "text-4xl md:text-5xl" : "text-3xl md:text-4xl",
+        tone ? TONE_TEXT[tone] : "text-white",
+      )}
+    >
+      <span>#{placement.rank}</span>
+      <span className="ml-2 align-baseline text-[0.42em] font-normal text-white/55">
+        {t("detailPage.kpiPlacement.rankOf", { total: placement.total })}
+      </span>
+    </p>
+  ) : (
+    <p className="text-sm leading-snug text-white/45">
+      {t("detailPage.kpiPlacement.noComparison")}
+    </p>
+  );
+
+  const tied =
+    tiedCount > 0 ? (
+      <p className="text-sm text-white/55">
+        {t("detailPage.kpiPlacement.tied", { count: tiedCount })}
+      </p>
+    ) : null;
+
+  const pendingBar = (
+    <span
+      aria-hidden
+      className={cn(
+        "animate-pulse rounded bg-white/10",
+        spread ? "h-10 w-36" : "h-9 w-28",
+      )}
+    />
+  );
+
+  if (spread) {
+    return (
+      <div className="flex items-end justify-between gap-4" aria-busy={pending}>
+        <div className="min-w-0 space-y-1">
+          <p className="text-sm text-white/70">{label}</p>
+          {!pending && tied}
+          {!pending && !placement && rankValue}
+        </div>
+        {pending ? pendingBar : placement ? rankValue : null}
+      </div>
+    );
+  }
 
   return (
     <div
-      className="flex items-baseline justify-between gap-3 py-1.5 text-sm"
+      className="flex min-w-0 flex-col justify-center gap-1.5"
       aria-busy={pending}
     >
-      <span className="text-white/55">{label}</span>
-      {pending ? (
-        <span
-          aria-hidden
-          className="h-4 w-24 animate-pulse rounded bg-white/10"
-        />
-      ) : rankLabel ? (
-        <span
-          className={cn(
-            "text-right font-medium tabular-nums",
-            tone ? TONE_TEXT[tone] : "text-white",
-          )}
-        >
-          {rankLabel}
-          {tiedCount > 0 && (
-            <span className="mt-0.5 block text-xs font-normal text-white/45">
-              {t("detailPage.kpiPlacement.tied", { count: tiedCount })}
-            </span>
-          )}
-        </span>
-      ) : (
-        <span className="text-right text-white/40">
-          {t("detailPage.kpiPlacement.noComparison")}
-        </span>
-      )}
+      <p className="text-sm text-white/70">{label}</p>
+      {pending ? pendingBar : rankValue}
+      {!pending && tied}
     </div>
   );
 }
@@ -128,13 +152,19 @@ export function KpiComparisonCard({
         {showAiIcon && <AiIcon size="md" />}
       </div>
 
-      <div className="mt-4">
+      <div
+        className={cn(
+          "mt-5 grid flex-1 content-center gap-x-6 gap-y-4",
+          scopes.length > 1 && "grid-cols-2",
+        )}
+      >
         {scopes.map((scope) => (
-          <PlacementRow
+          <PlacementBlock
             key={scope.id}
             label={scope.label}
             placement={scope.placement}
             pending={scope.pending}
+            spread={scopes.length === 1}
           />
         ))}
       </div>

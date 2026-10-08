@@ -46,8 +46,13 @@ describe("KpiComparisonCard", () => {
     expect(screen.getByText("-12.0%")).toBeInTheDocument();
     expect(screen.getByText("Nationally")).toBeInTheDocument();
     expect(screen.getByText("In Stockholm")).toBeInTheDocument();
+    expect(screen.getByText("#14")).toBeInTheDocument();
+    expect(screen.getByText("#2")).toBeInTheDocument();
     expect(
-      screen.getByText("detailPage.kpiPlacement.rank:14:290:"),
+      screen.getByText("detailPage.kpiPlacement.rankOf::290:"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("detailPage.kpiPlacement.rankOf::26:"),
     ).toBeInTheDocument();
     expect(
       screen.getByText("detailPage.kpiPlacement.tied:::2"),
