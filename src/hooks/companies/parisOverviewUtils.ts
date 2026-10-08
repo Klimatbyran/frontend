@@ -27,6 +27,44 @@ export interface ParisSummary {
   onTrackPercent: number;
 }
 
+export interface ParisDotCompany {
+  id: string;
+  name: string;
+  wikidataId?: string | null;
+  onTrack: boolean;
+}
+
+/** Judged companies as dots: on track first, then off track, by name. */
+export function parisDotCompanies(
+  companies: CompanyWithKPIs[],
+): ParisDotCompany[] {
+  const onTrack: ParisDotCompany[] = [];
+  const offTrack: ParisDotCompany[] = [];
+
+  for (const company of companies) {
+    if (company.meetsParis !== true && company.meetsParis !== false) continue;
+    if (!company.id || !company.name) continue;
+    const dot: ParisDotCompany = {
+      id: company.id,
+      name: company.name,
+      wikidataId: company.wikidataId,
+      onTrack: company.meetsParis === true,
+    };
+    if (dot.onTrack) onTrack.push(dot);
+    else offTrack.push(dot);
+  }
+
+  const byName = (a: ParisDotCompany, b: ParisDotCompany) => {
+    const byLabel = a.name.localeCompare(b.name, "sv");
+    if (byLabel !== 0) return byLabel;
+    return a.id.localeCompare(b.id);
+  };
+
+  onTrack.sort(byName);
+  offTrack.sort(byName);
+  return [...onTrack, ...offTrack];
+}
+
 export function summariseParis(companies: CompanyWithKPIs[]): ParisSummary {
   const judged = companies.filter((c) => typeof c.meetsParis === "boolean");
   const onTrack = judged.filter((c) => c.meetsParis === true).length;

@@ -1,5 +1,8 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useChartMotion } from "@/hooks/useChartMotion";
+import { useEnteredView } from "@/hooks/useEnteredView";
+import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
 import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
@@ -25,6 +28,11 @@ export function IndustryEmissionsPie({
 }: IndustryEmissionsPieProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
+  const { reduceMotion } = useChartMotion();
+  const { ref, entered } = useEnteredView<HTMLElement>({
+    enabled: !reduceMotion,
+  });
+  const show = reduceMotion || entered;
   const pieAnimationKey = selected ?? "all";
 
   const data = useMemo<PieChartItem[]>(
@@ -46,34 +54,42 @@ export function IndustryEmissionsPie({
   if (data.length === 0) return null;
 
   return (
-    <section className="rounded-level-2 bg-black-2 p-6 md:p-7">
-      <h2 className="text-xl font-light md:text-[21px]">
-        {t("companiesOverviewPage.paris.industriesTitle")}
-      </h2>
-      <p className="mt-2 text-sm leading-relaxed text-white/60">
-        {t("companiesOverviewPage.paris.industriesDescription")}
-      </p>
+    <ScrollReveal>
+      <section ref={ref} className="rounded-level-2 bg-black-2 p-6 md:p-7">
+        <h2 className="text-xl font-light md:text-[21px]">
+          {t("companiesOverviewPage.paris.industriesTitle")}
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-white/60">
+          {t("companiesOverviewPage.paris.industriesDescription")}
+        </p>
 
-      <div className="mt-6 grid grid-cols-1 gap-8 md:gap-16 lg:grid-cols-2 lg:items-stretch">
-        <div className="order-1 flex h-full min-h-[200px] min-w-0 items-center justify-center lg:min-h-0">
-          <SectorPieChart
-            data={data}
-            animationKey={pieAnimationKey}
-            fillContainer
-          />
-        </div>
+        <div className="mt-6 grid grid-cols-1 gap-8 md:gap-16 lg:grid-cols-2 lg:items-stretch">
+          <div className="order-1 flex h-full min-h-[200px] min-w-0 items-center justify-center lg:min-h-0">
+            {show ? (
+              <SectorPieChart
+                data={data}
+                animationKey={pieAnimationKey}
+                fillContainer
+              />
+            ) : (
+              <div className="min-h-[200px] w-full" />
+            )}
+          </div>
 
-        <div className="order-3 flex h-full min-h-0 w-full flex-col justify-start lg:order-2 lg:min-h-0">
-          <SectorPieLegend
-            data={data}
-            total={total}
-            gridColumns={1}
-            compact
-            fillHeight
-            animationKey={pieAnimationKey}
-          />
+          <div className="order-3 flex h-full min-h-0 w-full flex-col justify-start lg:order-2 lg:min-h-0">
+            {show && (
+              <SectorPieLegend
+                data={data}
+                total={total}
+                gridColumns={1}
+                compact
+                fillHeight
+                animationKey={pieAnimationKey}
+              />
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </ScrollReveal>
   );
 }

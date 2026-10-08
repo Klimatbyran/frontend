@@ -357,6 +357,7 @@
       "heading": "of the {{total}} Swedish {{companies}} {{scope}} {{verb}} emissions fast enough for the Paris goal.",
       "share": "That is {{percent}}% of Sweden's {{count}} largest companies.",
       "dotNote": "Each dot is one company",
+      "dotHint": "Point at a dot to see the company.",
       "onTrack": "On track for Paris",
       "offTrack": "Off track",
       "emptyHeading": "No companies match this combination.",

@@ -10,6 +10,8 @@ import { ParisExplainer } from "@/components/companies/overview/ParisExplainer";
 import { IndustryChipFilter } from "@/components/companies/overview/IndustryChipFilter";
 import { IndustryEmissionsPie } from "@/components/companies/overview/IndustryEmissionsPie";
 import { ReportingCoverage } from "@/components/companies/overview/ReportingCoverage";
+import { ParisScrollProgress } from "@/components/companies/overview/ParisScrollProgress";
+import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { enrichCompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import type { CompanyWithKPIs } from "@/types/company";
@@ -33,30 +35,36 @@ function VerdictLists({ companies }: { companies: CompanyWithKPIs[] }) {
   return (
     <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2">
       {doingWell.length > 0 && (
-        <InsightsList<CompanyWithKPIs>
-          title={t("companiesOverviewPage.paris.doingWellTitle")}
-          entities={doingWell}
-          dataPointKey="emissionsChangeFromBaseYear"
-          unit="%"
-          totalCount={doingWell.length}
-          entityType="companies"
-          nameKey="name"
-          showBars
-          colorItem={() => "var(--blue-3)"}
-        />
+        <ScrollReveal>
+          <InsightsList<CompanyWithKPIs>
+            title={t("companiesOverviewPage.paris.doingWellTitle")}
+            entities={doingWell}
+            dataPointKey="emissionsChangeFromBaseYear"
+            unit="%"
+            totalCount={doingWell.length}
+            entityType="companies"
+            nameKey="name"
+            showBars
+            deferAnimationUntilVisible
+            colorItem={() => "var(--blue-3)"}
+          />
+        </ScrollReveal>
       )}
       {fallingBehind.length > 0 && (
-        <InsightsList<CompanyWithKPIs>
-          title={t("companiesOverviewPage.paris.fallingBehindTitle")}
-          entities={fallingBehind}
-          dataPointKey="emissionsChangeFromBaseYear"
-          unit="%"
-          totalCount={fallingBehind.length}
-          entityType="companies"
-          nameKey="name"
-          showBars
-          colorItem={() => "var(--pink-3)"}
-        />
+        <ScrollReveal delay={0.08}>
+          <InsightsList<CompanyWithKPIs>
+            title={t("companiesOverviewPage.paris.fallingBehindTitle")}
+            entities={fallingBehind}
+            dataPointKey="emissionsChangeFromBaseYear"
+            unit="%"
+            totalCount={fallingBehind.length}
+            entityType="companies"
+            nameKey="name"
+            showBars
+            deferAnimationUntilVisible
+            colorItem={() => "var(--pink-3)"}
+          />
+        </ScrollReveal>
       )}
     </div>
   );
@@ -131,6 +139,7 @@ export function CompaniesOverviewPage() {
 
   return (
     <div className="space-y-8 md:space-y-10">
+      <ParisScrollProgress />
       {/* A step tighter than the page stack, so the chips sit closer to the cards. */}
       <div className="space-y-5 md:space-y-7">
         <div className="space-y-5">
@@ -157,6 +166,7 @@ export function CompaniesOverviewPage() {
         <ParisAnswerCard
           key={selectedSector ?? "all"}
           summary={summary}
+          companies={inView}
           industryLabel={selectedSector ? sectorNames[selectedSector] : null}
         />
       </div>
@@ -167,7 +177,9 @@ export function CompaniesOverviewPage() {
 
       <ReportingCoverage companies={inView} />
 
-      <CompaniesTable companies={inView} />
+      <ScrollReveal>
+        <CompaniesTable companies={inView} />
+      </ScrollReveal>
     </div>
   );
 }

@@ -24,6 +24,15 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+vi.mock("@/hooks/useChartMotion", () => ({
+  useChartMotion: () => ({
+    reduceMotion: true,
+    fadeDuration: 0,
+    stagger: () => 0,
+    ease: "linear",
+  }),
+}));
+
 vi.mock("@/hooks/companies/useCompanySectors", () => ({
   useSectorNames: () => ({
     "15": "Materials",
