@@ -1136,11 +1136,39 @@
       }
     }
   },
+  "territoryOverview": {
+    "kicker": "Det korta svaret",
+    "averageLead": "är genomsnittet för {{metric}}.",
+    "booleanLead": "{{count}} av {{total}} {{entities}} {{verdict}}",
+    "lowerIsBetter": "Lägre är bättre",
+    "higherIsBetter": "Högre är bättre",
+    "bestList": "De starkaste resultaten på det här måttet.",
+    "worstList": "De svagaste resultaten på det här måttet.",
+    "everyTitleMunicipalities": "Alla kommuner",
+    "everyTitleRegions": "Alla län",
+    "everyDescription": "Sök, eller klicka på en kolumnrubrik för att sortera. Klicka på ett namn för att se hela sidan.",
+    "searchMunicipality": "Sök kommuner (avgränsa med kommatecken)",
+    "searchRegion": "Sök län (avgränsa med kommatecken)",
+    "showColumn": "Visa också",
+    "colMunicipality": "Kommun",
+    "colRegion": "Län",
+    "colCounty": "Län",
+    "colOnTrack": "I linje med Parisavtalet?",
+    "badgeOnTrack": "I linje",
+    "badgeOffTrack": "Inte i linje",
+    "badgeNoData": "Ingen data",
+    "showMoreRows": "Visa {{count}} till",
+    "showingMunicipalities": "Visar {{shown}} av {{total}} kommuner",
+    "showingRegions": "Visar {{shown}} av {{total}} län",
+    "noMatches": "Inga träffar.",
+    "source": "Källa:"
+  },
   "regionalOverviewPage": {
     "errorTitle": "Det gick inte att hämta länsinformation",
     "errorDescription": "Försök igen senare",
     "title": "Länsöversikt",
-    "description": "Översikt över utsläpp och omställning på länsnivå"
+    "description": "Översikt över utsläpp och omställning på länsnivå",
+    "lead": "Hur Sveriges län minskar utsläppen, och var omställningen rör sig. Välj ett mått för att jämföra dem."
   },
   "detailPage": {
     "totalEmissions": "Totala utsläpp {{year}}",
@@ -1192,7 +1220,8 @@
     "errorTitle": "Det gick inte att hämta kommuninformation",
     "errorDescription": "Försök igen senare",
     "title": "Kommunöversikt",
-    "description": "Data om utsläpp och klimatomställning i kommunerna"
+    "description": "Data om utsläpp och klimatomställning i kommunerna",
+    "lead": "Hur Sveriges kommuner minskar utsläppen, och var omställningen rör sig. Välj ett mått för att jämföra dem."
   },
   "municipalityDetailPage": {
     "metaTitle": "Data om utsläpp och omställning",

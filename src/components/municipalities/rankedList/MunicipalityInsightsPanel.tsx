@@ -24,12 +24,15 @@ interface InsightsPanelProps {
   selectedKPI: KPIValue<Municipality>;
   /** Render only one section. Omit to render all three (legacy). */
   section?: InsightsPanelSection;
+  /** Shown under the list title for the top and bottom sections. */
+  listDescription?: string;
 }
 
 function InsightsPanel({
   municipalityData,
   selectedKPI,
   section,
+  listDescription,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
   const kpiKey = String(selectedKPI.key);
@@ -159,6 +162,7 @@ function InsightsPanel({
       nameKey="name"
       showBars
       colorItem={colorItem}
+      description={listDescription}
     />
   ) : (
     booleanSummary
@@ -182,6 +186,7 @@ function InsightsPanel({
       nameKey="name"
       showBars
       colorItem={colorItem}
+      description={listDescription}
     />
   ) : null;
 

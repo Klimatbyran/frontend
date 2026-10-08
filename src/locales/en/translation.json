@@ -1089,11 +1089,39 @@
       }
     }
   },
+  "territoryOverview": {
+    "kicker": "The short answer",
+    "averageLead": "is the average {{metric}}.",
+    "booleanLead": "{{count}} of {{total}} {{entities}} {{verdict}}",
+    "lowerIsBetter": "Lower is better",
+    "higherIsBetter": "Higher is better",
+    "bestList": "The strongest results on this measure.",
+    "worstList": "The weakest results on this measure.",
+    "everyTitleMunicipalities": "Every municipality",
+    "everyTitleRegions": "Every region",
+    "everyDescription": "Search, or click a column heading to sort. Click a name for its page.",
+    "searchMunicipality": "Search municipalities (separate w/ commas)",
+    "searchRegion": "Search regions (separate w/ commas)",
+    "showColumn": "Also show",
+    "colMunicipality": "Municipality",
+    "colRegion": "Region",
+    "colCounty": "Region",
+    "colOnTrack": "On track for Paris?",
+    "badgeOnTrack": "On track",
+    "badgeOffTrack": "Off track",
+    "badgeNoData": "No data",
+    "showMoreRows": "Show {{count}} more",
+    "showingMunicipalities": "Showing {{shown}} of {{total}} municipalities",
+    "showingRegions": "Showing {{shown}} of {{total}} regions",
+    "noMatches": "No matches.",
+    "source": "Source:"
+  },
   "regionalOverviewPage": {
     "errorTitle": "Failed to retrieve regional information",
     "errorDescription": "Please try again later",
     "title": "Regional Overview",
-    "description": "Overview of emissions and transition at the regional level"
+    "description": "Overview of emissions and transition at the regional level",
+    "lead": "How Sweden's regions are cutting emissions, and where the transition is moving. Pick a measure to compare them."
   },
   "detailPage": {
     "totalEmissions": "Total Emissions {{year}}",
@@ -1145,7 +1173,8 @@
     "errorTitle": "Failed to retrieve municipality information",
     "errorDescription": "Please try again later",
     "title": "Municipalities Overview",
-    "description": "Data on emissions and climate transition in municipalities"
+    "description": "Data on emissions and climate transition in municipalities",
+    "lead": "How Sweden's municipalities are cutting emissions, and where the transition is moving. Pick a measure to compare them."
   },
   "municipalityDetailPage": {
     "metaTitle": "Data on emissions and transition",
