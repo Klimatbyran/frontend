@@ -62,7 +62,7 @@ function renderTable(list: CompanyWithKPIs[] = companies) {
 
 function rowNames(): string[] {
   return within(document.querySelector("tbody")!)
-    .getAllByRole("row")
+    .queryAllByRole("row")
     .map((row) => row.querySelector("td:nth-child(2) a")?.textContent ?? "");
 }
 
@@ -137,6 +137,20 @@ describe("CompaniesTable", () => {
       target: { value: "brav" },
     });
     expect(rowNames()).toEqual(["Bravo"]);
+  });
+
+  it("matches the start of a word, including comma-separated terms and sector names", () => {
+    renderTable();
+    const search = screen.getByRole("searchbox");
+
+    fireEvent.change(search, { target: { value: "lpha" } });
+    expect(rowNames()).toEqual([]);
+
+    fireEvent.change(search, { target: { value: "alp, char" } });
+    expect(rowNames()).toEqual(["Alpha", "Charlie"]);
+
+    fireEvent.change(search, { target: { value: "health" } });
+    expect(rowNames()).toEqual(["Alpha", "Charlie"]);
   });
 
   it("paginates with show more", () => {

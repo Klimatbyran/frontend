@@ -374,7 +374,7 @@
       "rampHigh": "Most on track",
       "everyCompanyTitle": "Every company in this view",
       "everyCompanyDescription": "Search for a company, or click a column heading to sort. Click any name for its full history.",
-      "searchPlaceholder": "Search for a company…",
+      "searchPlaceholder": "Search companies (separate w/ commas)",
       "colCompany": "Company",
       "colIndustry": "Industry",
       "colEmissions": "Emissions last year",

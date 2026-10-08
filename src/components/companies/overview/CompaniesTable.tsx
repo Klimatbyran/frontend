@@ -21,7 +21,9 @@ import {
 import { sectorColors } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
 import { latestEmissions } from "@/hooks/companies/parisOverviewUtils";
+import { buildSearchRegex } from "@/utils/data/search";
 import type { CompanyWithKPIs } from "@/types/company";
 import { cn } from "@/lib/utils";
 
@@ -230,9 +232,17 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
   }, [companies]);
 
   const rows = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    const filtered = needle
-      ? companies.filter((c) => c.name.toLowerCase().includes(needle))
+    const patterns = getSearchTerms(query).map((term) =>
+      buildSearchRegex(term, currentLanguage, true),
+    );
+    const filtered = patterns.length
+      ? companies.filter((company) => {
+          const sector = sectorCode(company);
+          const sectorName = sector ? (sectorNames[sector] ?? "") : "";
+          return patterns.some(
+            (pattern) => pattern.test(company.name) || pattern.test(sectorName),
+          );
+        })
       : companies;
 
     const factor = direction === "asc" ? 1 : -1;
