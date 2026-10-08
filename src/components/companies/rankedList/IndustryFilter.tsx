@@ -39,8 +39,10 @@ export function IndustryFilter({
   if (isMobile) {
     const selectedSectorName =
       selectedSector &&
-      (sectorNames[selectedSector as keyof typeof sectorNames] ||
-        selectedSector);
+      (
+        sectorNames[selectedSector as keyof typeof sectorNames] ||
+        selectedSector
+      ).toLowerCase();
 
     return (
       <div className="space-y-2">

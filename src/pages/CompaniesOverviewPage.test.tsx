@@ -38,10 +38,13 @@ const mockCompanies = [
   createCompany("5", "Oslo Corp", MATERIALS_SECTOR, ["norway"], true),
 ];
 
-const { capturedLists, capturedPieSectors } = vi.hoisted(() => ({
-  capturedLists: [] as string[][],
-  capturedPieSectors: [] as string[][],
-}));
+const { capturedLists, capturedPieSectors, capturedPieSelected } = vi.hoisted(
+  () => ({
+    capturedLists: [] as string[][],
+    capturedPieSectors: [] as string[][],
+    capturedPieSelected: [] as Array<string | null>,
+  }),
+);
 
 vi.mock("@/hooks/companies/useCompanies", () => ({
   useCompanies: () => ({
@@ -66,8 +69,15 @@ vi.mock("@/components/layout/PageHeader", () => ({
 }));
 
 vi.mock("@/components/companies/overview/IndustryEmissionsPie", () => ({
-  IndustryEmissionsPie: ({ rows }: { rows: Array<{ code: string }> }) => {
+  IndustryEmissionsPie: ({
+    rows,
+    selected,
+  }: {
+    rows: Array<{ code: string }>;
+    selected: string | null;
+  }) => {
     capturedPieSectors.push(rows.map((row) => row.code));
+    capturedPieSelected.push(selected);
     return <div data-testid="industry-pie" />;
   },
 }));
@@ -115,6 +125,7 @@ describe("CompaniesOverviewPage", () => {
   beforeEach(() => {
     capturedLists.length = 0;
     capturedPieSectors.length = 0;
+    capturedPieSelected.length = 0;
   });
 
   it("shows only Swedish companies", async () => {
@@ -151,7 +162,12 @@ describe("CompaniesOverviewPage", () => {
     await waitFor(() => {
       expect(capturedLists.at(-1)).toEqual(["Health One", "Health Two"]);
     });
-    expect(capturedPieSectors.at(-1)).toEqual([HEALTHCARE_SECTOR]);
+    expect(capturedPieSectors.at(-1)).toEqual([
+      MATERIALS_SECTOR,
+      HEALTHCARE_SECTOR,
+    ]);
+    expect(capturedPieSelected.at(-1)).toBe(HEALTHCARE_SECTOR);
+    expect(screen.getByTestId("industry-pie")).toBeInTheDocument();
   });
 
   it("preserves the industry from the URL after company data loads", async () => {
@@ -163,6 +179,11 @@ describe("CompaniesOverviewPage", () => {
     expect(
       screen.getByRole("button", { name: /sector\.materials\.name/ }),
     ).toHaveAttribute("aria-pressed", "true");
+    expect(capturedPieSectors.at(-1)).toEqual([
+      MATERIALS_SECTOR,
+      HEALTHCARE_SECTOR,
+    ]);
+    expect(capturedPieSelected.at(-1)).toBe(MATERIALS_SECTOR);
   });
 
   it("places the reporting bar under the sectors chart", async () => {
