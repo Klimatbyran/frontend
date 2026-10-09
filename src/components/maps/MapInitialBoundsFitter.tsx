@@ -17,15 +17,27 @@ export function MapInitialBoundsFitter({
   const lastFittedBoundsKey = useRef<string | null>(null);
 
   useEffect(() => {
-    const boundsKey = bounds.toBBoxString();
-    const paddingKey = JSON.stringify(padding);
-    const fitKey = `${boundsKey}:${paddingKey}`;
-    if (lastFittedBoundsKey.current === fitKey) {
-      return;
-    }
+    const fit = () => {
+      const size = map.getSize();
+      if (size.x < 1 || size.y < 1) return;
 
-    lastFittedBoundsKey.current = fitKey;
-    fitMapToBounds(map, bounds, padding);
+      const boundsKey = bounds.toBBoxString();
+      const paddingKey = JSON.stringify(padding);
+      const sizeKey = `${Math.round(size.x)}x${Math.round(size.y)}`;
+      const fitKey = `${boundsKey}:${paddingKey}:${sizeKey}`;
+      if (lastFittedBoundsKey.current === fitKey) return;
+
+      lastFittedBoundsKey.current = fitKey;
+      fitMapToBounds(map, bounds, padding);
+    };
+
+    fit();
+    const frame = requestAnimationFrame(fit);
+    map.on("resize", fit);
+    return () => {
+      cancelAnimationFrame(frame);
+      map.off("resize", fit);
+    };
   }, [map, bounds, padding]);
 
   return null;

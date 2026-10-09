@@ -155,6 +155,8 @@ export function RegionalOverviewPage() {
       onAreaClick={handleRegionAreaClick}
       defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
       defaultZoom={isMobile ? 4 : undefined}
+      fitBounds
+      zoomSnap={0}
       className="max-w-none"
     />
   );

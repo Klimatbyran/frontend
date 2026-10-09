@@ -120,6 +120,8 @@ export const MunicipalitiesSection = () => {
                     territoryMode === "regions" ? [63.55, 17] : [63, 17]
                   }
                   defaultZoom={isMobile ? 4 : undefined}
+                  fitBounds
+                  zoomSnap={0}
                 />
               )}
             </div>

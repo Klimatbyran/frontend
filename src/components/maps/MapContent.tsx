@@ -4,7 +4,13 @@ import {
   Geometry,
   GeoJsonProperties,
 } from "geojson";
-import { useEffect, useId, useState, type MutableRefObject } from "react";
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+  type MutableRefObject,
+} from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import type L from "leaflet";
 import { MapController } from "./MapController";
@@ -30,6 +36,8 @@ interface MapContentProps {
   scrollWheelZoom?: boolean;
   fitBounds?: boolean;
   fitBoundsPadding?: L.FitBoundsOptions["padding"];
+  /** 0 lets fitBounds scale the geography to the container instead of snapping a full zoom level past the edges. */
+  zoomSnap?: number;
 }
 
 function MapContent({
@@ -46,9 +54,12 @@ function MapContent({
   scrollWheelZoom = true,
   fitBounds = false,
   fitBoundsPadding = MAP_FIT_BOUNDS_PADDING,
+  zoomSnap,
 }: MapContentProps) {
   const [isMounted, setIsMounted] = useState(false);
   const mapId = useId();
+  // Wider than the fitted view so pixel padding is not pulled back inside maxBounds.
+  const panBounds = useMemo(() => mapBounds.pad(0.35), [mapBounds]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -80,9 +91,10 @@ function MapContent({
       }}
       zoomControl={false}
       attributionControl={false}
-      maxBounds={mapBounds}
+      maxBounds={panBounds}
       minZoom={minZoom}
       maxZoom={maxZoom}
+      {...(zoomSnap !== undefined ? { zoomSnap } : {})}
       scrollWheelZoom={scrollWheelZoom}
       ref={(instance) => {
         mapRef.current = instance;
