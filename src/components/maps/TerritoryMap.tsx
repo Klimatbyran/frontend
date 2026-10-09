@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { FeatureCollection } from "geojson";
-import type L from "leaflet";
 import { cn } from "@/lib/utils";
 import { TERRITORY_MAP_COLORS } from "@/utils/territoryMapUtils";
 import { DataItem, DataKPI, MapEntityType } from "@/types/rankings";
 import { calculateGeoBounds } from "./utils/geoBounds";
+import type { MapFitBoundsPadding } from "./mapUtils";
 import { useMapData } from "./hooks/useMapData";
 import { useMapInteractions } from "./hooks/useMapInteractions";
 import { useMapZoom } from "./hooks/useMapZoom";
@@ -37,7 +37,7 @@ interface TerritoryMapProps {
   className?: string;
   showTooltip?: boolean;
   fitBounds?: boolean;
-  fitBoundsPadding?: L.FitBoundsOptions["padding"];
+  fitBoundsPadding?: MapFitBoundsPadding;
   zoomSnap?: number;
   legendPosition?: MapLegendPosition;
   /**
@@ -95,6 +95,7 @@ function TerritoryMap({
   } = useMapZoom(defaultCenter, getInitialZoom, {
     mapBounds,
     fitBounds,
+    fitBoundsPadding,
   });
 
   const {

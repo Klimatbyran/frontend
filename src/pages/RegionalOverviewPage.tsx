@@ -5,7 +5,11 @@ import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap, { DataItem } from "@/components/maps/TerritoryMap";
-import { OVERVIEW_MAP_DEFAULT_CENTER } from "@/components/maps/mapConstants";
+import {
+  MAP_FIT_BOUNDS_PADDING,
+  MAP_MOBILE_FIT_BOUNDS_PADDING,
+  OVERVIEW_MAP_DEFAULT_CENTER,
+} from "@/components/maps/mapConstants";
 import regionGeoJson from "@/data/regionGeo.json";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
 import {
@@ -156,6 +160,9 @@ export function RegionalOverviewPage() {
       defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
       defaultZoom={isMobile ? 4 : undefined}
       fitBounds
+      fitBoundsPadding={
+        isMobile ? MAP_MOBILE_FIT_BOUNDS_PADDING : MAP_FIT_BOUNDS_PADDING
+      }
       zoomSnap={0}
       className="max-w-none"
     />

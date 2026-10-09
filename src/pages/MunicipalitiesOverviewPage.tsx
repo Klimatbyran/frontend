@@ -15,7 +15,11 @@ import { FeatureCollection } from "geojson";
 import { PageHeader } from "@/components/layout/PageHeader";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
-import { OVERVIEW_MAP_DEFAULT_CENTER } from "@/components/maps/mapConstants";
+import {
+  MAP_FIT_BOUNDS_PADDING,
+  MAP_MOBILE_FIT_BOUNDS_PADDING,
+  OVERVIEW_MAP_DEFAULT_CENTER,
+} from "@/components/maps/mapConstants";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import { ViewModeToggle } from "@/components/ui/view-mode-toggle";
 import {
@@ -158,6 +162,11 @@ function MunicipalitiesOverviewContent({
                 defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
                 defaultZoom={isMobile ? 4 : undefined}
                 fitBounds
+                fitBoundsPadding={
+                  isMobile
+                    ? MAP_MOBILE_FIT_BOUNDS_PADDING
+                    : MAP_FIT_BOUNDS_PADDING
+                }
                 zoomSnap={0}
                 className="max-w-none"
               />

@@ -16,6 +16,7 @@ import type L from "leaflet";
 import { MapController } from "./MapController";
 import { MapInitialBoundsFitter } from "./MapInitialBoundsFitter";
 import { MAP_FIT_BOUNDS_PADDING } from "./mapConstants";
+import type { MapFitBoundsPadding } from "./mapUtils";
 
 interface MapContentProps {
   geoData: FeatureCollection;
@@ -35,7 +36,7 @@ interface MapContentProps {
   backgroundColor?: string;
   scrollWheelZoom?: boolean;
   fitBounds?: boolean;
-  fitBoundsPadding?: L.FitBoundsOptions["padding"];
+  fitBoundsPadding?: MapFitBoundsPadding;
   /** 0 lets fitBounds scale the geography to the container instead of snapping a full zoom level past the edges. */
   zoomSnap?: number;
 }

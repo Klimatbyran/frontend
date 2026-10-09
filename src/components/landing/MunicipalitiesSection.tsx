@@ -13,6 +13,10 @@ import {
 } from "@/components/ui/select";
 import { useMunicipalitiesSection } from "./useMunicipalitiesSection";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import {
+  MAP_FIT_BOUNDS_PADDING,
+  MAP_MOBILE_FIT_BOUNDS_PADDING,
+} from "@/components/maps/mapConstants";
 import { cn } from "@/lib/utils";
 import {
   LANDING_SECTION_BODY_CLASS,
@@ -121,6 +125,11 @@ export const MunicipalitiesSection = () => {
                   }
                   defaultZoom={isMobile ? 4 : undefined}
                   fitBounds
+                  fitBoundsPadding={
+                    isMobile
+                      ? MAP_MOBILE_FIT_BOUNDS_PADDING
+                      : MAP_FIT_BOUNDS_PADDING
+                  }
                   zoomSnap={0}
                 />
               )}

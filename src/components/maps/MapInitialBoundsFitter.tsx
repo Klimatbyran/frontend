@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 import type L from "leaflet";
 import { MAP_FIT_BOUNDS_PADDING } from "./mapConstants";
-import { fitMapToBounds } from "./mapUtils";
+import { fitMapToBounds, type MapFitBoundsPadding } from "./mapUtils";
 
 interface MapInitialBoundsFitterProps {
   bounds: L.LatLngBounds;
-  padding?: L.FitBoundsOptions["padding"];
+  padding?: MapFitBoundsPadding;
 }
 
 export function MapInitialBoundsFitter({
