@@ -78,6 +78,7 @@ describe("buildCompanyKpiCards", () => {
       "detailPage.kpiPlacement.allCompanies",
     );
     expect(cards[0].comparison).toBe("distribution");
+    expect(cards[0].distributionChart).toBe("pie");
     expect(cards[0].scopes[0].distribution).toMatchObject({
       total: 3,
       buckets: [

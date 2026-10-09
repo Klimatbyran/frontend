@@ -84,6 +84,11 @@ describe("buildMunicipalityKpiCards", () => {
     const procurement = cards.find((card) => card.id === "procurement");
 
     expect(paris?.comparison).toBe("distribution");
+    expect(paris?.distributionChart).toBe("pie");
+    expect(
+      cards.find((card) => card.id === "climatePlan")?.distributionChart,
+    ).toBe("pie");
+    expect(procurement?.distributionChart).toBeUndefined();
     expect(paris?.scopes[0].placement).toBeNull();
     expect(paris?.scopes[0].distribution).toMatchObject({
       total: 4,

@@ -19,6 +19,34 @@ const TONE_BAR = {
   muted: "bg-white/35",
 } as const;
 
+const TONE_FILL = {
+  good: "fill-blue-2",
+  mid: "fill-orange-2",
+  poor: "fill-pink-3",
+  muted: "fill-grey",
+} as const;
+
+function polar(cx: number, cy: number, radius: number, angle: number) {
+  const radians = ((angle - 90) * Math.PI) / 180;
+  return {
+    x: cx + radius * Math.cos(radians),
+    y: cy + radius * Math.sin(radians),
+  };
+}
+
+function slicePath(
+  cx: number,
+  cy: number,
+  radius: number,
+  startAngle: number,
+  endAngle: number,
+): string {
+  const start = polar(cx, cy, radius, startAngle);
+  const end = polar(cx, cy, radius, endAngle);
+  const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+  return `M ${cx} ${cy} L ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y} Z`;
+}
+
 function shareLabel(count: number, total: number): string {
   if (total <= 0) return "0%";
   return `${Math.round((count / total) * 100)}%`;
@@ -55,6 +83,66 @@ function DistributionBar({
         />
       ))}
     </div>
+  );
+}
+
+function DistributionPie({
+  buckets,
+  total,
+  label,
+  spread,
+}: {
+  buckets: DistributionBucket[];
+  total: number;
+  label: string;
+  spread: boolean;
+}) {
+  const size = 32;
+  const center = size / 2;
+  const radius = 15;
+  const summary = buckets
+    .map((bucket) => `${bucket.count} ${bucket.label}`)
+    .join(", ");
+  let cursor = 0;
+
+  return (
+    <svg
+      viewBox={`0 0 ${size} ${size}`}
+      className={cn("shrink-0", spread ? "size-20 md:size-24" : "size-14")}
+      role="img"
+      aria-label={`${label}: ${summary}`}
+    >
+      {buckets.map((bucket) => {
+        const sweep = (bucket.count / total) * 360;
+        const gap = buckets.length > 1 && sweep > 6 ? 1.4 : 0;
+        const start = cursor + gap / 2;
+        const end = cursor + sweep - gap / 2;
+        cursor += sweep;
+
+        if (sweep >= 359.9) {
+          return (
+            <circle
+              key={bucket.id}
+              cx={center}
+              cy={center}
+              r={radius}
+              className={TONE_FILL[bucket.tone]}
+            />
+          );
+        }
+
+        return (
+          <path
+            key={bucket.id}
+            d={slicePath(center, center, radius, start, end)}
+            className={cn(
+              TONE_FILL[bucket.tone],
+              bucket.active ? "opacity-100" : "opacity-55",
+            )}
+          />
+        );
+      })}
+    </svg>
   );
 }
 
@@ -111,13 +199,38 @@ export function DistributionBlock({
   distribution,
   pending,
   spread,
+  chart = "bar",
 }: {
   label: string;
   distribution: KpiDistribution | null;
   pending: boolean;
   spread: boolean;
+  chart?: "bar" | "pie";
 }) {
   const { t } = useTranslation();
+  const counts = distribution ? (
+    <div
+      className={cn(
+        chart === "pie" || !spread ? "flex flex-col gap-1" : "grid gap-3",
+      )}
+      style={
+        chart !== "pie" && spread
+          ? {
+              gridTemplateColumns: `repeat(${distribution.buckets.length}, minmax(0, 1fr))`,
+            }
+          : undefined
+      }
+    >
+      {distribution.buckets.map((bucket) => (
+        <BucketCount
+          key={bucket.id}
+          bucket={bucket}
+          total={distribution.total}
+          prominent={spread}
+        />
+      ))}
+    </div>
+  ) : null;
 
   return (
     <div
@@ -128,8 +241,26 @@ export function DistributionBlock({
       {pending ? (
         <span
           aria-hidden
-          className="mt-2 h-4 w-full animate-pulse rounded-sm bg-white/10"
+          className={cn(
+            "mt-2 animate-pulse bg-white/10",
+            chart === "pie" ? "size-14 rounded-full" : "h-4 w-full rounded-sm",
+          )}
         />
+      ) : distribution && chart === "pie" ? (
+        <div
+          className={cn(
+            "flex items-center",
+            spread ? "mt-1 gap-5" : "mt-2 gap-3",
+          )}
+        >
+          <DistributionPie
+            buckets={distribution.buckets}
+            total={distribution.total}
+            label={label}
+            spread={spread}
+          />
+          {counts}
+        </div>
       ) : distribution ? (
         <div className={cn(spread ? "space-y-3" : "mt-2 space-y-2")}>
           <DistributionBar
@@ -137,25 +268,7 @@ export function DistributionBlock({
             label={label}
             tall={spread}
           />
-          <div
-            className={cn(spread ? "grid gap-3" : "flex flex-col gap-1")}
-            style={
-              spread
-                ? {
-                    gridTemplateColumns: `repeat(${distribution.buckets.length}, minmax(0, 1fr))`,
-                  }
-                : undefined
-            }
-          >
-            {distribution.buckets.map((bucket) => (
-              <BucketCount
-                key={bucket.id}
-                bucket={bucket}
-                total={distribution.total}
-                prominent={spread}
-              />
-            ))}
-          </div>
+          {counts}
         </div>
       ) : (
         <p className="mt-2 text-sm leading-snug text-white/45">

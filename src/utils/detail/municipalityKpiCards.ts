@@ -139,6 +139,7 @@ export function buildMunicipalityKpiCards(
       value: paris.value,
       valueClassName: paris.valueClassName,
       comparison: "distribution",
+      distributionChart: "pie",
       scopes: distributionFor(
         municipality.meetsParisGoal,
         (peer) => peer.meetsParisGoal,
@@ -200,6 +201,7 @@ export function buildMunicipalityKpiCards(
         : "text-pink-3",
       href: municipality.climatePlanLink ?? undefined,
       comparison: "distribution",
+      distributionChart: "pie",
       scopes: distributionFor(
         municipality.climatePlanYear !== null,
         (peer) => peer.climatePlanYear !== null,

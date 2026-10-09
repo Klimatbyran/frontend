@@ -22,5 +22,7 @@ export type KpiCardModel = {
    * Everything else is ranked.
    */
   comparison?: "rank" | "distribution";
+  /** Yes/no results use a pie. Stepped scores keep a bar. */
+  distributionChart?: "bar" | "pie";
   scopes: KpiCardScope[];
 };

@@ -86,6 +86,7 @@ export function buildRegionKpiCards(
       value: paris.value,
       valueClassName: paris.valueClassName,
       comparison: "distribution",
+      distributionChart: "pie",
       scopes: [
         {
           id: "national",

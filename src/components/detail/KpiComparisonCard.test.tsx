@@ -66,6 +66,7 @@ describe("KpiComparisonCard", () => {
         label="Meets the Paris Agreement"
         value="Yes"
         comparison="distribution"
+        distributionChart="pie"
         scopes={[
           {
             id: "national",
@@ -121,6 +122,7 @@ describe("KpiComparisonCard", () => {
       />,
     );
 
+    expect(screen.getAllByRole("img")).toHaveLength(2);
     expect(screen.getByText("Nationally")).toBeInTheDocument();
     expect(screen.getByText("In Stockholm")).toBeInTheDocument();
     expect(screen.getAllByText("4").length).toBeGreaterThan(0);

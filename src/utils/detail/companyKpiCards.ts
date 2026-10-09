@@ -91,6 +91,7 @@ export function buildCompanyKpiCards(
       value: paris.value,
       valueClassName: paris.valueClassName,
       comparison: "distribution",
+      distributionChart: "pie",
       scopes: [
         {
           id: "dataset",

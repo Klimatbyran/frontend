@@ -105,6 +105,7 @@ export function KpiComparisonCard({
   scopes,
   labelExtra,
   comparison = "rank",
+  distributionChart = "bar",
 }: KpiCardModel & { labelExtra?: ReactNode }) {
   const { t } = useTranslation();
   const openLabel = t("detailPage.kpiPlacement.openLink");
@@ -168,6 +169,7 @@ export function KpiComparisonCard({
               distribution={scope.distribution ?? null}
               pending={scope.pending}
               spread={scopes.length === 1}
+              chart={distributionChart}
             />
           ) : (
             <PlacementBlock
