@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { FeatureCollection } from "geojson";
-import type L from "leaflet";
 import { cn } from "@/lib/utils";
 import { TERRITORY_MAP_COLORS } from "@/utils/territoryMapUtils";
 import { DataItem, DataKPI, MapEntityType } from "@/types/rankings";
 import { calculateGeoBounds } from "./utils/geoBounds";
+import type { FitBoundsPadding } from "./mapUtils";
 import { useMapData } from "./hooks/useMapData";
 import { useMapInteractions } from "./hooks/useMapInteractions";
 import { useMapZoom } from "./hooks/useMapZoom";
@@ -37,7 +37,9 @@ interface TerritoryMapProps {
   className?: string;
   showTooltip?: boolean;
   fitBounds?: boolean;
-  fitBoundsPadding?: L.FitBoundsOptions["padding"];
+  fitBoundsPadding?: FitBoundsPadding;
+  /** Leaflet zoom snap. `0` lets fitBounds fill the frame instead of jumping a whole level. */
+  zoomSnap?: number;
   legendPosition?: MapLegendPosition;
   /**
    * Controlled hover state. Must be passed together with `onHoveredAreaChange`;
@@ -64,6 +66,7 @@ function TerritoryMap({
   showTooltip = true,
   fitBounds = false,
   fitBoundsPadding,
+  zoomSnap,
   legendPosition = "bottom-right",
   hoveredArea: hoveredAreaProp,
   onHoveredAreaChange,
@@ -93,6 +96,7 @@ function TerritoryMap({
   } = useMapZoom(defaultCenter, getInitialZoom, {
     mapBounds,
     fitBounds,
+    fitBoundsPadding,
   });
 
   const {
@@ -137,6 +141,7 @@ function TerritoryMap({
         scrollWheelZoom={scrollWheelZoom}
         fitBounds={fitBounds}
         fitBoundsPadding={fitBoundsPadding}
+        zoomSnap={zoomSnap}
       />
       <MapOverlays
         entityType={entityType}

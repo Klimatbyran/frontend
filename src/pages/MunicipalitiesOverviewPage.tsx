@@ -13,7 +13,10 @@ import { FeatureCollection } from "geojson";
 import { PageHeader } from "@/components/layout/PageHeader";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
-import { OVERVIEW_MAP_DEFAULT_CENTER } from "@/components/maps/mapConstants";
+import {
+  OVERVIEW_MAP_DEFAULT_CENTER,
+  OVERVIEW_MAP_FIT_BOUNDS_PADDING,
+} from "@/components/maps/mapConstants";
 import municipalityGeoJson from "@/data/municipalityGeo.json";
 import {
   useMunicipalityKPIs,
@@ -172,7 +175,7 @@ export function MunicipalitiesOverviewPage() {
           iconMap={MUNICIPALITY_KPI_ICONS}
           translationPrefix="municipalities.list"
         />
-        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
+        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-[24rem_minmax(0,1fr)]">
           <div className="relative h-[28rem] lg:h-full lg:min-h-[40rem]">
             <div className="absolute inset-0">
               <TerritoryMap
@@ -188,6 +191,9 @@ export function MunicipalitiesOverviewPage() {
                 }}
                 defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
                 defaultZoom={isMobile ? 4 : undefined}
+                fitBounds
+                fitBoundsPadding={OVERVIEW_MAP_FIT_BOUNDS_PADDING}
+                zoomSnap={0}
                 className="h-full max-w-none"
               />
             </div>

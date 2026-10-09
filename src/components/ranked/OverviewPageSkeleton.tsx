@@ -78,7 +78,7 @@ export function OverviewPageSkeleton({
           <SkeletonBlock className="h-4 w-full max-w-xl" />
         </div>
         <DataChipSelectorSkeleton chipCount={chipCount} />
-        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
+        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-[24rem_minmax(0,1fr)]">
           <SkeletonBlock className="min-h-[28rem] w-full rounded-level-2 lg:min-h-[40rem]" />
           <AnswerCardSkeleton />
         </div>

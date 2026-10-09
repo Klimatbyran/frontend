@@ -180,7 +180,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
       )}
 
       {(topPerformer || bottomPerformer) && (
-        <div className="mt-5 space-y-2 border-t border-white/10 pt-4">
+        <div className="mt-5 grid grid-cols-1 gap-2 border-t border-white/10 pt-4 lg:grid-cols-2">
           {topPerformer && (
             <Performer
               label={t(`${translationPrefix}.insights.keyStatistics.best`, {

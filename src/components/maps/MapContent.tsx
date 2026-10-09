@@ -10,6 +10,7 @@ import type L from "leaflet";
 import { MapController } from "./MapController";
 import { MapInitialBoundsFitter } from "./MapInitialBoundsFitter";
 import { MAP_FIT_BOUNDS_PADDING } from "./mapConstants";
+import type { FitBoundsPadding } from "./mapUtils";
 
 interface MapContentProps {
   geoData: FeatureCollection;
@@ -29,7 +30,8 @@ interface MapContentProps {
   backgroundColor?: string;
   scrollWheelZoom?: boolean;
   fitBounds?: boolean;
-  fitBoundsPadding?: L.FitBoundsOptions["padding"];
+  fitBoundsPadding?: FitBoundsPadding;
+  zoomSnap?: number;
 }
 
 function MapContent({
@@ -46,6 +48,7 @@ function MapContent({
   scrollWheelZoom = true,
   fitBounds = false,
   fitBoundsPadding = MAP_FIT_BOUNDS_PADDING,
+  zoomSnap,
 }: MapContentProps) {
   const [isMounted, setIsMounted] = useState(false);
   const mapId = useId();
@@ -84,6 +87,7 @@ function MapContent({
       minZoom={minZoom}
       maxZoom={maxZoom}
       scrollWheelZoom={scrollWheelZoom}
+      {...(zoomSnap !== undefined ? { zoomSnap } : {})}
       ref={(instance) => {
         mapRef.current = instance;
       }}
