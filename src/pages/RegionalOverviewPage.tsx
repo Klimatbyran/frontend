@@ -126,7 +126,7 @@ export function RegionalOverviewPage() {
           translationPrefix="regions.list"
           label={t("regions.list.dataSelector.label")}
         />
-        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
           <div className="relative h-[28rem] lg:h-[calc(100dvh-13.5rem)]">
             <div className="absolute inset-0">
               <TerritoryMap
