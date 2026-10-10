@@ -71,15 +71,15 @@ export function OverviewPageSkeleton({
   chipCount = variant === "regions" ? 2 : 7,
 }: OverviewPageSkeletonProps) {
   return (
-    <div className="space-y-8">
-      <div className="space-y-4">
+    <div className="space-y-8 lg:-mt-8">
+      <div className="space-y-2">
         <div className="space-y-2">
           <SkeletonBlock className="h-9 w-56 md:w-72" />
           <SkeletonBlock className="h-4 w-full max-w-xl" />
         </div>
         <DataChipSelectorSkeleton chipCount={chipCount} />
-        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
-          <SkeletonBlock className="h-[28rem] w-full rounded-level-2 lg:h-[calc(100dvh-16.5rem)]" />
+        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          <SkeletonBlock className="h-[28rem] w-full rounded-level-2 lg:h-[calc(100dvh-13.5rem)]" />
           <AnswerCardSkeleton />
         </div>
       </div>

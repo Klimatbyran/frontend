@@ -7,8 +7,8 @@ export const MAP_FIT_BOUNDS_PADDING = [20, 20] as const;
  * edges for the zoom controls.
  */
 export const OVERVIEW_MAP_FIT_BOUNDS_PADDING = {
-  paddingTopLeft: [48, 16] as [number, number],
-  paddingBottomRight: [16, 96] as [number, number],
+  paddingTopLeft: [16, 12] as [number, number],
+  paddingBottomRight: [16, 92] as [number, number],
 };
 /** Extra bottom inset on detail maps so fitBounds keeps geography above the mobile legend. */
 export const DETAIL_MAP_MOBILE_FIT_BOUNDS_PADDING = [20, 20, 96, 20] as const;
