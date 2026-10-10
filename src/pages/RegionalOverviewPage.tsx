@@ -126,8 +126,8 @@ export function RegionalOverviewPage() {
           translationPrefix="regions.list"
           label={t("regions.list.dataSelector.label")}
         />
-        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-[24rem_minmax(0,1fr)]">
-          <div className="relative h-[28rem] lg:h-full lg:min-h-[40rem]">
+        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
+          <div className="relative h-[28rem] lg:h-[calc(100dvh-16.5rem)]">
             <div className="absolute inset-0">
               <TerritoryMap
                 entityType="regions"

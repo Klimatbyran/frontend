@@ -3,8 +3,8 @@ export const OVERVIEW_MAP_DEFAULT_CENTER: [number, number] = [63, 17];
 
 export const MAP_FIT_BOUNDS_PADDING = [20, 20] as const;
 /**
- * Overview maps are only as wide as Sweden. Leave a strip under the country
- * for the legend, and a little room at the edges for the zoom controls.
+ * Leave a strip under the country for the legend, and a little room at the
+ * edges for the zoom controls.
  */
 export const OVERVIEW_MAP_FIT_BOUNDS_PADDING = {
   paddingTopLeft: [48, 16] as [number, number],
