@@ -19,6 +19,7 @@ import { KPIValue } from "@/types/rankings";
 import { COLORS } from "@/lib/colors";
 import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
 import {
+  DEFAULT_NEGATIVE_BOOLEAN_COLOR,
   getPositiveIndicatorColor,
   isMeetsParisKpiKey,
 } from "@/utils/ui/colors";
@@ -278,8 +279,12 @@ function useBooleanValues<T>(
     const goodColor = getPositiveIndicatorColor(
       isMeetsParisKpiKey(String(selectedKPI.key)),
     );
-    const trueColor = selectedKPI.higherIsBetter ? goodColor : COLORS.pink3;
-    const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : goodColor;
+    const trueColor = selectedKPI.higherIsBetter
+      ? goodColor
+      : DEFAULT_NEGATIVE_BOOLEAN_COLOR;
+    const falseColor = selectedKPI.higherIsBetter
+      ? DEFAULT_NEGATIVE_BOOLEAN_COLOR
+      : goodColor;
     const slices: BooleanPieSlice[] = [
       {
         name: trueLabel,

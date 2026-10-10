@@ -23,6 +23,7 @@ interface MapOverlaysProps {
   onAreaClick?: (id: string) => void;
   showTooltip?: boolean;
   legendPosition?: MapLegendPosition;
+  booleanColors?: { positive: string; negative: string };
 }
 
 function MapOverlays({
@@ -40,6 +41,7 @@ function MapOverlays({
   positionZoom,
   minZoom,
   maxZoom,
+  booleanColors,
   handleZoomIn,
   handleZoomOut,
   handleReset,
@@ -73,6 +75,7 @@ function MapOverlays({
         selectedKPI={selectedKPI as KPIValue}
         hasNullValues={hasNullValues}
         position={legendPosition}
+        booleanColors={booleanColors}
       />
       <MapZoomControls
         onZoomIn={handleZoomIn}

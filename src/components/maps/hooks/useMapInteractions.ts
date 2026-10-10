@@ -5,6 +5,7 @@ import { DataItem, DataKPI } from "@/types/rankings";
 import {
   getTerritoryKpiRawValue,
   getTerritoryMapFillColor,
+  TerritoryMapGradientColors,
 } from "@/utils/territoryMapUtils";
 import { isMobile } from "react-device-detect";
 
@@ -14,13 +15,8 @@ interface UseMapInteractionsProps {
   sortedData: DataItem[];
   values: number[];
   propertyNameField: string;
-  colors: {
-    null: string;
-    gradientStart: string;
-    gradientMidLow: string;
-    gradientMidHigh: string;
-    gradientEnd: string;
-  };
+  gradientColors: TerritoryMapGradientColors;
+  booleanColors: { positive: string; negative: string };
   onAreaClick?: (id: string) => void;
   hoveredArea?: string | null;
   onHoveredAreaChange?: (area: string | null) => void;
@@ -33,7 +29,8 @@ export function useMapInteractions({
   sortedData,
   values,
   propertyNameField,
-  colors,
+  gradientColors,
+  booleanColors,
   onAreaClick,
   hoveredArea: controlledHoveredArea,
   onHoveredAreaChange,
@@ -105,10 +102,11 @@ export function useMapInteractions({
               ? Boolean(selectedKPI.isBoolean)
               : undefined,
         },
-        colors,
+        gradientColors,
+        booleanColors,
       );
     },
-    [values, colors, selectedKPI],
+    [values, gradientColors, selectedKPI],
   );
 
   const getAreaStyle = useCallback(
