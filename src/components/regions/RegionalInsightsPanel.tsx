@@ -23,12 +23,15 @@ interface InsightsPanelProps {
   regionsData: Region[];
   selectedKPI: KPIValue<Region>;
   section?: InsightsPanelSection;
+  /** Shown under the list title for the top and bottom sections. */
+  listDescription?: string;
 }
 
 function RegionalInsightsPanel({
   regionsData: regionData,
   selectedKPI,
   section,
+  listDescription,
 }: InsightsPanelProps) {
   const { t } = useTranslation();
   const kpiKey = String(selectedKPI.key);
@@ -155,6 +158,7 @@ function RegionalInsightsPanel({
       nameKey="name"
       showBars
       colorItem={colorItem}
+      description={listDescription}
     />
   ) : (
     booleanSummary
@@ -178,6 +182,7 @@ function RegionalInsightsPanel({
       nameKey="name"
       showBars
       colorItem={colorItem}
+      description={listDescription}
     />
   ) : null;
 

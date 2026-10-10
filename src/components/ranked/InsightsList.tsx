@@ -39,6 +39,8 @@ interface InsightsListProps<T> {
   nameKey: keyof T;
   showBars?: boolean;
   colorItem: (item: T) => string;
+  /** One line under the title, in the same card. */
+  description?: string;
   /** Hold the row and bar animation until the list has scrolled into view. */
   deferAnimationUntilVisible?: boolean;
 }
@@ -55,6 +57,7 @@ function InsightsList<T>({
   nameKey,
   showBars = false,
   colorItem,
+  description,
   deferAnimationUntilVisible = false,
 }: InsightsListProps<T>) {
   const { reduceMotion, barDuration, ease } = useChartMotion();
@@ -78,9 +81,16 @@ function InsightsList<T>({
 
   return (
     <div ref={ref} className="flex flex-col bg-black-2 rounded-level-2 py-6">
-      <h3 className="text-white text-lg font-semibold px-4 md:px-6 pb-2 md:pb-2">
+      <h3
+        className={`text-white text-lg font-semibold px-4 md:px-6 ${description ? "pb-1" : "pb-2"}`}
+      >
         {title}
       </h3>
+      {description && (
+        <p className="px-4 pb-2 text-sm leading-relaxed text-white/55 md:px-6">
+          {description}
+        </p>
+      )}
       <div className="space-y-1 h-full px-4 md:px-6 py-2">
         {entities.map((entity, index) => {
           const position = isBottomRanking ? totalCount - index : index + 1;

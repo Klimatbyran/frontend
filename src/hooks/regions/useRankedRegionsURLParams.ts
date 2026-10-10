@@ -26,19 +26,7 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = useCallback((): "map" | "list" => {
-    const params = new URLSearchParams(location.search);
-    return params.get("view") === "list" ? "list" : "map";
-  }, [location.search]);
-
-  const setViewModeInURL = (mode: "map" | "list") => {
-    const params = new URLSearchParams(location.search);
-    params.set("view", mode);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
-  const viewMode = getViewModeFromURL();
 
   useEffect(() => {
     const kpi = getKPIFromURL();
@@ -50,8 +38,6 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
   return {
     selectedKPI,
     setSelectedKPI,
-    viewMode,
     setKPIInURL,
-    setViewModeInURL,
   };
 }

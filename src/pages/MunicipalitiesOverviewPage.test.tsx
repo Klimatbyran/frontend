@@ -3,6 +3,14 @@ import { describe, expect, it, vi } from "vitest";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { MunicipalitiesOverviewPage } from "./MunicipalitiesOverviewPage";
 
+vi.mock("i18next", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("i18next")>();
+  return {
+    ...actual,
+    t: (key: string) => key,
+  };
+});
+
 const { mockKpiDefinitions } = vi.hoisted(() => ({
   mockKpiDefinitions: [
     {
@@ -36,14 +44,6 @@ vi.mock("@/components/maps/TerritoryMap", () => ({
   default: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
     <div data-testid="territory-map">{String(selectedKPI.key)}</div>
   ),
-}));
-
-vi.mock("@/components/municipalities/MunicipalityRankedList", () => ({
-  MunicipalityRankedList: ({
-    selectedKPI,
-  }: {
-    selectedKPI: { key: unknown };
-  }) => <div data-testid="ranked-list">{String(selectedKPI.key)}</div>,
 }));
 
 vi.mock(

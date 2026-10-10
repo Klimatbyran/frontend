@@ -76,7 +76,7 @@ export function DataChipSelector<T>({
   };
 
   return (
-    <div className="mb-4 space-y-2">
+    <div className="space-y-2">
       {selectorLabel && (
         <p className="text-xs text-white/50 uppercase tracking-wider px-1">
           {selectorLabel}
