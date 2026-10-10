@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ReportingCoverage } from "./ReportingCoverage";
-import type { CompanyWithKPIs } from "@/types/company";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -24,22 +23,10 @@ vi.mock("@/hooks/useChartMotion", () => ({
   }),
 }));
 
-function companyWithVerdict(meetsParis: boolean | null): CompanyWithKPIs {
-  return { meetsParis } as unknown as CompanyWithKPIs;
-}
-
 describe("ReportingCoverage", () => {
   it("splits companies with a verdict from those with none", () => {
     render(
-      <ReportingCoverage
-        companies={[
-          companyWithVerdict(true),
-          companyWithVerdict(false),
-          companyWithVerdict(true),
-          companyWithVerdict(null),
-          companyWithVerdict(null),
-        ]}
-      />,
+      <ReportingCoverage reporting={{ total: 5, enough: 3, tooLittle: 2 }} />,
     );
 
     expect(
@@ -72,9 +59,7 @@ describe("ReportingCoverage", () => {
 
   it("gives the only populated side the full bar", () => {
     render(
-      <ReportingCoverage
-        companies={[companyWithVerdict(true), companyWithVerdict(false)]}
-      />,
+      <ReportingCoverage reporting={{ total: 2, enough: 2, tooLittle: 0 }} />,
     );
 
     expect(screen.getByText("100%")).toBeInTheDocument();
@@ -85,7 +70,9 @@ describe("ReportingCoverage", () => {
   });
 
   it("renders nothing when the view is empty", () => {
-    const { container } = render(<ReportingCoverage companies={[]} />);
+    const { container } = render(
+      <ReportingCoverage reporting={{ total: 0, enough: 0, tooLittle: 0 }} />,
+    );
 
     expect(container).toBeEmptyDOMElement();
   });

@@ -4,9 +4,8 @@ import { useTranslation } from "react-i18next";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
-import { parisDotCompanies } from "@/hooks/companies/parisOverviewUtils";
+import type { PageParisDotCompany } from "@/types/pages";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
-import type { CompanyWithKPIs } from "@/types/company";
 import { cn } from "@/lib/utils";
 
 /**
@@ -29,10 +28,10 @@ function dotStaggerStep(count: number): number {
 }
 
 export function ParisCompanyDots({
-  companies,
+  dots,
   emphasis,
 }: {
-  companies: CompanyWithKPIs[];
+  dots: PageParisDotCompany[];
   /** When set, the other group's dots recede so one verdict reads at a time. */
   emphasis: "on" | "off" | null;
 }) {
@@ -42,7 +41,6 @@ export function ParisCompanyDots({
     enabled: !reduceMotion,
   });
   const play = reduceMotion || entered;
-  const dots = parisDotCompanies(companies);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [cursor, setCursor] = useState(0);
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);

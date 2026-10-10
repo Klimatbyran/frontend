@@ -1,6 +1,6 @@
 import type { TFunction } from "i18next";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import type { RankedCompany } from "@/types/company";
+import type { PageExploreCompany } from "@/types/pages";
 import type { Municipality } from "@/types/municipality";
 import type { RegionForExplore } from "@/hooks/regions/useRegionsForExplore";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
@@ -12,6 +12,7 @@ import {
   type SupportedLanguage,
 } from "@/utils/formatting/localization";
 import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
+import { getCompanyDetailPath } from "@/utils/companyRouting";
 import { getEntityDetailPath } from "@/utils/routing";
 
 export type ComparisonDetails = {
@@ -36,21 +37,16 @@ export type ComparisonDetails = {
 };
 
 function formatTurnover(
-  period: RankedCompany["reportingPeriods"][number],
+  value: number | null | undefined,
+  currency: string | null | undefined,
   currentLanguage: SupportedLanguage,
   t: TFunction,
 ): string | null {
-  const turnover = period.economy?.turnover;
-  if (!turnover?.value) {
+  if (value == null) {
     return null;
   }
 
-  return formatTurnoverValue(
-    turnover.value,
-    currentLanguage,
-    t,
-    turnover.currency,
-  );
+  return formatTurnoverValue(value, currentLanguage, t, currency ?? undefined);
 }
 
 export function buildMunicipalityComparisonDetails(
@@ -98,22 +94,6 @@ export function buildMunicipalityComparisonDetails(
   };
 }
 
-type IsAIGeneratedFn = <T extends { metadata?: unknown }>(
-  data: T | undefined | null,
-) => boolean;
-
-function extractScopeValues(
-  emissions: RankedCompany["reportingPeriods"][number]["emissions"],
-) {
-  return {
-    scope1: emissions?.scope1?.total,
-    scope2: emissions?.scope2?.calculatedTotalEmissions,
-    scope3:
-      emissions?.scope3?.calculatedTotalEmissions ??
-      emissions?.scope3?.statedTotalEmissions?.total,
-  };
-}
-
 function formatScopeEmissions(
   scope1: number | null | undefined,
   scope2: number | null | undefined,
@@ -134,29 +114,29 @@ function formatScopeEmissions(
 }
 
 export function buildCompanyComparisonDetails(
-  company: RankedCompany,
+  company: PageExploreCompany,
   currentLanguage: SupportedLanguage,
   t: TFunction,
-  isAIGenerated: IsAIGeneratedFn,
 ): ComparisonDetails {
-  const latestPeriod = company.reportingPeriods?.[0];
-  if (!latestPeriod) {
-    return {};
-  }
-
-  const { scope1, scope2, scope3 } = extractScopeValues(latestPeriod.emissions);
-
   return {
-    turnover: formatTurnover(latestPeriod, currentLanguage, t),
-    turnoverIsAIGenerated: isAIGenerated(latestPeriod.economy?.turnover),
-    employees: latestPeriod.economy?.employees?.value
-      ? formatEmployeeCount(
-          latestPeriod.economy.employees.value,
-          currentLanguage,
-        )
-      : null,
-    employeesIsAIGenerated: isAIGenerated(latestPeriod.economy?.employees),
-    ...formatScopeEmissions(scope1, scope2, scope3, currentLanguage),
+    turnover: formatTurnover(
+      company.turnover,
+      company.turnoverCurrency,
+      currentLanguage,
+      t,
+    ),
+    turnoverIsAIGenerated: company.turnoverIsAIGenerated,
+    employees:
+      company.employees != null
+        ? formatEmployeeCount(company.employees, currentLanguage)
+        : null,
+    employeesIsAIGenerated: company.employeesIsAIGenerated,
+    ...formatScopeEmissions(
+      company.scope1Emissions,
+      company.scope2Emissions,
+      company.scope3Emissions,
+      currentLanguage,
+    ),
   };
 }
 
@@ -175,15 +155,13 @@ export function enrichComparisonItem(
   card: ListCardProps,
   options: {
     municipality?: Municipality;
-    company?: RankedCompany;
+    company?: PageExploreCompany;
     region?: RegionForExplore;
     currentLanguage: SupportedLanguage;
     t: TFunction;
-    isAIGenerated?: IsAIGeneratedFn;
   },
 ): ListCardProps {
-  const { municipality, company, region, currentLanguage, t, isAIGenerated } =
-    options;
+  const { municipality, company, region, currentLanguage, t } = options;
 
   if (card.variant === "municipality" && municipality) {
     return {
@@ -196,14 +174,13 @@ export function enrichComparisonItem(
     };
   }
 
-  if (card.variant === "company" && company && isAIGenerated) {
+  if (card.variant === "company" && company) {
     return {
       ...card,
       comparisonDetails: buildCompanyComparisonDetails(
         company,
         currentLanguage,
         t,
-        isAIGenerated,
       ),
     };
   }
@@ -222,8 +199,11 @@ export function getMunicipalityLinkTo(name: string): string {
   return `/municipalities/${name}`;
 }
 
-export function getCompanyLinkTo(wikidataId: string): string {
-  return `/companies/${wikidataId}`;
+export function getCompanyLinkTo(company: {
+  id: string;
+  wikidataId?: string | null;
+}): string {
+  return getCompanyDetailPath(company);
 }
 
 export function getRegionLinkTo(name: string): string {

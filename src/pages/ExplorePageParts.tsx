@@ -4,7 +4,7 @@ import { SelectionChip } from "@/components/explore/SelectionChip";
 import { CompanyList } from "@/components/companies/list/CompanyList";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { RegionList } from "@/components/regions/list/RegionList";
-import type { RankedCompany } from "@/types/company";
+import type { PageExploreCompany } from "@/types/pages";
 import type { Municipality } from "@/types/municipality";
 import type { RegionForExplore } from "@/hooks/regions/useRegionsForExplore";
 
@@ -114,7 +114,7 @@ function ExploreEntityList({
   regions,
 }: {
   mainFilter: ExploreFilter;
-  companies: RankedCompany[];
+  companies: PageExploreCompany[];
   municipalities: Municipality[];
   regions: RegionForExplore[];
 }) {

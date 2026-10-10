@@ -2,7 +2,12 @@ import { useParams, useLocation } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
-import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
+import {
+  usePageCompanyHeader,
+  usePageCompanyHistories,
+  usePageCompanyOverview,
+  usePageCompanyScope3,
+} from "@/hooks/pages/usePageCompanyDetail";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { CompanyOverviewNoData } from "@/components/companies/detail/overview/CompanyOverviewNoData";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
@@ -11,156 +16,71 @@ import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/relatableNumbers";
-import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
-import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
-import { yearFromIsoDate } from "@/utils/date";
-
-function sortPeriodsByDate(periods: ReportingPeriod[]): ReportingPeriod[] {
-  return [...periods].sort(
-    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
-  );
-}
-
-function selectPeriod(
-  sortedPeriods: ReportingPeriod[],
-  selectedYear: string,
-): ReportingPeriod {
-  if (selectedYear === "latest") return sortedPeriods[0];
-  return (
-    sortedPeriods.find((p) => yearFromIsoDate(p.endDate) === selectedYear) ||
-    sortedPeriods[0]
-  );
-}
-
-function computeEmissionsChangeInfo(
-  selectedPeriod: ReportingPeriod,
-  previousPeriod?: ReportingPeriod,
-) {
-  const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
-  const validEmissionsChangeNumber = prevEmissions
-    ? Math.abs(
-        selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions,
-      )
-    : null;
-  const emissionsChangeStatus =
-    selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions > 0
-      ? "increased"
-      : "decreased";
-  const yearOverYearChange = calculateEmissionsChange(
-    selectedPeriod,
-    previousPeriod,
-  );
-  return {
-    validEmissionsChangeNumber,
-    emissionsChangeStatus,
-    yearOverYearChange,
-  };
-}
-
-function CompanyDetailContent({
-  company,
-  seoMeta,
-  selectedYear,
-  onYearSelect,
-  currentLanguage,
-}: {
-  company: CompanyDetails;
-  seoMeta: ReturnType<typeof generateCompanySeoMeta>;
-  selectedYear: string;
-  onYearSelect: (year: string) => void;
-  currentLanguage: string;
-}) {
-  const comparisonChip = (
-    <ComparisonDetailChip
-      linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-      variant="company"
-      name={company.name}
-    />
-  );
-
-  if (!company.reportingPeriods?.length) {
-    return (
-      <>
-        <Seo meta={seoMeta} />
-        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
-          <CompanyOverviewNoData
-            company={company}
-            headerChip={comparisonChip}
-          />
-        </div>
-      </>
-    );
-  }
-
-  const sortedPeriods = sortPeriodsByDate(company.reportingPeriods);
-  const selectedPeriod = selectPeriod(sortedPeriods, selectedYear);
-  const selectedIndex = sortedPeriods.findIndex(
-    (p) => p.endDate === selectedPeriod.endDate,
-  );
-  const previousPeriod =
-    selectedIndex < sortedPeriods.length - 1
-      ? sortedPeriods[selectedIndex + 1]
-      : undefined;
-
-  const {
-    validEmissionsChangeNumber,
-    emissionsChangeStatus,
-    yearOverYearChange,
-  } = computeEmissionsChangeInfo(selectedPeriod, previousPeriod);
-
-  return (
-    <>
-      <Seo meta={seoMeta} />
-      <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
-        <CompanyOverview
-          company={company}
-          selectedPeriod={selectedPeriod}
-          previousPeriod={previousPeriod}
-          yearOverYearChange={yearOverYearChange}
-          headerChip={comparisonChip}
-        />
-        {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
-          <RelatableNumbers
-            emissionsChange={validEmissionsChangeNumber}
-            currentLanguage={currentLanguage}
-            companyName={company.name}
-            emissionsChangeStatus={emissionsChangeStatus}
-            yearOverYearChange={yearOverYearChange}
-          />
-        )}
-        <EmissionsHistory company={company} onYearSelect={onYearSelect} />
-        <TurnoverEmissionsHistory
-          company={company}
-          onYearSelect={onYearSelect}
-        />
-        <CompanyScope3 emissions={selectedPeriod.emissions!} />
-      </div>
-    </>
-  );
-}
 
 export function CompanyDetailPage() {
   const { id } = useParams<{ id: string; slug?: string }>();
   const location = useLocation();
-  const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
 
-  const latestYear = company?.reportingPeriods?.[0]
-    ? Number(yearFromIsoDate(company.reportingPeriods[0].endDate))
-    : new Date().getFullYear();
+  const yearNumber =
+    selectedYear === "latest" ? undefined : Number(selectedYear);
+
+  const {
+    header,
+    loading: headerLoading,
+    error: headerError,
+  } = usePageCompanyHeader(id!);
+  const {
+    overview,
+    loading: overviewLoading,
+    error: overviewError,
+  } = usePageCompanyOverview(id!, yearNumber, !!header);
+  const {
+    emissionsHistory,
+    turnoverHistory,
+    loading: historiesLoading,
+    error: historiesError,
+  } = usePageCompanyHistories(id!, !!header);
+  const { scope3 } = usePageCompanyScope3(id!, yearNumber, !!header);
+
+  const loading = headerLoading || overviewLoading || historiesLoading;
+  const error = headerError || overviewError || historiesError;
+
+  const latestYear =
+    header?.availableYears[0] ?? overview?.year ?? new Date().getFullYear();
 
   const seoMeta = useMemo(() => {
-    if (!company) {
+    if (!header) {
       return getSeoForRoute(location.pathname, { id: id || "" });
     }
-    return generateCompanySeoMeta(company, location.pathname, { latestYear });
-  }, [company, location.pathname, latestYear, id]);
+    return generateCompanySeoMeta(
+      {
+        name: header.name,
+        industry: header.sectorCode
+          ? { industryGics: { sectorCode: header.sectorCode } }
+          : null,
+        reportingPeriods:
+          overview?.totalEmissions != null && overview.year != null
+            ? [
+                {
+                  endDate: `${overview.year}-12-31`,
+                  emissions: {
+                    calculatedTotalEmissions: overview.totalEmissions,
+                  },
+                },
+              ]
+            : [],
+      },
+      location.pathname,
+      { latestYear },
+    );
+  }, [header, overview, location.pathname, latestYear, id]);
 
   if (loading) return <PageLoading />;
 
@@ -173,7 +93,7 @@ export function CompanyDetailPage() {
     );
   }
 
-  if (!company) {
+  if (!header) {
     return (
       <PageNoData
         titleKey="companyDetailPage.notFoundTitle"
@@ -182,13 +102,61 @@ export function CompanyDetailPage() {
     );
   }
 
-  return (
-    <CompanyDetailContent
-      company={company}
-      seoMeta={seoMeta}
-      selectedYear={selectedYear}
-      onYearSelect={setSelectedYear}
-      currentLanguage={currentLanguage}
+  const comparisonChip = (
+    <ComparisonDetailChip
+      linkTo={buildComparisonLinkTo("company", header.wikidataId ?? header.id)}
+      variant="company"
+      name={header.name}
     />
+  );
+
+  const hasPeriods = (header.availableYears?.length ?? 0) > 0;
+
+  if (!hasPeriods || !overview || overview.year == null) {
+    return (
+      <>
+        <Seo meta={seoMeta} />
+        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+          <CompanyOverviewNoData header={header} headerChip={comparisonChip} />
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Seo meta={seoMeta} />
+      <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+        <CompanyOverview
+          header={header}
+          overview={overview}
+          headerChip={comparisonChip}
+        />
+        {overview.emissionsChangeAbsolute != null &&
+          overview.emissionsChangeAbsolute > 100 &&
+          overview.emissionsChangeStatus != null && (
+            <RelatableNumbers
+              emissionsChange={overview.emissionsChangeAbsolute}
+              currentLanguage={currentLanguage}
+              companyName={header.name}
+              emissionsChangeStatus={overview.emissionsChangeStatus}
+              yearOverYearChange={overview.emissionsChangeLastTwoYears}
+            />
+          )}
+        {emissionsHistory && (
+          <EmissionsHistory
+            history={emissionsHistory}
+            onYearSelect={setSelectedYear}
+          />
+        )}
+        {turnoverHistory && (
+          <TurnoverEmissionsHistory
+            history={turnoverHistory}
+            onYearSelect={setSelectedYear}
+          />
+        )}
+        <CompanyScope3 scope3={scope3} />
+      </div>
+    </>
   );
 }

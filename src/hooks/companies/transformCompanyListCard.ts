@@ -1,36 +1,21 @@
 import type { TFunction } from "i18next";
 import { createElement, Fragment } from "react";
-import type { RankedCompany } from "@/types/company";
+import type { PageExploreCompany } from "@/types/pages";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import {
-  getCompanyIndustryGroupName,
-  getCompanySectorName,
-} from "@/utils/data/industryGrouping";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import { calculateTrendline } from "@/lib/calculations/trends/analysis";
-import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
-import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
-import { IndustryGroupCode } from "@/lib/constants/sectors";
-import { SupportedLanguage } from "@/lib/languageDetection";
+import type { IndustryGroupCode } from "@/lib/constants/sectors";
+import type { SupportedLanguage } from "@/lib/languageDetection";
 
 type TransformCompanyOptions = {
   sectorNames: Record<string, string>;
   industryGroupNames: Record<IndustryGroupCode, string>;
-  isEmissionsAIGenerated: (
-    period: RankedCompany["reportingPeriods"][number],
-  ) => boolean;
   currentLanguage: SupportedLanguage;
   t: TFunction;
 };
-
-function getMeetsParisStatus(company: RankedCompany): boolean | null {
-  const trendAnalysis = calculateTrendline(company);
-  return trendAnalysis ? calculateMeetsParis(company, trendAnalysis) : null;
-}
 
 function getChangeRateTooltip(
   emissionsChange: number | null,
@@ -49,77 +34,52 @@ function getChangeRateColor(
   return emissionsChange < 0 ? "text-orange-2" : "text-pink-3";
 }
 
-function buildEmissionsFields(
-  latestPeriod: RankedCompany["reportingPeriods"][number] | undefined,
-  previousPeriod: RankedCompany["reportingPeriods"][number] | undefined,
-  options: TransformCompanyOptions,
-) {
-  const { isEmissionsAIGenerated, currentLanguage, t } = options;
-  const currentEmissions =
-    latestPeriod?.emissions?.calculatedTotalEmissions || null;
-  const emissionsChange = calculateEmissionsChange(
-    latestPeriod,
-    previousPeriod,
-  );
-  const totalEmissionsAIGenerated = latestPeriod
-    ? isEmissionsAIGenerated(latestPeriod)
-    : false;
-  const yearOverYearAIGenerated =
-    (latestPeriod && isEmissionsAIGenerated(latestPeriod)) ||
-    (previousPeriod && isEmissionsAIGenerated(previousPeriod));
-
-  return {
-    emissionsValue:
-      currentEmissions != null
-        ? formatEmissionsAbsolute(currentEmissions, currentLanguage)
-        : null,
-    emissionsYear: latestPeriod
-      ? new Date(latestPeriod.endDate).getFullYear().toString()
-      : undefined,
-    emissionsUnit: t("emissionsUnit"),
-    emissionsIsAIGenerated: totalEmissionsAIGenerated,
-    changeRateValue: emissionsChange
-      ? formatPercentChange(emissionsChange, currentLanguage)
-      : null,
-    changeRateColor: getChangeRateColor(emissionsChange),
-    changeRateIsAIGenerated: yearOverYearAIGenerated,
-    changeRateTooltip: getChangeRateTooltip(emissionsChange, t),
-  };
-}
-
 export function transformCompanyToListCard(
-  company: RankedCompany,
+  company: PageExploreCompany,
   options: TransformCompanyOptions,
 ): ListCardProps {
-  const { sectorNames, industryGroupNames } = options;
-  const { name, industry, reportingPeriods } = company;
-  const latestPeriod = reportingPeriods?.[0];
-  const previousPeriod = reportingPeriods?.[1];
-  const sectorName = getCompanySectorName(company, sectorNames);
-  const industryGroupName = getCompanyIndustryGroupName(
-    company,
-    industryGroupNames,
-  );
+  const { sectorNames, industryGroupNames, currentLanguage, t } = options;
+  const sectorName = company.sectorCode
+    ? (sectorNames[company.sectorCode] ?? company.sectorCode)
+    : "";
+  const industryGroupName = company.industryGroupCode
+    ? (industryGroupNames[company.industryGroupCode as IndustryGroupCode] ??
+      company.industryGroupCode)
+    : "";
+  const emissionsChange = company.emissionsChangeLastTwoYears;
 
   return {
-    name,
-    description: industry
+    name: company.name,
+    description: company.sectorCode
       ? createElement(
           Fragment,
           null,
           createElement("span", { className: "font-semibold" }, sectorName),
-          createElement("span", null, ` • ${industryGroupName}`),
+          industryGroupName
+            ? createElement("span", null, ` • ${industryGroupName}`)
+            : null,
         )
       : createElement("span", { className: "font-semibold" }, sectorName),
     logoUrl: company.logoUrl,
     variant: "company" as const,
-    baseYear: company?.baseYear?.year || null,
+    baseYear: company.baseYear,
     linkTo: getCompanyDetailPath(company),
-    meetsParis: getMeetsParisStatus(company),
+    meetsParis: company.meetsParis,
     meetsParisTranslationKey: "companies.card.meetsParis",
-    ...buildEmissionsFields(latestPeriod, previousPeriod, options),
-    isFinancialsSector: industry?.industryGics?.sectorCode === "40",
-    hasScope3Coverage:
-      (latestPeriod?.emissions?.scope3?.categories?.length || 0) > 0,
+    emissionsValue:
+      company.latestTotalEmissions != null
+        ? formatEmissionsAbsolute(company.latestTotalEmissions, currentLanguage)
+        : null,
+    emissionsYear: company.latestYear?.toString(),
+    emissionsUnit: t("emissionsUnit"),
+    emissionsIsAIGenerated: company.emissionsIsAIGenerated,
+    changeRateValue: emissionsChange
+      ? formatPercentChange(emissionsChange, currentLanguage)
+      : null,
+    changeRateColor: getChangeRateColor(emissionsChange),
+    changeRateIsAIGenerated: company.changeRateIsAIGenerated,
+    changeRateTooltip: getChangeRateTooltip(emissionsChange, t),
+    isFinancialsSector: company.isFinancialsSector,
+    hasScope3Coverage: company.hasScope3Coverage,
   };
 }

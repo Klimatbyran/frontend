@@ -1,13 +1,13 @@
 import { useTranslation } from "react-i18next";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import type { RankedCompany } from "@/types/company";
+import type { PageExploreCompany } from "@/types/pages";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useSortOptions } from "@/hooks/companies/useCompanySorting";
 import useTransformCompanyListCard from "@/hooks/companies/useTransformCompanyListCard";
 import { ExploreEntityList } from "@/components/explore/ExploreEntityList";
 
 interface CompanyListProps {
-  companies: RankedCompany[];
+  companies: PageExploreCompany[];
 }
 
 export function CompanyList({ companies }: CompanyListProps) {

@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { orderSelectedCards } from "@/utils/compare/comparisonUtils";
 import { enrichComparisonCards } from "./comparisonItemsUtils";
 import {
@@ -38,7 +37,6 @@ export function useComparisonItems() {
   });
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
-  const { isAIGenerated } = useVerificationStatus();
 
   const items = useMemo(() => {
     if (!hasViewData || !activeVariant) return [];
@@ -57,7 +55,6 @@ export function useComparisonItems() {
       regions: regions ?? [],
       currentLanguage,
       t,
-      isAIGenerated,
     });
   }, [
     activeIds,
@@ -68,7 +65,6 @@ export function useComparisonItems() {
     companies,
     currentLanguage,
     hasViewData,
-    isAIGenerated,
     municipalities,
     regions,
     t,

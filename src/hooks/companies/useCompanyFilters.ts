@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import type { RankedCompany } from "@/types/company";
+import type { PageExploreCompany } from "@/types/pages";
 import {
   useIndustryGroupFilterOptionGroups,
   useIndustryGroupNames,
@@ -85,7 +85,7 @@ function useCompanySearchParamSetters() {
 }
 
 function useFilteredCompanies(
-  companies: RankedCompany[],
+  companies: PageExploreCompany[],
   params: {
     sectors: ReturnType<typeof parseCompanySectors>;
     industryGroups: IndustryGroupOption[];
@@ -108,7 +108,7 @@ function useFilteredCompanies(
 }
 
 function useCompanyFilterGroups(
-  companies: RankedCompany[],
+  companies: PageExploreCompany[],
   options: {
     includeSectorFilter: boolean;
     includeIndustryGroupFilter: boolean;
@@ -208,7 +208,7 @@ function useCompanyFilterGroups(
 }
 
 function useCompanyFilterUiState(
-  companies: RankedCompany[],
+  companies: PageExploreCompany[],
   options: {
     includeSectorFilter: boolean;
     includeIndustryGroupFilter: boolean;
@@ -262,7 +262,7 @@ function useCompanyFilterUiState(
 }
 
 export const useCompanyFilters = (
-  companies: RankedCompany[],
+  companies: PageExploreCompany[],
   options: UseCompanyFiltersOptions = {},
 ) => {
   const { includeSectorFilter = true, includeIndustryGroupFilter = false } =

@@ -1,80 +1,57 @@
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import type { CompanyDetails, ReportingPeriod } from "@/types/company";
+import type { PageCompanyHeader, PageCompanyOverview } from "@/types/pages";
 import {
   useIndustryGroupNames,
   useSectorNames,
 } from "@/hooks/companies/useCompanySectors";
-import {
-  getCompanyIndustryGroupName,
-  getCompanySectorName,
-} from "@/utils/data/industryGrouping";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmployeeCount } from "@/utils/formatting/localization";
-import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { getCompanyDescription } from "@/utils/business/company";
-import { calculateTrendline } from "@/lib/calculations/trends/analysis";
-import { calculateMeetsParis } from "@/lib/calculations/trends/meetsParis";
 import { CompanyDescription } from "./CompanyDescription";
 import { OverviewStatistics } from "./OverviewStatistics";
-import { yearFromIsoDate } from "@/utils/date";
 import { CompanyDetailHeader } from "../CompanyDetailHeader";
 import {
   CompanyOverviewActions,
   CompanyOverviewMainStats,
 } from "./CompanyOverviewParts";
+import { periodsFromAvailableYears } from "@/utils/pages/companyDetailAdapters";
+import type { IndustryGroupCode } from "@/lib/constants/sectors";
 
 interface CompanyOverviewProps {
-  company: CompanyDetails;
-  selectedPeriod: ReportingPeriod;
-  previousPeriod?: ReportingPeriod;
-  yearOverYearChange: number | null;
+  header: PageCompanyHeader;
+  overview: PageCompanyOverview;
   headerChip?: ReactNode;
 }
 
 export function CompanyOverview({
-  company,
-  selectedPeriod,
-  previousPeriod,
-  yearOverYearChange,
+  header,
+  overview,
   headerChip,
 }: CompanyOverviewProps) {
   const { t } = useTranslation();
   const sectorNames = useSectorNames();
   const industryGroupNames = useIndustryGroupNames();
   const { currentLanguage } = useLanguage();
-  const { isAIGenerated, isEmissionsAIGenerated } = useVerificationStatus();
 
-  const periodYear = yearFromIsoDate(selectedPeriod.endDate);
-  const totalEmissionsAIGenerated = isEmissionsAIGenerated(selectedPeriod);
-  const yearOverYearAIGenerated =
-    isEmissionsAIGenerated(selectedPeriod) ||
-    (previousPeriod && isEmissionsAIGenerated(previousPeriod));
-  const turnoverAIGenerated = isAIGenerated(selectedPeriod.economy?.turnover);
-  const employeesAIGenerated = isAIGenerated(selectedPeriod.economy?.employees);
-  const sectorCode = company.industry?.industryGics?.sectorCode;
-  const sectorName = getCompanySectorName(company, sectorNames);
-  const industryGroupName = getCompanyIndustryGroupName(
-    company,
-    industryGroupNames,
-  );
-  const description = getCompanyDescription(company, currentLanguage);
-  const sortedPeriods = [...company.reportingPeriods].sort(
-    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
-  );
-  const formattedEmployeeCount = selectedPeriod.economy?.employees?.value
-    ? formatEmployeeCount(
-        selectedPeriod.economy.employees.value,
-        currentLanguage,
-      )
+  const sectorCode = overview.sectorCode ?? header.sectorCode ?? undefined;
+  const industryGroupCode =
+    overview.industryGroupCode ?? header.industryGroupCode;
+  const sectorName = sectorCode
+    ? (sectorNames[sectorCode] ?? sectorCode)
     : t("companies.overview.notReported");
-  const calculatedTotalEmissions =
-    selectedPeriod.emissions?.calculatedTotalEmissions || null;
-  const trendAnalysis = calculateTrendline(company);
-  const meetsParis = trendAnalysis
-    ? calculateMeetsParis(company, trendAnalysis)
-    : null;
+  const industryGroupName = industryGroupCode
+    ? (industryGroupNames[industryGroupCode as IndustryGroupCode] ??
+      industryGroupCode)
+    : t("companies.overview.notReported");
+  const description = getCompanyDescription(header, currentLanguage);
+  const sortedPeriods = periodsFromAvailableYears(header.availableYears);
+  const formattedEmployeeCount =
+    overview.employees != null
+      ? formatEmployeeCount(overview.employees, currentLanguage)
+      : t("companies.overview.notReported");
+  const periodYear = overview.year?.toString() ?? "";
 
   return (
     <SectionWithHelp
@@ -89,12 +66,12 @@ export function CompanyOverview({
     >
       <div className="mb-4 space-y-4 md:mb-12">
         <CompanyDetailHeader
-          name={company.name}
-          logoUrl={company.logoUrl}
+          name={header.name}
+          logoUrl={header.logoUrl}
           headerChip={headerChip}
         />
         <CompanyOverviewActions
-          companyId={company.id}
+          companyId={header.id}
           sortedPeriods={sortedPeriods}
         />
         <CompanyDescription description={description} />
@@ -103,22 +80,24 @@ export function CompanyOverview({
       <CompanyOverviewMainStats
         periodYear={periodYear}
         sectorCode={sectorCode}
-        calculatedTotalEmissions={calculatedTotalEmissions}
+        calculatedTotalEmissions={overview.totalEmissions}
         currentLanguage={currentLanguage}
-        totalEmissionsAIGenerated={totalEmissionsAIGenerated}
-        yearOverYearChange={yearOverYearChange}
-        yearOverYearAIGenerated={!!yearOverYearAIGenerated}
-        meetsParis={meetsParis}
+        totalEmissionsAIGenerated={overview.emissionsIsAIGenerated}
+        yearOverYearChange={overview.emissionsChangeLastTwoYears}
+        yearOverYearAIGenerated={overview.changeRateIsAIGenerated}
+        meetsParis={overview.meetsParis}
       />
 
       <OverviewStatistics
-        selectedPeriod={selectedPeriod}
         currentLanguage={currentLanguage}
         sectorName={sectorName}
         industryGroupName={industryGroupName}
         formattedEmployeeCount={formattedEmployeeCount}
-        turnoverAIGenerated={turnoverAIGenerated}
-        employeesAIGenerated={employeesAIGenerated}
+        turnover={overview.turnover}
+        turnoverCurrency={overview.turnoverCurrency}
+        turnoverAIGenerated={overview.turnoverIsAIGenerated}
+        employeesAIGenerated={overview.employeesIsAIGenerated}
+        reportURL={overview.reportURL}
         className="lg:flex lg:justify-between"
       />
     </SectionWithHelp>

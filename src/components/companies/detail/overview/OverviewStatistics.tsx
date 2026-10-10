@@ -6,38 +6,42 @@ import {
   SupplementalDataField,
   SupplementalDataPanel,
 } from "@/components/detail/SupplementalDataPanel";
-import { ReportingPeriod } from "@/types/company";
 import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 
 interface OverviewStatisticProps {
-  selectedPeriod: ReportingPeriod;
   currentLanguage: "sv" | "en";
   sectorName: string;
   industryGroupName: string;
   formattedEmployeeCount: string;
+  turnover: number | null;
+  turnoverCurrency: string | null;
   turnoverAIGenerated: boolean;
   employeesAIGenerated: boolean;
+  reportURL: string | null;
   className?: string;
 }
 
 export function OverviewStatistics({
-  selectedPeriod,
   currentLanguage,
   sectorName,
   industryGroupName,
   formattedEmployeeCount,
+  turnover,
+  turnoverCurrency,
   turnoverAIGenerated,
   employeesAIGenerated,
+  reportURL,
   className,
 }: OverviewStatisticProps) {
-  const formattedTurnover = selectedPeriod.economy?.turnover?.value
-    ? formatTurnoverValue(
-        selectedPeriod.economy.turnover.value,
-        currentLanguage,
-        t,
-        selectedPeriod.economy.turnover.currency,
-      )
-    : t("companies.overview.notReported");
+  const formattedTurnover =
+    turnover != null
+      ? formatTurnoverValue(
+          turnover,
+          currentLanguage,
+          t,
+          turnoverCurrency ?? undefined,
+        )
+      : t("companies.overview.notReported");
 
   return (
     <SupplementalDataPanel className={className}>
@@ -63,11 +67,11 @@ export function OverviewStatistics({
         </span>
       </SupplementalDataField>
 
-      {selectedPeriod?.reportURL && (
+      {reportURL && (
         <div>
           <div className="md:mb-2">
             <a
-              href={selectedPeriod.reportURL}
+              href={reportURL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-blue-2 hover:text-blue-1 transition-colors"
