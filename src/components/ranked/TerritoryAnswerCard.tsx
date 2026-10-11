@@ -161,9 +161,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
       {topPerformer && (
         <Performer
           label={t(`${translationPrefix}.insights.keyStatistics.best`, {
-            defaultValue: t(
-              "municipalities.list.insights.keyStatistics.best",
-            ),
+            defaultValue: t("municipalities.list.insights.keyStatistics.best"),
           })}
           name={topPerformer.name}
           value={displayMinus(topPerformer.value)}
@@ -175,9 +173,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
       {bottomPerformer && (
         <Performer
           label={t(`${translationPrefix}.insights.keyStatistics.worst`, {
-            defaultValue: t(
-              "municipalities.list.insights.keyStatistics.worst",
-            ),
+            defaultValue: t("municipalities.list.insights.keyStatistics.worst"),
           })}
           name={bottomPerformer.name}
           value={displayMinus(bottomPerformer.value)}
@@ -260,11 +256,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
                   />
                 ))}
               </div>
-              <DistributionRows
-                stats={stats}
-                total={totalDistribution}
-                grow
-              />
+              <DistributionRows stats={stats} total={totalDistribution} grow />
             </div>
           )}
         </div>
@@ -309,14 +301,11 @@ function DistributionRows({
   return (
     <div
       className={
-        grow
-          ? "flex min-h-0 flex-1 flex-col gap-2.5 lg:gap-3"
-          : "space-y-2"
+        grow ? "flex min-h-0 flex-1 flex-col gap-2.5 lg:gap-3" : "space-y-2"
       }
     >
       {stats.map((stat) => {
-        const percent =
-          total > 0 ? Math.round((stat.count / total) * 100) : 0;
+        const percent = total > 0 ? Math.round((stat.count / total) * 100) : 0;
         return (
           <div
             key={stat.label}
