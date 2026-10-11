@@ -34,23 +34,20 @@ function DataChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
 
 function AnswerCardSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-6 rounded-level-2 bg-black-2 p-6 lg:grid-cols-[minmax(0,1fr)_5.75rem] lg:gap-8 lg:p-8">
-      <div className="flex flex-col justify-between gap-6">
-        <div className="space-y-3">
-          <SkeletonBlock className="h-3 w-28" />
-          <SkeletonBlock className="h-14 w-32" />
-          <SkeletonBlock className="h-4 w-full" />
-          <SkeletonBlock className="h-4 w-5/6" />
-          <SkeletonBlock className="h-7 w-32 rounded-full" />
-        </div>
-        <div className="space-y-4">
-          <SkeletonBlock className="h-16 w-full rounded-2xl" />
-          <SkeletonBlock className="h-16 w-full rounded-2xl" />
-          <SkeletonBlock className="h-2.5 w-full rounded-full" />
-        </div>
-        <SkeletonBlock className="h-3 w-2/3" />
+    <div className="flex flex-col justify-between gap-6 rounded-level-2 bg-black-2 p-6 lg:gap-8 lg:p-8">
+      <div className="space-y-3">
+        <SkeletonBlock className="h-3 w-28" />
+        <SkeletonBlock className="h-14 w-32" />
+        <SkeletonBlock className="h-4 w-full" />
+        <SkeletonBlock className="h-4 w-5/6" />
+        <SkeletonBlock className="h-7 w-32 rounded-full" />
       </div>
-      <SkeletonBlock className="hidden min-h-[12rem] rounded-2xl lg:block" />
+      <div className="space-y-4">
+        <SkeletonBlock className="h-16 w-full rounded-2xl" />
+        <SkeletonBlock className="h-16 w-full rounded-2xl" />
+        <SkeletonBlock className="h-2.5 w-full rounded-full" />
+      </div>
+      <SkeletonBlock className="h-3 w-2/3" />
     </div>
   );
 }

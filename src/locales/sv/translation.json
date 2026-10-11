@@ -1143,7 +1143,6 @@
     "booleanLead_other": "{{count}} av {{total}} {{entities}} {{verdict}}",
     "lowerIsBetter": "Lägre är bättre",
     "higherIsBetter": "Högre är bättre",
-    "scaleAverage": "Genomsnitt på måttet",
     "bestList": "De starkaste resultaten på det här måttet.",
     "worstList": "De svagaste resultaten på det här måttet.",
     "everyTitleMunicipalities": "Alla kommuner",

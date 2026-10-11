@@ -1096,7 +1096,6 @@
     "booleanLead_other": "{{count}} of {{total}} {{entities}} {{verdict}}",
     "lowerIsBetter": "Lower is better",
     "higherIsBetter": "Higher is better",
-    "scaleAverage": "Average on this measure",
     "bestList": "The strongest results on this measure.",
     "worstList": "The weakest results on this measure.",
     "everyTitleMunicipalities": "Every municipality",
