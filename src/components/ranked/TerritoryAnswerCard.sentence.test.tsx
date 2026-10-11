@@ -32,6 +32,11 @@ const kpi: KPIValue<Row> = {
 
 beforeAll(async () => {
   await i18n.changeLanguage("en");
+  class RO {
+    observe() {}
+    disconnect() {}
+  }
+  vi.stubGlobal("ResizeObserver", RO);
 });
 
 describe("TerritoryAnswerCard boolean sentence", () => {
