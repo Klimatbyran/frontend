@@ -34,18 +34,20 @@ function DataChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
 
 function AnswerCardSkeleton() {
   return (
-    <div className="flex flex-col justify-between gap-6 rounded-level-2 bg-black-2 p-6 lg:gap-8 lg:p-8">
-      <div className="space-y-3">
+    <div className="flex min-h-[20rem] flex-col justify-between rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9">
+      <div className="space-y-3.5">
         <SkeletonBlock className="h-3 w-28" />
-        <SkeletonBlock className="h-14 w-32" />
+        <SkeletonBlock className="h-14 w-32 md:h-16" />
         <SkeletonBlock className="h-4 w-full" />
         <SkeletonBlock className="h-4 w-5/6" />
         <SkeletonBlock className="h-7 w-32 rounded-full" />
       </div>
-      <div className="space-y-4">
-        <SkeletonBlock className="h-16 w-full rounded-2xl" />
-        <SkeletonBlock className="h-16 w-full rounded-2xl" />
-        <SkeletonBlock className="h-2.5 w-full rounded-full" />
+      <div className="space-y-4 py-6 md:py-8">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <SkeletonBlock className="h-20 w-full rounded-2xl" />
+          <SkeletonBlock className="h-20 w-full rounded-2xl" />
+        </div>
+        <SkeletonBlock className="h-3 w-full rounded-full" />
       </div>
       <SkeletonBlock className="h-3 w-2/3" />
     </div>
@@ -74,10 +76,10 @@ export function OverviewPageSkeleton({
   chipCount = variant === "regions" ? 2 : 7,
 }: OverviewPageSkeletonProps) {
   return (
-    <div className="space-y-8 lg:-mt-8">
-      <div className="space-y-2">
-        <div className="space-y-2">
-          <SkeletonBlock className="h-9 w-56 md:w-72" />
+    <div className="space-y-8 md:space-y-10">
+      <div className="space-y-5 md:space-y-7">
+        <div className="space-y-5">
+          <SkeletonBlock className="h-9 w-56 md:h-11 md:w-72" />
           <SkeletonBlock className="h-4 w-full max-w-xl" />
         </div>
         <DataChipSelectorSkeleton chipCount={chipCount} />

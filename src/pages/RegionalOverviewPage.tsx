@@ -108,13 +108,15 @@ export function RegionalOverviewPage() {
   }
 
   return (
-    <div className="space-y-8 lg:-mt-8">
-      <div className="space-y-2">
-        <PageHeader
-          className="mx-0 mb-0 max-w-none p-0 md:mb-0"
-          title={t("regionalOverviewPage.title")}
-          description={t("regionalOverviewPage.lead")}
-        />
+    <div className="space-y-8 md:space-y-10">
+      <div className="space-y-5 md:space-y-7">
+        <div className="space-y-5">
+          <PageHeader
+            className="mx-0 mb-0 max-w-none p-0 md:mb-0"
+            title={t("regionalOverviewPage.title")}
+            description={t("regionalOverviewPage.lead")}
+          />
+        </div>
         <DataChipSelector<Region>
           selectedKPI={selectedKPI}
           kpis={regionalKPIs}

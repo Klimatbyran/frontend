@@ -65,7 +65,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
 
   if (!statistics.validData.length) {
     return (
-      <section className="flex items-center rounded-level-2 bg-black-2 p-6">
+      <section className="flex items-center rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9">
         <p className="text-white/70">
           {t(`${translationPrefix}.insights.noData.metric`, {
             metric: t(`${translationPrefix}.kpis.${kpiKey}.label`),
@@ -150,14 +150,14 @@ export function TerritoryAnswerCard<T extends { name: string }>({
       : "";
 
   return (
-    <section className="flex h-full min-h-0 flex-col justify-between gap-6 rounded-level-2 bg-black-2 px-5 py-5 md:px-6 md:py-6 lg:gap-8 lg:px-8 lg:py-8">
-      <div className="space-y-3 lg:space-y-4">
-        <p className="text-[11px] uppercase tracking-[0.09em] text-white/45">
+    <section className="flex h-full min-h-0 flex-col justify-between rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9">
+      <div className="space-y-3.5 md:space-y-4">
+        <p className="text-xs uppercase tracking-[0.09em] text-white/45">
           {t("territoryOverview.kicker")}
         </p>
-        <p className="text-[20px] font-light leading-snug tracking-tight lg:text-[22px]">
+        <p className="text-[20px] font-light leading-snug tracking-tight md:text-[22px] lg:text-[24px] lg:leading-snug">
           <b
-            className="mb-1.5 block text-[56px] font-medium leading-none tracking-tighter tabular-nums lg:text-[64px]"
+            className="mb-2 block text-[56px] font-medium leading-none tracking-tighter tabular-nums md:text-[68px] lg:text-[72px]"
             style={{ color: averageColor }}
           >
             {headline}
@@ -165,7 +165,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
           {lead}
         </p>
         {selectedKPI.detailedDescription && (
-          <p className="text-sm leading-relaxed text-white/60 lg:text-[15px] lg:leading-relaxed">
+          <p className="text-sm leading-relaxed text-white/60 md:text-base md:leading-relaxed">
             {selectedKPI.detailedDescription}
           </p>
         )}
@@ -181,9 +181,9 @@ export function TerritoryAnswerCard<T extends { name: string }>({
         )}
       </div>
 
-      <div className="space-y-5 lg:space-y-6">
+      <div className="flex flex-1 flex-col justify-center gap-6 py-4 md:gap-8 md:py-6 lg:gap-10 lg:py-8">
         {(topPerformer || bottomPerformer) && (
-          <div className="grid grid-cols-1 gap-2 border-t border-white/10 pt-4 lg:grid-cols-2 lg:gap-3 lg:pt-5">
+          <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-3 lg:gap-4">
             {topPerformer && (
               <Performer
                 label={t(`${translationPrefix}.insights.keyStatistics.best`, {
@@ -214,12 +214,8 @@ export function TerritoryAnswerCard<T extends { name: string }>({
         )}
 
         {totalDistribution > 0 && (
-          <div
-            className={
-              topPerformer ? "" : "border-t border-white/10 pt-4 lg:pt-5"
-            }
-          >
-            <div className="flex h-2.5 overflow-hidden rounded-full lg:h-3">
+          <div className="space-y-3 md:space-y-3.5">
+            <div className="flex h-2.5 overflow-hidden rounded-full md:h-3">
               {stats.map((stat) => (
                 <div
                   key={stat.label}
@@ -230,7 +226,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
                 />
               ))}
             </div>
-            <div className="mt-2.5 space-y-2 lg:mt-3 lg:space-y-2.5">
+            <div className="space-y-2 md:space-y-2.5">
               {stats.map((stat) => {
                 const percent =
                   totalDistribution > 0
@@ -239,7 +235,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
                 return (
                   <div
                     key={stat.label}
-                    className="flex items-center justify-between gap-3 text-sm lg:text-[15px]"
+                    className="flex items-center justify-between gap-3 text-sm md:text-[15px]"
                   >
                     <span className="flex min-w-0 items-center gap-2 text-white/70">
                       <i
@@ -269,7 +265,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
         )}
       </div>
 
-      <div className="space-y-1 border-t border-white/10 pt-4 lg:pt-5">
+      <div className="space-y-1">
         {missingText && (
           <p className="truncate text-sm italic text-white/40">{missingText}</p>
         )}
@@ -310,25 +306,25 @@ function Performer({
   nameClass: string;
 }) {
   return (
-    <div className="rounded-2xl bg-white/10 px-3.5 py-3 lg:px-4 lg:py-4">
+    <div className="rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:px-5 lg:py-5">
       <p className="text-[11px] uppercase tracking-[0.08em] text-white/45">
         {label}
       </p>
       {href ? (
         <LocalizedLink
           to={href}
-          className={`mt-0.5 block truncate font-semibold hover:underline lg:text-[17px] ${nameClass}`}
+          className={`mt-1 block truncate font-semibold hover:underline md:text-[17px] lg:text-lg ${nameClass}`}
         >
           {name}
         </LocalizedLink>
       ) : (
         <p
-          className={`mt-0.5 truncate font-semibold lg:text-[17px] ${nameClass}`}
+          className={`mt-1 truncate font-semibold md:text-[17px] lg:text-lg ${nameClass}`}
         >
           {name}
         </p>
       )}
-      <p className="text-[13px] text-white/55 lg:text-sm">{value}</p>
+      <p className="text-[13px] text-white/55 md:text-sm">{value}</p>
     </div>
   );
 }
