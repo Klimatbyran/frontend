@@ -3,6 +3,7 @@ import { ArrowDownCircle, Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { useNavigate } from "react-router-dom";
+import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 import { PageHeader } from "@/components/layout/PageHeader";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import {
@@ -108,7 +109,7 @@ export function RegionalOverviewPage() {
   }
 
   return (
-    <div className="space-y-8 md:space-y-10">
+    <OverviewPageRoot>
       <div className="space-y-5 md:space-y-7">
         <div className="space-y-5">
           <PageHeader
@@ -183,6 +184,6 @@ export function RegionalOverviewPage() {
         booleanLabels={selectedKPI.booleanLabels}
         showParis={!isMeetsParisKpiKey(selectedKPI.key)}
       />
-    </div>
+    </OverviewPageRoot>
   );
 }

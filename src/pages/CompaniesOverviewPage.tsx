@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useCompanies } from "@/hooks/companies/useCompanies";
+import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { CompaniesOverviewSkeleton } from "@/components/companies/overview/CompaniesOverviewSkeleton";
 import InsightsList from "@/components/ranked/InsightsList";
@@ -137,8 +138,7 @@ export function CompaniesOverviewPage() {
   }
 
   return (
-    <div className="space-y-8 md:space-y-10">
-      <ParisScrollProgress />
+    <OverviewPageRoot leadIn={<ParisScrollProgress />}>
       {/* A step tighter than the page stack, so the chips sit closer to the cards. */}
       <div className="space-y-5 md:space-y-7">
         <div className="space-y-5">
@@ -179,6 +179,6 @@ export function CompaniesOverviewPage() {
       <ScrollReveal>
         <CompaniesTable companies={inView} />
       </ScrollReveal>
-    </div>
+    </OverviewPageRoot>
   );
 }

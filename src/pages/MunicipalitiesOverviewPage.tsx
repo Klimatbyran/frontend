@@ -10,6 +10,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
+import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 import { PageHeader } from "@/components/layout/PageHeader";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
@@ -158,7 +159,7 @@ export function MunicipalitiesOverviewPage() {
   }
 
   return (
-    <div className="space-y-8 md:space-y-10">
+    <OverviewPageRoot>
       <div className="space-y-5 md:space-y-7">
         <div className="space-y-5">
           <PageHeader
@@ -240,6 +241,6 @@ export function MunicipalitiesOverviewPage() {
         booleanLabels={selectedKPI.booleanLabels}
         showParis={!isMeetsParisKpiKey(selectedKPI.key)}
       />
-    </div>
+    </OverviewPageRoot>
   );
 }

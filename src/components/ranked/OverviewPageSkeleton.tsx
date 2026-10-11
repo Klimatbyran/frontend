@@ -1,3 +1,5 @@
+import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
+
 export type OverviewPageSkeletonVariant = "municipalities" | "regions";
 
 interface OverviewPageSkeletonProps {
@@ -76,7 +78,7 @@ export function OverviewPageSkeleton({
   chipCount = variant === "regions" ? 2 : 7,
 }: OverviewPageSkeletonProps) {
   return (
-    <div className="space-y-8 md:space-y-10">
+    <OverviewPageRoot>
       <div className="space-y-5 md:space-y-7">
         <div className="space-y-5">
           <SkeletonBlock className="h-9 w-56 md:h-11 md:w-72" />
@@ -93,6 +95,6 @@ export function OverviewPageSkeleton({
         <ListSkeleton />
       </div>
       <SkeletonBlock className="h-80 w-full rounded-level-2" />
-    </div>
+    </OverviewPageRoot>
   );
 }
