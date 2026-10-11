@@ -16,8 +16,7 @@ function SkeletonBlock({ className = "" }: { className?: string }) {
 
 function DataChipSelectorSkeleton({ chipCount }: { chipCount: number }) {
   return (
-    <div className="space-y-2">
-      <SkeletonBlock className="mx-1 h-3 w-36" />
+    <div>
       <div className="flex flex-col gap-2">
         <SkeletonBlock className="h-12 w-full rounded-xl md:hidden" />
         <div className="hidden flex-wrap gap-2 md:flex">
