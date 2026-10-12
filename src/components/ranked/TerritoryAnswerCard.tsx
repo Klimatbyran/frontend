@@ -185,106 +185,116 @@ export function TerritoryAnswerCard<T extends { name: string }>({
     </div>
   );
 
+  const headlineBlock = (
+    <div className="space-y-3 md:space-y-3.5">
+      <p className="text-xs uppercase tracking-[0.09em] text-white/45">
+        {t("territoryOverview.kicker")}
+      </p>
+      <p className="text-[20px] font-light leading-snug tracking-tight md:text-[22px] lg:text-[24px] lg:leading-snug">
+        <b
+          className="mb-2 block text-[56px] font-medium leading-none tracking-tighter tabular-nums md:text-[64px] lg:text-[68px]"
+          style={{ color: averageColor }}
+        >
+          {headline}
+        </b>
+        {lead}
+      </p>
+      {selectedKPI.detailedDescription && (
+        <p className="text-sm leading-relaxed text-white/60 md:text-base md:leading-relaxed">
+          {selectedKPI.detailedDescription}
+        </p>
+      )}
+    </div>
+  );
+
+  const directionBadge = !selectedKPI.isBoolean && (
+    <span className="inline-flex w-max items-center gap-1.5 rounded-full bg-blue-3/15 px-2.5 py-0.5 text-[13px] font-medium text-blue-3">
+      {selectedKPI.higherIsBetter ? "↑" : "↓"}{" "}
+      {t(
+        selectedKPI.higherIsBetter
+          ? "territoryOverview.higherIsBetter"
+          : "territoryOverview.lowerIsBetter",
+      )}
+    </span>
+  );
+
+  const sourceBlock = (
+    <div className="space-y-1">
+      {missingText && (
+        <p className="truncate text-sm italic text-white/40">{missingText}</p>
+      )}
+      {sourceLinks.length > 0 && (
+        <p className="text-sm italic text-white/40">
+          {t("territoryOverview.source")}{" "}
+          {sourceLinks.map((link, index) => (
+            <Fragment key={link.url}>
+              {index > 0 && ", "}
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-white/60"
+              >
+                {t(link.label)}
+              </a>
+            </Fragment>
+          ))}
+        </p>
+      )}
+    </div>
+  );
+
+  if (!selectedKPI.isBoolean) {
+    return (
+      <section className="flex h-full min-h-0 flex-col justify-between gap-4 rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9 lg:gap-5">
+        {headlineBlock}
+        {directionBadge}
+        {(topPerformer || bottomPerformer) && performers}
+        {totalDistribution > 0 && (
+          <div className="space-y-3">
+            <div className="flex h-3 overflow-hidden rounded-full lg:h-4">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  style={{
+                    width: `${(stat.count / totalDistribution) * 100}%`,
+                    backgroundColor:
+                      STAT_COLOR[stat.colorClass] ?? COLORS.grey,
+                  }}
+                />
+              ))}
+            </div>
+            <DistributionRows stats={stats} total={totalDistribution} large />
+          </div>
+        )}
+        {sourceBlock}
+      </section>
+    );
+  }
+
   return (
     <section className="flex h-full min-h-0 flex-col rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9">
-      <div className="space-y-3 md:space-y-3.5">
-        <p className="text-xs uppercase tracking-[0.09em] text-white/45">
-          {t("territoryOverview.kicker")}
-        </p>
-        <p className="text-[20px] font-light leading-snug tracking-tight md:text-[22px] lg:text-[24px] lg:leading-snug">
-          <b
-            className="mb-2 block text-[56px] font-medium leading-none tracking-tighter tabular-nums md:text-[64px] lg:text-[68px]"
-            style={{ color: averageColor }}
-          >
-            {headline}
-          </b>
-          {lead}
-        </p>
-        {selectedKPI.detailedDescription && (
-          <p className="text-sm leading-relaxed text-white/60 md:text-base md:leading-relaxed">
-            {selectedKPI.detailedDescription}
-          </p>
-        )}
-        {!selectedKPI.isBoolean && (
-          <span className="inline-flex w-max items-center gap-1.5 rounded-full bg-blue-3/15 px-2.5 py-0.5 text-[13px] font-medium text-blue-3">
-            {selectedKPI.higherIsBetter ? "↑" : "↓"}{" "}
-            {t(
-              selectedKPI.higherIsBetter
-                ? "territoryOverview.higherIsBetter"
-                : "territoryOverview.lowerIsBetter",
-            )}
-          </span>
-        )}
-      </div>
+      {headlineBlock}
 
-      {selectedKPI.isBoolean ? (
-        <div className="flex min-h-0 flex-1 flex-col gap-4 py-4 lg:flex-row lg:items-stretch lg:gap-4 lg:py-3">
-          <div className="flex min-h-[11rem] min-w-0 flex-1 items-center justify-center lg:min-h-[20rem]">
-            <KPIDistributionChart
-              data={entities}
-              selectedKPI={selectedKPI}
-              entityLabel={entityPlural}
-              translationPrefix={translationPrefix}
-              containerClassName="h-full min-h-0"
-            />
-          </div>
-          <div className="flex w-full flex-col justify-center gap-3 lg:w-60 lg:shrink-0">
-            {(topPerformer || bottomPerformer) && performers}
-            {totalDistribution > 0 && (
-              <DistributionRows
-                stats={stats}
-                total={totalDistribution}
-                grow={false}
-              />
-            )}
-          </div>
+      <div className="flex min-h-0 flex-1 flex-col gap-4 py-4 lg:flex-row lg:items-stretch lg:gap-4 lg:py-3">
+        <div className="flex min-h-[11rem] min-w-0 flex-1 items-center justify-center lg:min-h-[20rem]">
+          <KPIDistributionChart
+            data={entities}
+            selectedKPI={selectedKPI}
+            entityLabel={entityPlural}
+            translationPrefix={translationPrefix}
+            containerClassName="h-full min-h-0"
+          />
         </div>
-      ) : (
-        <div className="flex min-h-0 flex-1 flex-col gap-4 py-4 lg:gap-5 lg:py-5">
+        <div className="flex w-full flex-col justify-center gap-3 lg:w-60 lg:shrink-0">
           {(topPerformer || bottomPerformer) && performers}
           {totalDistribution > 0 && (
-            <div className="flex min-h-0 flex-1 flex-col gap-3 lg:gap-4">
-              <div className="flex h-3 shrink-0 overflow-hidden rounded-full lg:h-4">
-                {stats.map((stat) => (
-                  <div
-                    key={stat.label}
-                    style={{
-                      width: `${(stat.count / totalDistribution) * 100}%`,
-                      backgroundColor:
-                        STAT_COLOR[stat.colorClass] ?? COLORS.grey,
-                    }}
-                  />
-                ))}
-              </div>
-              <DistributionRows stats={stats} total={totalDistribution} grow />
-            </div>
+            <DistributionRows stats={stats} total={totalDistribution} />
           )}
         </div>
-      )}
-
-      <div className="space-y-1">
-        {missingText && (
-          <p className="truncate text-sm italic text-white/40">{missingText}</p>
-        )}
-        {sourceLinks.length > 0 && (
-          <p className="text-sm italic text-white/40">
-            {t("territoryOverview.source")}{" "}
-            {sourceLinks.map((link, index) => (
-              <Fragment key={link.url}>
-                {index > 0 && ", "}
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-white/60"
-                >
-                  {t(link.label)}
-                </a>
-              </Fragment>
-            ))}
-          </p>
-        )}
       </div>
+
+      {sourceBlock}
     </section>
   );
 }
@@ -292,30 +302,22 @@ export function TerritoryAnswerCard<T extends { name: string }>({
 function DistributionRows({
   stats,
   total,
-  grow,
+  large = false,
 }: {
   stats: Array<{ label: string; count: number; colorClass: string }>;
   total: number;
-  grow: boolean;
+  large?: boolean;
 }) {
   return (
-    <div
-      className={
-        grow
-          ? "flex min-h-0 flex-1 flex-col justify-center gap-3 lg:gap-5"
-          : "space-y-2"
-      }
-    >
+    <div className="space-y-2 lg:space-y-2.5">
       {stats.map((stat) => {
         const percent = total > 0 ? Math.round((stat.count / total) * 100) : 0;
         return (
           <div
             key={stat.label}
-            className={
-              grow
-                ? "flex items-center justify-between gap-3 text-sm lg:text-lg"
-                : "flex items-center justify-between gap-3 text-sm"
-            }
+            className={`flex items-center justify-between gap-3 text-sm ${
+              large ? "lg:text-lg" : ""
+            }`}
           >
             <span className="flex min-w-0 items-center gap-2 text-white/70">
               <i
@@ -324,7 +326,7 @@ function DistributionRows({
                   backgroundColor: STAT_COLOR[stat.colorClass] ?? COLORS.grey,
                 }}
               />
-              <span className={grow ? "truncate" : "min-w-0"}>
+              <span className={large ? "truncate" : "min-w-0"}>
                 {lowercaseFirst(stat.label)}
               </span>
             </span>
