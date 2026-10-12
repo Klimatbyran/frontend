@@ -13,8 +13,9 @@ ENV VITE_MAILCHIMP_URL=$VITE_MAILCHIMP_URL
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files and the patched braces package npm ci installs from disk
 COPY package*.json ./
+COPY vendor/braces vendor/braces
 
 # Install dependencies
 RUN npm ci
