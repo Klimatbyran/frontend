@@ -155,7 +155,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
       className={
         selectedKPI.isBoolean
           ? "grid grid-cols-1 gap-2.5"
-          : "grid shrink-0 grid-cols-1 gap-2.5 md:grid-cols-2 lg:gap-3"
+          : "grid shrink-0 grid-cols-1 gap-2.5 md:grid-cols-2 lg:gap-4"
       }
     >
       {topPerformer && (
@@ -186,11 +186,11 @@ export function TerritoryAnswerCard<T extends { name: string }>({
   );
 
   const headlineBlock = (
-    <div className="space-y-3 md:space-y-3.5">
-      <p className="text-xs uppercase tracking-[0.09em] text-white/45">
+    <div className="space-y-3 md:space-y-3.5 lg:space-y-4">
+      <p className="text-xs uppercase tracking-[0.09em] text-white/45 lg:text-sm">
         {t("territoryOverview.kicker")}
       </p>
-      <p className="text-[20px] font-light leading-snug tracking-tight md:text-[22px] lg:text-[24px] lg:leading-snug">
+      <p className="text-[20px] font-light leading-snug tracking-tight md:text-[22px] lg:text-[26px] lg:leading-snug">
         <b
           className="mb-2 block text-[56px] font-medium leading-none tracking-tighter tabular-nums md:text-[64px] lg:text-[68px]"
           style={{ color: averageColor }}
@@ -200,7 +200,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
         {lead}
       </p>
       {selectedKPI.detailedDescription && (
-        <p className="text-sm leading-relaxed text-white/60 md:text-base md:leading-relaxed">
+        <p className="text-sm leading-relaxed text-white/60 md:text-base lg:text-lg lg:leading-relaxed">
           {selectedKPI.detailedDescription}
         </p>
       )}
@@ -208,7 +208,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
   );
 
   const directionBadge = !selectedKPI.isBoolean && (
-    <span className="inline-flex w-max items-center gap-1.5 rounded-full bg-blue-3/15 px-2.5 py-0.5 text-[13px] font-medium text-blue-3">
+    <span className="inline-flex w-max items-center gap-1.5 rounded-full bg-blue-3/15 px-2.5 py-0.5 text-[13px] font-medium text-blue-3 lg:px-3 lg:py-1 lg:text-base">
       {selectedKPI.higherIsBetter ? "↑" : "↓"}{" "}
       {t(
         selectedKPI.higherIsBetter
@@ -221,10 +221,12 @@ export function TerritoryAnswerCard<T extends { name: string }>({
   const sourceBlock = (
     <div className="space-y-1">
       {missingText && (
-        <p className="truncate text-sm italic text-white/40">{missingText}</p>
+        <p className="truncate text-sm italic text-white/40 lg:text-base">
+          {missingText}
+        </p>
       )}
       {sourceLinks.length > 0 && (
-        <p className="text-sm italic text-white/40">
+        <p className="text-sm italic text-white/40 lg:text-base">
           {t("territoryOverview.source")}{" "}
           {sourceLinks.map((link, index) => (
             <Fragment key={link.url}>
@@ -246,12 +248,14 @@ export function TerritoryAnswerCard<T extends { name: string }>({
 
   if (!selectedKPI.isBoolean) {
     return (
-      <section className="flex h-full min-h-0 flex-col justify-between gap-4 rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9 lg:gap-5">
-        {headlineBlock}
-        {directionBadge}
+      <section className="flex h-full min-h-0 flex-col gap-4 rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9 lg:justify-between lg:gap-0">
+        <div className="space-y-3 lg:space-y-5">
+          {headlineBlock}
+          {directionBadge}
+        </div>
         {(topPerformer || bottomPerformer) && performers}
         {totalDistribution > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-3 lg:space-y-5">
             <div className="flex h-3 overflow-hidden rounded-full lg:h-4">
               {stats.map((stat) => (
                 <div
@@ -285,10 +289,10 @@ export function TerritoryAnswerCard<T extends { name: string }>({
             containerClassName="h-full min-h-0"
           />
         </div>
-        <div className="flex w-full flex-col justify-center gap-3 lg:w-60 lg:shrink-0">
+        <div className="flex w-full flex-col justify-center gap-3 lg:w-72 lg:shrink-0 lg:gap-5">
           {(topPerformer || bottomPerformer) && performers}
           {totalDistribution > 0 && (
-            <DistributionRows stats={stats} total={totalDistribution} />
+            <DistributionRows stats={stats} total={totalDistribution} large />
           )}
         </div>
       </div>
@@ -308,7 +312,7 @@ function DistributionRows({
   large?: boolean;
 }) {
   return (
-    <div className="space-y-2 lg:space-y-2.5">
+    <div className={large ? "space-y-2 lg:space-y-3.5" : "space-y-2"}>
       {stats.map((stat) => {
         const percent = total > 0 ? Math.round((stat.count / total) * 100) : 0;
         return (
@@ -318,22 +322,24 @@ function DistributionRows({
               large ? "lg:text-lg" : ""
             }`}
           >
-            <span className="flex min-w-0 items-center gap-2 text-white/70">
+            <span className="flex min-w-0 items-center gap-2.5 text-white/70">
               <i
-                className="size-2.5 shrink-0 rounded-full"
+                className={`shrink-0 rounded-full ${large ? "size-2.5 lg:size-3" : "size-2.5"}`}
                 style={{
                   backgroundColor: STAT_COLOR[stat.colorClass] ?? COLORS.grey,
                 }}
               />
-              <span className={large ? "truncate" : "min-w-0"}>
-                {lowercaseFirst(stat.label)}
-              </span>
+              <span className="min-w-0">{lowercaseFirst(stat.label)}</span>
             </span>
             <span
-              className={`shrink-0 font-semibold tabular-nums ${stat.colorClass}`}
+              className={`shrink-0 font-semibold tabular-nums ${stat.colorClass} ${
+                large ? "lg:text-xl lg:font-bold" : ""
+              }`}
             >
               {stat.count}{" "}
-              <span className="font-normal text-white/40">({percent}%)</span>
+              <span className="font-normal text-white/40 lg:text-base">
+                ({percent}%)
+              </span>
             </span>
           </div>
         );
@@ -359,28 +365,30 @@ function Performer({
 }) {
   return (
     <div
-      className={`rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:px-4 lg:py-2.5 ${
+      className={`rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:space-y-2 lg:px-5 lg:py-5 ${
         fill ? "flex flex-col justify-center" : ""
       }`}
     >
-      <p className="text-[11px] uppercase tracking-[0.08em] text-white/45">
+      <p className="text-[11px] uppercase tracking-[0.08em] text-white/45 lg:text-sm">
         {label}
       </p>
       {href ? (
         <LocalizedLink
           to={href}
-          className={`mt-1 block truncate font-semibold hover:underline md:text-[17px] lg:text-lg ${nameClass}`}
+          className={`mt-1 block truncate font-semibold hover:underline md:text-[17px] lg:mt-0 lg:text-xl ${nameClass}`}
         >
           {name}
         </LocalizedLink>
       ) : (
         <p
-          className={`mt-1 truncate font-semibold md:text-[17px] lg:text-lg ${nameClass}`}
+          className={`mt-1 truncate font-semibold md:text-[17px] lg:mt-0 lg:text-xl ${nameClass}`}
         >
           {name}
         </p>
       )}
-      <p className="text-[13px] text-white/55 md:text-sm">{value}</p>
+      <p className="text-[13px] text-white/55 md:text-sm lg:text-base">
+        {value}
+      </p>
     </div>
   );
 }
