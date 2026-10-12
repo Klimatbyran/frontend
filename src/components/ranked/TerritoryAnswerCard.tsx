@@ -1,6 +1,9 @@
 import { Fragment } from "react";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { useChartMotion } from "@/hooks/useChartMotion";
+import { useEnteredView } from "@/hooks/useEnteredView";
 import type { KPIValue } from "@/types/rankings";
 import {
   buildPerformerProps,
@@ -54,6 +57,11 @@ export function TerritoryAnswerCard<T extends { name: string }>({
   translationPrefix,
 }: TerritoryAnswerCardProps<T>) {
   const { t } = useTranslation();
+  const { reduceMotion, fadeDuration, barDuration, ease } = useChartMotion();
+  const { ref, entered } = useEnteredView<HTMLElement>({
+    enabled: !reduceMotion,
+  });
+  const show = reduceMotion || entered;
   const kpiKey = String(selectedKPI.key);
   const statistics = calculateEntityStatistics(
     entities,
@@ -159,6 +167,8 @@ export function TerritoryAnswerCard<T extends { name: string }>({
           value={displayMinus(topPerformer.value)}
           href={topPerformer.href}
           nameClass="text-blue-3"
+          index={0}
+          revealed={show}
         />
       )}
       {bottomPerformer && (
@@ -170,6 +180,8 @@ export function TerritoryAnswerCard<T extends { name: string }>({
           value={displayMinus(bottomPerformer.value)}
           href={bottomPerformer.href}
           nameClass="text-pink-3"
+          index={1}
+          revealed={show}
         />
       )}
     </div>
@@ -181,31 +193,66 @@ export function TerritoryAnswerCard<T extends { name: string }>({
         {t("territoryOverview.kicker")}
       </p>
       <p className="text-[20px] font-light leading-snug tracking-tight md:text-[22px] lg:text-[26px] lg:leading-snug">
-        <b
+        <motion.b
+          key={`headline-${kpiKey}-${headline}`}
           className="mb-2 block text-[56px] font-medium leading-none tracking-tighter tabular-nums md:text-[64px] lg:text-[68px]"
           style={{ color: averageColor }}
+          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: fadeDuration, ease }}
         >
           {headline}
-        </b>
-        {lead}
+        </motion.b>
+        <motion.span
+          key={`lead-${kpiKey}`}
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: fadeDuration,
+            delay: reduceMotion ? 0 : 0.08,
+            ease,
+          }}
+        >
+          {lead}
+        </motion.span>
       </p>
       {selectedKPI.detailedDescription && (
-        <p className="text-sm leading-relaxed text-white/60 md:text-base lg:text-lg lg:leading-relaxed">
+        <motion.p
+          key={`detail-${kpiKey}`}
+          className="text-sm leading-relaxed text-white/60 md:text-base lg:text-lg lg:leading-relaxed"
+          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: fadeDuration,
+            delay: reduceMotion ? 0 : 0.14,
+            ease,
+          }}
+        >
           {selectedKPI.detailedDescription}
-        </p>
+        </motion.p>
       )}
     </div>
   );
 
   const directionBadge = !selectedKPI.isBoolean && (
-    <span className="inline-flex w-max items-center gap-1.5 rounded-full bg-blue-3/15 px-2.5 py-0.5 text-[13px] font-medium text-blue-3 lg:px-3 lg:py-1 lg:text-base">
+    <motion.span
+      key={`direction-${kpiKey}`}
+      className="inline-flex w-max items-center gap-1.5 rounded-full bg-blue-3/15 px-2.5 py-0.5 text-[13px] font-medium text-blue-3 lg:px-3 lg:py-1 lg:text-base"
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: fadeDuration,
+        delay: reduceMotion ? 0 : 0.14,
+        ease,
+      }}
+    >
       {selectedKPI.higherIsBetter ? "↑" : "↓"}{" "}
       {t(
         selectedKPI.higherIsBetter
           ? "territoryOverview.higherIsBetter"
           : "territoryOverview.lowerIsBetter",
       )}
-    </span>
+    </motion.span>
   );
 
   const sourceBlock = (
@@ -238,7 +285,10 @@ export function TerritoryAnswerCard<T extends { name: string }>({
 
   if (!selectedKPI.isBoolean) {
     return (
-      <section className="flex h-full min-h-0 flex-col gap-4 rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9 lg:justify-between lg:gap-0">
+      <section
+        ref={ref}
+        className="flex h-full min-h-0 flex-col gap-4 rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9 lg:justify-between lg:gap-0"
+      >
         <div className="space-y-3 lg:space-y-5">
           {headlineBlock}
           {directionBadge}
@@ -246,7 +296,15 @@ export function TerritoryAnswerCard<T extends { name: string }>({
         {(topPerformer || bottomPerformer) && performers}
         {totalDistribution > 0 && (
           <div className="space-y-3 lg:space-y-5">
-            <div className="flex h-3 overflow-hidden rounded-full lg:h-4">
+            <motion.div
+              className="flex h-3 origin-left overflow-hidden rounded-full lg:h-4"
+              initial={reduceMotion ? false : { scaleX: 0 }}
+              animate={{ scaleX: show ? 1 : 0 }}
+              transition={{
+                duration: reduceMotion ? 0 : barDuration,
+                ease,
+              }}
+            >
               {stats.map((stat) => (
                 <div
                   key={stat.label}
@@ -256,8 +314,12 @@ export function TerritoryAnswerCard<T extends { name: string }>({
                   }}
                 />
               ))}
-            </div>
-            <DistributionRows stats={stats} total={totalDistribution} />
+            </motion.div>
+            <DistributionRows
+              stats={stats}
+              total={totalDistribution}
+              revealed={show}
+            />
           </div>
         )}
         {sourceBlock}
@@ -266,22 +328,33 @@ export function TerritoryAnswerCard<T extends { name: string }>({
   }
 
   return (
-    <section className="flex h-full min-h-0 flex-col rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9">
+    <section
+      ref={ref}
+      className="flex h-full min-h-0 flex-col rounded-level-2 bg-black-2 px-6 py-8 md:px-10 md:py-9"
+    >
       {headlineBlock}
 
       <div className="flex min-h-0 flex-1 flex-col gap-4 py-4 lg:flex-row lg:items-stretch lg:gap-4 lg:py-3">
         <div className="flex min-h-[11rem] min-w-0 flex-1 items-center justify-center lg:min-h-[20rem]">
-          <KPIDistributionChart
-            data={entities}
-            selectedKPI={selectedKPI}
-            entityLabel={entityPlural}
-            translationPrefix={translationPrefix}
-            containerClassName="h-full min-h-0"
-          />
+          {show ? (
+            <KPIDistributionChart
+              data={entities}
+              selectedKPI={selectedKPI}
+              entityLabel={entityPlural}
+              translationPrefix={translationPrefix}
+              containerClassName="h-full min-h-0"
+            />
+          ) : (
+            <div className="min-h-[11rem] w-full lg:min-h-[20rem]" />
+          )}
         </div>
         <div className="flex w-full flex-col justify-center gap-3 lg:w-72 lg:shrink-0 lg:gap-5">
           {totalDistribution > 0 && (
-            <DistributionRows stats={stats} total={totalDistribution} />
+            <DistributionRows
+              stats={stats}
+              total={totalDistribution}
+              revealed={show}
+            />
           )}
         </div>
       </div>
@@ -294,18 +367,30 @@ export function TerritoryAnswerCard<T extends { name: string }>({
 function DistributionRows({
   stats,
   total,
+  revealed,
 }: {
   stats: DistributionStat[];
   total: number;
+  revealed: boolean;
 }) {
+  const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
+  const show = reduceMotion || revealed;
+
   return (
     <div className="space-y-2 lg:space-y-3.5">
-      {stats.map((stat) => {
+      {stats.map((stat, index) => {
         const percent = total > 0 ? Math.round((stat.count / total) * 100) : 0;
         return (
-          <div
+          <motion.div
             key={stat.label}
             className="flex items-center justify-between gap-3 text-sm lg:text-lg"
+            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+            transition={{
+              duration: fadeDuration,
+              delay: stagger(index, 0.06),
+              ease,
+            }}
           >
             <span className="flex min-w-0 items-center gap-2.5 text-white/70">
               <span
@@ -325,7 +410,7 @@ function DistributionRows({
                 ({percent}%)
               </span>
             </span>
-          </div>
+          </motion.div>
         );
       })}
     </div>
@@ -338,15 +423,31 @@ function Performer({
   value,
   href,
   nameClass,
+  index,
+  revealed,
 }: {
   label: string;
   name: string;
   value: string;
   href?: string;
   nameClass: string;
+  index: number;
+  revealed: boolean;
 }) {
+  const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
+  const show = reduceMotion || revealed;
+
   return (
-    <div className="flex flex-col justify-center rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:space-y-2 lg:px-5 lg:py-5">
+    <motion.div
+      className="flex flex-col justify-center rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:space-y-2 lg:px-5 lg:py-5"
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+      transition={{
+        duration: fadeDuration,
+        delay: stagger(index, 0.06),
+        ease,
+      }}
+    >
       <p className="text-[11px] uppercase tracking-[0.08em] text-white/45 lg:text-sm">
         {label}
       </p>
@@ -367,6 +468,6 @@ function Performer({
       <p className="text-[13px] text-white/55 md:text-sm lg:text-base">
         {value}
       </p>
-    </div>
+    </motion.div>
   );
 }

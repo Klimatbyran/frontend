@@ -110,6 +110,56 @@ describe("InsightsList", () => {
     ).toContain("width: 100%");
   });
 
+  it("plays scroll-reveal entrance once when entranceOnce is set", async () => {
+    vi.useFakeTimers();
+    const { container, rerender } = render(
+      <InsightsList
+        title="Top municipalities"
+        entities={[{ name: "Stockholm", value: 10 }]}
+        dataPointKey="value"
+        unit="%"
+        totalCount={1}
+        entityType="municipalities"
+        nameKey="name"
+        showBars
+        colorItem={() => "#ffffff"}
+        deferAnimationUntilVisible
+        entranceOnce
+      />,
+    );
+
+    expect(container.querySelector(".group")?.getAttribute("style")).toContain(
+      "fadeSlideIn",
+    );
+    expect(
+      container.querySelector(".group > .absolute")?.getAttribute("style"),
+    ).toContain("barGrowFromLeft");
+
+    await vi.runAllTimersAsync();
+
+    rerender(
+      <InsightsList
+        title="Top municipalities"
+        entities={[{ name: "Göteborg", value: 20 }]}
+        dataPointKey="value"
+        unit="%"
+        totalCount={1}
+        entityType="municipalities"
+        nameKey="name"
+        showBars
+        colorItem={() => "#ffffff"}
+        deferAnimationUntilVisible
+        entranceOnce
+      />,
+    );
+
+    expect(container.querySelector(".group")?.getAttribute("style")).toBeNull();
+    expect(
+      container.querySelector(".group > .absolute")?.getAttribute("style"),
+    ).toContain("width: 100%");
+    vi.useRealTimers();
+  });
+
   it("renders municipality links without bar animation styles when showBars is off", () => {
     const { container } = render(
       <InsightsList

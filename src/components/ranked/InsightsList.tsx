@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
@@ -43,6 +44,12 @@ interface InsightsListProps<T> {
   description?: string;
   /** Hold the row and bar animation until the list has scrolled into view. */
   deferAnimationUntilVisible?: boolean;
+  /**
+   * With deferAnimationUntilVisible, play the entrance once, then keep later
+   * entity updates in place (territory KPI switches). Company sector filters
+   * omit this so ranks can fade in again.
+   */
+  entranceOnce?: boolean;
 }
 
 function InsightsList<T>({
@@ -59,6 +66,7 @@ function InsightsList<T>({
   colorItem,
   description,
   deferAnimationUntilVisible = false,
+  entranceOnce = false,
 }: InsightsListProps<T>) {
   const { reduceMotion, barDuration, ease } = useChartMotion();
   const { ref, entered } = useEnteredView<HTMLDivElement>({
@@ -66,14 +74,36 @@ function InsightsList<T>({
   });
   const play = !deferAnimationUntilVisible || reduceMotion || entered;
   const holdAnimation = deferAnimationUntilVisible && !play;
-  // Entrance motion is only for scroll-reveal (companies overview). KPI switches
-  // on territory overviews must not fade rows back in from opacity 0.
-  const animateEntrance = deferAnimationUntilVisible && !reduceMotion;
+  const [entranceDone, setEntranceDone] = useState(false);
+  // Entrance motion is for scroll-reveal on company and territory overviews.
+  // entranceOnce keeps KPI switches from fading rows back in from opacity 0.
+  const animateEntrance =
+    deferAnimationUntilVisible && !reduceMotion && !entranceDone;
   const rowFadeMs = animateEntrance ? 350 : 0;
   const rowStaggerMs = animateEntrance ? 35 : 0;
   const barTransitionMs = animateEntrance ? barDuration * 1000 : 0;
   const barStaggerMs = animateEntrance ? 40 : 0;
   const barEase = `cubic-bezier(${ease.join(", ")})`;
+
+  useEffect(() => {
+    if (!entranceOnce || !animateEntrance || !play) return;
+    const lastIndex = Math.max(entities.length - 1, 0);
+    const ms =
+      Math.max(rowFadeMs, barTransitionMs) +
+      lastIndex * Math.max(rowStaggerMs, barStaggerMs) +
+      50;
+    const timer = window.setTimeout(() => setEntranceDone(true), ms);
+    return () => window.clearTimeout(timer);
+  }, [
+    entranceOnce,
+    animateEntrance,
+    play,
+    entities.length,
+    rowFadeMs,
+    barTransitionMs,
+    rowStaggerMs,
+    barStaggerMs,
+  ]);
 
   const numericValues = entities
     .map((e) => e[dataPointKey])

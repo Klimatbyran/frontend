@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
+import { OverviewScrollProgress } from "@/components/layout/OverviewScrollProgress";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 interface TerritoryOverviewLayoutProps {
   title: string;
@@ -26,7 +28,7 @@ export function TerritoryOverviewLayout({
   table,
 }: TerritoryOverviewLayoutProps) {
   return (
-    <OverviewPageRoot>
+    <OverviewPageRoot leadIn={<OverviewScrollProgress />}>
       <div className="space-y-5 md:space-y-7">
         <PageHeader
           className="mx-0 mb-0 max-w-none p-0 md:mb-0"
@@ -44,12 +46,12 @@ export function TerritoryOverviewLayout({
 
       {bestList && worstList && (
         <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2">
-          {bestList}
-          {worstList}
+          <ScrollReveal>{bestList}</ScrollReveal>
+          <ScrollReveal delay={0.08}>{worstList}</ScrollReveal>
         </div>
       )}
 
-      {table}
+      <ScrollReveal>{table}</ScrollReveal>
     </OverviewPageRoot>
   );
 }

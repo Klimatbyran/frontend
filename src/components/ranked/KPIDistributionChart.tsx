@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BarChart,
@@ -13,6 +13,7 @@ import {
   Pie,
 } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
+import { useChartMotion } from "@/hooks/useChartMotion";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { KPIValue } from "@/types/rankings";
 import { cn } from "@/lib/utils";
@@ -97,11 +98,15 @@ function BooleanKPIPieChart({
   entityLabel,
   maxOuterRadius,
   containerClassName,
+  animateEntrance,
+  pieDuration,
 }: {
   slices: BooleanPieSlice[];
   entityLabel: string;
   maxOuterRadius?: number;
   containerClassName?: string;
+  animateEntrance: boolean;
+  pieDuration: number;
 }) {
   const { size, containerRef } = useResponsiveChartSize(
     false,
@@ -137,10 +142,11 @@ function BooleanKPIPieChart({
             cornerRadius={PIE_CORNER_RADIUS}
             paddingAngle={pieData.length > 1 ? 2 : 0}
             minAngle={4}
-            // KPI switches remount this pie; never grow from empty.
-            isAnimationActive={false}
+            // First entrance only — KPI switches must not grow from empty.
+            isAnimationActive={animateEntrance}
             animationBegin={0}
-            animationDuration={0}
+            animationDuration={animateEntrance ? pieDuration : 0}
+            animationEasing="ease-out"
           >
             {pieData.map((entry, index) => (
               <Cell
@@ -317,6 +323,17 @@ export function KPIDistributionChart<T>({
   containerClassName,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
+  const { reduceMotion, pieDuration, barDuration } = useChartMotion();
+  // Animate the first paint only; later KPI updates stay painted in place.
+  const [animateEntrance, setAnimateEntrance] = useState(!reduceMotion);
+
+  useEffect(() => {
+    if (reduceMotion || !animateEntrance) return;
+    const ms = Math.max(pieDuration, barDuration * 1000) + 50;
+    const timer = window.setTimeout(() => setAnimateEntrance(false), ms);
+    return () => window.clearTimeout(timer);
+  }, [reduceMotion, animateEntrance, pieDuration, barDuration]);
+
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
 
   const values = useMemo(
@@ -349,6 +366,8 @@ export function KPIDistributionChart<T>({
         entityLabel={label}
         maxOuterRadius={maxOuterRadius}
         containerClassName={containerClassName}
+        animateEntrance={animateEntrance}
+        pieDuration={pieDuration}
       />
     );
   }
@@ -359,6 +378,7 @@ export function KPIDistributionChart<T>({
   const maxCount = Math.max(...bins.map((b) => b.count));
   const averageBinIndex =
     average !== undefined ? findClosestBinIndex(bins, average) : undefined;
+  const barAnimationMs = animateEntrance ? barDuration * 1000 : 0;
 
   // Both keys now translate to just "Bättre" / "Sämre"
   const betterLabel = t(
@@ -405,10 +425,10 @@ export function KPIDistributionChart<T>({
             dataKey="count"
             radius={[3, 3, 0, 0]}
             maxBarSize={32}
-            // KPI switches must update in place — never grow from empty.
-            isAnimationActive={false}
+            isAnimationActive={animateEntrance}
             animationBegin={0}
-            animationDuration={0}
+            animationDuration={barAnimationMs}
+            animationEasing="ease-out"
           >
             {bins.map((bin, i) => {
               const binMid = (bin.min + bin.max) / 2;

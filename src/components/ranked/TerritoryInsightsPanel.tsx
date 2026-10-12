@@ -107,6 +107,8 @@ export function TerritoryInsightsPanel<T extends { name: string }>({
       entityType={entityType}
       nameKey="name"
       showBars
+      deferAnimationUntilVisible
+      entranceOnce
       colorItem={createDefaultColorGetter(
         entities,
         selectedKPI.key,

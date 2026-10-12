@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 interface OverviewPageRootProps {
   children: ReactNode;
   /**
-   * Optional out-of-flow lead-in (e.g. the companies overview scroll-progress
-   * bar). Kept outside the content stack so it does not affect spacing.
+   * Optional out-of-flow lead-in (e.g. the overview scroll-progress bar).
+   * Kept outside the content stack so it does not affect spacing.
    */
   leadIn?: ReactNode;
 }

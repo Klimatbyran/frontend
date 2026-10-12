@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
-import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";

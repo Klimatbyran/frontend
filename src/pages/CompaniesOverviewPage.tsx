@@ -12,8 +12,8 @@ import { IndustryChipFilter } from "@/components/companies/overview/IndustryChip
 import { IndustryEmissionsPie } from "@/components/companies/overview/IndustryEmissionsPie";
 import { ReportingCoverage } from "@/components/companies/overview/ReportingCoverage";
 import { useSectorTitles } from "@/hooks/companies/useCompanySectors";
-import { ParisScrollProgress } from "@/components/companies/overview/ParisScrollProgress";
-import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
+import { OverviewScrollProgress } from "@/components/layout/OverviewScrollProgress";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { enrichCompanyWithKPIs } from "@/hooks/companies/useCompanyKPIs";
 import type { CompanyWithKPIs } from "@/types/company";
 import type { SectorCode } from "@/lib/constants/sectors";
@@ -138,7 +138,7 @@ export function CompaniesOverviewPage() {
   }
 
   return (
-    <OverviewPageRoot leadIn={<ParisScrollProgress />}>
+    <OverviewPageRoot leadIn={<OverviewScrollProgress />}>
       {/* A step tighter than the page stack, so the chips sit closer to the cards. */}
       <div className="space-y-5 md:space-y-7">
         <div className="space-y-5">
