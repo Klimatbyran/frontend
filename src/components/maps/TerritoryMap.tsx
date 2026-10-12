@@ -1,7 +1,10 @@
 import { useMemo } from "react";
 import { FeatureCollection } from "geojson";
 import { cn } from "@/lib/utils";
-import { TERRITORY_MAP_COLORS } from "@/utils/territoryMapUtils";
+import {
+  TERRITORY_MAP_COLORS,
+  TerritoryMapGradientColors,
+} from "@/utils/territoryMapUtils";
 import { DataItem, DataKPI, MapEntityType } from "@/types/rankings";
 import { calculateGeoBounds } from "./utils/geoBounds";
 import type { FitBoundsPadding } from "./mapUtils";
@@ -15,6 +18,11 @@ import MapOverlays from "./MapOverlays";
 import type { MapLegendPosition } from "./MapLegend";
 
 import "leaflet/dist/leaflet.css";
+import {
+  DEFAULT_NEGATIVE_BOOLEAN_COLOR,
+  getPositiveIndicatorColor,
+  isMeetsParisKpiKey,
+} from "@/utils/ui/colors";
 
 interface TerritoryMapProps {
   entityType: MapEntityType;
@@ -25,12 +33,10 @@ interface TerritoryMapProps {
   defaultCenter?: [number, number];
   defaultZoom?: number;
   propertyNameField?: string;
-  colors?: {
-    null: string;
-    gradientStart: string;
-    gradientMidLow: string;
-    gradientMidHigh: string;
-    gradientEnd: string;
+  gradientColors?: TerritoryMapGradientColors;
+  booleanColors?: {
+    positive: string;
+    negative: string;
   };
   mapBackgroundColor?: string;
   scrollWheelZoom?: boolean;
@@ -59,7 +65,8 @@ function TerritoryMap({
   defaultCenter = [63, 17],
   defaultZoom,
   propertyNameField = "name",
-  colors = TERRITORY_MAP_COLORS,
+  gradientColors = TERRITORY_MAP_COLORS,
+  booleanColors: booleanColorsProp,
   mapBackgroundColor = "var(--black-2)",
   scrollWheelZoom = true,
   className,
@@ -71,6 +78,17 @@ function TerritoryMap({
   hoveredArea: hoveredAreaProp,
   onHoveredAreaChange,
 }: TerritoryMapProps) {
+  const booleanColors = useMemo(
+    () =>
+      booleanColorsProp ?? {
+        positive: getPositiveIndicatorColor(
+          isMeetsParisKpiKey(selectedKPI.key),
+        ),
+        negative: DEFAULT_NEGATIVE_BOOLEAN_COLOR,
+      },
+    [booleanColorsProp, selectedKPI.key],
+  );
+
   const { position, setPosition, getInitialZoom } = useMapPosition(
     defaultCenter,
     defaultZoom,
@@ -111,7 +129,8 @@ function TerritoryMap({
     sortedData,
     values,
     propertyNameField,
-    colors,
+    gradientColors,
+    booleanColors,
     onAreaClick,
     hoveredArea: hoveredAreaProp,
     onHoveredAreaChange,
@@ -158,6 +177,7 @@ function TerritoryMap({
         positionZoom={position.zoom}
         minZoom={MIN_ZOOM}
         maxZoom={MAX_ZOOM}
+        booleanColors={booleanColors}
         handleZoomIn={handleZoomIn}
         handleZoomOut={handleZoomOut}
         handleReset={handleReset}

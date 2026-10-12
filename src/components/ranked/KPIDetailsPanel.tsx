@@ -5,7 +5,8 @@ import { LocalizedLink } from "@/components/LocalizedLink";
 
 interface DistributionStat {
   count: number;
-  colorClass: string;
+  backgroundColor: string;
+  textColor: string;
   label: string;
 }
 
@@ -38,15 +39,6 @@ interface KPIDetailsPanelProps {
   className?: string;
   chart?: React.ReactNode;
 }
-
-const STAT_COLOR_MAP: Record<string, string> = {
-  "text-blue-3": COLORS.blue3,
-  "text-pink-3": COLORS.pink3,
-  "text-green-3": COLORS.green3,
-  "text-orange-2": COLORS.orange2,
-  "text-grey": COLORS.grey,
-};
-
 const lowercaseFirstLetter = (str: string): string =>
   str ? str.charAt(0).toLocaleLowerCase() + str.slice(1) : str;
 
@@ -116,7 +108,7 @@ function DistributionSection({
       <div className="flex rounded-full overflow-hidden h-3">
         {distributionStats.map((stat) => {
           const pct = (stat.count / totalDistribution) * 100;
-          const bg = STAT_COLOR_MAP[stat.colorClass] ?? "#888";
+          const bg = stat.backgroundColor ?? "#888";
           return (
             <div
               key={stat.label}
@@ -145,15 +137,18 @@ function DistributionSection({
                 <span
                   className="inline-block w-3 h-3 rounded-full shrink-0"
                   style={{
-                    backgroundColor: STAT_COLOR_MAP[stat.colorClass] ?? "#888",
+                    backgroundColor: stat.backgroundColor ?? "#888",
                   }}
                 />
                 <span className="text-white/70 text-sm md:text-base truncate">
-                  {lowercaseFirstLetter(stat.label)}
+                  {stat.label}
                 </span>
               </div>
               <span
-                className={`font-bold text-base md:text-xl shrink-0 ${stat.colorClass}`}
+                className="font-bold text-base md:text-xl shrink-0"
+                style={{
+                  color: stat.textColor ?? "#888",
+                }}
               >
                 {stat.count}{" "}
                 <span className="text-white/40 font-normal text-sm">

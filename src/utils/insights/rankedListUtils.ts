@@ -23,9 +23,9 @@ import {
   DEFAULT_STATISTICAL_GRADIENT_COLORS,
 } from "../ui/colorGradients";
 import {
-  DEFAULT_BOOLEAN_DATA_COLORS,
+  DEFAULT_NEGATIVE_BOOLEAN_COLOR,
+  DEFAULT_NEGATIVE_COLOR,
   DEFAULT_NULL_DATA_COLOR,
-  getPositiveIndicatorClass,
   getPositiveIndicatorColor,
   isMeetsParisKpiKey,
 } from "../ui/colors";
@@ -53,7 +53,8 @@ export interface EntityStatistics<T> {
   nullCount: number;
   distributionStats: Array<{
     count: number;
-    colorClass: string;
+    backgroundColor: string;
+    textColor: string;
     label: string;
   }>;
   formattedAverage?: string;
@@ -80,24 +81,33 @@ function buildDistributionStats<T, KPI extends KPIValue<T>>(
   belowAverageCount: number,
   nullCount: number,
 ): EntityStatistics<T>["distributionStats"] {
-  const entityPlural = t("header." + entityType).toLowerCase();
+  const entityPlural = t("header." + entityType);
   const aboveAverageLabel = t("rankedInsights.aboveAverage", { entityPlural });
   const belowAverageLabel = t("rankedInsights.belowAverage", { entityPlural });
   const kpiKey = String(selectedKPI.key);
   const meetsParisKpi = isMeetsParisKpiKey(kpiKey);
-  const goodClass = getPositiveIndicatorClass(meetsParisKpi);
+  const goodColor = getPositiveIndicatorColor(meetsParisKpi);
+  const badColor = selectedKPI.isBoolean
+    ? DEFAULT_NEGATIVE_BOOLEAN_COLOR
+    : DEFAULT_NEGATIVE_COLOR;
 
   const distributionStats = [
     {
       count: aboveAverageCount,
-      colorClass: selectedKPI.higherIsBetter ? goodClass : "text-pink-3",
+      backgroundColor: selectedKPI.higherIsBetter ? goodColor : badColor,
+      textColor: selectedKPI.higherIsBetter
+        ? goodColor
+        : DEFAULT_NEGATIVE_COLOR,
       label: selectedKPI.isBoolean
         ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.true`)
         : aboveAverageLabel,
     },
     {
       count: belowAverageCount,
-      colorClass: selectedKPI.higherIsBetter ? "text-pink-3" : goodClass,
+      backgroundColor: selectedKPI.higherIsBetter ? badColor : goodColor,
+      textColor: selectedKPI.higherIsBetter
+        ? DEFAULT_NEGATIVE_COLOR
+        : goodColor,
       label: selectedKPI.isBoolean
         ? t(`${entityType}.list.kpis.${kpiKey}.booleanLabels.false`)
         : belowAverageLabel,
@@ -107,7 +117,8 @@ function buildDistributionStats<T, KPI extends KPIValue<T>>(
   if (selectedKPI.isBoolean && nullCount > 0) {
     distributionStats.push({
       count: nullCount,
-      colorClass: "text-grey",
+      backgroundColor: "var(--grey)",
+      textColor: "var(--grey)",
       label: t(`${entityType}.list.kpis.${kpiKey}.nullValues`, {
         defaultValue: t("unknown"),
       }),
@@ -266,7 +277,7 @@ export function createDefaultColorGetter<T>(
       const meetsParisKpi = isMeetsParisKpiKey(String(dataPointKey));
       return value == dataPointHigherIsBetter
         ? getPositiveIndicatorColor(meetsParisKpi)
-        : DEFAULT_BOOLEAN_DATA_COLORS.negative;
+        : DEFAULT_NEGATIVE_COLOR;
     }
 
     return createStatisticalGradient(

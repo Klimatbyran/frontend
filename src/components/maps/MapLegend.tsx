@@ -13,6 +13,10 @@ export function MapLegend({
   selectedKPI,
   hasNullValues,
   position = "bottom-right",
+  booleanColors = {
+    positive: DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd,
+    negative: DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow,
+  },
 }: {
   entityType: MapEntityType;
   unit: string;
@@ -21,6 +25,10 @@ export function MapLegend({
   selectedKPI: KPIValue;
   hasNullValues: boolean;
   position?: MapLegendPosition;
+  booleanColors: {
+    positive: string;
+    negative: string;
+  };
 }) {
   const booleanItem = (color: string, label: string) => (
     <div className="flex items-center">
@@ -49,14 +57,8 @@ export function MapLegend({
         <div className="flex items-center w-full min-w-0 gap-2 md:w-auto">
           {selectedKPI.isBoolean ? (
             <>
-              {booleanItem(
-                DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientEnd,
-                "true",
-              )}
-              {booleanItem(
-                DEFAULT_STATISTICAL_GRADIENT_COLORS.gradientMidLow,
-                "false",
-              )}
+              {booleanItem(booleanColors.positive, "true")}
+              {booleanItem(booleanColors.negative, "false")}
             </>
           ) : (
             <>

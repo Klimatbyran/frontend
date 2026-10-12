@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { COLORS } from "@/lib/colors";
 import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
 import {
+  DEFAULT_NEGATIVE_BOOLEAN_COLOR,
   getPositiveIndicatorColor,
   isMeetsParisKpiKey,
 } from "@/utils/ui/colors";
@@ -95,13 +96,11 @@ const PIE_CORNER_RADIUS = 8;
 function BooleanKPIPieChart({
   slices,
   entityLabel,
-  animationKey,
   maxOuterRadius,
   containerClassName,
 }: {
   slices: BooleanPieSlice[];
   entityLabel: string;
-  animationKey: string;
   maxOuterRadius?: number;
   containerClassName?: string;
 }) {
@@ -114,9 +113,6 @@ function BooleanKPIPieChart({
 
   const total = slices.reduce((sum, item) => sum + item.value, 0);
   const pieData = slices.map((item) => ({ ...item, total }));
-  const pieAnimationKey = pieData
-    .map((entry) => `${entry.name}-${entry.value}`)
-    .join("|");
 
   const outerRadius = size.outerRadius;
   const innerRadius = size.innerRadius;
@@ -134,7 +130,6 @@ function BooleanKPIPieChart({
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>
           <Pie
-            key={`${animationKey}-${pieAnimationKey}`}
             data={pieData}
             dataKey="value"
             nameKey="name"
@@ -145,9 +140,10 @@ function BooleanKPIPieChart({
             cornerRadius={PIE_CORNER_RADIUS}
             paddingAngle={pieData.length > 1 ? 2 : 0}
             minAngle={4}
-            isAnimationActive={!reduceMotion}
+            // Avoid re-animating from empty when the selected KPI changes.
+            isAnimationActive={false}
             animationBegin={0}
-            animationDuration={pieDuration}
+            animationDuration={reduceMotion ? 0 : pieDuration}
             animationEasing="ease-out"
           >
             {pieData.map((entry, index) => (
@@ -286,8 +282,12 @@ function useBooleanValues<T>(
     const goodColor = getPositiveIndicatorColor(
       isMeetsParisKpiKey(String(selectedKPI.key)),
     );
-    const trueColor = selectedKPI.higherIsBetter ? goodColor : COLORS.pink3;
-    const falseColor = selectedKPI.higherIsBetter ? COLORS.pink3 : goodColor;
+    const trueColor = selectedKPI.higherIsBetter
+      ? goodColor
+      : DEFAULT_NEGATIVE_BOOLEAN_COLOR;
+    const falseColor = selectedKPI.higherIsBetter
+      ? DEFAULT_NEGATIVE_BOOLEAN_COLOR
+      : goodColor;
     const slices: BooleanPieSlice[] = [
       {
         name: trueLabel,
@@ -352,7 +352,6 @@ export function KPIDistributionChart<T>({
       <BooleanKPIPieChart
         slices={slices}
         entityLabel={label}
-        animationKey={String(selectedKPI.key)}
         maxOuterRadius={maxOuterRadius}
         containerClassName={containerClassName}
       />
@@ -382,11 +381,7 @@ export function KPIDistributionChart<T>({
 
   return (
     <div>
-      <ResponsiveContainer
-        key={String(selectedKPI.key)}
-        width="100%"
-        height={220}
-      >
+      <ResponsiveContainer width="100%" height={220}>
         <BarChart
           data={bins}
           margin={{ top: 16, right: 4, bottom: 4, left: 4 }}
@@ -415,7 +410,8 @@ export function KPIDistributionChart<T>({
             dataKey="count"
             radius={[3, 3, 0, 0]}
             maxBarSize={32}
-            isAnimationActive={!reduceMotion}
+            // Avoid re-animating from empty when the selected KPI changes.
+            isAnimationActive={false}
             animationBegin={0}
             animationDuration={reduceMotion ? 0 : barDuration * 1000}
             animationEasing="ease-out"

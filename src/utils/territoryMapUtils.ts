@@ -5,10 +5,13 @@ import {
 } from "@/utils/ui/colorGradients";
 import { toMapRegionName } from "@/utils/regionUtils";
 
-export const TERRITORY_MAP_COLORS = {
-  null: "var(--grey)",
-  ...DEFAULT_STATISTICAL_GRADIENT_COLORS,
-} as const;
+export type TerritoryMapGradientColors = {
+  readonly gradientStart: string;
+  readonly gradientMidLow: string;
+  readonly gradientMidHigh: string;
+  readonly gradientEnd: string;
+  readonly null: string;
+};
 
 export type TerritoryKpi = DataKPI & {
   isBoolean?: boolean;
@@ -24,6 +27,11 @@ export type TerritoryListEntry = {
   formattedValue: string;
   fillColor: string;
 };
+
+export const TERRITORY_MAP_COLORS: TerritoryMapGradientColors = {
+  null: "var(--grey)",
+  ...DEFAULT_STATISTICAL_GRADIENT_COLORS,
+} as const;
 
 export const DETAIL_TERRITORY_KPI_KEY = "historicalEmissionChangePercent";
 
@@ -88,28 +96,31 @@ export function getTerritoryMapFillColor(
   value: number | boolean | null,
   values: number[],
   kpi: Pick<TerritoryKpi, "higherIsBetter" | "isBoolean">,
-  colors: typeof TERRITORY_MAP_COLORS = TERRITORY_MAP_COLORS,
+  gradientColors: TerritoryMapGradientColors = TERRITORY_MAP_COLORS,
+  booleanColors?: { positive: string; negative: string },
 ): string {
   if (value === null || value === undefined) {
-    return colors.null;
+    return gradientColors.null;
   }
 
   if (typeof value === "boolean") {
-    return value === true ? colors.gradientEnd : colors.gradientMidLow;
+    return value === true
+      ? (booleanColors?.positive ?? gradientColors.gradientEnd)
+      : (booleanColors?.negative ?? gradientColors.gradientMidLow);
   }
 
   if (
     values.length === 0 ||
     (typeof value === "number" && Number.isNaN(value))
   ) {
-    return colors.null;
+    return gradientColors.null;
   }
 
   return createStatisticalGradient(
     values,
     value,
     kpi.higherIsBetter ?? false,
-    colors,
+    gradientColors,
   );
 }
 

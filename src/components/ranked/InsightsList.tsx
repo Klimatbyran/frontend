@@ -66,10 +66,13 @@ function InsightsList<T>({
   });
   const play = !deferAnimationUntilVisible || reduceMotion || entered;
   const holdAnimation = deferAnimationUntilVisible && !play;
-  const rowFadeMs = reduceMotion ? 0 : 350;
-  const rowStaggerMs = reduceMotion ? 0 : 35;
-  const barTransitionMs = reduceMotion ? 0 : barDuration * 1000;
-  const barStaggerMs = reduceMotion ? 0 : 40;
+  // Entrance motion is only for scroll-reveal (companies overview). KPI switches
+  // on territory overviews must not fade rows back in from opacity 0.
+  const animateEntrance = deferAnimationUntilVisible && !reduceMotion;
+  const rowFadeMs = animateEntrance ? 350 : 0;
+  const rowStaggerMs = animateEntrance ? 35 : 0;
+  const barTransitionMs = animateEntrance ? barDuration * 1000 : 0;
+  const barStaggerMs = animateEntrance ? 40 : 0;
   const barEase = `cubic-bezier(${ease.join(", ")})`;
 
   const numericValues = entities

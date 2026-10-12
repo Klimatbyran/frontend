@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import L from "leaflet";
 import { DataItem, DataKPI } from "@/types/rankings";
 import {
   getTerritoryKpiRawValue,
   getTerritoryMapFillColor,
+  TerritoryMapGradientColors,
 } from "@/utils/territoryMapUtils";
 import { isMobile } from "react-device-detect";
 
@@ -14,17 +15,26 @@ interface UseMapInteractionsProps {
   sortedData: DataItem[];
   values: number[];
   propertyNameField: string;
-  colors: {
-    null: string;
-    gradientStart: string;
-    gradientMidLow: string;
-    gradientMidHigh: string;
-    gradientEnd: string;
-  };
+  gradientColors: TerritoryMapGradientColors;
+  booleanColors: { positive: string; negative: string };
   onAreaClick?: (id: string) => void;
   hoveredArea?: string | null;
   onHoveredAreaChange?: (area: string | null) => void;
   showTooltip?: boolean;
+}
+
+type AreaFeature = Feature<Geometry, GeoJsonProperties>;
+
+function areaPathStyle(fillColor: string, hovered: boolean): L.PathOptions {
+  return {
+    fillColor: hovered
+      ? `color-mix(in srgb, ${fillColor} 70%, white 30%)`
+      : fillColor,
+    weight: 0.75,
+    color: "var(--black-1)",
+    fillOpacity: 1,
+    cursor: "pointer",
+  };
 }
 
 export function useMapInteractions({
@@ -33,7 +43,8 @@ export function useMapInteractions({
   sortedData,
   values,
   propertyNameField,
-  colors,
+  gradientColors,
+  booleanColors,
   onAreaClick,
   hoveredArea: controlledHoveredArea,
   onHoveredAreaChange,
@@ -105,68 +116,99 @@ export function useMapInteractions({
               ? Boolean(selectedKPI.isBoolean)
               : undefined,
         },
-        colors,
+        gradientColors,
+        booleanColors,
       );
     },
-    [values, colors, selectedKPI],
+    [values, gradientColors, booleanColors, selectedKPI],
   );
 
+  // Uncontrolled hover is applied on the path in mouse handlers so overview
+  // maps do not restyle every polygon on each hover. Controlled hover (list↔map
+  // sync on detail pages) stays in the style callback — those maps are small.
   const getAreaStyle = useCallback(
-    (feature: Feature<Geometry, GeoJsonProperties> | undefined) => {
-      if (feature?.properties?.[propertyNameField]) {
-        const areaName = feature.properties[propertyNameField];
-        const { value } = getAreaData(areaName);
-        const isHovered =
-          hoveredArea?.toLowerCase() === String(areaName).toLowerCase();
-        const color = getColorByValue(value);
-
-        return {
-          fillColor: isHovered
-            ? `color-mix(in srgb, ${color} 70%, white 30%)`
-            : color,
-          weight: 0.75,
-          color: "var(--black-1)",
-          fillOpacity: 1,
-          cursor: "pointer",
-        };
+    (feature: AreaFeature | undefined) => {
+      if (!feature?.properties?.[propertyNameField]) {
+        return {};
       }
-      return {};
+
+      const areaName = String(feature.properties[propertyNameField]);
+      const { value } = getAreaData(areaName);
+      const isHovered =
+        isControlled &&
+        !!hoveredArea &&
+        hoveredArea.toLowerCase() === areaName.toLowerCase();
+      return areaPathStyle(getColorByValue(value), isHovered);
     },
-    [propertyNameField, getAreaData, getColorByValue, hoveredArea],
+    [
+      propertyNameField,
+      getAreaData,
+      getColorByValue,
+      isControlled,
+      isControlled ? hoveredArea : null,
+    ],
   );
+
+  const getColorByValueRef = useRef(getColorByValue);
+  getColorByValueRef.current = getColorByValue;
+
+  const getAreaDataRef = useRef(getAreaData);
+  getAreaDataRef.current = getAreaData;
+
+  const onAreaClickRef = useRef(onAreaClick);
+  onAreaClickRef.current = onAreaClick;
+
+  const setHoveredAreaRef = useRef(setHoveredArea);
+  setHoveredAreaRef.current = setHoveredArea;
+
+  const showTooltipRef = useRef(showTooltip);
+  showTooltipRef.current = showTooltip;
 
   const onEachFeature = useCallback(
-    (
-      feature: Feature<Geometry, GeoJsonProperties> | undefined,
-      layer: L.Layer,
-    ) => {
-      if (feature?.properties?.[propertyNameField]) {
-        const areaName = feature.properties[propertyNameField];
-
-        (layer as L.Path).on({
-          mouseover: () => {
-            if (!isMobile) {
-              setHoveredArea(areaName);
-            }
-          },
-          mouseout: () => {
-            if (!isMobile) {
-              setHoveredArea(null);
-            }
-          },
-          click: () => {
-            if (showTooltip) {
-              setHoveredArea(areaName);
-            }
-            // Detail maps disable tooltips; still allow tap-to-navigate on mobile.
-            if (onAreaClick && (!isMobile || !showTooltip)) {
-              onAreaClick(areaName);
-            }
-          },
-        });
+    (feature: AreaFeature | undefined, layer: L.Layer) => {
+      if (!feature?.properties?.[propertyNameField]) {
+        return;
       }
+
+      const areaName = String(feature.properties[propertyNameField]);
+      const pathLayer = layer as L.Path;
+
+      const applyHover = (hovered: boolean) => {
+        const { value } = getAreaDataRef.current(areaName);
+        pathLayer.setStyle(
+          areaPathStyle(getColorByValueRef.current(value), hovered),
+        );
+      };
+
+      pathLayer.on({
+        mouseover: () => {
+          if (!isMobile) {
+            setHoveredAreaRef.current(areaName);
+            applyHover(true);
+          }
+        },
+        mouseout: () => {
+          if (!isMobile) {
+            setHoveredAreaRef.current(null);
+            applyHover(false);
+          }
+        },
+        click: () => {
+          if (showTooltipRef.current) {
+            setHoveredAreaRef.current(areaName);
+            applyHover(true);
+          }
+          // Detail maps disable tooltips; still allow tap-to-navigate on mobile.
+          if (
+            onAreaClickRef.current &&
+            (!isMobile || !showTooltipRef.current)
+          ) {
+            onAreaClickRef.current(areaName);
+          }
+        },
+      });
     },
-    [propertyNameField, onAreaClick, setHoveredArea, showTooltip],
+    [propertyNameField],
   );
 
   return {

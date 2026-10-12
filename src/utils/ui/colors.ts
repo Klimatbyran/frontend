@@ -20,10 +20,9 @@ export function getDataQualityColor(
   }
 }
 
-export const DEFAULT_BOOLEAN_DATA_COLORS = {
-  positive: "var(--blue-3)",
-  negative: "var(--pink-3)",
-};
+export const DEFAULT_POSITIVE_COLOR = "var(--blue-3)";
+export const DEFAULT_NEGATIVE_COLOR = "var(--pink-3)";
+export const DEFAULT_NEGATIVE_BOOLEAN_COLOR = "var(--pink-4)";
 
 /** KPI / copy colors when the value means “meets Paris” (yes / on track). */
 export const MEETS_PARIS_POSITIVE_COLOR = "var(--green-3)";
@@ -36,9 +35,7 @@ export function isMeetsParisKpiKey(key: string | number): boolean {
 }
 
 export function getPositiveIndicatorColor(forMeetsParis: boolean): string {
-  return forMeetsParis
-    ? MEETS_PARIS_POSITIVE_COLOR
-    : DEFAULT_BOOLEAN_DATA_COLORS.positive;
+  return forMeetsParis ? MEETS_PARIS_POSITIVE_COLOR : DEFAULT_POSITIVE_COLOR;
 }
 
 export function getPositiveIndicatorClass(forMeetsParis: boolean): string {
