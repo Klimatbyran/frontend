@@ -837,7 +837,7 @@
         "forestFire": {
           "title": "Skogsbränder",
           "paragraph1": "Vi har räknat ut hur stor skogsbrand som skulle krävas  för att generera motsvarande mängd utsläpp. Vi utgår från följande antaganden:",
-          "paragraph2": "Utifrån utsläpps­förändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs siffran med välkända ytstorlekar som fotbollsplaner, tennisbanor eller städer. Då kan vi säga till exempel: “Det här utsläppet motsvarar utsläppen från en skogsbrand stor som X fotbollsplaner“.",
+          "paragraph2": "Utifrån utsläpps\u00ADförändringen räknar vi ut hur många hektar som krävs för att motsvara den mängden CO₂. Därefter jämförs siffran med välkända ytstorlekar som fotbollsplaner, tennisbanor eller städer. Då kan vi säga till exempel: “Det här utsläppet motsvarar utsläppen från en skogsbrand stor som X fotbollsplaner“.",
           "bullet1": "I genomsnitt innehåller varje hektar skogsmark omkring 50 ton kol (C). (1)",
           "bullet2": "Kol omvandlas till koldioxid (CO₂) genom faktorn 44/12 (molekylvikter), vilket innebär att en hektar motsvarar ungefär 50 × (44/12) ≈ 183 ton CO₂.",
           "source": "https://climate.mit.edu/ask-mit/how-many-new-trees-would-we-need-offset-our-carbon-emissions"
@@ -1656,7 +1656,8 @@
       "visualisation": "Visualisering",
       "data": "Data",
       "historicalDevelopment": "Historisk utveckling",
-      "ofTotal": "av total"
+      "ofTotal": "av total",
+      "followOnDescription": "Utforska den fulla Scope 3-kategoriuppdelningen nedan — en djupare bild av var utsläppen i värdekedjan kommer ifrån."
     },
     "scopeReportingList": {
       "category": "Kategori"
@@ -1685,6 +1686,48 @@
         "dark": "Mörkt"
       },
       "generate": "Generera"
+    },
+    "understandingEmissions": {
+      "title": "Förstå utsläppen",
+      "subtitle": "En enkel genomgång av {{companyName}}s rapporterade klimatavtryck för {{year}} — från totalen ner till varje scope.",
+      "notReported": "Ej rapporterat",
+      "breakdownAria": "Andel av rapporterade utsläpp per scope",
+      "tabs": {
+        "overview": "Helhetsbilden",
+        "scope1": "Scope 1",
+        "scope2": "Scope 2",
+        "scope3": "Scope 3"
+      },
+      "center": {
+        "total": "Totalt {{year}}",
+        "scope1": "Scope 1",
+        "scope2": "Scope 2",
+        "scope3": "Scope 3"
+      },
+      "overview": {
+        "headline": "En total, tre scopes",
+        "body": "Företag delar upp sitt växthusgasavtryck i tre scopes så att du kan se vad de styr direkt, vilken energi de köper och vad som sker i resten av värdekedjan. För {{companyName}} år {{year}} är totalen startpunkten — sedan förklarar varje scope en annan del av historien.",
+        "bulletScope1": "Scope 1 — utsläpp från sådant företaget äger eller kontrollerar, till exempel företagsbilar eller bränsle på anläggningen.",
+        "bulletScope2": "Scope 2 — utsläpp från köpt el, värme, ånga eller kyla.",
+        "bulletScope3": "Scope 3 — allt övrigt i värdekedjan, ofta den största delen: leverantörer, transporter, produktanvändning med mera."
+      },
+      "scope1": {
+        "headline": "Direkta utsläpp som företaget skapar",
+        "body": "Scope 1 är klimatpåverkan från källor som {{companyName}} äger eller kontrollerar. År {{year}} är den siffran {{value}}.",
+        "examples": "Typiska exempel är bränsle i företagsfordon, pannor eller ugnar på företagets anläggningar och tillverkningsprocesser som släpper ut växthusgaser på plats."
+      },
+      "scope2": {
+        "headline": "Utsläpp från köpt energi",
+        "body": "Scope 2 täcker utsläppen som uppstår när energin som {{companyName}} köper och använder produceras. År {{year}} är den siffran {{value}}.",
+        "examples": "Tänk el till kontor, butiker eller fabriker, plus köpt värme eller kyla — även när utsläppen sker i ett kraftverk i stället för på plats."
+      },
+      "scope3": {
+        "headline": "Den bredare värdekedjan",
+        "body": "Scope 3 är oftast den bredaste delen av avtrycket: utsläpp kopplade till leverantörer, logistik, produktanvändning, investeringar med mera. För {{companyName}} år {{year}} är det rapporterade Scope 3-totalet {{value}}.",
+        "driversTitle": "Största rapporterade Scope 3-drivkrafter",
+        "driversHint": "Det här är de största kategorierna företaget rapporterat — längre ner på sidan finns den fulla interaktiva uppdelningen.",
+        "noCategories": "Det här företaget har inte publicerat någon Scope 3-kategoriuppdelning för året, så vi kan bara visa Scope 3-totalen."
+      }
     }
   },
   "nation": {
