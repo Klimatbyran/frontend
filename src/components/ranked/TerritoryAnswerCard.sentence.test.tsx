@@ -55,7 +55,7 @@ describe("TerritoryAnswerCard boolean sentence", () => {
 
     expect(
       screen.getByText(
-        "1 of 2 regions is on track to meet the Paris Agreement",
+        "of total 2 regions is on track to meet the Paris Agreement",
       ),
     ).toBeInTheDocument();
   });
@@ -75,7 +75,7 @@ describe("TerritoryAnswerCard boolean sentence", () => {
 
     expect(
       screen.getByText(
-        "2 of 2 municipalities are on track to meet the Paris Agreement",
+        "of total 2 municipalities are on track to meet the Paris Agreement",
       ),
     ).toBeInTheDocument();
   });
