@@ -15,6 +15,7 @@ import {
 import { useLanguage } from "@/components/LanguageProvider";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { KPIValue } from "@/types/rankings";
+import { cn } from "@/lib/utils";
 import { COLORS } from "@/lib/colors";
 import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
 import {
@@ -34,6 +35,8 @@ interface KPIDistributionChartProps<T> {
   translationPrefix?: string;
   /** Caps pie outer radius — use in the stats panel beside map/graph */
   maxOuterRadius?: number;
+  /** Replaces the pie's default minimum height when the chart should fit a parent. */
+  containerClassName?: string;
 }
 
 const NUM_BINS = 12;
@@ -93,10 +96,12 @@ function BooleanKPIPieChart({
   slices,
   entityLabel,
   maxOuterRadius,
+  containerClassName,
 }: {
   slices: BooleanPieSlice[];
   entityLabel: string;
   maxOuterRadius?: number;
+  containerClassName?: string;
 }) {
   const { size, containerRef } = useResponsiveChartSize(
     false,
@@ -114,7 +119,10 @@ function BooleanKPIPieChart({
   return (
     <div
       ref={containerRef}
-      className="w-full h-full min-h-[200px] flex items-center justify-center overflow-visible"
+      className={cn(
+        "flex h-full w-full items-center justify-center overflow-visible",
+        containerClassName ?? "min-h-[200px]",
+      )}
     >
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>
@@ -306,6 +314,7 @@ export function KPIDistributionChart<T>({
   entityLabel,
   translationPrefix,
   maxOuterRadius,
+  containerClassName,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
@@ -339,6 +348,7 @@ export function KPIDistributionChart<T>({
         slices={slices}
         entityLabel={label}
         maxOuterRadius={maxOuterRadius}
+        containerClassName={containerClassName}
       />
     );
   }

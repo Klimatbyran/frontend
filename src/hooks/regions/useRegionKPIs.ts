@@ -82,6 +82,8 @@ export const useRegionalKPIs = (): KPIValue<Region>[] => {
           true: t("regions.list.kpis.meetsParis.booleanLabels.true"),
           false: t("regions.list.kpis.meetsParis.booleanLabels.false"),
         },
+        belowString: t("regions.list.kpis.meetsParis.belowString"),
+        aboveString: t("regions.list.kpis.meetsParis.aboveString"),
         source: "regions.list.kpis.meetsParis.source",
         sourceUrls: ["https://nationellaemissionsdatabasen.smhi.se/"],
       },

@@ -26,22 +26,10 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
     navigate({ search: params.toString() }, { replace: true });
   };
 
-  const getViewModeFromURL = useCallback((): "map" | "list" => {
-    const params = new URLSearchParams(location.search);
-    return params.get("view") === "list" ? "list" : "map";
-  }, [location.search]);
-
-  const setViewModeInURL = (mode: "map" | "list") => {
-    const params = new URLSearchParams(location.search);
-    params.set("view", mode);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
   // Chips update immediately; map/lists/charts keep the previous KPI painted
   // until the heavy re-render is ready (avoids empty flashes on stage/prod).
   const displayKPI = useDeferredValue(selectedKPI);
-  const viewMode = getViewModeFromURL();
 
   useEffect(() => {
     const kpi = getKPIFromURL();
@@ -54,8 +42,6 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
     selectedKPI,
     displayKPI,
     setSelectedKPI,
-    viewMode,
     setKPIInURL,
-    setViewModeInURL,
   };
 }

@@ -56,7 +56,10 @@ export function DataChipSelector<T>({
     return kpi.label;
   };
 
-  const selectorLabel = label ?? t("municipalities.list.dataSelector.label");
+  const defaultLabel = t("municipalities.list.dataSelector.label");
+  // An empty label hides the heading. The group still needs a name.
+  const accessibleLabel = label || defaultLabel;
+  const showLabel = label !== "";
 
   const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -76,10 +79,10 @@ export function DataChipSelector<T>({
   };
 
   return (
-    <div className="mb-4 space-y-2">
-      {selectorLabel && (
+    <div className="space-y-2">
+      {showLabel && (
         <p className="text-xs text-white/50 uppercase tracking-wider px-1">
-          {selectorLabel}
+          {accessibleLabel}
         </p>
       )}
 
@@ -111,7 +114,7 @@ export function DataChipSelector<T>({
               <div
                 id={menuId}
                 role="listbox"
-                aria-label={selectorLabel || undefined}
+                aria-label={accessibleLabel}
                 className="absolute z-50 w-full mt-1 bg-black-2 rounded-xl shadow-xl overflow-hidden"
               >
                 {kpis.map((kpi) => {
@@ -149,7 +152,7 @@ export function DataChipSelector<T>({
           <div
             className="hidden md:flex gap-2 flex-wrap min-w-0"
             role="group"
-            aria-label={selectorLabel || undefined}
+            aria-label={accessibleLabel}
           >
             {kpis.map((kpi) => {
               const isSelected = String(kpi.key) === String(selectedKPI.key);
