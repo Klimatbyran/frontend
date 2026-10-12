@@ -231,10 +231,7 @@ export function useMapInteractions({
         const feature = (found.layer as L.Path & { feature?: AreaFeature })
           .feature;
         found.layer.setStyle(
-          computeAreaStyleRef.current(
-            feature,
-            found.areaName,
-          ) as L.PathOptions,
+          computeAreaStyleRef.current(feature, found.areaName) as L.PathOptions,
         );
       }
     }
@@ -278,7 +275,10 @@ export function useMapInteractions({
             );
           }
           // Detail maps disable tooltips; still allow tap-to-navigate on mobile.
-          if (onAreaClickRef.current && (!isMobile || !showTooltipRef.current)) {
+          if (
+            onAreaClickRef.current &&
+            (!isMobile || !showTooltipRef.current)
+          ) {
             onAreaClickRef.current(areaName);
           }
         },

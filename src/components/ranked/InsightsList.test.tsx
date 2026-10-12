@@ -77,9 +77,9 @@ describe("InsightsList", () => {
       />,
     );
 
-    expect(
-      container.querySelector(".group")?.getAttribute("style"),
-    ).toContain("fadeSlideIn");
+    expect(container.querySelector(".group")?.getAttribute("style")).toContain(
+      "fadeSlideIn",
+    );
 
     rerender(
       <InsightsList
@@ -95,9 +95,7 @@ describe("InsightsList", () => {
       />,
     );
 
-    expect(
-      container.querySelector(".group")?.getAttribute("style"),
-    ).toBeNull();
+    expect(container.querySelector(".group")?.getAttribute("style")).toBeNull();
     expect(
       container.querySelector(".group > .absolute")?.getAttribute("style"),
     ).toContain("width: 100%");
