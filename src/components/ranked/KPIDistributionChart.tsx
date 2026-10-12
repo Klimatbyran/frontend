@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BarChart,
@@ -24,20 +24,6 @@ import {
   isMeetsParisKpiKey,
 } from "@/utils/ui/colors";
 import { formatPercent } from "@/utils/formatting/localization";
-
-/** Animate charts on first mount only — KPI switches should not blank/remount. */
-function useAnimateChartOnce(reduceMotion: boolean) {
-  const hasAnimatedRef = useRef(false);
-  const shouldAnimate = !reduceMotion && !hasAnimatedRef.current;
-
-  useEffect(() => {
-    if (!reduceMotion) {
-      hasAnimatedRef.current = true;
-    }
-  }, [reduceMotion]);
-
-  return shouldAnimate;
-}
 
 interface KPIDistributionChartProps<T> {
   data: T[];
@@ -119,7 +105,6 @@ function BooleanKPIPieChart({
     true,
   );
   const { pieDuration, reduceMotion } = useChartMotion();
-  const shouldAnimate = useAnimateChartOnce(reduceMotion);
 
   const total = slices.reduce((sum, item) => sum + item.value, 0);
   const pieData = slices.map((item) => ({ ...item, total }));
@@ -147,9 +132,10 @@ function BooleanKPIPieChart({
             cornerRadius={PIE_CORNER_RADIUS}
             paddingAngle={pieData.length > 1 ? 2 : 0}
             minAngle={4}
-            isAnimationActive={shouldAnimate}
+            // Avoid re-animating from empty when the selected KPI changes.
+            isAnimationActive={false}
             animationBegin={0}
-            animationDuration={pieDuration}
+            animationDuration={reduceMotion ? 0 : pieDuration}
             animationEasing="ease-out"
           >
             {pieData.map((entry, index) => (
@@ -349,8 +335,6 @@ export function KPIDistributionChart<T>({
     [values, selectedKPI.isBoolean],
   );
 
-  const shouldAnimate = useAnimateChartOnce(reduceMotion);
-
   if (selectedKPI.isBoolean && booleanValues) {
     const slices = booleanValues.filter((d) => d.value > 0);
     if (!slices.length) return null;
@@ -416,9 +400,10 @@ export function KPIDistributionChart<T>({
             dataKey="count"
             radius={[3, 3, 0, 0]}
             maxBarSize={32}
-            isAnimationActive={shouldAnimate}
+            // Avoid re-animating from empty when the selected KPI changes.
+            isAnimationActive={false}
             animationBegin={0}
-            animationDuration={shouldAnimate ? barDuration * 1000 : 0}
+            animationDuration={reduceMotion ? 0 : barDuration * 1000}
             animationEasing="ease-out"
           >
             {bins.map((bin, i) => {

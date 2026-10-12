@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import L from "leaflet";
 import { DataItem, DataKPI } from "@/types/rankings";
@@ -25,8 +25,16 @@ interface UseMapInteractionsProps {
 
 type AreaFeature = Feature<Geometry, GeoJsonProperties>;
 
-function isSameAreaName(a: string | null | undefined, b: string): boolean {
-  return a?.toLowerCase() === b.toLowerCase();
+function areaPathStyle(fillColor: string, hovered: boolean): L.PathOptions {
+  return {
+    fillColor: hovered
+      ? `color-mix(in srgb, ${fillColor} 70%, white 30%)`
+      : fillColor,
+    weight: 0.75,
+    color: "var(--black-1)",
+    fillOpacity: 1,
+    cursor: "pointer",
+  };
 }
 
 export function useMapInteractions({
@@ -115,38 +123,37 @@ export function useMapInteractions({
     [values, gradientColors, booleanColors, selectedKPI],
   );
 
-  const computeAreaStyle = useCallback(
-    (
-      feature: AreaFeature | undefined,
-      hoveredName: string | null,
-    ): L.PathOptions | Record<string, unknown> => {
+  // Uncontrolled hover is applied on the path in mouse handlers so overview
+  // maps do not restyle every polygon on each hover. Controlled hover (list↔map
+  // sync on detail pages) stays in the style callback — those maps are small.
+  const getAreaStyle = useCallback(
+    (feature: AreaFeature | undefined) => {
       if (!feature?.properties?.[propertyNameField]) {
         return {};
       }
 
       const areaName = String(feature.properties[propertyNameField]);
       const { value } = getAreaData(areaName);
-      const isHovered = isSameAreaName(hoveredName, areaName);
-      const color = getColorByValue(value);
-
-      return {
-        fillColor: isHovered
-          ? `color-mix(in srgb, ${color} 70%, white 30%)`
-          : color,
-        weight: 0.75,
-        color: "var(--black-1)",
-        fillOpacity: 1,
-        cursor: "pointer",
-      };
+      const isHovered =
+        isControlled &&
+        !!hoveredArea &&
+        hoveredArea.toLowerCase() === areaName.toLowerCase();
+      return areaPathStyle(getColorByValue(value), isHovered);
     },
-    [propertyNameField, getAreaData, getColorByValue],
+    [
+      propertyNameField,
+      getAreaData,
+      getColorByValue,
+      isControlled,
+      isControlled ? hoveredArea : null,
+    ],
   );
 
-  const computeAreaStyleRef = useRef(computeAreaStyle);
-  computeAreaStyleRef.current = computeAreaStyle;
+  const getColorByValueRef = useRef(getColorByValue);
+  getColorByValueRef.current = getColorByValue;
 
-  const hoveredAreaRef = useRef(hoveredArea);
-  hoveredAreaRef.current = hoveredArea;
+  const getAreaDataRef = useRef(getAreaData);
+  getAreaDataRef.current = getAreaData;
 
   const onAreaClickRef = useRef(onAreaClick);
   onAreaClickRef.current = onAreaClick;
@@ -157,88 +164,6 @@ export function useMapInteractions({
   const showTooltipRef = useRef(showTooltip);
   showTooltipRef.current = showTooltip;
 
-  const layersByNameRef = useRef(new Map<string, L.Path>());
-
-  /**
-   * Stable style callback so react-leaflet does not call setStyle on every
-   * render/hover. KPI and hover updates apply styles through layer refs below.
-   */
-  const getAreaStyle = useCallback((feature: AreaFeature | undefined) => {
-    return computeAreaStyleRef.current(feature, hoveredAreaRef.current);
-  }, []);
-
-  const findLayer = useCallback((name: string | null | undefined) => {
-    if (!name) return undefined;
-    const direct = layersByNameRef.current.get(name);
-    if (direct) {
-      return { layer: direct, areaName: name };
-    }
-    const lower = name.toLowerCase();
-    for (const [areaName, layer] of layersByNameRef.current) {
-      if (areaName.toLowerCase() === lower) {
-        return { layer, areaName };
-      }
-    }
-    return undefined;
-  }, []);
-
-  const refreshAllLayerStyles = useCallback(() => {
-    layersByNameRef.current.forEach((layer) => {
-      const feature = (layer as L.Path & { feature?: AreaFeature }).feature;
-      layer.setStyle(
-        computeAreaStyleRef.current(
-          feature,
-          hoveredAreaRef.current,
-        ) as L.PathOptions,
-      );
-    });
-  }, []);
-
-  useEffect(() => {
-    refreshAllLayerStyles();
-  }, [
-    refreshAllLayerStyles,
-    selectedKPI.key,
-    selectedKPI.higherIsBetter,
-    selectedKPI.isBoolean,
-    values,
-    gradientColors,
-    booleanColors,
-    data,
-  ]);
-
-  // List↔map hover sync: only touch the previous and next area layers.
-  const prevHoveredRef = useRef<string | null>(null);
-  useEffect(() => {
-    const prev = prevHoveredRef.current;
-    const next = hoveredArea ?? null;
-    if (prev === next) return;
-
-    if (prev) {
-      const found = findLayer(prev);
-      if (found) {
-        const feature = (found.layer as L.Path & { feature?: AreaFeature })
-          .feature;
-        found.layer.setStyle(
-          computeAreaStyleRef.current(feature, null) as L.PathOptions,
-        );
-      }
-    }
-
-    if (next) {
-      const found = findLayer(next);
-      if (found) {
-        const feature = (found.layer as L.Path & { feature?: AreaFeature })
-          .feature;
-        found.layer.setStyle(
-          computeAreaStyleRef.current(feature, found.areaName) as L.PathOptions,
-        );
-      }
-    }
-
-    prevHoveredRef.current = next;
-  }, [hoveredArea, findLayer]);
-
   const onEachFeature = useCallback(
     (feature: AreaFeature | undefined, layer: L.Layer) => {
       if (!feature?.properties?.[propertyNameField]) {
@@ -246,33 +171,32 @@ export function useMapInteractions({
       }
 
       const areaName = String(feature.properties[propertyNameField]);
-      const pathLayer = layer as L.Path & { feature?: AreaFeature };
-      pathLayer.feature = feature;
-      layersByNameRef.current.set(areaName, pathLayer);
+      const pathLayer = layer as L.Path;
+
+      const applyHover = (hovered: boolean) => {
+        const { value } = getAreaDataRef.current(areaName);
+        pathLayer.setStyle(
+          areaPathStyle(getColorByValueRef.current(value), hovered),
+        );
+      };
 
       pathLayer.on({
         mouseover: () => {
           if (!isMobile) {
             setHoveredAreaRef.current(areaName);
-            pathLayer.setStyle(
-              computeAreaStyleRef.current(feature, areaName) as L.PathOptions,
-            );
+            applyHover(true);
           }
         },
         mouseout: () => {
           if (!isMobile) {
             setHoveredAreaRef.current(null);
-            pathLayer.setStyle(
-              computeAreaStyleRef.current(feature, null) as L.PathOptions,
-            );
+            applyHover(false);
           }
         },
         click: () => {
           if (showTooltipRef.current) {
             setHoveredAreaRef.current(areaName);
-            pathLayer.setStyle(
-              computeAreaStyleRef.current(feature, areaName) as L.PathOptions,
-            );
+            applyHover(true);
           }
           // Detail maps disable tooltips; still allow tap-to-navigate on mobile.
           if (
@@ -286,12 +210,6 @@ export function useMapInteractions({
     },
     [propertyNameField],
   );
-
-  useEffect(() => {
-    return () => {
-      layersByNameRef.current.clear();
-    };
-  }, []);
 
   return {
     hoveredArea,

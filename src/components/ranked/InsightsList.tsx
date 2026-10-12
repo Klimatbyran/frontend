@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
@@ -64,22 +63,13 @@ function InsightsList<T>({
   });
   const play = !deferAnimationUntilVisible || reduceMotion || entered;
   const holdAnimation = deferAnimationUntilVisible && !play;
-  // Play entrance motion once so KPI switches don't remount rows from opacity 0.
-  const entrancePlayedRef = useRef(false);
-  const waitingToEnter = deferAnimationUntilVisible && !play;
-  const shouldAnimateEntrance =
-    !reduceMotion && (waitingToEnter || !entrancePlayedRef.current);
-
-  useEffect(() => {
-    if (play && !reduceMotion) {
-      entrancePlayedRef.current = true;
-    }
-  }, [play, reduceMotion]);
-
-  const rowFadeMs = shouldAnimateEntrance ? 350 : 0;
-  const rowStaggerMs = shouldAnimateEntrance ? 35 : 0;
-  const barTransitionMs = shouldAnimateEntrance ? barDuration * 1000 : 0;
-  const barStaggerMs = shouldAnimateEntrance ? 40 : 0;
+  // Entrance motion is only for scroll-reveal (companies overview). KPI switches
+  // on territory overviews must not fade rows back in from opacity 0.
+  const animateEntrance = deferAnimationUntilVisible && !reduceMotion;
+  const rowFadeMs = animateEntrance ? 350 : 0;
+  const rowStaggerMs = animateEntrance ? 35 : 0;
+  const barTransitionMs = animateEntrance ? barDuration * 1000 : 0;
+  const barStaggerMs = animateEntrance ? 40 : 0;
   const barEase = `cubic-bezier(${ease.join(", ")})`;
 
   const numericValues = entities

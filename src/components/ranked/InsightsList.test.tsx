@@ -20,6 +20,13 @@ vi.mock("@/hooks/useChartMotion", () => ({
   }),
 }));
 
+vi.mock("@/hooks/useEnteredView", () => ({
+  useEnteredView: () => ({
+    ref: { current: null },
+    entered: true,
+  }),
+}));
+
 describe("InsightsList", () => {
   it("renders companies that share a name as separate rows", () => {
     render(
@@ -41,7 +48,7 @@ describe("InsightsList", () => {
     expect(screen.getAllByText("Duni AB")).toHaveLength(2);
   });
 
-  it("grows ranking bars from the left when showBars is enabled", () => {
+  it("grows ranking bars from the left when scroll-reveal animation is enabled", () => {
     const { container } = render(
       <InsightsList
         title="Top companies"
@@ -53,6 +60,7 @@ describe("InsightsList", () => {
         nameKey="name"
         showBars
         colorItem={() => "#ffffff"}
+        deferAnimationUntilVisible
       />,
     );
 
@@ -62,7 +70,7 @@ describe("InsightsList", () => {
     expect(bar?.getAttribute("style")).toContain("600ms");
   });
 
-  it("does not re-fade rows when the ranked entities change after the first paint", () => {
+  it("does not fade territory overview rows when the ranked entities change", () => {
     const { container, rerender } = render(
       <InsightsList
         title="Top municipalities"
@@ -77,9 +85,10 @@ describe("InsightsList", () => {
       />,
     );
 
-    expect(container.querySelector(".group")?.getAttribute("style")).toContain(
-      "fadeSlideIn",
-    );
+    expect(container.querySelector(".group")?.getAttribute("style")).toBeNull();
+    expect(
+      container.querySelector(".group > .absolute")?.getAttribute("style"),
+    ).toContain("width: 100%");
 
     rerender(
       <InsightsList
