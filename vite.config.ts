@@ -1,6 +1,7 @@
 import { defineConfig } from "vitest/config";
 import { loadEnv, ConfigEnv } from "vite";
 import react from "@vitejs/plugin-react";
+import { plugin as markdown, Mode } from "vite-plugin-markdown";
 import { devApiProxy } from "./vite-api-proxy";
 
 export default ({ mode }: ConfigEnv) => {
@@ -22,6 +23,7 @@ export default ({ mode }: ConfigEnv) => {
           ],
         },
       }),
+      markdown({ mode: ["html", "toc", "meta", "react"] as Mode[] }),
     ],
     resolve: {
       alias: {
