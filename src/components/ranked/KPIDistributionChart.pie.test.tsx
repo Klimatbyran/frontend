@@ -94,4 +94,35 @@ describe("KPIDistributionChart", () => {
       "municipalities.list.insights.distribution.higherBetter",
     );
   });
+
+  it("keeps pie sectors painted when switching boolean KPI data", () => {
+    const { container, rerender } = render(
+      <div style={{ width: 400, height: 400 }}>
+        <KPIDistributionChart
+          data={regionData}
+          selectedKPI={meetsParisKPI}
+          translationPrefix="regions.list"
+        />
+      </div>,
+    );
+
+    expect(container.querySelectorAll(".recharts-surface path").length).toBe(2);
+
+    const flipped = regionData.map((region, i) => ({
+      ...region,
+      meetsParis: i % 2 === 0,
+    }));
+
+    rerender(
+      <div style={{ width: 400, height: 400 }}>
+        <KPIDistributionChart
+          data={flipped}
+          selectedKPI={meetsParisKPI}
+          translationPrefix="regions.list"
+        />
+      </div>,
+    );
+
+    expect(container.querySelectorAll(".recharts-surface path").length).toBe(2);
+  });
 });

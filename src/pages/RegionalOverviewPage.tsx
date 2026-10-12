@@ -43,7 +43,7 @@ export function RegionalOverviewPage() {
 
   const navigate = useNavigate();
 
-  const { selectedKPI, setSelectedKPI, setKPIInURL } =
+  const { selectedKPI, displayKPI, setSelectedKPI, setKPIInURL } =
     useRankedRegionsURLParams(regionalKPIs);
 
   const handleRegionClick = createEntityClickHandler(navigate, "region");
@@ -73,7 +73,7 @@ export function RegionalOverviewPage() {
   const tableRows = useMemo<TerritoryTableRow[]>(
     () =>
       regionsAsEntities.map((region) => {
-        const raw = region[selectedKPI.key];
+        const raw = region[displayKPI.key];
         const kpiValue =
           typeof raw === "number" || typeof raw === "boolean" ? raw : null;
         return {
@@ -85,7 +85,7 @@ export function RegionalOverviewPage() {
             typeof region.meetsParis === "boolean" ? region.meetsParis : null,
         };
       }),
-    [regionsAsEntities, selectedKPI.key],
+    [regionsAsEntities, displayKPI.key],
   );
 
   if (regionsLoading) {
@@ -127,7 +127,7 @@ export function RegionalOverviewPage() {
           entityType="regions"
           geoData={geoData as FeatureCollection}
           data={mapData}
-          selectedKPI={selectedKPI}
+          selectedKPI={displayKPI}
           onAreaClick={handleRegionAreaClick}
           defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
           defaultZoom={isMobile ? 4 : undefined}
@@ -140,16 +140,16 @@ export function RegionalOverviewPage() {
       answer={
         <TerritoryAnswerCard
           entities={regionsAsEntities}
-          selectedKPI={selectedKPI}
+          selectedKPI={displayKPI}
           entityType="regions"
           translationPrefix="regions.list"
         />
       }
       bestList={
-        !selectedKPI.isBoolean && (
+        !displayKPI.isBoolean && (
           <TerritoryInsightsPanel
             entities={regionsAsEntities}
-            selectedKPI={selectedKPI}
+            selectedKPI={displayKPI}
             entityType="regions"
             translationPrefix="regions.list"
             section="top"
@@ -158,10 +158,10 @@ export function RegionalOverviewPage() {
         )
       }
       worstList={
-        !selectedKPI.isBoolean && (
+        !displayKPI.isBoolean && (
           <TerritoryInsightsPanel
             entities={regionsAsEntities}
-            selectedKPI={selectedKPI}
+            selectedKPI={displayKPI}
             entityType="regions"
             translationPrefix="regions.list"
             section="bottom"
@@ -171,16 +171,16 @@ export function RegionalOverviewPage() {
       }
       table={
         <TerritoryOverviewTable
-          key={String(selectedKPI.key)}
+          key={String(displayKPI.key)}
           rows={tableRows}
           entityType="regions"
-          kpiLabel={t(`regions.list.kpis.${String(selectedKPI.key)}.label`)}
-          unit={selectedKPI.unit}
-          isBoolean={selectedKPI.isBoolean}
-          higherIsBetter={selectedKPI.higherIsBetter}
-          booleanLabels={selectedKPI.booleanLabels}
-          nullLabel={selectedKPI.nullValues}
-          showParis={!isMeetsParisKpiKey(selectedKPI.key)}
+          kpiLabel={t(`regions.list.kpis.${String(displayKPI.key)}.label`)}
+          unit={displayKPI.unit}
+          isBoolean={displayKPI.isBoolean}
+          higherIsBetter={displayKPI.higherIsBetter}
+          booleanLabels={displayKPI.booleanLabels}
+          nullLabel={displayKPI.nullValues}
+          showParis={!isMeetsParisKpiKey(displayKPI.key)}
         />
       }
     />

@@ -13,7 +13,6 @@ import {
   Pie,
 } from "recharts";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useChartMotion } from "@/hooks/useChartMotion";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { KPIValue } from "@/types/rankings";
 import { cn } from "@/lib/utils";
@@ -109,8 +108,6 @@ function BooleanKPIPieChart({
     maxOuterRadius,
     true,
   );
-  const { pieDuration, reduceMotion } = useChartMotion();
-
   const total = slices.reduce((sum, item) => sum + item.value, 0);
   const pieData = slices.map((item) => ({ ...item, total }));
 
@@ -140,11 +137,10 @@ function BooleanKPIPieChart({
             cornerRadius={PIE_CORNER_RADIUS}
             paddingAngle={pieData.length > 1 ? 2 : 0}
             minAngle={4}
-            // Avoid re-animating from empty when the selected KPI changes.
+            // KPI switches remount this pie; never grow from empty.
             isAnimationActive={false}
             animationBegin={0}
-            animationDuration={reduceMotion ? 0 : pieDuration}
-            animationEasing="ease-out"
+            animationDuration={0}
           >
             {pieData.map((entry, index) => (
               <Cell
@@ -321,7 +317,6 @@ export function KPIDistributionChart<T>({
   containerClassName,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
-  const { barDuration, reduceMotion } = useChartMotion();
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
 
   const values = useMemo(
@@ -410,11 +405,10 @@ export function KPIDistributionChart<T>({
             dataKey="count"
             radius={[3, 3, 0, 0]}
             maxBarSize={32}
-            // Avoid re-animating from empty when the selected KPI changes.
+            // KPI switches must update in place — never grow from empty.
             isAnimationActive={false}
             animationBegin={0}
-            animationDuration={reduceMotion ? 0 : barDuration * 1000}
-            animationEasing="ease-out"
+            animationDuration={0}
           >
             {bins.map((bin, i) => {
               const binMid = (bin.min + bin.max) / 2;

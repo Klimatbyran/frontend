@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { LocalizedLink } from "@/components/LocalizedLink";
-import { COLORS } from "@/lib/colors";
 import type { KPIValue } from "@/types/rankings";
 import {
   buildPerformerProps,
@@ -20,12 +19,11 @@ import {
 import { getEntityDetailPath } from "@/utils/routing";
 import { KPIDistributionChart } from "./KPIDistributionChart";
 
-const STAT_COLOR: Record<string, string> = {
-  "text-blue-3": COLORS.blue3,
-  "text-pink-3": COLORS.pink3,
-  "text-green-3": COLORS.green3,
-  "text-orange-2": COLORS.orange2,
-  "text-grey": COLORS.grey,
+type DistributionStat = {
+  label: string;
+  count: number;
+  backgroundColor: string;
+  textColor: string;
 };
 
 function lowercaseFirst(value: string): string {
@@ -254,7 +252,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
                   key={stat.label}
                   style={{
                     width: `${(stat.count / totalDistribution) * 100}%`,
-                    backgroundColor: STAT_COLOR[stat.colorClass] ?? COLORS.grey,
+                    backgroundColor: stat.backgroundColor,
                   }}
                 />
               ))}
@@ -297,7 +295,7 @@ function DistributionRows({
   stats,
   total,
 }: {
-  stats: Array<{ label: string; count: number; colorClass: string }>;
+  stats: DistributionStat[];
   total: number;
 }) {
   return (
@@ -310,16 +308,17 @@ function DistributionRows({
             className="flex items-center justify-between gap-3 text-sm lg:text-lg"
           >
             <span className="flex min-w-0 items-center gap-2.5 text-white/70">
-              <i
-                className="size-2.5 shrink-0 rounded-full lg:size-3"
+              <span
+                className="inline-block size-2.5 shrink-0 rounded-full lg:size-3"
                 style={{
-                  backgroundColor: STAT_COLOR[stat.colorClass] ?? COLORS.grey,
+                  backgroundColor: stat.backgroundColor,
                 }}
               />
               <span className="min-w-0">{lowercaseFirst(stat.label)}</span>
             </span>
             <span
-              className={`shrink-0 font-semibold tabular-nums lg:text-xl lg:font-bold ${stat.colorClass}`}
+              className="shrink-0 font-semibold tabular-nums lg:text-xl lg:font-bold"
+              style={{ color: stat.textColor }}
             >
               {stat.count}{" "}
               <span className="font-normal text-white/40 lg:text-base">

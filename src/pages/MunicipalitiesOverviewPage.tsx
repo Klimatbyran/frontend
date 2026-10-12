@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useDeferredValue,
+} from "react";
 import {
   Leaf,
   ArrowDownCircle,
@@ -96,6 +102,9 @@ export function MunicipalitiesOverviewPage() {
   const { getKPIFromURL, setKPIInURL } =
     useMunicipalityUrlState(municipalityKPIs);
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL);
+  // Chips update immediately; map/lists/charts keep the previous KPI painted
+  // until the heavy re-render is ready (avoids empty flashes on stage/prod).
+  const displayKPI = useDeferredValue(selectedKPI);
 
   useEffect(() => {
     const kpiFromUrl = getKPIFromURL();
@@ -117,7 +126,7 @@ export function MunicipalitiesOverviewPage() {
   const tableRows = useMemo<TerritoryTableRow[]>(
     () =>
       municipalities.map((municipality) => {
-        const raw = municipality[selectedKPI.key];
+        const raw = municipality[displayKPI.key];
         const kpiValue =
           typeof raw === "number" || typeof raw === "boolean" ? raw : null;
         return {
@@ -132,7 +141,7 @@ export function MunicipalitiesOverviewPage() {
               : null,
         };
       }),
-    [municipalities, selectedKPI.key],
+    [municipalities, displayKPI.key],
   );
 
   if (municipalitiesLoading) {
@@ -174,7 +183,7 @@ export function MunicipalitiesOverviewPage() {
           entityType="municipalities"
           geoData={geoData as FeatureCollection}
           data={mapData}
-          selectedKPI={selectedKPI}
+          selectedKPI={displayKPI}
           onAreaClick={(name) => {
             const municipality = municipalities.find(
               (item) => item.name === name,
@@ -192,16 +201,16 @@ export function MunicipalitiesOverviewPage() {
       answer={
         <TerritoryAnswerCard
           entities={municipalities}
-          selectedKPI={selectedKPI}
+          selectedKPI={displayKPI}
           entityType="municipalities"
           translationPrefix="municipalities.list"
         />
       }
       bestList={
-        !selectedKPI.isBoolean && (
+        !displayKPI.isBoolean && (
           <TerritoryInsightsPanel
             entities={municipalities}
-            selectedKPI={selectedKPI}
+            selectedKPI={displayKPI}
             entityType="municipalities"
             translationPrefix="municipalities.list"
             section="top"
@@ -210,10 +219,10 @@ export function MunicipalitiesOverviewPage() {
         )
       }
       worstList={
-        !selectedKPI.isBoolean && (
+        !displayKPI.isBoolean && (
           <TerritoryInsightsPanel
             entities={municipalities}
-            selectedKPI={selectedKPI}
+            selectedKPI={displayKPI}
             entityType="municipalities"
             translationPrefix="municipalities.list"
             section="bottom"
@@ -223,18 +232,18 @@ export function MunicipalitiesOverviewPage() {
       }
       table={
         <TerritoryOverviewTable
-          key={String(selectedKPI.key)}
+          key={String(displayKPI.key)}
           rows={tableRows}
           entityType="municipalities"
           kpiLabel={t(
-            `municipalities.list.kpis.${String(selectedKPI.key)}.label`,
+            `municipalities.list.kpis.${String(displayKPI.key)}.label`,
           )}
-          unit={selectedKPI.unit}
-          isBoolean={selectedKPI.isBoolean}
-          higherIsBetter={selectedKPI.higherIsBetter}
-          booleanLabels={selectedKPI.booleanLabels}
-          nullLabel={selectedKPI.nullValues}
-          showParis={!isMeetsParisKpiKey(selectedKPI.key)}
+          unit={displayKPI.unit}
+          isBoolean={displayKPI.isBoolean}
+          higherIsBetter={displayKPI.higherIsBetter}
+          booleanLabels={displayKPI.booleanLabels}
+          nullLabel={displayKPI.nullValues}
+          showParis={!isMeetsParisKpiKey(displayKPI.key)}
         />
       }
     />

@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useDeferredValue } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { KPIValue } from "@/types/rankings";
 import { Region } from "@/types/region";
@@ -27,6 +27,9 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
   };
 
   const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL());
+  // Chips update immediately; map/lists/charts keep the previous KPI painted
+  // until the heavy re-render is ready (avoids empty flashes on stage/prod).
+  const displayKPI = useDeferredValue(selectedKPI);
 
   useEffect(() => {
     const kpi = getKPIFromURL();
@@ -37,6 +40,7 @@ export function useRankedRegionsURLParams(regionalKPIs: KPIValue<Region>[]) {
 
   return {
     selectedKPI,
+    displayKPI,
     setSelectedKPI,
     setKPIInURL,
   };

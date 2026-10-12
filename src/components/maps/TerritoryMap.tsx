@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { FeatureCollection } from "geojson";
 import { cn } from "@/lib/utils";
 import {
@@ -187,4 +187,4 @@ function TerritoryMap({
   );
 }
 
-export default TerritoryMap;
+export default memo(TerritoryMap);

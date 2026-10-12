@@ -115,7 +115,6 @@ function DistributionSection({
               style={{
                 width: `${pct}%`,
                 backgroundColor: bg,
-                transition: "width 0.8s ease-out",
               }}
               title={`${stat.label}: ${stat.count}`}
             />
