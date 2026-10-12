@@ -10,8 +10,6 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
-import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
-import { PageHeader } from "@/components/layout/PageHeader";
 import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import {
@@ -33,6 +31,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { DataChipSelector } from "@/components/ranked/DataChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { TerritoryAnswerCard } from "@/components/ranked/TerritoryAnswerCard";
+import { TerritoryOverviewLayout } from "@/components/ranked/TerritoryOverviewLayout";
 import { TerritoryOverviewTable } from "@/components/ranked/TerritoryOverviewTable";
 import type { TerritoryTableRow } from "@/components/ranked/TerritoryOverviewTable";
 import { isMeetsParisKpiKey } from "@/utils/ui/colors";
@@ -137,12 +136,7 @@ export function MunicipalitiesOverviewPage() {
   );
 
   if (municipalitiesLoading) {
-    return (
-      <OverviewPageSkeleton
-        variant="municipalities"
-        chipCount={municipalityKPIs.length}
-      />
-    );
+    return <OverviewPageSkeleton chipCount={municipalityKPIs.length} />;
   }
 
   if (municipalitiesError) {
@@ -159,15 +153,10 @@ export function MunicipalitiesOverviewPage() {
   }
 
   return (
-    <OverviewPageRoot>
-      <div className="space-y-5 md:space-y-7">
-        <div className="space-y-5">
-          <PageHeader
-            className="mx-0 mb-0 max-w-none p-0 md:mb-0"
-            title={t("municipalitiesOverviewPage.title")}
-            description={t("municipalitiesOverviewPage.lead")}
-          />
-        </div>
+    <TerritoryOverviewLayout
+      title={t("municipalitiesOverviewPage.title")}
+      description={t("municipalitiesOverviewPage.lead")}
+      selector={
         <DataChipSelector<Municipality>
           selectedKPI={selectedKPI}
           kpis={municipalityKPIs}
@@ -179,68 +168,70 @@ export function MunicipalitiesOverviewPage() {
           translationPrefix="municipalities.list"
           label=""
         />
-        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
-          <div className="relative h-[28rem] lg:h-[calc(100dvh-13.5rem)]">
-            <div className="absolute inset-0">
-              <TerritoryMap
-                entityType="municipalities"
-                geoData={geoData as FeatureCollection}
-                data={mapData}
-                selectedKPI={selectedKPI}
-                onAreaClick={(name) => {
-                  const municipality = municipalities.find(
-                    (item) => item.name === name,
-                  );
-                  handleMunicipalityClick(municipality ?? name);
-                }}
-                defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
-                defaultZoom={isMobile ? 4 : undefined}
-                fitBounds
-                fitBoundsPadding={OVERVIEW_MAP_FIT_BOUNDS_PADDING}
-                zoomSnap={0}
-                className="h-full max-w-none"
-              />
-            </div>
-          </div>
-          <TerritoryAnswerCard
-            entities={municipalities}
-            selectedKPI={selectedKPI}
-            entityType="municipalities"
-            translationPrefix="municipalities.list"
-          />
-        </div>
-      </div>
-
-      {!selectedKPI.isBoolean && (
-        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2">
+      }
+      map={
+        <TerritoryMap
+          entityType="municipalities"
+          geoData={geoData as FeatureCollection}
+          data={mapData}
+          selectedKPI={selectedKPI}
+          onAreaClick={(name) => {
+            const municipality = municipalities.find(
+              (item) => item.name === name,
+            );
+            handleMunicipalityClick(municipality ?? name);
+          }}
+          defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
+          defaultZoom={isMobile ? 4 : undefined}
+          fitBounds
+          fitBoundsPadding={OVERVIEW_MAP_FIT_BOUNDS_PADDING}
+          zoomSnap={0}
+          className="h-full max-w-none"
+        />
+      }
+      answer={
+        <TerritoryAnswerCard
+          entities={municipalities}
+          selectedKPI={selectedKPI}
+          entityType="municipalities"
+          translationPrefix="municipalities.list"
+        />
+      }
+      bestList={
+        !selectedKPI.isBoolean && (
           <InsightsPanel
             municipalityData={municipalities}
             selectedKPI={selectedKPI}
             section="top"
             listDescription={t("territoryOverview.bestList")}
           />
+        )
+      }
+      worstList={
+        !selectedKPI.isBoolean && (
           <InsightsPanel
             municipalityData={municipalities}
             selectedKPI={selectedKPI}
             section="bottom"
             listDescription={t("territoryOverview.worstList")}
           />
-        </div>
-      )}
-
-      <TerritoryOverviewTable
-        key={String(selectedKPI.key)}
-        rows={tableRows}
-        entityType="municipalities"
-        kpiLabel={t(
-          `municipalities.list.kpis.${String(selectedKPI.key)}.label`,
-        )}
-        unit={selectedKPI.unit}
-        isBoolean={selectedKPI.isBoolean}
-        higherIsBetter={selectedKPI.higherIsBetter}
-        booleanLabels={selectedKPI.booleanLabels}
-        showParis={!isMeetsParisKpiKey(selectedKPI.key)}
-      />
-    </OverviewPageRoot>
+        )
+      }
+      table={
+        <TerritoryOverviewTable
+          key={String(selectedKPI.key)}
+          rows={tableRows}
+          entityType="municipalities"
+          kpiLabel={t(
+            `municipalities.list.kpis.${String(selectedKPI.key)}.label`,
+          )}
+          unit={selectedKPI.unit}
+          isBoolean={selectedKPI.isBoolean}
+          higherIsBetter={selectedKPI.higherIsBetter}
+          booleanLabels={selectedKPI.booleanLabels}
+          showParis={!isMeetsParisKpiKey(selectedKPI.key)}
+        />
+      }
+    />
   );
 }

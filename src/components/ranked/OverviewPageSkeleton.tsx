@@ -1,9 +1,6 @@
 import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 
-export type OverviewPageSkeletonVariant = "municipalities" | "regions";
-
 interface OverviewPageSkeletonProps {
-  variant?: OverviewPageSkeletonVariant;
   /** Number of data chip placeholders on desktop */
   chipCount?: number;
 }
@@ -74,13 +71,12 @@ function ListSkeleton() {
 
 /** Skeleton that mirrors the overview page layout while data loads. */
 export function OverviewPageSkeleton({
-  variant = "municipalities",
-  chipCount = variant === "regions" ? 2 : 7,
+  chipCount = 7,
 }: OverviewPageSkeletonProps) {
   return (
     <OverviewPageRoot>
       <div className="space-y-5 md:space-y-7">
-        <div className="space-y-5">
+        <div className="space-y-2">
           <SkeletonBlock className="h-9 w-56 md:h-11 md:w-72" />
           <SkeletonBlock className="h-4 w-full max-w-xl" />
         </div>

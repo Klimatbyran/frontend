@@ -2193,10 +2193,6 @@
     "buttonFallbackTitle": "Learn more about these metrics",
     "selectItemPrompt": "Select a topic you want to learn more about"
   },
-  "viewModeToggle": {
-    "map": "Map",
-    "list": "List"
-  },
   "rankedList": {
     "name": "Name",
     "search": {

@@ -2239,10 +2239,6 @@
     "buttonFallbackTitle": "Förstå datan",
     "selectItemPrompt": "Välj ett ämne du vill veta mer om"
   },
-  "viewModeToggle": {
-    "map": "Karta",
-    "list": "Lista"
-  },
   "rankedList": {
     "name": "Namn",
     "search": {
