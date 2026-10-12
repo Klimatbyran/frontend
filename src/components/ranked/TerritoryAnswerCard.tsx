@@ -155,7 +155,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
       className={
         selectedKPI.isBoolean
           ? "grid grid-cols-1 gap-2.5"
-          : "grid min-h-0 flex-1 grid-cols-1 gap-2.5 md:grid-cols-2 lg:gap-4"
+          : "grid shrink-0 grid-cols-1 gap-2.5 md:grid-cols-2 lg:gap-3"
       }
     >
       {topPerformer && (
@@ -218,8 +218,8 @@ export function TerritoryAnswerCard<T extends { name: string }>({
       </div>
 
       {selectedKPI.isBoolean ? (
-        <div className="flex min-h-0 flex-1 flex-col gap-4 py-4 lg:flex-row lg:items-stretch lg:gap-6 lg:py-5">
-          <div className="flex min-h-[11rem] min-w-0 flex-1 items-center justify-center lg:min-h-0">
+        <div className="flex min-h-0 flex-1 flex-col gap-4 py-4 lg:flex-row lg:items-stretch lg:gap-4 lg:py-3">
+          <div className="flex min-h-[11rem] min-w-0 flex-1 items-center justify-center lg:min-h-[20rem]">
             <KPIDistributionChart
               data={entities}
               selectedKPI={selectedKPI}
@@ -228,7 +228,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
               containerClassName="h-full min-h-0"
             />
           </div>
-          <div className="flex w-full flex-col justify-center gap-3 lg:w-[min(100%,17rem)] lg:shrink-0">
+          <div className="flex w-full flex-col justify-center gap-3 lg:w-60 lg:shrink-0">
             {(topPerformer || bottomPerformer) && performers}
             {totalDistribution > 0 && (
               <DistributionRows
@@ -301,7 +301,9 @@ function DistributionRows({
   return (
     <div
       className={
-        grow ? "flex min-h-0 flex-1 flex-col gap-2.5 lg:gap-3" : "space-y-2"
+        grow
+          ? "flex min-h-0 flex-1 flex-col justify-center gap-3 lg:gap-5"
+          : "space-y-2"
       }
     >
       {stats.map((stat) => {
@@ -311,7 +313,7 @@ function DistributionRows({
             key={stat.label}
             className={
               grow
-                ? "flex min-h-12 flex-1 items-center justify-between gap-3 rounded-2xl bg-white/[0.06] px-4 text-sm md:text-[15px] lg:px-5"
+                ? "flex items-center justify-between gap-3 text-sm lg:text-lg"
                 : "flex items-center justify-between gap-3 text-sm"
             }
           >
@@ -322,7 +324,9 @@ function DistributionRows({
                   backgroundColor: STAT_COLOR[stat.colorClass] ?? COLORS.grey,
                 }}
               />
-              <span className="truncate">{lowercaseFirst(stat.label)}</span>
+              <span className={grow ? "truncate" : "min-w-0"}>
+                {lowercaseFirst(stat.label)}
+              </span>
             </span>
             <span
               className={`shrink-0 font-semibold tabular-nums ${stat.colorClass}`}
@@ -354,8 +358,8 @@ function Performer({
 }) {
   return (
     <div
-      className={`rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:px-5 ${
-        fill ? "flex h-full flex-col justify-center lg:py-6" : "lg:py-4"
+      className={`rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:px-4 lg:py-2.5 ${
+        fill ? "flex flex-col justify-center" : ""
       }`}
     >
       <p className="text-[11px] uppercase tracking-[0.08em] text-white/45">
