@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useDeferredValue,
+} from "react";
 import {
   Leaf,
   ArrowDownCircle,
@@ -90,6 +96,7 @@ function MunicipalitiesOverviewContent({
   municipalityEntities,
   mapData,
   selectedKPI,
+  displayKPI,
   viewMode,
   onKPIChange,
   onViewModeChange,
@@ -100,6 +107,7 @@ function MunicipalitiesOverviewContent({
   municipalityEntities: RankedListItem[];
   mapData: ReturnType<typeof toMunicipalityMapDataItem>[];
   selectedKPI: KPIValue<Municipality>;
+  displayKPI: KPIValue<Municipality>;
   viewMode: OverviewViewMode;
   onKPIChange: (kpi: KPIValue<Municipality>) => void;
   onViewModeChange: (mode: OverviewViewMode) => void;
@@ -153,7 +161,7 @@ function MunicipalitiesOverviewContent({
                 entityType="municipalities"
                 geoData={geoData as FeatureCollection}
                 data={mapData}
-                selectedKPI={selectedKPI}
+                selectedKPI={displayKPI}
                 onAreaClick={onMunicipalityAreaClick}
                 defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
                 defaultZoom={isMobile ? 4 : undefined}
@@ -163,7 +171,7 @@ function MunicipalitiesOverviewContent({
             list={
               <MunicipalityRankedList
                 municipalityEntities={municipalityEntities}
-                selectedKPI={selectedKPI}
+                selectedKPI={displayKPI}
                 onItemClick={onMunicipalityClick}
                 headerAction={viewToggle}
               />
@@ -175,27 +183,27 @@ function MunicipalitiesOverviewContent({
           >
             <InsightsPanel
               municipalityData={municipalities}
-              selectedKPI={selectedKPI}
+              selectedKPI={displayKPI}
               section="stats"
             />
           </div>
         </div>
 
-        {!selectedKPI.isBoolean && (
+        {!displayKPI.isBoolean && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <InsightsPanel
               municipalityData={municipalities}
-              selectedKPI={selectedKPI}
+              selectedKPI={displayKPI}
               section="top"
             />
             <InsightsPanel
               municipalityData={municipalities}
-              selectedKPI={selectedKPI}
+              selectedKPI={displayKPI}
               section="bottom"
             />
             <InsightsPanel
               municipalityData={municipalities}
-              selectedKPI={selectedKPI}
+              selectedKPI={displayKPI}
               section="distribution"
             />
           </div>
@@ -225,6 +233,9 @@ export function MunicipalitiesOverviewPage() {
 
   const urlState = useMunicipalityUrlState(municipalityKPIs);
   const [selectedKPI, setSelectedKPI] = useState(urlState.getKPIFromURL());
+  // Chips update immediately; map/lists/charts keep the previous KPI painted
+  // until the heavy re-render is ready (avoids empty flashes on stage/prod).
+  const displayKPI = useDeferredValue(selectedKPI);
   const viewMode = urlState.getViewModeFromURL();
 
   useEffect(() => {
@@ -292,6 +303,7 @@ export function MunicipalitiesOverviewPage() {
       municipalityEntities={municipalityEntities}
       mapData={mapData}
       selectedKPI={selectedKPI}
+      displayKPI={displayKPI}
       viewMode={viewMode}
       onKPIChange={(kpi) => {
         setSelectedKPI(kpi);

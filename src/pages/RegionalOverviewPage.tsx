@@ -49,6 +49,7 @@ export function RegionalOverviewPage() {
 
   const {
     selectedKPI,
+    displayKPI,
     setSelectedKPI,
     viewMode,
     setKPIInURL,
@@ -140,7 +141,7 @@ export function RegionalOverviewPage() {
   const regionalRankedList = (
     <RegionalRankedList
       regionEntities={regionEntities}
-      selectedKPI={selectedKPI}
+      selectedKPI={displayKPI}
       onItemClick={handleRegionClick}
       headerAction={viewToggle}
     />
@@ -151,7 +152,7 @@ export function RegionalOverviewPage() {
       entityType="regions"
       geoData={geoData as FeatureCollection}
       data={mapData}
-      selectedKPI={selectedKPI}
+      selectedKPI={displayKPI}
       onAreaClick={handleRegionAreaClick}
       defaultCenter={OVERVIEW_MAP_DEFAULT_CENTER}
       defaultZoom={isMobile ? 4 : undefined}
@@ -193,27 +194,27 @@ export function RegionalOverviewPage() {
           >
             <RegionalInsightsPanel
               regionsData={regionsAsEntities}
-              selectedKPI={selectedKPI}
+              selectedKPI={displayKPI}
               section="stats"
             />
           </div>
         </div>
 
-        {!selectedKPI.isBoolean && (
+        {!displayKPI.isBoolean && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <RegionalInsightsPanel
               regionsData={regionsAsEntities}
-              selectedKPI={selectedKPI}
+              selectedKPI={displayKPI}
               section="top"
             />
             <RegionalInsightsPanel
               regionsData={regionsAsEntities}
-              selectedKPI={selectedKPI}
+              selectedKPI={displayKPI}
               section="bottom"
             />
             <RegionalInsightsPanel
               regionsData={regionsAsEntities}
-              selectedKPI={selectedKPI}
+              selectedKPI={displayKPI}
               section="distribution"
             />
           </div>
