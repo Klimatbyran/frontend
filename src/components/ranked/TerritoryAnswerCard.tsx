@@ -258,8 +258,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
                   key={stat.label}
                   style={{
                     width: `${(stat.count / totalDistribution) * 100}%`,
-                    backgroundColor:
-                      STAT_COLOR[stat.colorClass] ?? COLORS.grey,
+                    backgroundColor: STAT_COLOR[stat.colorClass] ?? COLORS.grey,
                   }}
                 />
               ))}
