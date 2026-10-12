@@ -82,7 +82,9 @@ describe("TerritoryAnswerCard", () => {
     expect(barSegments[0]).toHaveStyle({ backgroundColor: "var(--blue-3)" });
     expect(barSegments[1]).toHaveStyle({ backgroundColor: "var(--pink-3)" });
 
-    const legendDots = container.querySelectorAll("i.size-2\\.5");
+    const legendDots = container.querySelectorAll(
+      "span.inline-block.size-2\\.5",
+    );
     expect(legendDots).toHaveLength(2);
     expect(legendDots[0]).toHaveStyle({ backgroundColor: "var(--blue-3)" });
     expect(legendDots[1]).toHaveStyle({ backgroundColor: "var(--pink-3)" });

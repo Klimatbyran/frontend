@@ -308,8 +308,8 @@ function DistributionRows({
             className="flex items-center justify-between gap-3 text-sm lg:text-lg"
           >
             <span className="flex min-w-0 items-center gap-2.5 text-white/70">
-              <i
-                className="size-2.5 shrink-0 rounded-full lg:size-3"
+              <span
+                className="inline-block size-2.5 shrink-0 rounded-full lg:size-3"
                 style={{
                   backgroundColor: stat.backgroundColor,
                 }}
