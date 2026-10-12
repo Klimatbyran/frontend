@@ -11,7 +11,7 @@ import {
 import regionGeoJson from "@/data/regionGeo.json";
 import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
 import { useRegionsKPIs, useRegionalKPIs } from "@/hooks/regions/useRegionKPIs";
-import RegionalInsightsPanel from "@/components/regions/RegionalInsightsPanel";
+import { TerritoryInsightsPanel } from "@/components/ranked/TerritoryInsightsPanel";
 import { Region } from "@/types/region";
 import { resolveRegionFromMapName } from "@/utils/regionUtils";
 import { toRegionMapDataItem } from "@/utils/territoryMapData";
@@ -147,9 +147,11 @@ export function RegionalOverviewPage() {
       }
       bestList={
         !selectedKPI.isBoolean && (
-          <RegionalInsightsPanel
-            regionsData={regionsAsEntities}
+          <TerritoryInsightsPanel
+            entities={regionsAsEntities}
             selectedKPI={selectedKPI}
+            entityType="regions"
+            translationPrefix="regions.list"
             section="top"
             listDescription={t("territoryOverview.bestList")}
           />
@@ -157,9 +159,11 @@ export function RegionalOverviewPage() {
       }
       worstList={
         !selectedKPI.isBoolean && (
-          <RegionalInsightsPanel
-            regionsData={regionsAsEntities}
+          <TerritoryInsightsPanel
+            entities={regionsAsEntities}
             selectedKPI={selectedKPI}
+            entityType="regions"
+            translationPrefix="regions.list"
             section="bottom"
             listDescription={t("territoryOverview.worstList")}
           />

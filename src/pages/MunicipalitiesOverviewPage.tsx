@@ -10,7 +10,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
-import InsightsPanel from "@/components/municipalities/rankedList/MunicipalityInsightsPanel";
+import { TerritoryInsightsPanel } from "@/components/ranked/TerritoryInsightsPanel";
 import TerritoryMap from "@/components/maps/TerritoryMap";
 import {
   OVERVIEW_MAP_DEFAULT_CENTER,
@@ -199,9 +199,11 @@ export function MunicipalitiesOverviewPage() {
       }
       bestList={
         !selectedKPI.isBoolean && (
-          <InsightsPanel
-            municipalityData={municipalities}
+          <TerritoryInsightsPanel
+            entities={municipalities}
             selectedKPI={selectedKPI}
+            entityType="municipalities"
+            translationPrefix="municipalities.list"
             section="top"
             listDescription={t("territoryOverview.bestList")}
           />
@@ -209,9 +211,11 @@ export function MunicipalitiesOverviewPage() {
       }
       worstList={
         !selectedKPI.isBoolean && (
-          <InsightsPanel
-            municipalityData={municipalities}
+          <TerritoryInsightsPanel
+            entities={municipalities}
             selectedKPI={selectedKPI}
+            entityType="municipalities"
+            translationPrefix="municipalities.list"
             section="bottom"
             listDescription={t("territoryOverview.worstList")}
           />

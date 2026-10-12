@@ -46,14 +46,13 @@ vi.mock("@/components/maps/TerritoryMap", () => ({
   ),
 }));
 
-vi.mock(
-  "@/components/municipalities/rankedList/MunicipalityInsightsPanel",
-  () => ({
-    default: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
-      <div data-testid="insights-panel">{String(selectedKPI.key)}</div>
-    ),
-  }),
-);
+vi.mock("@/components/ranked/TerritoryInsightsPanel", () => ({
+  TerritoryInsightsPanel: ({
+    selectedKPI,
+  }: {
+    selectedKPI: { key: unknown };
+  }) => <div data-testid="insights-panel">{String(selectedKPI.key)}</div>,
+}));
 
 vi.mock("@/components/ranked/DataChipSelector", () => ({
   DataChipSelector: ({ selectedKPI }: { selectedKPI: { key: unknown } }) => (
