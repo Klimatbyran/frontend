@@ -64,10 +64,7 @@ function TerritoryMap({
   defaultZoom,
   propertyNameField = "name",
   gradientColors = TERRITORY_MAP_COLORS,
-  booleanColors = {
-    positive: getPositiveIndicatorColor(isMeetsParisKpiKey(selectedKPI.key)),
-    negative: DEFAULT_NEGATIVE_BOOLEAN_COLOR,
-  },
+  booleanColors: booleanColorsProp,
   mapBackgroundColor = "var(--black-2)",
   scrollWheelZoom = true,
   className,
@@ -78,6 +75,17 @@ function TerritoryMap({
   hoveredArea: hoveredAreaProp,
   onHoveredAreaChange,
 }: TerritoryMapProps) {
+  const booleanColors = useMemo(
+    () =>
+      booleanColorsProp ?? {
+        positive: getPositiveIndicatorColor(
+          isMeetsParisKpiKey(selectedKPI.key),
+        ),
+        negative: DEFAULT_NEGATIVE_BOOLEAN_COLOR,
+      },
+    [booleanColorsProp, selectedKPI.key],
+  );
+
   const { position, setPosition, getInitialZoom } = useMapPosition(
     defaultCenter,
     defaultZoom,

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BarChart,
@@ -24,6 +24,20 @@ import {
   isMeetsParisKpiKey,
 } from "@/utils/ui/colors";
 import { formatPercent } from "@/utils/formatting/localization";
+
+/** Animate charts on first mount only — KPI switches should not blank/remount. */
+function useAnimateChartOnce(reduceMotion: boolean) {
+  const hasAnimatedRef = useRef(false);
+  const shouldAnimate = !reduceMotion && !hasAnimatedRef.current;
+
+  useEffect(() => {
+    if (!reduceMotion) {
+      hasAnimatedRef.current = true;
+    }
+  }, [reduceMotion]);
+
+  return shouldAnimate;
+}
 
 interface KPIDistributionChartProps<T> {
   data: T[];
@@ -93,12 +107,10 @@ const PIE_CORNER_RADIUS = 8;
 function BooleanKPIPieChart({
   slices,
   entityLabel,
-  animationKey,
   maxOuterRadius,
 }: {
   slices: BooleanPieSlice[];
   entityLabel: string;
-  animationKey: string;
   maxOuterRadius?: number;
 }) {
   const { size, containerRef } = useResponsiveChartSize(
@@ -107,12 +119,10 @@ function BooleanKPIPieChart({
     true,
   );
   const { pieDuration, reduceMotion } = useChartMotion();
+  const shouldAnimate = useAnimateChartOnce(reduceMotion);
 
   const total = slices.reduce((sum, item) => sum + item.value, 0);
   const pieData = slices.map((item) => ({ ...item, total }));
-  const pieAnimationKey = pieData
-    .map((entry) => `${entry.name}-${entry.value}`)
-    .join("|");
 
   const outerRadius = size.outerRadius;
   const innerRadius = size.innerRadius;
@@ -127,7 +137,6 @@ function BooleanKPIPieChart({
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>
           <Pie
-            key={`${animationKey}-${pieAnimationKey}`}
             data={pieData}
             dataKey="value"
             nameKey="name"
@@ -138,7 +147,7 @@ function BooleanKPIPieChart({
             cornerRadius={PIE_CORNER_RADIUS}
             paddingAngle={pieData.length > 1 ? 2 : 0}
             minAngle={4}
-            isAnimationActive={!reduceMotion}
+            isAnimationActive={shouldAnimate}
             animationBegin={0}
             animationDuration={pieDuration}
             animationEasing="ease-out"
@@ -340,6 +349,8 @@ export function KPIDistributionChart<T>({
     [values, selectedKPI.isBoolean],
   );
 
+  const shouldAnimate = useAnimateChartOnce(reduceMotion);
+
   if (selectedKPI.isBoolean && booleanValues) {
     const slices = booleanValues.filter((d) => d.value > 0);
     if (!slices.length) return null;
@@ -348,7 +359,6 @@ export function KPIDistributionChart<T>({
       <BooleanKPIPieChart
         slices={slices}
         entityLabel={label}
-        animationKey={String(selectedKPI.key)}
         maxOuterRadius={maxOuterRadius}
       />
     );
@@ -377,11 +387,7 @@ export function KPIDistributionChart<T>({
 
   return (
     <div>
-      <ResponsiveContainer
-        key={String(selectedKPI.key)}
-        width="100%"
-        height={220}
-      >
+      <ResponsiveContainer width="100%" height={220}>
         <BarChart
           data={bins}
           margin={{ top: 16, right: 4, bottom: 4, left: 4 }}
@@ -410,9 +416,9 @@ export function KPIDistributionChart<T>({
             dataKey="count"
             radius={[3, 3, 0, 0]}
             maxBarSize={32}
-            isAnimationActive={!reduceMotion}
+            isAnimationActive={shouldAnimate}
             animationBegin={0}
-            animationDuration={reduceMotion ? 0 : barDuration * 1000}
+            animationDuration={shouldAnimate ? barDuration * 1000 : 0}
             animationEasing="ease-out"
           >
             {bins.map((bin, i) => {

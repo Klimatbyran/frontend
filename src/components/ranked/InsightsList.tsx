@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
@@ -63,10 +64,22 @@ function InsightsList<T>({
   });
   const play = !deferAnimationUntilVisible || reduceMotion || entered;
   const holdAnimation = deferAnimationUntilVisible && !play;
-  const rowFadeMs = reduceMotion ? 0 : 350;
-  const rowStaggerMs = reduceMotion ? 0 : 35;
-  const barTransitionMs = reduceMotion ? 0 : barDuration * 1000;
-  const barStaggerMs = reduceMotion ? 0 : 40;
+  // Play entrance motion once so KPI switches don't remount rows from opacity 0.
+  const entrancePlayedRef = useRef(false);
+  const waitingToEnter = deferAnimationUntilVisible && !play;
+  const shouldAnimateEntrance =
+    !reduceMotion && (waitingToEnter || !entrancePlayedRef.current);
+
+  useEffect(() => {
+    if (play && !reduceMotion) {
+      entrancePlayedRef.current = true;
+    }
+  }, [play, reduceMotion]);
+
+  const rowFadeMs = shouldAnimateEntrance ? 350 : 0;
+  const rowStaggerMs = shouldAnimateEntrance ? 35 : 0;
+  const barTransitionMs = shouldAnimateEntrance ? barDuration * 1000 : 0;
+  const barStaggerMs = shouldAnimateEntrance ? 40 : 0;
   const barEase = `cubic-bezier(${ease.join(", ")})`;
 
   const numericValues = entities

@@ -62,6 +62,47 @@ describe("InsightsList", () => {
     expect(bar?.getAttribute("style")).toContain("600ms");
   });
 
+  it("does not re-fade rows when the ranked entities change after the first paint", () => {
+    const { container, rerender } = render(
+      <InsightsList
+        title="Top municipalities"
+        entities={[{ name: "Stockholm", value: 10 }]}
+        dataPointKey="value"
+        unit="%"
+        totalCount={1}
+        entityType="municipalities"
+        nameKey="name"
+        showBars
+        colorItem={() => "#ffffff"}
+      />,
+    );
+
+    expect(
+      container.querySelector(".group")?.getAttribute("style"),
+    ).toContain("fadeSlideIn");
+
+    rerender(
+      <InsightsList
+        title="Top municipalities"
+        entities={[{ name: "Göteborg", value: 20 }]}
+        dataPointKey="value"
+        unit="%"
+        totalCount={1}
+        entityType="municipalities"
+        nameKey="name"
+        showBars
+        colorItem={() => "#ffffff"}
+      />,
+    );
+
+    expect(
+      container.querySelector(".group")?.getAttribute("style"),
+    ).toBeNull();
+    expect(
+      container.querySelector(".group > .absolute")?.getAttribute("style"),
+    ).toContain("width: 100%");
+  });
+
   it("renders municipality links without bar animation styles when showBars is off", () => {
     const { container } = render(
       <InsightsList
