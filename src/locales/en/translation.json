@@ -1989,10 +1989,6 @@
           "lowerBetter": "Better",
           "higherWorse": "Worse"
         }
-      },
-      "viewToggle": {
-        "showList": "List",
-        "showMap": "Map"
       }
     }
   },

@@ -5,25 +5,14 @@ import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
   calculateEntityStatistics,
   createDefaultColorGetter,
-  createSourceLinks,
-  buildPerformerProps,
   TOP_N,
 } from "@/utils/insights/rankedListUtils";
-import KPIDetailsPanel from "../../ranked/KPIDetailsPanel";
 import InsightsList from "../../ranked/InsightsList";
-import { KPIDistributionChart } from "../../ranked/KPIDistributionChart";
-import {
-  DistributionBox,
-  BooleanSummaryBox,
-} from "../../ranked/InsightsPanelParts";
-
-type InsightsPanelSection = "stats" | "top" | "bottom" | "distribution";
 
 interface InsightsPanelProps {
   municipalityData: Municipality[];
   selectedKPI: KPIValue<Municipality>;
-  /** Render only one section. Omit to render all three (legacy). */
-  section?: InsightsPanelSection;
+  section: "top" | "bottom";
   /** Shown under the list title for the top and bottom sections. */
   listDescription?: string;
 }
@@ -82,68 +71,11 @@ function InsightsPanel({
 
   const topMunicipalities = sortedData.slice(0, TOP_N);
   const bottomMunicipalities = sortedData.slice(-TOP_N).reverse();
-  const sourceLinks = createSourceLinks(selectedKPI);
   const entityPlural = t("header.municipalities").toLowerCase();
-  const unit = selectedKPI.unit || "";
 
-  const { topPerformer, bottomPerformer } = buildPerformerProps(
-    sortedData,
-    {
-      key: selectedKPI.key as keyof Municipality,
-      unit,
-      isBoolean: selectedKPI.isBoolean,
-    },
-    "/municipalities",
-  );
+  if (selectedKPI.isBoolean) return null;
 
-  const statsPanel = (
-    <KPIDetailsPanel
-      title={t(`municipalities.list.kpis.${kpiKey}.label`)}
-      description={t(`municipalities.list.kpis.${kpiKey}.description`)}
-      isBoolean={selectedKPI.isBoolean}
-      higherIsBetter={selectedKPI.higherIsBetter}
-      averageValue={statistics.formattedAverage}
-      averageLabel={t("municipalities.list.insights.keyStatistics.average")}
-      topPerformer={topPerformer}
-      bottomPerformer={bottomPerformer}
-      chart={
-        selectedKPI.isBoolean ? (
-          <KPIDistributionChart
-            data={municipalityData}
-            selectedKPI={selectedKPI}
-            entityLabel={entityPlural}
-            translationPrefix="municipalities.list"
-          />
-        ) : undefined
-      }
-      distributionStats={statistics.distributionStats}
-      missingDataCount={statistics.nullCount}
-      missingDataCountKey={`municipalities.list.kpis.${String(selectedKPI.key)}.missingCount`}
-      missingDataLabel={selectedKPI.nullValues}
-      sourceLinks={sourceLinks}
-    />
-  );
-
-  const distributionPanel = (
-    <DistributionBox
-      entityType="municipalities"
-      chart={
-        <KPIDistributionChart
-          data={municipalityData}
-          selectedKPI={selectedKPI}
-          average={!selectedKPI.isBoolean ? statistics.average : undefined}
-          entityLabel={entityPlural}
-          translationPrefix="municipalities.list"
-        />
-      }
-    />
-  );
-
-  const booleanSummary = (
-    <BooleanSummaryBox distributionStats={statistics.distributionStats} />
-  );
-
-  const topPanel = !selectedKPI.isBoolean ? (
+  const topPanel = (
     <InsightsList<Municipality>
       title={t(
         selectedKPI.higherIsBetter
@@ -164,11 +96,9 @@ function InsightsPanel({
       colorItem={colorItem}
       description={listDescription}
     />
-  ) : (
-    booleanSummary
   );
 
-  const bottomPanel = !selectedKPI.isBoolean ? (
+  const bottomPanel = (
     <InsightsList<Municipality>
       title={t("rankedInsights.titleWorst", {
         nrOfEntities: bottomMunicipalities.length,
@@ -188,12 +118,9 @@ function InsightsPanel({
       colorItem={colorItem}
       description={listDescription}
     />
-  ) : null;
+  );
 
-  if (section === "stats") return statsPanel;
-  if (section === "distribution") return distributionPanel;
-  if (section === "top") return topPanel;
-  return bottomPanel ?? statsPanel;
+  return section === "bottom" ? bottomPanel : topPanel;
 }
 
 export default InsightsPanel;

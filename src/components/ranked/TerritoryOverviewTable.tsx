@@ -48,6 +48,8 @@ interface TerritoryOverviewTableProps {
   isBoolean?: boolean;
   higherIsBetter: boolean;
   booleanLabels?: { true: string; false: string };
+  /** Shown for a missing number, e.g. "no charging points". */
+  nullLabel?: string;
   /** Hide the Paris column when the selected measure already is Paris. */
   showParis: boolean;
 }
@@ -128,17 +130,15 @@ function SortableColumnHead({
 }) {
   const active = activeKey === columnKey;
   return (
-    <TableHead className={className}>
+    <TableHead
+      aria-sort={
+        active ? (direction === "asc" ? "ascending" : "descending") : "none"
+      }
+      className={className}
+    >
       <button
         type="button"
         onClick={() => onSort(columnKey)}
-        aria-sort={
-          active
-            ? direction === "asc"
-              ? "ascending"
-              : "descending"
-            : undefined
-        }
         className={cn(
           "inline-flex w-full min-w-0 items-center gap-1 font-normal transition-colors hover:text-white/70",
           align === "end" && "justify-end",
@@ -161,19 +161,10 @@ function SortableColumnHead({
 function formatKpi(
   value: number | boolean | null,
   unit: string,
-  isBoolean: boolean | undefined,
-  labels: { true: string; false: string } | undefined,
   noData: string,
 ): string {
-  if (typeof value === "boolean") {
-    return value ? (labels?.true ?? "") : (labels?.false ?? "");
-  }
   if (typeof value === "number" && !Number.isNaN(value)) {
-    const formatted = `${value.toFixed(1)}${isBoolean ? "" : unit}`.replace(
-      "-",
-      "−",
-    );
-    return formatted;
+    return `${value.toFixed(1)}${unit}`.replace("-", "−");
   }
   return noData;
 }
@@ -186,6 +177,7 @@ export function TerritoryOverviewTable({
   isBoolean,
   higherIsBetter,
   booleanLabels,
+  nullLabel,
   showParis,
 }: TerritoryOverviewTableProps) {
   const { t } = useTranslation();
@@ -356,7 +348,11 @@ export function TerritoryOverviewTable({
         <Table className="table-fixed">
           <TableHeader>
             <TableRow className="border-white/10 hover:bg-transparent">
-              <TableHead className="w-10 text-right text-white/40">#</TableHead>
+              {!isBoolean && (
+                <TableHead className="w-10 text-right text-white/40">
+                  #
+                </TableHead>
+              )}
               <SortableColumnHead
                 columnKey="name"
                 activeKey={sortKey}
@@ -424,9 +420,11 @@ export function TerritoryOverviewTable({
                   : undefined;
               return (
                 <TableRow key={row.id} className="border-white/5">
-                  <TableCell className="py-3 text-right font-mono text-xs text-white/30">
-                    {rankById.get(row.id) ?? "–"}
-                  </TableCell>
+                  {!isBoolean && (
+                    <TableCell className="py-3 text-right font-mono text-xs text-white/30">
+                      {rankById.get(row.id) ?? "–"}
+                    </TableCell>
+                  )}
                   <TableCell className="py-3">
                     <LocalizedLink
                       to={row.href}
@@ -466,13 +464,7 @@ export function TerritoryOverviewTable({
                         offLabel={booleanLabels?.false ?? ""}
                       />
                     ) : (
-                      formatKpi(
-                        row.kpiValue,
-                        unit,
-                        isBoolean,
-                        booleanLabels,
-                        noData,
-                      )
+                      formatKpi(row.kpiValue, unit, nullLabel || noData)
                     )}
                   </TableCell>
                   {showParis && (

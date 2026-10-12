@@ -31,6 +31,14 @@ export function toFitBoundsOptions(
   }
 
   if (Array.isArray(padding)) {
+    // [top, right, bottom, left], matching the detail-map legend inset.
+    if (padding.length >= 4) {
+      const [top, right, bottom, left] = padding;
+      return {
+        paddingTopLeft: [left ?? 0, top ?? 0],
+        paddingBottomRight: [right ?? 0, bottom ?? 0],
+      };
+    }
     return { padding: [padding[0] ?? 0, padding[1] ?? 0] };
   }
 

@@ -2035,10 +2035,6 @@
           "lowerBetter": "Bättre",
           "higherWorse": "Sämre"
         }
-      },
-      "viewToggle": {
-        "showList": "Lista",
-        "showMap": "Karta"
       }
     }
   },

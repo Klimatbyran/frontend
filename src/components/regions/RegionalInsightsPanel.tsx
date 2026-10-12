@@ -5,24 +5,14 @@ import { KPIValue } from "@/types/rankings";
 import {
   calculateEntityStatistics,
   createDefaultColorGetter,
-  createSourceLinks,
-  buildPerformerProps,
   TOP_N,
 } from "@/utils/insights/rankedListUtils";
 import InsightsList from "../ranked/InsightsList";
-import KPIDetailsPanel from "../ranked/KPIDetailsPanel";
-import { KPIDistributionChart } from "../ranked/KPIDistributionChart";
-import {
-  DistributionBox,
-  BooleanSummaryBox,
-} from "../ranked/InsightsPanelParts";
-
-type InsightsPanelSection = "stats" | "top" | "bottom" | "distribution";
 
 interface InsightsPanelProps {
   regionsData: Region[];
   selectedKPI: KPIValue<Region>;
-  section?: InsightsPanelSection;
+  section: "top" | "bottom";
   /** Shown under the list title for the top and bottom sections. */
   listDescription?: string;
 }
@@ -77,69 +67,11 @@ function RegionalInsightsPanel({
 
   const topRegions = sortedData.slice(0, TOP_N);
   const bottomRegions = sortedData.slice(-TOP_N).reverse();
-  const sourceLinks = createSourceLinks(selectedKPI);
   const entityPlural = t("header.regions").toLowerCase();
-  const unit = selectedKPI.unit || "";
 
-  const { topPerformer, bottomPerformer } = buildPerformerProps(
-    sortedData,
-    {
-      key: selectedKPI.key as keyof Region,
-      unit,
-      isBoolean: selectedKPI.isBoolean,
-    },
-    "/regions",
-  );
+  if (selectedKPI.isBoolean) return null;
 
-  const statsPanel = (
-    <KPIDetailsPanel
-      title={t(`regions.list.kpis.${kpiKey}.label`)}
-      description={t(`regions.list.kpis.${kpiKey}.description`)}
-      isBoolean={selectedKPI.isBoolean}
-      higherIsBetter={selectedKPI.higherIsBetter}
-      averageValue={statistics.formattedAverage}
-      averageLabel={t("municipalities.list.insights.keyStatistics.average")}
-      topPerformer={topPerformer}
-      bottomPerformer={bottomPerformer}
-      chart={
-        selectedKPI.isBoolean ? (
-          <KPIDistributionChart<Region>
-            data={regionData}
-            selectedKPI={selectedKPI}
-            entityLabel={entityPlural}
-            translationPrefix="regions.list"
-          />
-        ) : undefined
-      }
-      distributionStats={statistics.distributionStats}
-      missingDataCount={statistics.nullCount}
-      missingDataLabel={t(`regions.list.kpis.${kpiKey}.nullValues`, {
-        defaultValue: "",
-      })}
-      sourceLinks={sourceLinks}
-    />
-  );
-
-  const distributionPanel = (
-    <DistributionBox
-      entityType="regions"
-      chart={
-        <KPIDistributionChart<Region>
-          data={regionData}
-          selectedKPI={selectedKPI}
-          average={!selectedKPI.isBoolean ? statistics.average : undefined}
-          entityLabel={entityPlural}
-          translationPrefix="regions.list"
-        />
-      }
-    />
-  );
-
-  const booleanSummary = (
-    <BooleanSummaryBox distributionStats={statistics.distributionStats} />
-  );
-
-  const topPanel = !selectedKPI.isBoolean ? (
+  const topPanel = (
     <InsightsList<Region>
       title={t(
         selectedKPI.higherIsBetter
@@ -160,11 +92,9 @@ function RegionalInsightsPanel({
       colorItem={colorItem}
       description={listDescription}
     />
-  ) : (
-    booleanSummary
   );
 
-  const bottomPanel = !selectedKPI.isBoolean ? (
+  const bottomPanel = (
     <InsightsList<Region>
       title={t("rankedInsights.titleWorst", {
         nrOfEntities: bottomRegions.length,
@@ -184,12 +114,9 @@ function RegionalInsightsPanel({
       colorItem={colorItem}
       description={listDescription}
     />
-  ) : null;
+  );
 
-  if (section === "stats") return statsPanel;
-  if (section === "distribution") return distributionPanel;
-  if (section === "top") return topPanel;
-  return bottomPanel ?? statsPanel;
+  return section === "bottom" ? bottomPanel : topPanel;
 }
 
 export default RegionalInsightsPanel;

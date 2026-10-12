@@ -151,13 +151,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
       : "";
 
   const performers = (
-    <div
-      className={
-        selectedKPI.isBoolean
-          ? "grid grid-cols-1 gap-2.5"
-          : "grid shrink-0 grid-cols-1 gap-2.5 md:grid-cols-2 lg:gap-4"
-      }
-    >
+    <div className="grid shrink-0 grid-cols-1 gap-2.5 md:grid-cols-2 lg:gap-4">
       {topPerformer && (
         <Performer
           label={t(`${translationPrefix}.insights.keyStatistics.best`, {
@@ -167,7 +161,6 @@ export function TerritoryAnswerCard<T extends { name: string }>({
           value={displayMinus(topPerformer.value)}
           href={topPerformer.href}
           nameClass="text-blue-3"
-          fill={!selectedKPI.isBoolean}
         />
       )}
       {bottomPerformer && (
@@ -179,7 +172,6 @@ export function TerritoryAnswerCard<T extends { name: string }>({
           value={displayMinus(bottomPerformer.value)}
           href={bottomPerformer.href}
           nameClass="text-pink-3"
-          fill={!selectedKPI.isBoolean}
         />
       )}
     </div>
@@ -267,7 +259,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
                 />
               ))}
             </div>
-            <DistributionRows stats={stats} total={totalDistribution} large />
+            <DistributionRows stats={stats} total={totalDistribution} />
           </div>
         )}
         {sourceBlock}
@@ -290,9 +282,8 @@ export function TerritoryAnswerCard<T extends { name: string }>({
           />
         </div>
         <div className="flex w-full flex-col justify-center gap-3 lg:w-72 lg:shrink-0 lg:gap-5">
-          {(topPerformer || bottomPerformer) && performers}
           {totalDistribution > 0 && (
-            <DistributionRows stats={stats} total={totalDistribution} large />
+            <DistributionRows stats={stats} total={totalDistribution} />
           )}
         </div>
       </div>
@@ -305,26 +296,22 @@ export function TerritoryAnswerCard<T extends { name: string }>({
 function DistributionRows({
   stats,
   total,
-  large = false,
 }: {
   stats: Array<{ label: string; count: number; colorClass: string }>;
   total: number;
-  large?: boolean;
 }) {
   return (
-    <div className={large ? "space-y-2 lg:space-y-3.5" : "space-y-2"}>
+    <div className="space-y-2 lg:space-y-3.5">
       {stats.map((stat) => {
         const percent = total > 0 ? Math.round((stat.count / total) * 100) : 0;
         return (
           <div
             key={stat.label}
-            className={`flex items-center justify-between gap-3 text-sm ${
-              large ? "lg:text-lg" : ""
-            }`}
+            className="flex items-center justify-between gap-3 text-sm lg:text-lg"
           >
             <span className="flex min-w-0 items-center gap-2.5 text-white/70">
               <i
-                className={`shrink-0 rounded-full ${large ? "size-2.5 lg:size-3" : "size-2.5"}`}
+                className="size-2.5 shrink-0 rounded-full lg:size-3"
                 style={{
                   backgroundColor: STAT_COLOR[stat.colorClass] ?? COLORS.grey,
                 }}
@@ -332,9 +319,7 @@ function DistributionRows({
               <span className="min-w-0">{lowercaseFirst(stat.label)}</span>
             </span>
             <span
-              className={`shrink-0 font-semibold tabular-nums ${stat.colorClass} ${
-                large ? "lg:text-xl lg:font-bold" : ""
-              }`}
+              className={`shrink-0 font-semibold tabular-nums lg:text-xl lg:font-bold ${stat.colorClass}`}
             >
               {stat.count}{" "}
               <span className="font-normal text-white/40 lg:text-base">
@@ -354,21 +339,15 @@ function Performer({
   value,
   href,
   nameClass,
-  fill = false,
 }: {
   label: string;
   name: string;
   value: string;
   href?: string;
   nameClass: string;
-  fill?: boolean;
 }) {
   return (
-    <div
-      className={`rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:space-y-2 lg:px-5 lg:py-5 ${
-        fill ? "flex flex-col justify-center" : ""
-      }`}
-    >
+    <div className="flex flex-col justify-center rounded-2xl bg-white/10 px-3.5 py-3.5 md:px-4 md:py-4 lg:space-y-2 lg:px-5 lg:py-5">
       <p className="text-[11px] uppercase tracking-[0.08em] text-white/45 lg:text-sm">
         {label}
       </p>

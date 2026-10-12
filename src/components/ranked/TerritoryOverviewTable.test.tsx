@@ -80,4 +80,74 @@ describe("TerritoryOverviewTable", () => {
     renderTable();
     expect(rankFor("Gamma")).toBe("–");
   });
+
+  it("puts the sort state on the column header", () => {
+    renderTable();
+    const nameHeader = screen.getByRole("columnheader", {
+      name: "Municipality",
+    });
+    expect(nameHeader).toHaveAttribute("aria-sort", "none");
+
+    fireEvent.click(screen.getByRole("button", { name: "Municipality" }));
+    expect(nameHeader).toHaveAttribute("aria-sort", "ascending");
+  });
+
+  it("does not rank yes or no measures", () => {
+    render(
+      <MemoryRouter>
+        <TerritoryOverviewTable
+          rows={[
+            {
+              id: "alpha",
+              name: "Alpha",
+              href: "/municipalities/alpha",
+              kpiValue: true,
+            },
+            {
+              id: "beta",
+              name: "Beta",
+              href: "/municipalities/beta",
+              kpiValue: false,
+            },
+          ]}
+          entityType="municipalities"
+          kpiLabel="Paris"
+          unit=""
+          isBoolean
+          higherIsBetter
+          booleanLabels={{ true: "Meets", false: "Misses" }}
+          showParis={false}
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.queryByRole("columnheader", { name: "#" })).toBeNull();
+    expect(screen.getByText("Meets")).toBeInTheDocument();
+    expect(screen.getByText("Misses")).toBeInTheDocument();
+  });
+
+  it("uses the measure's own label for a missing number", () => {
+    render(
+      <MemoryRouter>
+        <TerritoryOverviewTable
+          rows={[
+            {
+              id: "alpha",
+              name: "Alpha",
+              href: "/municipalities/alpha",
+              kpiValue: null,
+            },
+          ]}
+          entityType="municipalities"
+          kpiLabel="Chargers"
+          unit=""
+          higherIsBetter={false}
+          nullLabel="No charging points"
+          showParis={false}
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText("No charging points")).toBeInTheDocument();
+  });
 });

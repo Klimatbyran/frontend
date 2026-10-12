@@ -175,6 +175,7 @@ export function RegionalOverviewPage() {
           isBoolean={selectedKPI.isBoolean}
           higherIsBetter={selectedKPI.higherIsBetter}
           booleanLabels={selectedKPI.booleanLabels}
+          nullLabel={selectedKPI.nullValues}
           showParis={!isMeetsParisKpiKey(selectedKPI.key)}
         />
       }
