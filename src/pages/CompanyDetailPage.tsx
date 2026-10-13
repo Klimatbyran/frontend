@@ -64,8 +64,12 @@ export function CompanyDetailPage() {
   const loading = headerLoading || overviewLoading;
   const error = headerError || (!overview && overviewError);
 
-  const latestYear =
-    header?.availableYears[0] ?? overview?.year ?? new Date().getFullYear();
+  const latestYear = useMemo(() => {
+    if (availableYears.length > 0) {
+      return Math.max(...availableYears);
+    }
+    return overview?.year ?? new Date().getFullYear();
+  }, [availableYears, overview?.year]);
 
   const seoMeta = useMemo(() => {
     if (!header) {
@@ -137,8 +141,30 @@ export function CompanyDetailPage() {
   }
 
   if (!overview || overview.year == null) {
-    return <PageLoading />;
+    return (
+      <>
+        <Seo meta={seoMeta} />
+        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+          <CompanyOverviewNoData header={header} headerChip={comparisonChip} />
+          {emissionsHistory && (
+            <EmissionsHistory
+              history={emissionsHistory}
+              onYearSelect={setSelectedYear}
+            />
+          )}
+          {turnoverHistory && (
+            <TurnoverEmissionsHistory
+              history={turnoverHistory}
+              onYearSelect={setSelectedYear}
+            />
+          )}
+          <CompanyScope3 scope3={scope3} />
+        </div>
+      </>
+    );
   }
+
+  const changeTons = overview.emissionsChangeAbsolute;
 
   return (
     <>
@@ -149,11 +175,11 @@ export function CompanyDetailPage() {
           overview={overview}
           headerChip={comparisonChip}
         />
-        {overview.emissionsChangeAbsolute != null &&
-          overview.emissionsChangeAbsolute > 100 &&
+        {changeTons != null &&
+          Math.abs(changeTons) > 100 &&
           overview.emissionsChangeStatus != null && (
             <RelatableNumbers
-              emissionsChange={overview.emissionsChangeAbsolute}
+              emissionsChange={Math.abs(changeTons)}
               currentLanguage={currentLanguage}
               companyName={header.name}
               emissionsChangeStatus={overview.emissionsChangeStatus}
