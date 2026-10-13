@@ -52,8 +52,7 @@ export function CompanyDetailPage() {
 
   // Year changes keep previous overview/scope3; only block on the first shell load.
   const loading = headerLoading || historiesLoading || overviewLoading;
-  const error =
-    headerError || historiesError || (!overview && overviewError);
+  const error = headerError || historiesError || (!overview && overviewError);
 
   const latestYear =
     header?.availableYears[0] ?? overview?.year ?? new Date().getFullYear();
