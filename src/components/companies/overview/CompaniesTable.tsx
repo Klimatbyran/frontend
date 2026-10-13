@@ -179,20 +179,14 @@ export function CompaniesTable({
     return () => window.clearTimeout(handle);
   }, [query]);
 
-  const {
-    companies,
-    total,
-    loading,
-    fetchingMore,
-    hasMore,
-    loadMore,
-  } = usePageCompaniesOverviewList({
-    sector,
-    q: debouncedQuery,
-    sortBy: toApiSortBy(sortKey),
-    sortDir: direction,
-    enabled,
-  });
+  const { companies, total, loading, fetchingMore, hasMore, loadMore } =
+    usePageCompaniesOverviewList({
+      sector,
+      q: debouncedQuery,
+      sortBy: toApiSortBy(sortKey),
+      sortDir: direction,
+      enabled,
+    });
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
