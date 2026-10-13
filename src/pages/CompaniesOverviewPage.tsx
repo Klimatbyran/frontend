@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import {
   usePageCompaniesOverviewChrome,
   usePageCompaniesOverviewList,
@@ -81,19 +82,34 @@ export function CompaniesOverviewPage() {
     [chrome.summary],
   );
 
+  const location = useLocation();
+  const sectorParam = useMemo(
+    () => new URLSearchParams(location.search).get("sector"),
+    [location.search],
+  );
+  /** Avoid fetching "all" before chrome validates a sector from the URL. */
+  const sectorResolutionPending = Boolean(sectorParam && chrome.loading);
+
   const urlState = useCompaniesOverviewUrlState(availableSectors);
   const selectedSector = urlState.getSectorFromURL() as SectorCode | null;
+  const overviewDataEnabled = !sectorResolutionPending;
 
   const {
     companies,
     loading: listLoading,
     error: listError,
-  } = usePageCompaniesOverviewList({ sector: selectedSector });
+  } = usePageCompaniesOverviewList({
+    sector: selectedSector,
+    enabled: overviewDataEnabled,
+  });
   const {
     summary,
     loading: summaryLoading,
     error: summaryError,
-  } = usePageCompaniesOverviewSummary({ sector: selectedSector });
+  } = usePageCompaniesOverviewSummary({
+    sector: selectedSector,
+    enabled: overviewDataEnabled,
+  });
 
   const loading = chrome.loading || listLoading || summaryLoading;
   const error = chrome.error || listError || summaryError;
