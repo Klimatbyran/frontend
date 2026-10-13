@@ -2376,6 +2376,8 @@
       "searchPlaceholder": "Search companies (separate w/ commas)",
       "noCompaniesFound": "No companies found",
       "tryDifferentCriteria": "Try adjusting your search criteria.",
+      "showMoreRows": "Show {{count}} more",
+      "showingCount": "Showing {{shown}} of {{total}} companies",
       "sorting": "Sorting:",
       "filtering": "Filter:",
       "allSectors": "All sectors",
