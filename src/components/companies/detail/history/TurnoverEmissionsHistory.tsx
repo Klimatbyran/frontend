@@ -56,7 +56,9 @@ export function TurnoverEmissionsHistory({
             }
           />
         </div>
-        <TurnoverEmissionsIntensityPanel comparison={decoupling.comparison} />
+        <div className="flex w-full flex-col lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-full lg:min-h-0">
+          <TurnoverEmissionsIntensityPanel comparison={decoupling.comparison} />
+        </div>
       </div>
     </SectionWithHelp>
   );

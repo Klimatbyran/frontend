@@ -1,5 +1,5 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import {
@@ -29,30 +29,40 @@ export function CompanyDetailPage() {
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
 
-  const yearNumber =
-    selectedYear === "latest" ? undefined : Number(selectedYear);
+  useEffect(() => {
+    setSelectedYear("latest");
+  }, [id]);
 
   const {
     header,
     loading: headerLoading,
     error: headerError,
   } = usePageCompanyHeader(id!);
+
+  const availableYears = header?.availableYears ?? [];
+  const yearNumber = useMemo(() => {
+    if (selectedYear === "latest") return undefined;
+    const year = Number(selectedYear);
+    if (!Number.isFinite(year) || !availableYears.includes(year)) {
+      return undefined;
+    }
+    return year;
+  }, [selectedYear, availableYears]);
+
   const {
     overview,
     loading: overviewLoading,
     error: overviewError,
   } = usePageCompanyOverview(id!, yearNumber, !!header);
-  const {
-    emissionsHistory,
-    turnoverHistory,
-    loading: historiesLoading,
-    error: historiesError,
-  } = usePageCompanyHistories(id!, !!header);
+  const { emissionsHistory, turnoverHistory } = usePageCompanyHistories(
+    id!,
+    !!header,
+  );
   const { scope3 } = usePageCompanyScope3(id!, yearNumber, !!header);
 
-  // Year changes keep previous overview/scope3; only block on the first shell load.
-  const loading = headerLoading || historiesLoading || overviewLoading;
-  const error = headerError || historiesError || (!overview && overviewError);
+  // Year changes keep previous overview/scope3 for the same company only.
+  const loading = headerLoading || overviewLoading;
+  const error = headerError || (!overview && overviewError);
 
   const latestYear =
     header?.availableYears[0] ?? overview?.year ?? new Date().getFullYear();
@@ -112,9 +122,10 @@ export function CompanyDetailPage() {
     />
   );
 
-  const hasPeriods = (header.availableYears?.length ?? 0) > 0;
+  const hasPeriods = availableYears.length > 0;
 
-  if (!hasPeriods || !overview || overview.year == null) {
+  // Only the true empty company — not a year that failed to resolve.
+  if (!hasPeriods) {
     return (
       <>
         <Seo meta={seoMeta} />
@@ -123,6 +134,10 @@ export function CompanyDetailPage() {
         </div>
       </>
     );
+  }
+
+  if (!overview || overview.year == null) {
+    return <PageLoading />;
   }
 
   return (

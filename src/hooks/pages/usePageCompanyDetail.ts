@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   getPageCompanyEmissionsHistory,
   getPageCompanyHeader,
@@ -8,6 +8,19 @@ import {
 } from "@/lib/pagesApi";
 
 const STALE_TIME = 1_800_000;
+
+/** Keep prior data only when the company id is unchanged (year switches). */
+function keepPreviousForSameCompany(companyId: string) {
+  return <T>(
+    previousData: T | undefined,
+    previousQuery: { queryKey: readonly unknown[] } | undefined,
+  ): T | undefined => {
+    if (previousQuery?.queryKey[2] === companyId) {
+      return previousData;
+    }
+    return undefined;
+  };
+}
 
 export function usePageCompanyHeader(id: string, enabled = true) {
   const query = useQuery({
@@ -34,7 +47,7 @@ export function usePageCompanyOverview(
     queryFn: () => getPageCompanyOverview(id, year),
     enabled: enabled && !!id,
     staleTime: STALE_TIME,
-    placeholderData: keepPreviousData,
+    placeholderData: keepPreviousForSameCompany(id),
   });
 
   return {
@@ -76,7 +89,7 @@ export function usePageCompanyScope3(
     queryFn: () => getPageCompanyScope3(id, year),
     enabled: enabled && !!id,
     staleTime: STALE_TIME,
-    placeholderData: keepPreviousData,
+    placeholderData: keepPreviousForSameCompany(id),
   });
 
   return {
