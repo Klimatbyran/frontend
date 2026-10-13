@@ -21,6 +21,7 @@ import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
 import { getSeoForRoute } from "@/seo/routes";
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 
 export function CompanyDetailPage() {
   const { id } = useParams<{ id: string; slug?: string }>();
@@ -49,8 +50,10 @@ export function CompanyDetailPage() {
   } = usePageCompanyHistories(id!, !!header);
   const { scope3 } = usePageCompanyScope3(id!, yearNumber, !!header);
 
-  const loading = headerLoading || overviewLoading || historiesLoading;
-  const error = headerError || overviewError || historiesError;
+  // Year changes keep previous overview/scope3; only block on the first shell load.
+  const loading = headerLoading || historiesLoading || overviewLoading;
+  const error =
+    headerError || historiesError || (!overview && overviewError);
 
   const latestYear =
     header?.availableYears[0] ?? overview?.year ?? new Date().getFullYear();
@@ -104,7 +107,7 @@ export function CompanyDetailPage() {
 
   const comparisonChip = (
     <ComparisonDetailChip
-      linkTo={buildComparisonLinkTo("company", header.wikidataId ?? header.id)}
+      linkTo={buildComparisonLinkTo("company", getCompanyUrlSegment(header))}
       variant="company"
       name={header.name}
     />

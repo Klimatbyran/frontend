@@ -81,19 +81,6 @@ export type PageExploreCompany = PageCompanyOverviewItem & {
   employeesIsAIGenerated: boolean;
 };
 
-export type PageLanding = {
-  companies: Array<{
-    id: string;
-    wikidataId?: string | null;
-    name: string;
-    latestTotalEmissions: number;
-  }>;
-  municipalities: Array<{
-    name: string;
-    historicalEmissionChangePercent: number;
-  }>;
-};
-
 export type PageSitemap = {
   companies: Array<{
     id: string;

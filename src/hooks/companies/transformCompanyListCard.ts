@@ -73,9 +73,10 @@ export function transformCompanyToListCard(
     emissionsYear: company.latestYear?.toString(),
     emissionsUnit: t("emissionsUnit"),
     emissionsIsAIGenerated: company.emissionsIsAIGenerated,
-    changeRateValue: emissionsChange
-      ? formatPercentChange(emissionsChange, currentLanguage)
-      : null,
+    changeRateValue:
+      emissionsChange != null
+        ? formatPercentChange(emissionsChange, currentLanguage)
+        : null,
     changeRateColor: getChangeRateColor(emissionsChange),
     changeRateIsAIGenerated: company.changeRateIsAIGenerated,
     changeRateTooltip: getChangeRateTooltip(emissionsChange, t),

@@ -8,6 +8,7 @@ export const TYPEWRITER_CURSOR_CHAR = "_";
 
 // Scroll and throttle constants
 export const SCROLL_THROTTLE_DELAY = 100;
+export const SCROLL_FADE_THRESHOLD = 200;
 
 // Hero search constants
 export const HERO_SEARCH_DEBOUNCE_MS = 350;

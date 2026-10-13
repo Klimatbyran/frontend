@@ -2,8 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
-import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
-import type { PageParisDotCompany } from "@/types/pages";
+import type {
+  PageCompaniesOverviewSummary,
+  PageParisDotCompany,
+} from "@/types/pages";
 import { ParisCompanyDots } from "./ParisCompanyDots";
 import { cn } from "@/lib/utils";
 
@@ -74,7 +76,7 @@ function BreakdownRow({
 }
 
 export interface ParisAnswerCardProps {
-  summary: ParisSummary;
+  summary: PageCompaniesOverviewSummary["paris"];
   parisDots: PageParisDotCompany[];
   /** Sector title when one is selected, such as "Industrials Sector". */
   industryLabel: string | null;

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   getPageCompanyEmissionsHistory,
   getPageCompanyHeader,
@@ -34,6 +34,7 @@ export function usePageCompanyOverview(
     queryFn: () => getPageCompanyOverview(id, year),
     enabled: enabled && !!id,
     staleTime: STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 
   return {
@@ -75,6 +76,7 @@ export function usePageCompanyScope3(
     queryFn: () => getPageCompanyScope3(id, year),
     enabled: enabled && !!id,
     staleTime: STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 
   return {

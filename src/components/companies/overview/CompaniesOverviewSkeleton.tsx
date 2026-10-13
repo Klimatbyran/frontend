@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 
 const SHIMMER = "animate-pulse rounded bg-white/10";
 
@@ -191,41 +192,43 @@ export function CompaniesOverviewSkeleton() {
         {t("companiesOverviewPage.paris.loading")}
       </span>
 
-      <div className="space-y-8 md:space-y-10" aria-hidden="true">
-        <div className="space-y-5 md:space-y-7">
-          <HeaderSkeleton />
-          <ChipFilterSkeleton />
-          <AnswerCardSkeleton />
-        </div>
-
-        <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2">
-          <VerdictListSkeleton />
-          <VerdictListSkeleton />
-        </div>
-
-        <IndustryPieSkeleton />
-
-        <section className="rounded-level-2 bg-black-2 p-6 md:p-7">
-          <Block className="h-6 w-72 md:h-7" />
-          <div className="mt-2 space-y-2">
-            <Block className="h-4 w-full" />
-            <Block className="h-4 w-full" />
-            <Block className="h-4 w-2/3" />
+      <div aria-hidden="true">
+        <OverviewPageRoot>
+          <div className="space-y-5 md:space-y-7">
+            <HeaderSkeleton />
+            <ChipFilterSkeleton />
+            <AnswerCardSkeleton />
           </div>
-          <Block className="mt-6 h-4 w-full rounded-full" />
-          <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <Block className="h-9 w-16" />
-              <Block className="mt-2 h-4 w-44" />
-            </div>
-            <div>
-              <Block className="h-9 w-16" />
-              <Block className="mt-2 h-4 w-40" />
-            </div>
-          </div>
-        </section>
 
-        <CompaniesTableSkeleton />
+          <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2">
+            <VerdictListSkeleton />
+            <VerdictListSkeleton />
+          </div>
+
+          <IndustryPieSkeleton />
+
+          <section className="rounded-level-2 bg-black-2 p-6 md:p-7">
+            <Block className="h-6 w-72 md:h-7" />
+            <div className="mt-2 space-y-2">
+              <Block className="h-4 w-full" />
+              <Block className="h-4 w-full" />
+              <Block className="h-4 w-2/3" />
+            </div>
+            <Block className="mt-6 h-4 w-full rounded-full" />
+            <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <Block className="h-9 w-16" />
+                <Block className="mt-2 h-4 w-44" />
+              </div>
+              <div>
+                <Block className="h-9 w-16" />
+                <Block className="mt-2 h-4 w-40" />
+              </div>
+            </div>
+          </section>
+
+          <CompaniesTableSkeleton />
+        </OverviewPageRoot>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import type { ChartData } from "@/types/emissions";
 import type {
   PageCompanyEmissionsHistory,
-  PageCompanyHeader,
   PageCompanyScope3,
   PageCompanyTurnoverHistory,
 } from "@/types/pages";
@@ -151,16 +150,6 @@ export function scope3EmissionsFromPage(
           ? null
           : { verifiedBy: { name: "verified" } },
       })),
-    },
-  };
-}
-
-export function companyIndustryFromHeader(header: PageCompanyHeader) {
-  if (!header.sectorCode && !header.industryGroupCode) return null;
-  return {
-    industryGics: {
-      sectorCode: header.sectorCode ?? undefined,
-      groupCode: header.industryGroupCode ?? undefined,
     },
   };
 }

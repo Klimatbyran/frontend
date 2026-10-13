@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
-import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { TREND_MIN_YEARS } from "@/hooks/companies/parisOverviewUtils";
 import type { PageCompaniesOverviewSummary } from "@/types/pages";
 

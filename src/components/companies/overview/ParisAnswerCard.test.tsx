@@ -2,8 +2,10 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { ParisAnswerCard } from "./ParisAnswerCard";
-import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
-import type { PageParisDotCompany } from "@/types/pages";
+import type {
+  PageCompaniesOverviewSummary,
+  PageParisDotCompany,
+} from "@/types/pages";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -39,7 +41,7 @@ vi.mock("@/hooks/useChartMotion", () => ({
   }),
 }));
 
-const baseSummary: ParisSummary = {
+const baseSummary: PageCompaniesOverviewSummary["paris"] = {
   total: 10,
   onTrack: 3,
   offTrack: 5,
@@ -68,7 +70,7 @@ const judgedDots = [
 ];
 
 function renderCard(
-  summary: ParisSummary = baseSummary,
+  summary: PageCompaniesOverviewSummary["paris"] = baseSummary,
   parisDots: PageParisDotCompany[] = judgedDots,
 ) {
   return render(

@@ -175,6 +175,7 @@ export const regions = {
     "Mariestad",
     "Öckerö",
     "Tjörn",
+    "Tanum",
     "Ulricehamn",
     "Lysekil",
     "Strömstad",

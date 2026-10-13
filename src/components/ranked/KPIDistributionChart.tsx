@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BarChart,
@@ -16,6 +16,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useResponsiveChartSize } from "@/hooks/useResponsiveChartSize";
 import { KPIValue } from "@/types/rankings";
+import { cn } from "@/lib/utils";
 import { COLORS } from "@/lib/colors";
 import { isMissingRankedValue } from "@/utils/insights/rankedListUtils";
 import {
@@ -35,6 +36,8 @@ interface KPIDistributionChartProps<T> {
   translationPrefix?: string;
   /** Caps pie outer radius — use in the stats panel beside map/graph */
   maxOuterRadius?: number;
+  /** Replaces the pie's default minimum height when the chart should fit a parent. */
+  containerClassName?: string;
 }
 
 const NUM_BINS = 12;
@@ -93,26 +96,25 @@ const PIE_CORNER_RADIUS = 8;
 function BooleanKPIPieChart({
   slices,
   entityLabel,
-  animationKey,
   maxOuterRadius,
+  containerClassName,
+  animateEntrance,
+  pieDuration,
 }: {
   slices: BooleanPieSlice[];
   entityLabel: string;
-  animationKey: string;
   maxOuterRadius?: number;
+  containerClassName?: string;
+  animateEntrance: boolean;
+  pieDuration: number;
 }) {
   const { size, containerRef } = useResponsiveChartSize(
     false,
     maxOuterRadius,
     true,
   );
-  const { pieDuration, reduceMotion } = useChartMotion();
-
   const total = slices.reduce((sum, item) => sum + item.value, 0);
   const pieData = slices.map((item) => ({ ...item, total }));
-  const pieAnimationKey = pieData
-    .map((entry) => `${entry.name}-${entry.value}`)
-    .join("|");
 
   const outerRadius = size.outerRadius;
   const innerRadius = size.innerRadius;
@@ -122,12 +124,14 @@ function BooleanKPIPieChart({
   return (
     <div
       ref={containerRef}
-      className="w-full h-full min-h-[200px] flex items-center justify-center overflow-visible"
+      className={cn(
+        "flex h-full w-full items-center justify-center overflow-visible",
+        containerClassName ?? "min-h-[200px]",
+      )}
     >
       {outerRadius > 0 && (
         <PieChart width={side} height={side}>
           <Pie
-            key={`${animationKey}-${pieAnimationKey}`}
             data={pieData}
             dataKey="value"
             nameKey="name"
@@ -138,9 +142,10 @@ function BooleanKPIPieChart({
             cornerRadius={PIE_CORNER_RADIUS}
             paddingAngle={pieData.length > 1 ? 2 : 0}
             minAngle={4}
-            isAnimationActive={!reduceMotion}
+            // First entrance only — KPI switches must not grow from empty.
+            isAnimationActive={animateEntrance}
             animationBegin={0}
-            animationDuration={pieDuration}
+            animationDuration={animateEntrance ? pieDuration : 0}
             animationEasing="ease-out"
           >
             {pieData.map((entry, index) => (
@@ -315,9 +320,20 @@ export function KPIDistributionChart<T>({
   entityLabel,
   translationPrefix,
   maxOuterRadius,
+  containerClassName,
 }: KPIDistributionChartProps<T>) {
   const { t } = useTranslation();
-  const { barDuration, reduceMotion } = useChartMotion();
+  const { reduceMotion, pieDuration, barDuration } = useChartMotion();
+  // Animate the first paint only; later KPI updates stay painted in place.
+  const [animateEntrance, setAnimateEntrance] = useState(!reduceMotion);
+
+  useEffect(() => {
+    if (reduceMotion || !animateEntrance) return;
+    const ms = Math.max(pieDuration, barDuration * 1000) + 50;
+    const timer = window.setTimeout(() => setAnimateEntrance(false), ms);
+    return () => window.clearTimeout(timer);
+  }, [reduceMotion, animateEntrance, pieDuration, barDuration]);
+
   const label = entityLabel ?? t("header.municipalities").toLowerCase();
 
   const values = useMemo(
@@ -348,8 +364,10 @@ export function KPIDistributionChart<T>({
       <BooleanKPIPieChart
         slices={slices}
         entityLabel={label}
-        animationKey={String(selectedKPI.key)}
         maxOuterRadius={maxOuterRadius}
+        containerClassName={containerClassName}
+        animateEntrance={animateEntrance}
+        pieDuration={pieDuration}
       />
     );
   }
@@ -360,6 +378,7 @@ export function KPIDistributionChart<T>({
   const maxCount = Math.max(...bins.map((b) => b.count));
   const averageBinIndex =
     average !== undefined ? findClosestBinIndex(bins, average) : undefined;
+  const barAnimationMs = animateEntrance ? barDuration * 1000 : 0;
 
   // Both keys now translate to just "Bättre" / "Sämre"
   const betterLabel = t(
@@ -377,11 +396,7 @@ export function KPIDistributionChart<T>({
 
   return (
     <div>
-      <ResponsiveContainer
-        key={String(selectedKPI.key)}
-        width="100%"
-        height={220}
-      >
+      <ResponsiveContainer width="100%" height={220}>
         <BarChart
           data={bins}
           margin={{ top: 16, right: 4, bottom: 4, left: 4 }}
@@ -410,9 +425,9 @@ export function KPIDistributionChart<T>({
             dataKey="count"
             radius={[3, 3, 0, 0]}
             maxBarSize={32}
-            isAnimationActive={!reduceMotion}
+            isAnimationActive={animateEntrance}
             animationBegin={0}
-            animationDuration={reduceMotion ? 0 : barDuration * 1000}
+            animationDuration={barAnimationMs}
             animationEasing="ease-out"
           >
             {bins.map((bin, i) => {

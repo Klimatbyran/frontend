@@ -1,11 +1,11 @@
 import { motion, useReducedMotion, useScroll } from "framer-motion";
 
 /**
- * A hairline under the header that tracks how far down this page the reader
- * has scrolled. Pink is off track and blue is on track, the same reading
- * as the dots above the fold.
+ * A hairline under the header that tracks how far down this overview page
+ * the reader has scrolled. Pink to blue matches the off/on-track reading
+ * used on company and territory overviews.
  */
-export function ParisScrollProgress() {
+export function OverviewScrollProgress() {
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
 

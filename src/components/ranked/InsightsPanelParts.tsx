@@ -1,6 +1,5 @@
 /**
- * Shared UI building blocks used by all three entity InsightsPanels
- * (municipalities, regions, companies).
+ * Chart boxes for the company insights panel.
  */
 import { useTranslation } from "react-i18next";
 

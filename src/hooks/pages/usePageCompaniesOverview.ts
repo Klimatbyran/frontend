@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   getPageCompaniesOverview,
   getPageCompaniesOverviewSummary,
@@ -20,6 +20,7 @@ export function usePageCompaniesOverviewList(options?: {
       ),
     enabled: options?.enabled ?? true,
     staleTime: STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 
   return {
@@ -39,6 +40,7 @@ export function usePageCompaniesOverviewSummary(options?: {
     queryFn: () => getPageCompaniesOverviewSummary(sector),
     enabled: options?.enabled ?? true,
     staleTime: STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 
   return {

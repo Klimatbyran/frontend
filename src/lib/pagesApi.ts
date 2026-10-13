@@ -9,7 +9,6 @@ import type {
   PageCompanyScope3,
   PageCompanyTurnoverHistory,
   PageExploreCompany,
-  PageLanding,
   PageListResponse,
   PageSitemap,
 } from "@/types/pages";
@@ -43,10 +42,6 @@ function toQuery(params: Record<string, string | number | undefined | null>) {
   }
   const qs = search.toString();
   return qs ? `?${qs}` : "";
-}
-
-export async function getPageLanding(): Promise<PageLanding> {
-  return fetchPageJson("/pages/landing");
 }
 
 export async function getPageCompaniesOverview(

@@ -2,18 +2,18 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
-import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/charts/sectorChart/SectorPieLegend";
-import type { IndustryBreakdownRow } from "@/hooks/companies/parisOverviewUtils";
 import { sectorColors } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
+import type { PageIndustryBreakdown } from "@/types/pages";
 
 export interface IndustryEmissionsPieProps {
-  rows: IndustryBreakdownRow[];
+  rows: PageIndustryBreakdown[];
   /** Sector to mark in the chart and legend. Null keeps every slice equal. */
   selected: SectorCode | null;
 }

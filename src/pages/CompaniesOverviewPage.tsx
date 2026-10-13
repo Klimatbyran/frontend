@@ -5,6 +5,7 @@ import {
   usePageCompaniesOverviewList,
   usePageCompaniesOverviewSummary,
 } from "@/hooks/pages/usePageCompaniesOverview";
+import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { CompaniesOverviewSkeleton } from "@/components/companies/overview/CompaniesOverviewSkeleton";
 import InsightsList from "@/components/ranked/InsightsList";
@@ -15,8 +16,8 @@ import { IndustryChipFilter } from "@/components/companies/overview/IndustryChip
 import { IndustryEmissionsPie } from "@/components/companies/overview/IndustryEmissionsPie";
 import { ReportingCoverage } from "@/components/companies/overview/ReportingCoverage";
 import { useSectorTitles } from "@/hooks/companies/useCompanySectors";
-import { ParisScrollProgress } from "@/components/companies/overview/ParisScrollProgress";
-import { ScrollReveal } from "@/components/companies/overview/ScrollReveal";
+import { OverviewScrollProgress } from "@/components/layout/OverviewScrollProgress";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import type { SectorCode } from "@/lib/constants/sectors";
 import type { PageOverviewVerdictCompany } from "@/types/pages";
 import { useCompaniesOverviewUrlState } from "./companiesOverviewPageUtils";
@@ -117,8 +118,7 @@ export function CompaniesOverviewPage() {
   const industryRows = chrome.summary.industryFilters;
 
   return (
-    <div className="space-y-8 md:space-y-10">
-      <ParisScrollProgress />
+    <OverviewPageRoot leadIn={<OverviewScrollProgress />}>
       {/* A step tighter than the page stack, so the chips sit closer to the cards. */}
       <div className="space-y-5 md:space-y-7">
         <div className="space-y-5">
@@ -169,6 +169,6 @@ export function CompaniesOverviewPage() {
       <ScrollReveal>
         <CompaniesTable companies={companies} />
       </ScrollReveal>
-    </div>
+    </OverviewPageRoot>
   );
 }

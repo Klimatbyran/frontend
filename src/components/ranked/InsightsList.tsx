@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { useChartMotion } from "@/hooks/useChartMotion";
 import { useEnteredView } from "@/hooks/useEnteredView";
@@ -39,8 +40,16 @@ interface InsightsListProps<T> {
   nameKey: keyof T;
   showBars?: boolean;
   colorItem: (item: T) => string;
+  /** One line under the title, in the same card. */
+  description?: string;
   /** Hold the row and bar animation until the list has scrolled into view. */
   deferAnimationUntilVisible?: boolean;
+  /**
+   * With deferAnimationUntilVisible, play the entrance once, then keep later
+   * entity updates in place (territory KPI switches). Company sector filters
+   * omit this so ranks can fade in again.
+   */
+  entranceOnce?: boolean;
 }
 
 function InsightsList<T>({
@@ -55,7 +64,9 @@ function InsightsList<T>({
   nameKey,
   showBars = false,
   colorItem,
+  description,
   deferAnimationUntilVisible = false,
+  entranceOnce = false,
 }: InsightsListProps<T>) {
   const { reduceMotion, barDuration, ease } = useChartMotion();
   const { ref, entered } = useEnteredView<HTMLDivElement>({
@@ -63,11 +74,36 @@ function InsightsList<T>({
   });
   const play = !deferAnimationUntilVisible || reduceMotion || entered;
   const holdAnimation = deferAnimationUntilVisible && !play;
-  const rowFadeMs = reduceMotion ? 0 : 350;
-  const rowStaggerMs = reduceMotion ? 0 : 35;
-  const barTransitionMs = reduceMotion ? 0 : barDuration * 1000;
-  const barStaggerMs = reduceMotion ? 0 : 40;
+  const [entranceDone, setEntranceDone] = useState(false);
+  // Entrance motion is for scroll-reveal on company and territory overviews.
+  // entranceOnce keeps KPI switches from fading rows back in from opacity 0.
+  const animateEntrance =
+    deferAnimationUntilVisible && !reduceMotion && !entranceDone;
+  const rowFadeMs = animateEntrance ? 350 : 0;
+  const rowStaggerMs = animateEntrance ? 35 : 0;
+  const barTransitionMs = animateEntrance ? barDuration * 1000 : 0;
+  const barStaggerMs = animateEntrance ? 40 : 0;
   const barEase = `cubic-bezier(${ease.join(", ")})`;
+
+  useEffect(() => {
+    if (!entranceOnce || !animateEntrance || !play) return;
+    const lastIndex = Math.max(entities.length - 1, 0);
+    const ms =
+      Math.max(rowFadeMs, barTransitionMs) +
+      lastIndex * Math.max(rowStaggerMs, barStaggerMs) +
+      50;
+    const timer = window.setTimeout(() => setEntranceDone(true), ms);
+    return () => window.clearTimeout(timer);
+  }, [
+    entranceOnce,
+    animateEntrance,
+    play,
+    entities.length,
+    rowFadeMs,
+    barTransitionMs,
+    rowStaggerMs,
+    barStaggerMs,
+  ]);
 
   const numericValues = entities
     .map((e) => e[dataPointKey])
@@ -78,9 +114,16 @@ function InsightsList<T>({
 
   return (
     <div ref={ref} className="flex flex-col bg-black-2 rounded-level-2 py-6">
-      <h3 className="text-white text-lg font-semibold px-4 md:px-6 pb-2 md:pb-2">
+      <h3
+        className={`text-white text-lg font-semibold px-4 md:px-6 ${description ? "pb-1" : "pb-2"}`}
+      >
         {title}
       </h3>
+      {description && (
+        <p className="px-4 pb-2 text-sm leading-relaxed text-white/55 md:px-6">
+          {description}
+        </p>
+      )}
       <div className="space-y-1 h-full px-4 md:px-6 py-2">
         {entities.map((entity, index) => {
           const position = isBottomRanking ? totalCount - index : index + 1;
