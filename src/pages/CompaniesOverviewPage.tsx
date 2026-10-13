@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import {
   usePageCompaniesOverviewChrome,
-  usePageCompaniesOverviewList,
   usePageCompaniesOverviewSummary,
 } from "@/hooks/pages/usePageCompaniesOverview";
 import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
@@ -95,14 +94,6 @@ export function CompaniesOverviewPage() {
   const overviewDataEnabled = !sectorResolutionPending;
 
   const {
-    companies,
-    loading: listLoading,
-    error: listError,
-  } = usePageCompaniesOverviewList({
-    sector: selectedSector,
-    enabled: overviewDataEnabled,
-  });
-  const {
     summary,
     loading: summaryLoading,
     error: summaryError,
@@ -111,8 +102,8 @@ export function CompaniesOverviewPage() {
     enabled: overviewDataEnabled,
   });
 
-  const loading = chrome.loading || listLoading || summaryLoading;
-  const error = chrome.error || listError || summaryError;
+  const loading = chrome.loading || summaryLoading;
+  const error = chrome.error || summaryError;
 
   if (loading) {
     return <CompaniesOverviewSkeleton />;
@@ -183,7 +174,7 @@ export function CompaniesOverviewPage() {
       <ReportingCoverage reporting={summary.reporting} />
 
       <ScrollReveal>
-        <CompaniesTable companies={companies} />
+        <CompaniesTable sector={selectedSector} enabled={overviewDataEnabled} />
       </ScrollReveal>
     </OverviewPageRoot>
   );

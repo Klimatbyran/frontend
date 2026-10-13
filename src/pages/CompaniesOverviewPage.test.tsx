@@ -104,13 +104,6 @@ const {
 });
 
 vi.mock("@/hooks/pages/usePageCompaniesOverview", () => ({
-  usePageCompaniesOverviewList: (options?: { sector?: string | null }) => ({
-    companies: options?.sector
-      ? mockCompanies.filter((company) => company.sectorCode === options.sector)
-      : mockCompanies,
-    loading: false,
-    error: null,
-  }),
   usePageCompaniesOverviewSummary: (options?: { sector?: string | null }) => ({
     summary: buildSummary(options?.sector ?? null),
     loading: false,
@@ -146,9 +139,14 @@ vi.mock("@/components/ranked/InsightsList", () => ({
 }));
 
 vi.mock("@/components/companies/overview/CompaniesTable", () => ({
-  CompaniesTable: ({ companies }: { companies: Array<{ name: string }> }) => {
-    capturedLists.push(companies.map((company) => company.name));
-    return <div data-testid="companies-table" />;
+  CompaniesTable: ({ sector }: { sector: string | null }) => {
+    const names = (
+      sector
+        ? mockCompanies.filter((company) => company.sectorCode === sector)
+        : mockCompanies
+    ).map((company) => company.name);
+    capturedLists.push(names);
+    return <div data-testid="companies-table" data-sector={sector ?? "all"} />;
   },
 }));
 
