@@ -18,10 +18,8 @@ export function useComparisonSourceCards({
   loadMunicipalities,
   loadRegions,
 }: UseComparisonSourceCardsOptions) {
-  const { companies, companiesLoading, companiesError } = useComparisonCompanies(
-    selectedCompanyLinkTos,
-    loadCompanies,
-  );
+  const { companies, companiesLoading, companiesError } =
+    useComparisonCompanies(selectedCompanyLinkTos, loadCompanies);
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities({
       enabled: loadMunicipalities,

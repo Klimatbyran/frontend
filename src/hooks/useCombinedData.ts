@@ -7,11 +7,7 @@ export type CombinedData = {
   name: string;
   id: string;
   category:
-    | "companies"
-    | "municipalities"
-    | "blogPosts"
-    | "regions"
-    | "nations";
+    "companies" | "municipalities" | "blogPosts" | "regions" | "nations";
   blogExcerpt?: string;
 };
 

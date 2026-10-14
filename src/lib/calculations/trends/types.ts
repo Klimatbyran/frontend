@@ -30,8 +30,7 @@ export interface TrendAnalysis {
   explanation: string;
   explanationParams?: Record<string, string | number>;
   coefficients?:
-    | { slope: number; intercept: number }
-    | { a: number; b: number };
+    { slope: number; intercept: number } | { a: number; b: number };
 
   // Display metrics
   cleanDataPoints: number;

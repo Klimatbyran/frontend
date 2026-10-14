@@ -55,7 +55,16 @@ export function CompanyList() {
       ? undefined
       : companyFilters.meetsParisFilter;
 
-  const { companies, total, loading, fetchingMore, hasMore, loadMore, error } =
+  const {
+    companies,
+    total,
+    loading,
+    refreshing,
+    fetchingMore,
+    hasMore,
+    loadMore,
+    error,
+  } =
     usePageExploreCompaniesList({
       q: debouncedQuery,
       sortBy: companyFilters.sortBy as ExploreListSortBy,
@@ -134,7 +143,7 @@ export function CompanyList() {
             <button
               type="button"
               onClick={loadMore}
-              disabled={fetchingMore || loading}
+              disabled={fetchingMore || loading || refreshing}
               className="rounded-full bg-black-1 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 disabled:opacity-50"
             >
               {t("explorePage.companies.showMoreRows", {

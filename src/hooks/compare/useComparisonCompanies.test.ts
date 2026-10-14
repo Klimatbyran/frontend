@@ -53,6 +53,6 @@ describe("getComparisonCompaniesFetchError", () => {
       { isError: false, error: null, isPending: false, isFetching: false },
     ]);
     expect(error).toBeInstanceOf(Error);
-    expect(error?.message).toMatch(/could not be loaded/i);
+    expect(error?.message).toMatch(/failed to load/i);
   });
 });

@@ -4,8 +4,9 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import { BadgeCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface IconCheckboxProps
-  extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+interface IconCheckboxProps extends React.ComponentPropsWithoutRef<
+  typeof CheckboxPrimitive.Root
+> {
   badgeIconClass?: string;
 }
 

@@ -34,9 +34,7 @@ export function getComparisonCompaniesFetchError(
       : new Error(String(errored.error));
   }
 
-  const pending = queries.some(
-    (query) => query.isPending || query.isFetching,
-  );
+  const pending = queries.some((query) => query.isPending || query.isFetching);
   if (!pending && companiesCount < segmentCount) {
     return new Error("Failed to load one or more companies for comparison");
   }

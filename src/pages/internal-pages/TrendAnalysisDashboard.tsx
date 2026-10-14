@@ -87,11 +87,9 @@ function filterAndSortAnalyses(
     )
     .sort((a, b) => {
       let aValue: string | number = a[sortBy as keyof TrendAnalysis] as
-        | string
-        | number;
+        string | number;
       let bValue: string | number = b[sortBy as keyof TrendAnalysis] as
-        | string
-        | number;
+        string | number;
 
       if (sortBy === "companyName") {
         aValue = a.company.name.toLowerCase();

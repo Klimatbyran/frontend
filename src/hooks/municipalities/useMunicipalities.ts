@@ -29,19 +29,16 @@ export function useMunicipalities(options?: {
     enabled: options?.enabled ?? true,
     staleTime: 1800000,
     select: (data) => {
-      return data.map(
-        (municipality): Municipality => ({
-          ...municipality,
-          emissions: mapEmissionArray(municipality.emissions),
-          approximatedHistoricalEmission: mapEmissionArray(
-            municipality.approximatedHistoricalEmission,
-          ),
-          trend: mapEmissionArray(municipality.trend),
-          meetsParisGoal:
-            municipality.totalTrend <= municipality.totalCarbonLaw,
-          climatePlan: municipality.climatePlanYear !== null,
-        }),
-      );
+      return data.map((municipality): Municipality => ({
+        ...municipality,
+        emissions: mapEmissionArray(municipality.emissions),
+        approximatedHistoricalEmission: mapEmissionArray(
+          municipality.approximatedHistoricalEmission,
+        ),
+        trend: mapEmissionArray(municipality.trend),
+        meetsParisGoal: municipality.totalTrend <= municipality.totalCarbonLaw,
+        climatePlan: municipality.climatePlanYear !== null,
+      }));
     },
   });
 

@@ -11,6 +11,7 @@ import type {
   PageCompaniesOverviewQuery,
   PageCompanyOverviewItem,
 } from "@/types/pages";
+import { isInfiniteListRefreshing } from "./infiniteListQueryState";
 
 const STALE_TIME = 1_800_000;
 
@@ -63,10 +64,16 @@ export function usePageCompaniesOverviewList(options?: {
     []) as PageCompanyOverviewItem[];
   const total = query.data?.pages[0]?.total ?? 0;
 
+  const refreshing = isInfiniteListRefreshing(
+    query.isFetching,
+    query.isFetchingNextPage,
+  );
+
   return {
     companies,
     total,
     loading: query.isLoading,
+    refreshing,
     fetchingMore: query.isFetchingNextPage,
     hasMore: Boolean(query.hasNextPage),
     loadMore: () => {

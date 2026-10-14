@@ -38,7 +38,7 @@ const useTransformMunicipalityListCard = ({
         municipality.climatePlan ??
         Boolean(
           municipality.climatePlanLink &&
-            municipality.climatePlanLink !== "Saknar plan",
+          municipality.climatePlanLink !== "Saknar plan",
         );
 
       return {

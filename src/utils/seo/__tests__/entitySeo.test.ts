@@ -91,6 +91,16 @@ describe("buildCompanySeoDescription", () => {
     expect(result).toContain("industry");
   });
 
+  it("includes industry from sector code via industryGicsForSeo", () => {
+    const companyWithIndustry = {
+      ...mockCompany,
+      industry: industryGicsForSeo("45", "Information Technology"),
+    } as CompanyDetails;
+    const result = buildCompanySeoDescription(companyWithIndustry);
+    expect(result).toContain("Information Technology");
+    expect(result).toContain("industry");
+  });
+
   it("should include emissions data when available", () => {
     const result = buildCompanySeoDescription(mockCompany, 2023);
     expect(result).toContain("reported");

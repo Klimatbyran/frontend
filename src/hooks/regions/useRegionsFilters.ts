@@ -20,10 +20,7 @@ import { SupportedLanguage } from "@/lib/languageDetection";
 import { useLanguage } from "@/components/LanguageProvider";
 
 type RegionSortBy =
-  | "total_emissions"
-  | "emissions_reduction"
-  | "name"
-  | "meets_paris";
+  "total_emissions" | "emissions_reduction" | "name" | "meets_paris";
 function isRegionSortBy(s: string): s is RegionSortBy {
   return [
     "total_emissions",

@@ -179,7 +179,16 @@ export function CompaniesTable({
     return () => window.clearTimeout(handle);
   }, [query]);
 
-  const { companies, total, loading, fetchingMore, hasMore, loadMore, error } =
+  const {
+    companies,
+    total,
+    loading,
+    refreshing,
+    fetchingMore,
+    hasMore,
+    loadMore,
+    error,
+  } =
     usePageCompaniesOverviewList({
       sector,
       q: debouncedQuery,
@@ -465,7 +474,7 @@ export function CompaniesTable({
           <button
             type="button"
             onClick={loadMore}
-            disabled={fetchingMore || loading}
+            disabled={fetchingMore || loading || refreshing}
             className="rounded-full bg-black-1 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 disabled:opacity-50"
           >
             {t("companiesOverviewPage.paris.showMoreRows", {
