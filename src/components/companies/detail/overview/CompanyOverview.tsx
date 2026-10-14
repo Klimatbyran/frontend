@@ -17,7 +17,7 @@ import {
   CompanyOverviewMainStats,
 } from "./CompanyOverviewParts";
 import { periodsFromAvailableYears } from "@/utils/pages/companyDetailAdapters";
-import type { IndustryGroupCode } from "@/lib/constants/sectors";
+import type { IndustryGroupCode, SectorCode } from "@/lib/constants/sectors";
 
 interface CompanyOverviewProps {
   header: PageCompanyHeader;
@@ -35,7 +35,9 @@ export function CompanyOverview({
   const industryGroupNames = useIndustryGroupNames();
   const { currentLanguage } = useLanguage();
 
-  const sectorCode = overview.sectorCode ?? header.sectorCode ?? undefined;
+  const sectorCode = (overview.sectorCode ?? header.sectorCode ?? undefined) as
+    | SectorCode
+    | undefined;
   const industryGroupCode =
     overview.industryGroupCode ?? header.industryGroupCode;
   const sectorName = sectorCode

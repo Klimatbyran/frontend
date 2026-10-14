@@ -1,13 +1,11 @@
 import { SeoMeta } from "@/types/seo";
 import { Municipality } from "@/types/municipality";
+import type { CompanyWithIndustryGics } from "@/types/company";
 import { getCompanyIndustryFromData } from "@/utils/data/industryGrouping";
 import { DEFAULT_OG_IMAGE } from "@/utils/seo";
 
-type CompanySeoInput = {
+type CompanySeoInput = CompanyWithIndustryGics & {
   name: string;
-  industry?: {
-    industryGics?: { sectorCode?: string | null };
-  } | null;
   reportingPeriods?: Array<{
     endDate: string;
     emissions?: { calculatedTotalEmissions?: number | null } | null;
@@ -102,7 +100,7 @@ export function buildCompanySeoDescription(
   // Company name
   parts.push(company.name);
 
-  // Industry (extracted directly from company data)
+  // Industry (extracted directly from company data when GICS names are present)
   const industry = getCompanyIndustryFromData(company);
   if (industry) {
     parts.push(`in the ${industry} industry`);

@@ -4,6 +4,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
+import { usePageExploreCompanies } from "@/hooks/pages/usePageExploreCompanies";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { NotFoundPage } from "./NotFoundPage";
@@ -25,9 +26,13 @@ function isExploreFilter(value?: string): value is ExploreFilter {
 
 function getActiveError(
   mainFilter: ExploreFilter,
+  companiesError: unknown,
   municipalitiesError: unknown,
   regionsError: unknown,
 ) {
+  if (mainFilter === "companies") {
+    return companiesError;
+  }
   if (mainFilter === "municipalities") {
     return municipalitiesError;
   }
@@ -42,9 +47,12 @@ export function ExplorePage() {
   const screenSize = useScreenSize();
   const navigate = useNavigate();
   const { mainFilter: mainFilterParam } = useParams();
+  const isCompaniesTab = mainFilterParam === "companies";
   const isMunicipalitiesTab = mainFilterParam === "municipalities";
   const isRegionsTab = mainFilterParam === "regions";
 
+  const { companies, companiesLoading, companiesError } =
+    usePageExploreCompanies({ enabled: isCompaniesTab });
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities({ enabled: isMunicipalitiesTab });
   const {
@@ -61,12 +69,14 @@ export function ExplorePage() {
 
   const mainFilter = mainFilterParam;
   const isLoading =
+    (isCompaniesTab && companiesLoading && companies.length === 0) ||
     (isMunicipalitiesTab &&
       municipalitiesLoading &&
       municipalities.length === 0) ||
     (isRegionsTab && regionsLoading && regions.length === 0);
   const activeError = getActiveError(
     mainFilter,
+    companiesError,
     municipalitiesError,
     regionsError,
   );
@@ -100,6 +110,7 @@ export function ExplorePage() {
 
       <ExploreEntityList
         mainFilter={mainFilter}
+        companies={companies}
         municipalities={municipalities}
         regions={regions}
       />

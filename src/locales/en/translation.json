@@ -389,6 +389,9 @@
       "badgeOffTrack": "Off track",
       "badgeNoData": "No data",
       "noComparableData": "Not enough data",
+      "tableLoading": "Loading companies…",
+      "tableError": "Could not load the company list. Try again later.",
+      "tableEmpty": "No companies match this search.",
       "showMoreRows": "Show {{count}} more",
       "showingCount": "Showing {{shown}} of {{total}} companies in view"
     },

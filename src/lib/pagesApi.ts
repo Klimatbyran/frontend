@@ -14,6 +14,8 @@ import type {
   PageSitemap,
 } from "@/types/pages";
 
+const SERVER_FETCH_TIMEOUT_MS = 10_000;
+
 function withServerApiKey(init?: RequestInit): RequestInit {
   const apiKey =
     typeof process !== "undefined"
@@ -28,7 +30,28 @@ function withServerApiKey(init?: RequestInit): RequestInit {
 }
 
 async function fetchPageJson<T>(path: string): Promise<T> {
-  const response = await fetch(apiUrl(path), withServerApiKey());
+  const init = withServerApiKey();
+  if (typeof window === "undefined") {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      SERVER_FETCH_TIMEOUT_MS,
+    );
+    try {
+      const response = await fetch(apiUrl(path), {
+        ...init,
+        signal: controller.signal,
+      });
+      if (!response.ok) {
+        throw new Error(`Pages API ${path} failed (${response.status})`);
+      }
+      return response.json() as Promise<T>;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  const response = await fetch(apiUrl(path), init);
   if (!response.ok) {
     throw new Error(`Pages API ${path} failed (${response.status})`);
   }

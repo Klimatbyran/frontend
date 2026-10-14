@@ -179,7 +179,7 @@ export function CompaniesTable({
     return () => window.clearTimeout(handle);
   }, [query]);
 
-  const { companies, total, loading, fetchingMore, hasMore, loadMore } =
+  const { companies, total, loading, fetchingMore, hasMore, loadMore, error } =
     usePageCompaniesOverviewList({
       sector,
       q: debouncedQuery,
@@ -196,6 +196,9 @@ export function CompaniesTable({
       setDirection(DEFAULT_DIRECTION[key]);
     }
   };
+
+  const remaining = Math.max(total - companies.length, 0);
+  const showMoreCount = Math.min(PAGE_OVERVIEW_PAGE_SIZE, remaining);
 
   return (
     <section className="min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7">
@@ -320,6 +323,36 @@ export function CompaniesTable({
             </TableRow>
           </TableHeader>
           <TableBody>
+            {loading && companies.length === 0 && (
+              <TableRow className="border-white/5 hover:bg-transparent">
+                <TableCell
+                  colSpan={6}
+                  className="py-10 text-center text-sm text-white/45"
+                >
+                  {t("companiesOverviewPage.paris.tableLoading")}
+                </TableCell>
+              </TableRow>
+            )}
+            {!loading && error && companies.length === 0 && (
+              <TableRow className="border-white/5 hover:bg-transparent">
+                <TableCell
+                  colSpan={6}
+                  className="py-10 text-center text-sm text-red-400"
+                >
+                  {t("companiesOverviewPage.paris.tableError")}
+                </TableCell>
+              </TableRow>
+            )}
+            {!loading && !error && companies.length === 0 && (
+              <TableRow className="border-white/5 hover:bg-transparent">
+                <TableCell
+                  colSpan={6}
+                  className="py-10 text-center text-sm text-white/45"
+                >
+                  {t("companiesOverviewPage.paris.tableEmpty")}
+                </TableCell>
+              </TableRow>
+            )}
             {companies.map((company, index) => {
               const sectorCodeValue = overviewSectorCode(company);
               const change = company.emissionsChangeFromBaseYear;
@@ -436,7 +469,7 @@ export function CompaniesTable({
             className="rounded-full bg-black-1 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 disabled:opacity-50"
           >
             {t("companiesOverviewPage.paris.showMoreRows", {
-              count: PAGE_OVERVIEW_PAGE_SIZE,
+              count: showMoreCount,
             })}
           </button>
         )}

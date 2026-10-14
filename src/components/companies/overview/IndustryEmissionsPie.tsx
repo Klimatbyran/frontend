@@ -36,12 +36,15 @@ export function IndustryEmissionsPie({
 
   const data = useMemo<PieChartItem[]>(
     () =>
-      rows.map((row) => ({
-        key: row.code,
-        name: sectorNames[row.code],
-        value: row.emissions,
-        color: sectorColors[row.code].base,
-      })),
+      rows.map((row) => {
+        const code = row.code as SectorCode;
+        return {
+          key: code,
+          name: sectorNames[code],
+          value: row.emissions,
+          color: sectorColors[code].base,
+        };
+      }),
     [rows, sectorNames],
   );
 

@@ -25,7 +25,7 @@ const { mockLoadMore, mockListState, capturedListOptions } = vi.hoisted(() => {
     fetchingMore: false,
     hasMore: false,
     loadMore,
-    error: null,
+    error: null as Error | null,
   };
   return {
     mockLoadMore: loadMore,
@@ -190,6 +190,26 @@ describe("CompaniesTable", () => {
         name: /companiesOverviewPage\.paris\.showMoreRows/,
       }),
     ).toBeNull();
+  });
+
+  it("shows a loading row while the first page is fetching", () => {
+    mockListState.companies = [];
+    mockListState.total = 0;
+    mockListState.loading = true;
+    renderTable();
+    expect(
+      screen.getByText("companiesOverviewPage.paris.tableLoading"),
+    ).toBeInTheDocument();
+  });
+
+  it("shows an error row when the list request fails", () => {
+    mockListState.companies = [];
+    mockListState.total = 0;
+    mockListState.error = new Error("failed");
+    renderTable();
+    expect(
+      screen.getByText("companiesOverviewPage.paris.tableError"),
+    ).toBeInTheDocument();
   });
 
   it("links each company to its detail page", () => {

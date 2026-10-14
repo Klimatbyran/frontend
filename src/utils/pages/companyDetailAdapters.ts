@@ -147,7 +147,7 @@ export function scope3EmissionsFromPage(
         total: category.total ?? 0,
         unit,
         metadata: category.isAIGenerated
-          ? null
+          ? undefined
           : { verifiedBy: { name: "verified" } },
       })),
     },

@@ -75,6 +75,7 @@ export function CompanyDetailPage() {
     if (!header) {
       return getSeoForRoute(location.pathname, { id: id || "" });
     }
+    const seoYear = overview?.year ?? latestYear;
     return generateCompanySeoMeta(
       {
         name: header.name,
@@ -94,7 +95,7 @@ export function CompanyDetailPage() {
             : [],
       },
       location.pathname,
-      { latestYear },
+      { latestYear: seoYear },
     );
   }, [header, overview, location.pathname, latestYear, id]);
 

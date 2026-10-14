@@ -41,12 +41,7 @@ export function parseCountriesFromURL(
 
 export function getAvailableCountryOptions(
   companies: CompanyWithTags[],
-  options?: { includeAll?: boolean },
 ): CompanyCountryTagSlug[] {
-  if (options?.includeAll) {
-    return [...COMPANY_COUNTRY_TAG_SLUGS];
-  }
-
   const present = new Set<string>();
   for (const company of companies) {
     for (const tag of company.tags ?? []) {

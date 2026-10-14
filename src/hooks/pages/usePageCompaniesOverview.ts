@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import {
   getPageCompaniesOverview,
   getPageCompaniesOverviewSummary,
@@ -52,6 +56,7 @@ export function usePageCompaniesOverviewList(options?: {
       lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     enabled: options?.enabled ?? true,
     staleTime: STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 
   const companies = (query.data?.pages.flatMap((page) => page.items) ??
@@ -81,6 +86,7 @@ export function usePageCompaniesOverviewSummary(options?: {
     queryFn: () => getPageCompaniesOverviewSummary(sector),
     enabled: options?.enabled ?? true,
     staleTime: STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 
   return {

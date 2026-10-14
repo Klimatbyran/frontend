@@ -102,10 +102,11 @@ export function CompaniesOverviewPage() {
     enabled: overviewDataEnabled,
   });
 
-  const loading = chrome.loading || summaryLoading;
+  const initialLoading =
+    (chrome.loading && !chrome.summary) || (summaryLoading && !summary);
   const error = chrome.error || summaryError;
 
-  if (loading) {
+  if (initialLoading) {
     return <CompaniesOverviewSkeleton />;
   }
 
@@ -162,14 +163,7 @@ export function CompaniesOverviewPage() {
         fallingBehind={summary.fallingBehind}
       />
 
-      <IndustryEmissionsPie
-        rows={industryRows.map((row) => ({
-          code: row.code as SectorCode,
-          companyCount: row.companyCount,
-          emissions: row.emissions,
-        }))}
-        selected={selectedSector}
-      />
+      <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
 
       <ReportingCoverage reporting={summary.reporting} />
 

@@ -16,7 +16,7 @@ import {
   SupplementalDataField,
   SupplementalDataPanel,
 } from "@/components/detail/SupplementalDataPanel";
-import type { IndustryGroupCode } from "@/lib/constants/sectors";
+import type { IndustryGroupCode, SectorCode } from "@/lib/constants/sectors";
 
 interface CompanyOverviewNoDataProps {
   header: PageCompanyHeader;
@@ -32,8 +32,9 @@ export function CompanyOverviewNoData({
   const industryGroupNames = useIndustryGroupNames();
   const { currentLanguage } = useLanguage();
 
-  const sectorName = header.sectorCode
-    ? (sectorNames[header.sectorCode] ?? header.sectorCode)
+  const sectorCode = header.sectorCode as SectorCode | null;
+  const sectorName = sectorCode
+    ? (sectorNames[sectorCode] ?? sectorCode)
     : t("companies.overview.notReported");
   const industryGroupName = header.industryGroupCode
     ? (industryGroupNames[header.industryGroupCode as IndustryGroupCode] ??

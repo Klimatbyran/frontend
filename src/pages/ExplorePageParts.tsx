@@ -4,6 +4,7 @@ import { SelectionChip } from "@/components/explore/SelectionChip";
 import { CompanyList } from "@/components/companies/list/CompanyList";
 import { MunicipalityList } from "@/components/municipalities/list/MunicipalityList";
 import { RegionList } from "@/components/regions/list/RegionList";
+import type { PageExploreCompany } from "@/types/pages";
 import type { Municipality } from "@/types/municipality";
 import type { RegionForExplore } from "@/hooks/regions/useRegionsForExplore";
 
@@ -108,15 +109,17 @@ function ExploreFilterToggles({
 
 function ExploreEntityList({
   mainFilter,
+  companies,
   municipalities,
   regions,
 }: {
   mainFilter: ExploreFilter;
+  companies: PageExploreCompany[];
   municipalities: Municipality[];
   regions: RegionForExplore[];
 }) {
   if (mainFilter === "companies") {
-    return <CompanyList />;
+    return <CompanyList companies={companies} />;
   }
   if (mainFilter === "regions") {
     return <RegionList regions={regions} />;

@@ -385,6 +385,9 @@
       "badgeOffTrack": "Inte på rätt väg",
       "badgeNoData": "Ingen data",
       "noComparableData": "För lite data",
+      "tableLoading": "Laddar företag…",
+      "tableError": "Kunde inte ladda listan. Försök igen senare.",
+      "tableEmpty": "Inga företag matchar sökningen.",
       "showMoreRows": "Visa {{count}} till",
       "showingCount": "Visar {{shown}} av {{total}} företag i vyn"
     },
