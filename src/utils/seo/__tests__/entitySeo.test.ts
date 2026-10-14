@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import type { CompanyDetails, CompanyWithIndustryGics } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
+import { industryGicsForSeo } from "@/utils/data/industryGrouping";
 import {
   truncateDescription,
   buildCompanySeoDescription,

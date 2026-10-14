@@ -19,7 +19,12 @@ import RelatableNumbers from "@/components/relatableNumbers";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
+import {
+  getCompanySectorName,
+  industryGicsForSeo,
+} from "@/utils/data/industryGrouping";
 import { getSeoForRoute } from "@/seo/routes";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
 
@@ -28,6 +33,7 @@ export function CompanyDetailPage() {
   const location = useLocation();
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
+  const sectorNames = useSectorNames();
 
   useEffect(() => {
     setSelectedYear("latest");
@@ -76,12 +82,15 @@ export function CompanyDetailPage() {
       return getSeoForRoute(location.pathname, { id: id || "" });
     }
     const seoYear = overview?.year ?? latestYear;
+    const sectorCode = header.sectorCode ?? overview?.sectorCode ?? null;
+    const industry = industryGicsForSeo(
+      sectorCode,
+      getCompanySectorName(sectorCode, sectorNames),
+    );
     return generateCompanySeoMeta(
       {
         name: header.name,
-        industry: header.sectorCode
-          ? { industryGics: { sectorCode: header.sectorCode } }
-          : null,
+        industry,
         reportingPeriods:
           overview?.totalEmissions != null && overview.year != null
             ? [
@@ -97,7 +106,7 @@ export function CompanyDetailPage() {
       location.pathname,
       { latestYear: seoYear },
     );
-  }, [header, overview, location.pathname, latestYear, id]);
+  }, [header, overview, location.pathname, latestYear, id, sectorNames]);
 
   if (loading) return <PageLoading />;
 

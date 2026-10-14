@@ -5,6 +5,24 @@ import type { CompanyWithIndustryGics } from "@/types/company";
  * @param company - Company object with industry information
  * @returns Industry name or undefined
  */
+/** Page company header/overview only expose GICS codes; SEO needs localized sector names. */
+export function industryGicsForSeo(
+  sectorCode: string | null | undefined,
+  sectorName: string,
+): CompanyWithIndustryGics["industry"] | null {
+  if (!sectorCode || !sectorName) {
+    return null;
+  }
+
+  return {
+    industryGics: {
+      sectorCode,
+      en: { sectorName },
+      sv: { sectorName },
+    },
+  };
+}
+
 export function getCompanyIndustryFromData(
   company: CompanyWithIndustryGics,
 ): string | undefined {
