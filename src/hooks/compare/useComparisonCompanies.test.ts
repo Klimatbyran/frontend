@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { getCompanySegmentFromComparisonLink } from "./useComparisonCompanies";
+import {
+  getCompanySegmentFromComparisonLink,
+  getComparisonCompaniesFetchError,
+} from "./useComparisonCompanies";
 
 describe("getCompanySegmentFromComparisonLink", () => {
   it("reads the company segment from a detail path", () => {
@@ -15,5 +18,41 @@ describe("getCompanySegmentFromComparisonLink", () => {
     expect(
       getCompanySegmentFromComparisonLink("/municipalities/Stockholm"),
     ).toBeNull();
+  });
+});
+
+describe("getComparisonCompaniesFetchError", () => {
+  it("returns null while fetches are in progress", () => {
+    expect(
+      getComparisonCompaniesFetchError(true, 2, 1, [
+        { isError: false, error: null, isPending: false, isFetching: false },
+        { isError: false, error: null, isPending: true, isFetching: true },
+      ]),
+    ).toBeNull();
+  });
+
+  it("returns the query error when a company fetch fails", () => {
+    const networkError = new Error("Network error");
+    expect(
+      getComparisonCompaniesFetchError(true, 2, 1, [
+        {
+          isError: true,
+          error: networkError,
+          isPending: false,
+          isFetching: false,
+        },
+        { isError: false, error: null, isPending: false, isFetching: false },
+      ]),
+    ).toBe(networkError);
+  });
+
+  it("returns an error when fewer companies loaded than requested", () => {
+    const error = getComparisonCompaniesFetchError(true, 3, 2, [
+      { isError: false, error: null, isPending: false, isFetching: false },
+      { isError: false, error: null, isPending: false, isFetching: false },
+      { isError: false, error: null, isPending: false, isFetching: false },
+    ]);
+    expect(error).toBeInstanceOf(Error);
+    expect(error?.message).toMatch(/could not be loaded/i);
   });
 });

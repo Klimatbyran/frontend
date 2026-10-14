@@ -2301,6 +2301,9 @@
       "variantMismatchMessage": "Du kan bara jämföra kommuner, län eller företag av samma typ. Rensa ditt val för att börja om.",
       "notEnoughSelected": "Välj fler enheter att jämföra",
       "notEnoughSelectedDescription": "Välj minst {{min}} enheter för att öppna jämförelsevyn.",
+      "loadErrorTitle": "Kunde inte ladda jämförelsen",
+      "loadErrorDescription": "En eller flera valda enheter kunde inte laddas. Försök igen eller gå tillbaka och ändra ditt val.",
+      "pickerLoadError": "Kunde inte ladda valda enheter. Försök igen eller ta bort ett val från listan.",
       "addEntity": {
         "default": "Lägg till enheter",
         "company": "Lägg till företag",

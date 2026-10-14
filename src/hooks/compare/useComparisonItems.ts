@@ -4,6 +4,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { orderSelectedCards } from "@/utils/compare/comparisonUtils";
 import { enrichComparisonCards } from "./comparisonItemsUtils";
 import {
+  getComparisonError,
   getComparisonLoading,
   useComparisonViewState,
 } from "./comparisonViewState";
@@ -30,6 +31,9 @@ export function useComparisonItems() {
     companiesLoading,
     municipalitiesLoading,
     regionsLoading,
+    companiesError,
+    municipalitiesError,
+    regionsError,
   } = useComparisonSourceCards({
     selectedCompanyLinkTos: loadCompanies ? activeIds : [],
     loadCompanies,
@@ -71,16 +75,30 @@ export function useComparisonItems() {
     t,
   ]);
 
+  const loading = getComparisonLoading({
+    loadCompanies,
+    loadMunicipalities,
+    loadRegions,
+    companiesLoading,
+    municipalitiesLoading,
+    regionsLoading,
+  });
+
+  const error = loading
+    ? null
+    : getComparisonError({
+        loadCompanies,
+        loadMunicipalities,
+        loadRegions,
+        companiesError,
+        municipalitiesError,
+        regionsError,
+      });
+
   return {
     items,
-    loading: getComparisonLoading({
-      loadCompanies,
-      loadMunicipalities,
-      loadRegions,
-      companiesLoading,
-      municipalitiesLoading,
-      regionsLoading,
-    }),
+    loading,
+    error,
     variant: activeVariant,
     viewCount: activeIds.length,
   };

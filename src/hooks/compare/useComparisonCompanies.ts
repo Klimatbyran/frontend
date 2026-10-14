@@ -10,6 +10,40 @@ import { exploreCompanyFromPageDetail } from "@/utils/pages/exploreCompanyFromPa
 
 const STALE_TIME = 1_800_000;
 
+type ComparisonCompanyQueryState = {
+  isError: boolean;
+  error: unknown;
+  isPending: boolean;
+  isFetching: boolean;
+};
+
+export function getComparisonCompaniesFetchError(
+  enabled: boolean,
+  segmentCount: number,
+  companiesCount: number,
+  queries: ComparisonCompanyQueryState[],
+): Error | null {
+  if (!enabled || segmentCount === 0) {
+    return null;
+  }
+
+  const errored = queries.find((query) => query.isError);
+  if (errored?.error != null) {
+    return errored.error instanceof Error
+      ? errored.error
+      : new Error(String(errored.error));
+  }
+
+  const pending = queries.some(
+    (query) => query.isPending || query.isFetching,
+  );
+  if (!pending && companiesCount < segmentCount) {
+    return new Error("Failed to load one or more companies for comparison");
+  }
+
+  return null;
+}
+
 /** `/companies/:segment` (optional language prefix). */
 export function getCompanySegmentFromComparisonLink(
   linkTo: string,
@@ -65,8 +99,20 @@ export function useComparisonCompanies(
   const companiesLoading =
     enabled && segments.length > 0 && queries.some((query) => query.isLoading);
 
+  const companiesError = useMemo(
+    () =>
+      getComparisonCompaniesFetchError(
+        enabled,
+        segments.length,
+        companies.length,
+        queries,
+      ),
+    [companies.length, enabled, queries, segments.length],
+  );
+
   return {
     companies,
     companiesLoading,
+    companiesError,
   };
 }

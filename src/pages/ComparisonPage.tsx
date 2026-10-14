@@ -7,11 +7,31 @@ import { COMPARISON_MIN } from "@/utils/compare/comparisonUtils";
 
 export function ComparisonPage() {
   const { t } = useTranslation();
-  const { items, loading, viewCount } = useComparisonItems();
+  const { items, loading, error, viewCount } = useComparisonItems();
   const { handleBack, backLabelKey } = useComparisonBackNavigation();
 
   if (loading) {
     return <PageLoading />;
+  }
+
+  if (error) {
+    return (
+      <div className="py-16 text-center">
+        <h2 className="text-2xl font-light text-red-500">
+          {t("explorePage.comparison.loadErrorTitle")}
+        </h2>
+        <p className="text-grey mt-2">
+          {t("explorePage.comparison.loadErrorDescription")}
+        </p>
+        <button
+          type="button"
+          className="mt-6 text-blue-2 hover:underline"
+          onClick={handleBack}
+        >
+          {t(backLabelKey)}
+        </button>
+      </div>
+    );
   }
 
   if (viewCount < COMPARISON_MIN || items.length < COMPARISON_MIN) {

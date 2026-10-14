@@ -60,8 +60,11 @@ export function ComparisonPickerDialog({
 
   const { selectedCount, canViewComparison, clearSelection, variant } =
     useComparison();
-  const { items: selectedItems, loading: selectedItemsLoading } =
-    useComparisonItems();
+  const {
+    items: selectedItems,
+    loading: selectedItemsLoading,
+    error: selectedItemsError,
+  } = useComparisonItems();
   const { isSelected, isSelectionDisabled, tryToggleSelection } =
     useComparisonPickerToggle();
   const { handleOpenChange, navigateToComparison } =
@@ -151,6 +154,7 @@ export function ComparisonPickerDialog({
                 selectedCount={selectedCount}
                 selectedItems={selectedItems}
                 loading={selectedItemsLoading}
+                loadError={selectedItemsError != null}
                 activeVariant={activeVariant}
                 onToggle={tryToggleSelection}
               />

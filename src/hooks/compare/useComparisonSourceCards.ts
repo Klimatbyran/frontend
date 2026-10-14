@@ -18,14 +18,19 @@ export function useComparisonSourceCards({
   loadMunicipalities,
   loadRegions,
 }: UseComparisonSourceCardsOptions) {
-  const { companies, companiesLoading } = useComparisonCompanies(
+  const { companies, companiesLoading, companiesError } = useComparisonCompanies(
     selectedCompanyLinkTos,
     loadCompanies,
   );
-  const { municipalities, municipalitiesLoading } = useMunicipalities({
-    enabled: loadMunicipalities,
-  });
-  const { regions, loading: regionsLoading } = useRegionsForExplore({
+  const { municipalities, municipalitiesLoading, municipalitiesError } =
+    useMunicipalities({
+      enabled: loadMunicipalities,
+    });
+  const {
+    regions,
+    loading: regionsLoading,
+    error: regionsError,
+  } = useRegionsForExplore({
     enabled: loadRegions,
   });
 
@@ -49,5 +54,8 @@ export function useComparisonSourceCards({
     companiesLoading,
     municipalitiesLoading,
     regionsLoading,
+    companiesError,
+    municipalitiesError,
+    regionsError,
   };
 }
