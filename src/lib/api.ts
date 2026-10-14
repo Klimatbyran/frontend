@@ -99,18 +99,6 @@ export async function getCompanies() {
   return data || [];
 }
 
-export async function getCompanyDetails(id: string) {
-  const { data, error } = await client.GET("/companies/{wikidataId}", {
-    params: {
-      path: {
-        wikidataId: id,
-      },
-    },
-  });
-  if (error) throw error;
-  return data;
-}
-
 export type UpdateCompanyDetailsBody =
   paths["/companies/{id}"]["post"]["requestBody"]["content"]["application/json"];
 

@@ -23,6 +23,7 @@ import {
 import { FilterBadge } from "@/components/companies/list/FilterBadges";
 import { buildSearchRegex as buildLocalizedSearchRegex } from "@/utils/data/search";
 import { SupportedLanguage } from "@/lib/languageDetection";
+import { getCompanySectorName } from "@/utils/data/industryGrouping";
 
 type MeetsParisFilter = "all" | "yes" | "no" | "unknown";
 
@@ -74,9 +75,7 @@ function matchesSearch(
     return true;
   }
 
-  const sectorName = company.sectorCode
-    ? (sectorNames[company.sectorCode] ?? company.sectorCode)
-    : "";
+  const sectorName = getCompanySectorName(company.sectorCode, sectorNames);
 
   return (
     industrySearchPatterns.some((pattern) => pattern.test(sectorName)) ||

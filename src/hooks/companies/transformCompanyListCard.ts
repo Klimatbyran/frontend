@@ -7,12 +7,15 @@ import {
   formatPercentChange,
 } from "@/utils/formatting/localization";
 import { getCompanyDetailPath } from "@/utils/companyRouting";
-import type { IndustryGroupCode } from "@/lib/constants/sectors";
 import type { SupportedLanguage } from "@/lib/languageDetection";
+import {
+  getCompanyIndustryGroupName,
+  getCompanySectorName,
+} from "@/utils/data/industryGrouping";
 
 type TransformCompanyOptions = {
   sectorNames: Record<string, string>;
-  industryGroupNames: Record<IndustryGroupCode, string>;
+  industryGroupNames: Record<string, string>;
   currentLanguage: SupportedLanguage;
   t: TFunction;
 };
@@ -39,13 +42,11 @@ export function transformCompanyToListCard(
   options: TransformCompanyOptions,
 ): ListCardProps {
   const { sectorNames, industryGroupNames, currentLanguage, t } = options;
-  const sectorName = company.sectorCode
-    ? (sectorNames[company.sectorCode] ?? company.sectorCode)
-    : "";
-  const industryGroupName = company.industryGroupCode
-    ? (industryGroupNames[company.industryGroupCode as IndustryGroupCode] ??
-      company.industryGroupCode)
-    : "";
+  const sectorName = getCompanySectorName(company.sectorCode, sectorNames);
+  const industryGroupName = getCompanyIndustryGroupName(
+    company.industryGroupCode,
+    industryGroupNames,
+  );
   const emissionsChange = company.emissionsChangeLastTwoYears;
 
   return {

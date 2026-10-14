@@ -16,7 +16,10 @@ import {
   SupplementalDataField,
   SupplementalDataPanel,
 } from "@/components/detail/SupplementalDataPanel";
-import type { IndustryGroupCode, SectorCode } from "@/lib/constants/sectors";
+import {
+  getCompanyIndustryGroupName,
+  getCompanySectorName,
+} from "@/utils/data/industryGrouping";
 
 interface CompanyOverviewNoDataProps {
   header: PageCompanyHeader;
@@ -32,14 +35,17 @@ export function CompanyOverviewNoData({
   const industryGroupNames = useIndustryGroupNames();
   const { currentLanguage } = useLanguage();
 
-  const sectorCode = header.sectorCode as SectorCode | null;
-  const sectorName = sectorCode
-    ? (sectorNames[sectorCode] ?? sectorCode)
-    : t("companies.overview.notReported");
-  const industryGroupName = header.industryGroupCode
-    ? (industryGroupNames[header.industryGroupCode as IndustryGroupCode] ??
-      header.industryGroupCode)
-    : t("companies.overview.notReported");
+  const notReported = t("companies.overview.notReported");
+  const sectorName = getCompanySectorName(
+    header.sectorCode,
+    sectorNames,
+    notReported,
+  );
+  const industryGroupName = getCompanyIndustryGroupName(
+    header.industryGroupCode,
+    industryGroupNames,
+    notReported,
+  );
   const description = getCompanyDescription(header, currentLanguage);
 
   return (

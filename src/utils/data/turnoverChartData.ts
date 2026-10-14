@@ -20,11 +20,6 @@ export interface DecouplingComparison {
   usedBaseYear: boolean;
 }
 
-export interface TurnoverEmissionsSection {
-  displayData: ChartData[];
-  comparison: DecouplingComparison;
-}
-
 export interface BaseYearChartSettings {
   showBaseYear: boolean;
   baseYear?: number;
@@ -108,7 +103,7 @@ function calculatePercentChange(start: number, end: number): number {
   return ((end - start) / start) * 100;
 }
 
-function hasConsistentTurnoverCurrency(data: ChartData[]): boolean {
+export function hasConsistentTurnoverCurrency(data: ChartData[]): boolean {
   const currencies = new Set(
     data
       .map((point) => point.turnoverCurrency?.trim())
@@ -154,21 +149,6 @@ export function buildDecouplingComparison(
       displayData.length > 0 &&
       displayData[0].year === baseYear,
   };
-}
-
-/** Chart data and intensity comparison for the turnover/emissions section. */
-export function getTurnoverEmissionsSection(
-  data: ChartData[],
-  baseYear?: number,
-): TurnoverEmissionsSection | null {
-  const displayData = getDisplayData(data, baseYear);
-  if (!hasConsistentTurnoverCurrency(displayData)) return null;
-
-  const comparison = buildDecouplingComparison(displayData, baseYear);
-
-  if (!comparison) return null;
-
-  return { displayData, comparison };
 }
 
 export function getBaseYearChartSettings(

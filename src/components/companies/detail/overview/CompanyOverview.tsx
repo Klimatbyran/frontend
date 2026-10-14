@@ -17,7 +17,11 @@ import {
   CompanyOverviewMainStats,
 } from "./CompanyOverviewParts";
 import { periodsFromAvailableYears } from "@/utils/pages/companyDetailAdapters";
-import type { IndustryGroupCode, SectorCode } from "@/lib/constants/sectors";
+import type { SectorCode } from "@/lib/constants/sectors";
+import {
+  getCompanyIndustryGroupName,
+  getCompanySectorName,
+} from "@/utils/data/industryGrouping";
 
 interface CompanyOverviewProps {
   header: PageCompanyHeader;
@@ -38,15 +42,13 @@ export function CompanyOverview({
   const sectorCode = (overview.sectorCode ?? header.sectorCode ?? undefined) as
     | SectorCode
     | undefined;
-  const industryGroupCode =
-    overview.industryGroupCode ?? header.industryGroupCode;
-  const sectorName = sectorCode
-    ? (sectorNames[sectorCode] ?? sectorCode)
-    : t("companies.overview.notReported");
-  const industryGroupName = industryGroupCode
-    ? (industryGroupNames[industryGroupCode as IndustryGroupCode] ??
-      industryGroupCode)
-    : t("companies.overview.notReported");
+  const notReported = t("companies.overview.notReported");
+  const sectorName = getCompanySectorName(sectorCode, sectorNames, notReported);
+  const industryGroupName = getCompanyIndustryGroupName(
+    overview.industryGroupCode ?? header.industryGroupCode,
+    industryGroupNames,
+    notReported,
+  );
   const description = getCompanyDescription(header, currentLanguage);
   const sortedPeriods = periodsFromAvailableYears(header.availableYears);
   const formattedEmployeeCount =

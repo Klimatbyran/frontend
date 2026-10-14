@@ -4,7 +4,7 @@ import {
   getBaseYearChartSettings,
   getDecouplingVerdict,
   getDisplayData,
-  getTurnoverEmissionsSection,
+  hasConsistentTurnoverCurrency,
 } from "./turnoverChartData";
 
 const completeSeries = [
@@ -85,17 +85,17 @@ describe("turnoverChartData", () => {
     ]);
   });
 
-  it("returns null section data when fewer than two complete points", () => {
+  it("returns null comparison when fewer than two complete points", () => {
     expect(
-      getTurnoverEmissionsSection([
+      buildDecouplingComparison([
         { year: 2018, total: 1000, turnover: 1_000_000 },
       ]),
     ).toBeNull();
   });
 
-  it("returns null when turnover currencies differ across years", () => {
+  it("rejects mixed turnover currencies", () => {
     expect(
-      getTurnoverEmissionsSection([
+      hasConsistentTurnoverCurrency([
         {
           year: 2019,
           total: 1000,
@@ -109,7 +109,7 @@ describe("turnoverChartData", () => {
           turnoverCurrency: "EUR",
         },
       ]),
-    ).toBeNull();
+    ).toBe(false);
   });
 
   it("returns zero emissions change when starting emissions are zero", () => {
@@ -123,19 +123,17 @@ describe("turnoverChartData", () => {
     });
   });
 
-  it("returns chart data and comparison together", () => {
-    const section = getTurnoverEmissionsSection(completeSeries, 2019);
+  it("builds comparison from display data", () => {
+    const displayData = getDisplayData(completeSeries, 2019);
 
-    expect(section).toMatchObject({
-      displayData: [
-        { year: 2019, total: 900, turnover: 1_200_000 },
-        { year: 2020, total: 800, turnover: 1_500_000 },
-      ],
-      comparison: {
-        startYear: 2019,
-        endYear: 2020,
-        verdict: "yes",
-      },
+    expect(displayData).toEqual([
+      { year: 2019, total: 900, turnover: 1_200_000 },
+      { year: 2020, total: 800, turnover: 1_500_000 },
+    ]);
+    expect(buildDecouplingComparison(displayData, 2019)).toMatchObject({
+      startYear: 2019,
+      endYear: 2020,
+      verdict: "yes",
     });
   });
 
