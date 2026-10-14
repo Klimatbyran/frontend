@@ -1,24 +1,27 @@
-import { usePageExploreCompanies } from "@/hooks/pages/usePageExploreCompanies";
 import useTransformCompanyListCard from "@/hooks/companies/useTransformCompanyListCard";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import useTransformMunicipalityListCard from "@/hooks/municipalities/useTransformMunicipalityListCard";
 import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
 import { useTransformRegionListCard } from "@/hooks/regions/useTransformRegionListCard";
+import { useComparisonCompanies } from "./useComparisonCompanies";
 
 interface UseComparisonSourceCardsOptions {
+  selectedCompanyLinkTos: string[];
   loadCompanies: boolean;
   loadMunicipalities: boolean;
   loadRegions: boolean;
 }
 
 export function useComparisonSourceCards({
+  selectedCompanyLinkTos,
   loadCompanies,
   loadMunicipalities,
   loadRegions,
 }: UseComparisonSourceCardsOptions) {
-  const { companies, companiesLoading } = usePageExploreCompanies({
-    enabled: loadCompanies,
-  });
+  const { companies, companiesLoading } = useComparisonCompanies(
+    selectedCompanyLinkTos,
+    loadCompanies,
+  );
   const { municipalities, municipalitiesLoading } = useMunicipalities({
     enabled: loadMunicipalities,
   });
@@ -27,7 +30,7 @@ export function useComparisonSourceCards({
   });
 
   const allCompanyCards = useTransformCompanyListCard({
-    filteredCompanies: loadCompanies ? (companies ?? []) : [],
+    filteredCompanies: loadCompanies ? companies : [],
   });
   const allMunicipalityCards = useTransformMunicipalityListCard({
     filteredMunicipalities: loadMunicipalities ? (municipalities ?? []) : [],

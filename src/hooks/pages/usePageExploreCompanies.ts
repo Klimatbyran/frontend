@@ -1,8 +1,4 @@
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  useQuery,
-} from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { getPageExploreCompanies } from "@/lib/pagesApi";
 import type {
   PageExploreCompaniesQuery,
@@ -17,28 +13,6 @@ export const PAGE_EXPLORE_COMPANIES_PAGE_SIZE = 12;
 export type ExploreListSortBy = NonNullable<
   PageExploreCompaniesQuery["sortBy"]
 >;
-
-/**
- * Full unpaginated list for comparison pickers. Omitting page params keeps
- * the API on the single-page full response.
- */
-export function usePageExploreCompanies(options?: { enabled?: boolean }) {
-  const query = useQuery({
-    queryKey: ["pages", "explore-companies", "all"],
-    queryFn: async () => {
-      const result = await getPageExploreCompanies();
-      return result.items;
-    },
-    enabled: options?.enabled ?? true,
-    staleTime: STALE_TIME,
-  });
-
-  return {
-    companies: (query.data ?? []) as PageExploreCompany[],
-    companiesLoading: query.isLoading,
-    companiesError: query.error,
-  };
-}
 
 export function usePageExploreCompaniesList(options?: {
   q?: string;
@@ -76,9 +50,9 @@ export function usePageExploreCompaniesList(options?: {
         sortBy,
         sortDir,
         meetsParis,
-        sectors,
         industryGroups,
         countries,
+        sectors,
         page: pageParam,
         pageSize: PAGE_EXPLORE_COMPANIES_PAGE_SIZE,
       }),

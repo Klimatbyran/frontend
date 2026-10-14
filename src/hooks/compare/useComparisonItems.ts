@@ -31,6 +31,7 @@ export function useComparisonItems() {
     municipalitiesLoading,
     regionsLoading,
   } = useComparisonSourceCards({
+    selectedCompanyLinkTos: loadCompanies ? activeIds : [],
     loadCompanies,
     loadMunicipalities,
     loadRegions,
