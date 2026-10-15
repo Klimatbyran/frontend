@@ -8,7 +8,12 @@ import {
 } from "@/hooks/pages/usePageCompaniesOverview";
 import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { CompaniesOverviewSkeleton } from "@/components/companies/overview/CompaniesOverviewSkeleton";
+import {
+  CompaniesOverviewSkeleton,
+  ParisAnswerCardSkeleton,
+  ReportingCoverageSkeleton,
+  VerdictListsSkeleton,
+} from "@/components/companies/overview/CompaniesOverviewSkeleton";
 import InsightsList from "@/components/ranked/InsightsList";
 import { CompaniesTable } from "@/components/companies/overview/CompaniesTable";
 import { ParisAnswerCard } from "@/components/companies/overview/ParisAnswerCard";
@@ -22,6 +27,21 @@ import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import type { SectorCode } from "@/lib/constants/sectors";
 import type { PageOverviewVerdictCompany } from "@/types/pages";
 import { useCompaniesOverviewUrlState } from "./companiesOverviewPageUtils";
+
+function ParisSummaryPending() {
+  const { t } = useTranslation();
+
+  return (
+    <div role="status" aria-busy="true">
+      <span className="sr-only">
+        {t("companiesOverviewPage.paris.loading")}
+      </span>
+      <div aria-hidden="true">
+        <ParisAnswerCardSkeleton />
+      </div>
+    </div>
+  );
+}
 
 function VerdictLists({
   doingWell,
@@ -94,11 +114,7 @@ export function CompaniesOverviewPage() {
   const selectedSector = urlState.getSectorFromURL() as SectorCode | null;
   const overviewDataEnabled = !sectorResolutionPending;
 
-  const {
-    summary,
-    loading: summaryLoading,
-    error: summaryError,
-  } = usePageCompaniesOverviewSummary({
+  const { summary, error: summaryError } = usePageCompaniesOverviewSummary({
     sector: selectedSector,
     enabled: overviewDataEnabled,
   });
@@ -115,11 +131,11 @@ export function CompaniesOverviewPage() {
       companyList.companies.length === 0);
   const error = chrome.error || summaryError;
 
-  if (initialLoading) {
+  if (!chrome.summary && !error) {
     return <CompaniesOverviewSkeleton />;
   }
 
-  if (error || !chrome.summary || !summary) {
+  if (error || !chrome.summary) {
     return (
       <div className="py-24 text-center">
         <h3 className="mb-4 text-xl text-red-500">
@@ -159,22 +175,34 @@ export function CompaniesOverviewPage() {
           onSelect={(code) => urlState.setSectorInURL(code)}
         />
 
-        <ParisAnswerCard
-          key={selectedSector ?? "all"}
-          summary={summary.paris}
-          parisDots={summary.parisDots}
-          industryLabel={selectedSector ? sectorTitles[selectedSector] : null}
-        />
+        {summary ? (
+          <ParisAnswerCard
+            key={selectedSector ?? "all"}
+            summary={summary.paris}
+            parisDots={summary.parisDots}
+            industryLabel={selectedSector ? sectorTitles[selectedSector] : null}
+          />
+        ) : (
+          <ParisSummaryPending />
+        )}
       </div>
 
-      <VerdictLists
-        doingWell={summary.doingWell}
-        fallingBehind={summary.fallingBehind}
-      />
+      {summary ? (
+        <VerdictLists
+          doingWell={summary.doingWell}
+          fallingBehind={summary.fallingBehind}
+        />
+      ) : (
+        <VerdictListsSkeleton />
+      )}
 
       <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
 
-      <ReportingCoverage reporting={summary.reporting} />
+      {summary ? (
+        <ReportingCoverage reporting={summary.reporting} />
+      ) : (
+        <ReportingCoverageSkeleton />
+      )}
 
       <ScrollReveal>
         <CompaniesTable sector={selectedSector} enabled={overviewDataEnabled} />

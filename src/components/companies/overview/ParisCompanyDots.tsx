@@ -171,7 +171,12 @@ export function ParisCompanyDots({
           <>
             <LocalizedLink
               to={getCompanyDetailPath(active)}
-              className="font-medium text-blue-2 underline decoration-blue-2/70 underline-offset-2 transition-colors hover:text-white"
+              className={cn(
+                "font-medium underline underline-offset-2 transition-colors hover:text-white hover:decoration-white/70",
+                active.onTrack
+                  ? "text-blue-2 decoration-blue-2/70"
+                  : "text-pink-3 decoration-pink-3/70",
+              )}
             >
               {active.name}
             </LocalizedLink>

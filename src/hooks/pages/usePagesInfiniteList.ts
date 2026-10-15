@@ -14,8 +14,18 @@ export function usePagesInfiniteList<T>(options: {
   queryKey: readonly unknown[];
   queryFn: (page: number) => Promise<PageListResponse<T>>;
   enabled?: boolean;
+  /**
+   * Defaults to keeping the previous query's pages. Pass a narrower function
+   * when a key change must not reuse those rows.
+   */
+  placeholderData?: typeof keepPreviousData;
 }) {
-  const { queryKey, queryFn, enabled = true } = options;
+  const {
+    queryKey,
+    queryFn,
+    enabled = true,
+    placeholderData = keepPreviousData,
+  } = options;
 
   const query = useInfiniteQuery({
     queryKey,
@@ -25,7 +35,7 @@ export function usePagesInfiniteList<T>(options: {
       lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     enabled,
     staleTime: PAGES_QUERY_STALE_TIME,
-    placeholderData: keepPreviousData,
+    placeholderData,
   });
 
   const items = query.data?.pages.flatMap((page) => page.items) ?? [];

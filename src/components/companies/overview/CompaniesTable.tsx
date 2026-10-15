@@ -305,7 +305,7 @@ export function CompaniesTable({
                   metricColumnClass(
                     "change",
                     mobileColumn,
-                    "md:w-[6.5rem] lg:w-[9rem]",
+                    "md:w-[6.5rem] lg:w-[9.5rem]",
                   ),
                 )}
               >

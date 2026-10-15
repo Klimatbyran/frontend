@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   getPageCompaniesOverview,
   getPageCompaniesOverviewSummary,
@@ -9,6 +9,24 @@ import type {
 } from "@/types/pages";
 import { PAGES_LIST_PAGE_SIZE, PAGES_QUERY_STALE_TIME } from "./constants";
 import { usePagesInfiniteList } from "./usePagesInfiniteList";
+
+/**
+ * Sector slot in the overview list query key. Sort and search sit after it,
+ * so those changes can keep the previous pages; a sector change must not.
+ */
+const OVERVIEW_LIST_SECTOR_INDEX = 2;
+
+function keepPreviousForSameOverviewSector(sectorKey: string) {
+  return <T>(
+    previousData: T | undefined,
+    previousQuery: { queryKey: readonly unknown[] } | undefined,
+  ): T | undefined => {
+    if (previousQuery?.queryKey[OVERVIEW_LIST_SECTOR_INDEX] === sectorKey) {
+      return previousData;
+    }
+    return undefined;
+  };
+}
 
 /** Matches API `PAGE_OVERVIEW_DEFAULT_PAGE_SIZE` and the table "show more" step. */
 export const PAGE_OVERVIEW_PAGE_SIZE = PAGES_LIST_PAGE_SIZE;
@@ -29,11 +47,12 @@ export function usePageCompaniesOverviewList(options?: {
   const sortBy = options?.sortBy ?? "paris";
   const sortDir = options?.sortDir ?? "desc";
 
+  const sectorKey = sector ?? "all";
   const list = usePagesInfiniteList<PageCompanyOverviewItem>({
     queryKey: [
       "pages",
       "companies-overview",
-      sector ?? "all",
+      sectorKey,
       q ?? "",
       sortBy,
       sortDir,
@@ -48,6 +67,7 @@ export function usePageCompaniesOverviewList(options?: {
         pageSize: PAGES_LIST_PAGE_SIZE,
       }),
     enabled: options?.enabled ?? true,
+    placeholderData: keepPreviousForSameOverviewSector(sectorKey),
   });
 
   return {
@@ -72,7 +92,6 @@ export function usePageCompaniesOverviewSummary(options?: {
     queryFn: () => getPageCompaniesOverviewSummary(sector),
     enabled: options?.enabled ?? true,
     staleTime: PAGES_QUERY_STALE_TIME,
-    placeholderData: keepPreviousData,
   });
 
   return {

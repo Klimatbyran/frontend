@@ -65,8 +65,8 @@ export function IndustryEmissionsPie({
           {t("companiesOverviewPage.paris.industriesDescription")}
         </p>
 
-        <div className="mt-6 grid grid-cols-1 gap-8 md:gap-16 lg:grid-cols-2 lg:items-stretch">
-          <div className="order-1 flex h-full min-h-[200px] min-w-0 items-center justify-center lg:min-h-0">
+        <div className="mt-6 grid grid-cols-1 gap-8 md:gap-16 md:grid-cols-2 md:items-stretch">
+          <div className="order-1 flex h-full min-h-[200px] min-w-0 items-center justify-center md:min-h-0">
             {show ? (
               <SectorPieChart
                 data={data}
@@ -78,7 +78,7 @@ export function IndustryEmissionsPie({
             )}
           </div>
 
-          <div className="order-3 flex h-full min-h-0 w-full flex-col justify-start lg:order-2 lg:min-h-0">
+          <div className="order-3 flex h-full min-h-0 w-full flex-col justify-start md:order-2 md:min-h-0">
             {show && (
               <SectorPieLegend
                 data={data}
