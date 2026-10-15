@@ -114,6 +114,16 @@ vi.mock("@/hooks/pages/usePageCompaniesOverview", () => ({
     loading: false,
     error: null,
   }),
+  usePageCompaniesOverviewList: () => ({
+    companies: mockCompanies,
+    total: mockCompanies.length,
+    loading: false,
+    refreshing: false,
+    fetchingMore: false,
+    hasMore: false,
+    loadMore: () => undefined,
+    error: null,
+  }),
 }));
 
 vi.mock("@/components/layout/PageHeader", () => ({

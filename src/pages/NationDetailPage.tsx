@@ -66,8 +66,8 @@ function NationDetailPageContent() {
   const pageData = useNationPageData();
   const { nation, loading, error } = pageData;
 
-  if (loading) return <PageLoading />;
   if (error) return <PageError />;
+  if (loading) return <PageLoading />;
   if (!nation) return <PageNoData />;
 
   return <NationDetailContent {...pageData} />;

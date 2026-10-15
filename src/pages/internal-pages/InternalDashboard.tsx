@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import type { RankedCompany } from "@/types/company";
@@ -319,11 +320,7 @@ export const InternalDashboard = () => {
   };
 
   if (companiesLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">Loading companies...</div>
-      </div>
-    );
+    return <PageLoading />;
   }
 
   if (companiesError) {

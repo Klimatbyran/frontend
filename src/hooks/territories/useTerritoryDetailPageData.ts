@@ -22,10 +22,8 @@ export function useTerritoryDetailPageData(
   sectorTerritoryType: SectorTerritoryType,
   sectorTerritoryId?: string,
 ) {
-  const { sectorEmissions } = useSectorEmissions(
-    sectorTerritoryType,
-    sectorTerritoryId,
-  );
+  const { sectorEmissions, loading: sectorEmissionsLoading } =
+    useSectorEmissions(sectorTerritoryType, sectorTerritoryId);
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
     useHiddenItems<string>([]);
@@ -59,5 +57,6 @@ export function useTerritoryDetailPageData(
     setFilteredSectors,
     availableYears,
     currentYear,
+    sectorEmissionsLoading,
   };
 }

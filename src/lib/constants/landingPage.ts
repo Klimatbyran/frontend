@@ -12,6 +12,8 @@ export const SCROLL_FADE_THRESHOLD = 200;
 
 // Hero search constants
 export const HERO_SEARCH_DEBOUNCE_MS = 350;
+/** Company preselected in the landing companies chart. */
+export const LANDING_DEFAULT_COMPANY_SEARCH = "Volvo Cars";
 export const HERO_SEARCH_MAX_RESULTS = 8;
 export const HERO_SEARCH_MAX_RESULTS_PER_TYPE = 4;
 

@@ -6,6 +6,7 @@ import { NewsletterNavigation } from "@/components/newsletters/NewsletterNavigat
 import { NewsletterType } from "@/lib/newsletterArchive/newsletterData";
 import { useNewsletters } from "@/hooks/useNewsletters";
 import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { Text } from "@/components/ui/text";
 import { NewsletterPopover } from "@/components/newsletters/NewsletterPopover";
 
@@ -35,7 +36,7 @@ export function NewsLetterArchivePage() {
     url: canonicalUrl,
   };
 
-  if (isLoading) return <Text>{t("newsletterArchivePage.loading")}</Text>;
+  if (isLoading) return <PageLoading />;
   if (isError) return <Text>{t("newsletterArchivePage.error")}</Text>;
 
   return (

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
+import { useExploreCompaniesData } from "@/hooks/companies/useExploreCompaniesData";
 import { useMunicipalities } from "@/hooks/municipalities/useMunicipalities";
 import { useRegionsForExplore } from "@/hooks/regions/useRegionsForExplore";
 import { useParams } from "react-router-dom";
@@ -25,16 +26,17 @@ function isExploreFilter(value?: string): value is ExploreFilter {
 
 function getActiveError(
   mainFilter: ExploreFilter,
+  companiesError: unknown,
   municipalitiesError: unknown,
   regionsError: unknown,
 ) {
+  if (mainFilter === "companies") {
+    return companiesError;
+  }
   if (mainFilter === "municipalities") {
     return municipalitiesError;
   }
-  if (mainFilter === "regions") {
-    return regionsError;
-  }
-  return null;
+  return regionsError;
 }
 
 export function ExplorePage() {
@@ -42,9 +44,15 @@ export function ExplorePage() {
   const screenSize = useScreenSize();
   const navigate = useNavigate();
   const { mainFilter: mainFilterParam } = useParams();
+  const isCompaniesTab = mainFilterParam === "companies";
   const isMunicipalitiesTab = mainFilterParam === "municipalities";
   const isRegionsTab = mainFilterParam === "regions";
 
+  const {
+    companies,
+    loading: companiesLoading,
+    error: companiesError,
+  } = useExploreCompaniesData(isCompaniesTab);
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities({ enabled: isMunicipalitiesTab });
   const {
@@ -61,12 +69,14 @@ export function ExplorePage() {
 
   const mainFilter = mainFilterParam;
   const isLoading =
+    (isCompaniesTab && companiesLoading && companies.length === 0) ||
     (isMunicipalitiesTab &&
       municipalitiesLoading &&
       municipalities.length === 0) ||
     (isRegionsTab && regionsLoading && regions.length === 0);
   const activeError = getActiveError(
     mainFilter,
+    isCompaniesTab && companies.length > 0 ? null : companiesError,
     municipalitiesError,
     regionsError,
   );

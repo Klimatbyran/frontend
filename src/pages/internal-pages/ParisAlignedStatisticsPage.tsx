@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { Text } from "@/components/ui/text";
 import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -18,13 +19,7 @@ export function ParisAlignedStatisticsPage() {
   );
 
   if (companiesLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Text variant="h1" className="text-white">
-          Loading Paris alignment statistics...
-        </Text>
-      </div>
-    );
+    return <PageLoading />;
   }
 
   if (companiesError) {

@@ -30,7 +30,7 @@ export const CompaniesSection = () => {
   const [selectedCompany, setSelectedCompany] = useState<RankedCompany | null>(
     null,
   );
-  const [isCompanySearchBusy, setIsCompanySearchBusy] = useState(true);
+  const [isCompanySearchBusy, setIsCompanySearchBusy] = useState(false);
   const handleSearchBusyChange = useCallback((busy: boolean) => {
     setIsCompanySearchBusy(busy);
   }, []);

@@ -1,3 +1,4 @@
+import { PageLoading } from "@/components/pageStates/Loading";
 import { useLanguage } from "@/components/LanguageProvider";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -135,7 +136,7 @@ export const ValidationDashboard = () => {
   }
 
   if (issuesLoading || companiesLoading) {
-    return <span>Loading</span>;
+    return <PageLoading />;
   }
 
   return (

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import {
   usePageCompaniesOverviewChrome,
+  usePageCompaniesOverviewList,
   usePageCompaniesOverviewSummary,
 } from "@/hooks/pages/usePageCompaniesOverview";
 import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
@@ -101,9 +102,17 @@ export function CompaniesOverviewPage() {
     sector: selectedSector,
     enabled: overviewDataEnabled,
   });
+  const companyList = usePageCompaniesOverviewList({
+    sector: selectedSector,
+    enabled: overviewDataEnabled,
+  });
 
   const initialLoading =
-    (chrome.loading && !chrome.summary) || (summaryLoading && !summary);
+    (chrome.loading && !chrome.summary) ||
+    (summaryLoading && !summary) ||
+    (overviewDataEnabled &&
+      companyList.loading &&
+      companyList.companies.length === 0);
   const error = chrome.error || summaryError;
 
   if (initialLoading) {

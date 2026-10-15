@@ -116,13 +116,15 @@ function getSustainableTransportItems(
 
 function useMunicipalityPageData(id: string | undefined) {
   const { t } = useTranslation();
-  const { municipality, loading, error } = useMunicipalityDetails(id || "");
+  const {
+    municipality,
+    loading: municipalityLoading,
+    error,
+  } = useMunicipalityDetails(id || "");
   const { currentLanguage } = useLanguage();
 
-  const { sectorEmissions, loading: _loadingSectors } = useSectorEmissions(
-    "municipalities",
-    id,
-  );
+  const { sectorEmissions, loading: sectorEmissionsLoading } =
+    useSectorEmissions("municipalities", id);
 
   const { getSectorInfo } = useSectors();
   const { hiddenItems: filteredSectors, setHiddenItems: setFilteredSectors } =
@@ -155,7 +157,7 @@ function useMunicipalityPageData(id: string | undefined) {
   return {
     t,
     municipality,
-    loading,
+    loading: municipalityLoading || sectorEmissionsLoading,
     error,
     currentLanguage,
     sectorEmissions,
@@ -224,8 +226,8 @@ export function MunicipalityDetailPage() {
     });
   }, [municipality, location.pathname, lastYear, lastYearEmissionsTon, id]);
 
-  if (loading) return <PageLoading />;
   if (error) return <PageError />;
+  if (loading) return <PageLoading />;
   if (!municipality) return <PageNoData />;
 
   return (

@@ -3,6 +3,8 @@ import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Typewriter } from "@/components/ui/typewriter";
 import { PageSEO } from "@/components/SEO/PageSEO";
+import { PageLoading } from "@/components/pageStates/Loading";
+import { useLandingPageReady } from "@/hooks/landing/useLandingPageReady";
 import useThrottle from "@/hooks/useThrottle";
 import {
   SCROLL_FADE_THRESHOLD,
@@ -63,6 +65,7 @@ export function LandingPage() {
   }, [SCROLL_FADE_THRESHOLD]);
 
   const throttledScroll = useThrottle(handleScroll, SCROLL_THROTTLE_DELAY);
+  const { loading: landingDataLoading } = useLandingPageReady();
 
   useEffect(() => {
     window.addEventListener("scroll", throttledScroll);
@@ -71,6 +74,22 @@ export function LandingPage() {
       window.removeEventListener("scroll", throttledScroll);
     };
   }, [throttledScroll]);
+
+  if (landingDataLoading) {
+    return (
+      <>
+        <PageSEO
+          title={pageTitle}
+          description={pageDescription}
+          canonicalUrl={canonicalUrl}
+          structuredData={structuredData}
+        />
+        <div className="px-4 pt-24">
+          <PageLoading />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

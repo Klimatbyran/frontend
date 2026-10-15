@@ -1,8 +1,9 @@
-import { useState, useEffect, useLayoutEffect, memo } from "react";
+import { useState, useLayoutEffect, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { useCompanySearch } from "@/hooks/companies/useCompanySearch";
+import { LANDING_DEFAULT_COMPANY_SEARCH } from "@/lib/constants/landingPage";
 import { RankedCompany } from "@/types/company";
 
 export const CompanySearchInput = memo(function CompanySearchInput({
@@ -13,25 +14,24 @@ export const CompanySearchInput = memo(function CompanySearchInput({
   onBusyChange?: (busy: boolean) => void;
 }) {
   const { t } = useTranslation();
-  const [inputValue, setInputValue] = useState("");
-  const [searchQuery, setSearchQuery] = useState("Volvo Cars");
+  const [inputValue, setInputValue] = useState(LANDING_DEFAULT_COMPANY_SEARCH);
+  const [searchQuery, setSearchQuery] = useState(
+    LANDING_DEFAULT_COMPANY_SEARCH,
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { searchResults, isSearching, isDebouncing } =
     useCompanySearch(searchQuery);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     onBusyChange?.(isDebouncing || isSearching);
   }, [isDebouncing, isSearching, onBusyChange]);
 
-  // On mount, set input and searchQuery to Volvo Cars
-  useEffect(() => {
-    setInputValue("Volvo Cars");
-    setSearchQuery("Volvo Cars");
-  }, []);
-
-  // Auto-select Volvo Cars on mount before paint to avoid chart placeholder flash
+  // Auto-select the default company before paint so the chart is not empty.
   useLayoutEffect(() => {
-    if (searchQuery.trim() === "Volvo Cars" && searchResults.length > 0) {
+    if (
+      searchQuery.trim() === LANDING_DEFAULT_COMPANY_SEARCH &&
+      searchResults.length > 0
+    ) {
       onSelect(searchResults[0] as RankedCompany);
     }
   }, [searchResults, searchQuery, onSelect]);

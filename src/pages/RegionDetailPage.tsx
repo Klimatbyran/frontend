@@ -28,8 +28,8 @@ export function RegionDetailPage() {
     currentYear,
   } = useRegionPageData(id || "");
 
-  if (loading) return <PageLoading />;
   if (error) return <PageError />;
+  if (loading) return <PageLoading />;
   if (!region) return <PageNoData />;
 
   return (
