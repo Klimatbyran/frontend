@@ -14,6 +14,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPost, getBlogPost } from "@/hooks/useBlogPosts";
 import { blogMetadataByLanguage } from "@/lib/blog/blogPostsList";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { buildAbsoluteUrl } from "@/utils/seo";
 import {
@@ -92,7 +93,7 @@ export function BlogDetailPage() {
     });
   };
 
-  if (blogPostsLoading) return <div>{t("blogDetailPage.loading")}</div>;
+  if (blogPostsLoading) return <PageLoading />;
   if (blogPostsError) return <div>{t("blogDetailPage.postNotFound")}</div>;
   if (!blogPost) return <div>{t("blogDetailPage.postNotFound")}</div>;
 

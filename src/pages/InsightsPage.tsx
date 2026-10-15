@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { ContentGridPage } from "@/components/layout/ContentGridPage";
 import { ContentCard } from "@/components/layout/ContentCard";
 import { localizeUnit } from "@/utils/formatting/localization";
@@ -12,7 +13,9 @@ import { localizeUnit } from "@/utils/formatting/localization";
 export function InsightsPage() {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const { blogPosts } = useBlogPosts();
+  const { blogPosts, blogPostsLoading } = useBlogPosts();
+
+  if (blogPostsLoading) return <PageLoading />;
 
   const featuredPost = isMobile ? undefined : blogPosts[0];
   const otherPosts = isMobile ? blogPosts.slice(0) : blogPosts.slice(1);

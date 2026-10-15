@@ -3,6 +3,7 @@ import {
   useLabeledGithubIssues,
   type GitHubIssue,
 } from "@/hooks/useLabeledGithubIssues";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +45,7 @@ export const RequestsDashboard = () => {
           (issue: GitHubIssue) => getStatus(issue) === statusFilter,
         );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <PageLoading />;
   if (error) return <div>Error loading issues</div>;
 
   return (

@@ -1,61 +1,15 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ListCardProps } from "@/components/explore/ListCard";
-import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
-import { useSortOptions } from "@/hooks/companies/useCompanySorting";
+import { useExploreCompaniesData } from "@/hooks/companies/useExploreCompaniesData";
 import useTransformCompanyListCard from "@/hooks/companies/useTransformCompanyListCard";
 import { ExploreEntityList } from "@/components/explore/ExploreEntityList";
-import {
-  PAGE_EXPLORE_COMPANIES_PAGE_SIZE,
-  usePageExploreCompaniesList,
-  type ExploreListSortBy,
-} from "@/hooks/pages/usePageExploreCompanies";
-
-const SEARCH_DEBOUNCE_MS = 300;
-
-function toApiSortDir(
-  direction: "none" | "asc" | "desc",
-  sortBy: string,
-  sortOptions: ReturnType<typeof useSortOptions>,
-): "asc" | "desc" {
-  if (direction === "asc" || direction === "desc") return direction;
-  return (
-    sortOptions.find((option) => option.value === sortBy)?.defaultDirection ??
-    "desc"
-  );
-}
+import { PAGE_EXPLORE_COMPANIES_PAGE_SIZE } from "@/hooks/pages/usePageExploreCompanies";
 
 export function CompanyList() {
   const { t } = useTranslation();
-
-  const companyFilters = useCompanyFilters([], {
-    includeSectorFilter: false,
-    includeIndustryGroupFilter: true,
-    serverSide: true,
-  });
-  const sortOptions = useSortOptions();
-
-  const [debouncedQuery, setDebouncedQuery] = useState("");
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      setDebouncedQuery(companyFilters.searchQuery.trim());
-    }, SEARCH_DEBOUNCE_MS);
-    return () => window.clearTimeout(handle);
-  }, [companyFilters.searchQuery]);
-
-  const industryGroups = companyFilters.industryGroups.includes("all")
-    ? undefined
-    : companyFilters.industryGroups.join(",");
-  const countries =
-    companyFilters.selectedCountries.length > 0
-      ? companyFilters.selectedCountries.join(",")
-      : undefined;
-  const meetsParis =
-    companyFilters.meetsParisFilter === "all"
-      ? undefined
-      : companyFilters.meetsParisFilter;
-
   const {
+    companyFilters,
+    sortOptions,
     companies,
     total,
     loading,
@@ -64,18 +18,7 @@ export function CompanyList() {
     hasMore,
     loadMore,
     error,
-  } = usePageExploreCompaniesList({
-    q: debouncedQuery,
-    sortBy: companyFilters.sortBy as ExploreListSortBy,
-    sortDir: toApiSortDir(
-      companyFilters.sortDirection,
-      companyFilters.sortBy,
-      sortOptions,
-    ),
-    meetsParis,
-    industryGroups,
-    countries,
-  });
+  } = useExploreCompaniesData();
 
   const transformedCompanies: ListCardProps[] = useTransformCompanyListCard({
     filteredCompanies: companies,

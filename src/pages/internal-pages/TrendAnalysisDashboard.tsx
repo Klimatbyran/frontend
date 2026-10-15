@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { useCompanies } from "@/hooks/companies/useCompanies";
@@ -247,11 +248,7 @@ export function TrendAnalysisDashboard() {
   };
 
   if (companiesLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Text variant="h1">Loading trend analysis...</Text>
-      </div>
-    );
+    return <PageLoading />;
   }
 
   if (companiesError) {

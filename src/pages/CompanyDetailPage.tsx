@@ -55,19 +55,30 @@ export function CompanyDetailPage() {
     return year;
   }, [selectedYear, availableYears]);
 
+  const hasYearData = (header?.availableYears.length ?? 0) > 0;
+  const detailSectionsEnabled = !!header && hasYearData;
+
   const {
     overview,
     loading: overviewLoading,
     error: overviewError,
   } = usePageCompanyOverview(id!, yearNumber, !!header);
-  const { emissionsHistory, turnoverHistory } = usePageCompanyHistories(
+  const {
+    emissionsHistory,
+    turnoverHistory,
+    loading: historiesLoading,
+  } = usePageCompanyHistories(id!, detailSectionsEnabled);
+  const { scope3, loading: scope3Loading } = usePageCompanyScope3(
     id!,
-    !!header,
+    yearNumber,
+    detailSectionsEnabled,
   );
-  const { scope3 } = usePageCompanyScope3(id!, yearNumber, !!header);
 
   // Year changes keep previous overview/scope3 for the same company only.
-  const loading = headerLoading || overviewLoading;
+  // Histories and scope 3 stay behind the loader until the first response,
+  // so those sections do not appear after the rest of the page.
+  const loading =
+    headerLoading || overviewLoading || historiesLoading || scope3Loading;
   const error = headerError || (!overview && overviewError);
 
   const latestYear = useMemo(() => {
@@ -108,8 +119,6 @@ export function CompanyDetailPage() {
     );
   }, [header, overview, location.pathname, latestYear, id, sectorNames]);
 
-  if (loading) return <PageLoading />;
-
   if (error) {
     return (
       <PageError
@@ -118,6 +127,8 @@ export function CompanyDetailPage() {
       />
     );
   }
+
+  if (loading) return <PageLoading />;
 
   if (!header) {
     return (

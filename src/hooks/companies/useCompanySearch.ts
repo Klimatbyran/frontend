@@ -4,21 +4,25 @@ import { getCompaniesBySearchTerm } from "@/lib/api";
 import { HERO_SEARCH_DEBOUNCE_MS } from "@/lib/constants/landingPage";
 
 export function useCompanySearch(searchQuery: string) {
-  const [debouncedQuery, setDebouncedQuery] = useState(searchQuery.trim());
-  /** Start true so consumers can show loading until the first debounce cycle runs. */
-  const [isDebouncing, setIsDebouncing] = useState(true);
+  const trimmedQuery = searchQuery.trim();
+  const [debouncedQuery, setDebouncedQuery] = useState(trimmedQuery);
+  const [isDebouncing, setIsDebouncing] = useState(false);
 
   useEffect(() => {
+    if (trimmedQuery === debouncedQuery) {
+      setIsDebouncing(false);
+      return;
+    }
+
     setIsDebouncing(true);
     const handler = setTimeout(() => {
-      setDebouncedQuery(searchQuery.trim());
+      setDebouncedQuery(trimmedQuery);
       setIsDebouncing(false);
     }, HERO_SEARCH_DEBOUNCE_MS);
     return () => {
       clearTimeout(handler);
-      setIsDebouncing(false);
     };
-  }, [searchQuery]);
+  }, [trimmedQuery, debouncedQuery]);
 
   const { data: searchResults = [], isFetching: isSearching } = useQuery({
     queryKey: ["companySearch", debouncedQuery],

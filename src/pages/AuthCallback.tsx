@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { PageLoading } from "@/components/pageStates/Loading";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -64,5 +65,5 @@ export const AuthCallback = () => {
     }
   }, [token, navigate, currentLanguage, showToast, t]);
 
-  return <div>{t("blogDetailPage.loading")}</div>;
+  return <PageLoading />;
 };
