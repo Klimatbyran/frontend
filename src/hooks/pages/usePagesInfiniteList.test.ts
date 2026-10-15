@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isInfiniteListRefreshing } from "./infiniteListQueryState";
+import { isInfiniteListRefreshing } from "./usePagesInfiniteList";
 
 describe("isInfiniteListRefreshing", () => {
   it("is true while refetching the first page", () => {

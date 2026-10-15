@@ -1,15 +1,13 @@
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { getPageExploreCompanies } from "@/lib/pagesApi";
 import type {
   PageExploreCompaniesQuery,
   PageExploreCompany,
 } from "@/types/pages";
-import { isInfiniteListRefreshing } from "./infiniteListQueryState";
-
-const STALE_TIME = 1_800_000;
+import { PAGES_LIST_PAGE_SIZE } from "./constants";
+import { usePagesInfiniteList } from "./usePagesInfiniteList";
 
 /** Matches API explore default page size and the list "show more" step. */
-export const PAGE_EXPLORE_COMPANIES_PAGE_SIZE = 12;
+export const PAGE_EXPLORE_COMPANIES_PAGE_SIZE = PAGES_LIST_PAGE_SIZE;
 
 export type ExploreListSortBy = NonNullable<
   PageExploreCompaniesQuery["sortBy"]
@@ -33,7 +31,7 @@ export function usePageExploreCompaniesList(options?: {
   const industryGroups = options?.industryGroups || undefined;
   const countries = options?.countries || undefined;
 
-  const query = useInfiniteQuery({
+  const list = usePagesInfiniteList<PageExploreCompany>({
     queryKey: [
       "pages",
       "explore-companies",
@@ -45,7 +43,7 @@ export function usePageExploreCompaniesList(options?: {
       industryGroups ?? "",
       countries ?? "",
     ],
-    queryFn: ({ pageParam }) =>
+    queryFn: (page) =>
       getPageExploreCompanies({
         q,
         sortBy,
@@ -54,36 +52,20 @@ export function usePageExploreCompaniesList(options?: {
         industryGroups,
         countries,
         sectors,
-        page: pageParam,
-        pageSize: PAGE_EXPLORE_COMPANIES_PAGE_SIZE,
+        page,
+        pageSize: PAGES_LIST_PAGE_SIZE,
       }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) =>
-      lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     enabled: options?.enabled ?? true,
-    staleTime: STALE_TIME,
-    placeholderData: keepPreviousData,
   });
 
-  const companies = (query.data?.pages.flatMap((page) => page.items) ??
-    []) as PageExploreCompany[];
-  const total = query.data?.pages[0]?.total ?? 0;
-
-  const refreshing = isInfiniteListRefreshing(
-    query.isFetching,
-    query.isFetchingNextPage,
-  );
-
   return {
-    companies,
-    total,
-    loading: query.isLoading,
-    refreshing,
-    fetchingMore: query.isFetchingNextPage,
-    hasMore: Boolean(query.hasNextPage),
-    loadMore: () => {
-      void query.fetchNextPage();
-    },
-    error: query.error,
+    companies: list.items,
+    total: list.total,
+    loading: list.loading,
+    refreshing: list.refreshing,
+    fetchingMore: list.fetchingMore,
+    hasMore: list.hasMore,
+    loadMore: list.loadMore,
+    error: list.error,
   };
 }

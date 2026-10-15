@@ -1,8 +1,4 @@
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  useQuery,
-} from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   getPageCompaniesOverview,
   getPageCompaniesOverviewSummary,
@@ -11,12 +7,11 @@ import type {
   PageCompaniesOverviewQuery,
   PageCompanyOverviewItem,
 } from "@/types/pages";
-import { isInfiniteListRefreshing } from "./infiniteListQueryState";
-
-const STALE_TIME = 1_800_000;
+import { PAGES_LIST_PAGE_SIZE, PAGES_QUERY_STALE_TIME } from "./constants";
+import { usePagesInfiniteList } from "./usePagesInfiniteList";
 
 /** Matches API `PAGE_OVERVIEW_DEFAULT_PAGE_SIZE` and the table "show more" step. */
-export const PAGE_OVERVIEW_PAGE_SIZE = 12;
+export const PAGE_OVERVIEW_PAGE_SIZE = PAGES_LIST_PAGE_SIZE;
 
 export type OverviewListSortBy = NonNullable<
   PageCompaniesOverviewQuery["sortBy"]
@@ -34,7 +29,7 @@ export function usePageCompaniesOverviewList(options?: {
   const sortBy = options?.sortBy ?? "paris";
   const sortDir = options?.sortDir ?? "desc";
 
-  const query = useInfiniteQuery({
+  const list = usePagesInfiniteList<PageCompanyOverviewItem>({
     queryKey: [
       "pages",
       "companies-overview",
@@ -43,43 +38,27 @@ export function usePageCompaniesOverviewList(options?: {
       sortBy,
       sortDir,
     ],
-    queryFn: ({ pageParam }) =>
+    queryFn: (page) =>
       getPageCompaniesOverview({
         sector: sector ?? undefined,
         q,
         sortBy,
         sortDir,
-        page: pageParam,
-        pageSize: PAGE_OVERVIEW_PAGE_SIZE,
+        page,
+        pageSize: PAGES_LIST_PAGE_SIZE,
       }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) =>
-      lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     enabled: options?.enabled ?? true,
-    staleTime: STALE_TIME,
-    placeholderData: keepPreviousData,
   });
 
-  const companies = (query.data?.pages.flatMap((page) => page.items) ??
-    []) as PageCompanyOverviewItem[];
-  const total = query.data?.pages[0]?.total ?? 0;
-
-  const refreshing = isInfiniteListRefreshing(
-    query.isFetching,
-    query.isFetchingNextPage,
-  );
-
   return {
-    companies,
-    total,
-    loading: query.isLoading,
-    refreshing,
-    fetchingMore: query.isFetchingNextPage,
-    hasMore: Boolean(query.hasNextPage),
-    loadMore: () => {
-      void query.fetchNextPage();
-    },
-    error: query.error,
+    companies: list.items,
+    total: list.total,
+    loading: list.loading,
+    refreshing: list.refreshing,
+    fetchingMore: list.fetchingMore,
+    hasMore: list.hasMore,
+    loadMore: list.loadMore,
+    error: list.error,
   };
 }
 
@@ -92,7 +71,7 @@ export function usePageCompaniesOverviewSummary(options?: {
     queryKey: ["pages", "companies-overview-summary", sector ?? "all"],
     queryFn: () => getPageCompaniesOverviewSummary(sector),
     enabled: options?.enabled ?? true,
-    staleTime: STALE_TIME,
+    staleTime: PAGES_QUERY_STALE_TIME,
     placeholderData: keepPreviousData,
   });
 

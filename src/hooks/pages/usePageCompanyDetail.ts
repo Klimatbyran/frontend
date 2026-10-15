@@ -6,8 +6,7 @@ import {
   getPageCompanyScope3,
   getPageCompanyTurnoverHistory,
 } from "@/lib/pagesApi";
-
-const STALE_TIME = 1_800_000;
+import { PAGES_QUERY_STALE_TIME } from "./constants";
 
 /** Keep prior data only when the company id is unchanged (year switches). */
 function keepPreviousForSameCompany(companyId: string) {
@@ -27,7 +26,7 @@ export function usePageCompanyHeader(id: string, enabled = true) {
     queryKey: ["pages", "company-header", id],
     queryFn: () => getPageCompanyHeader(id),
     enabled: enabled && !!id,
-    staleTime: STALE_TIME,
+    staleTime: PAGES_QUERY_STALE_TIME,
   });
 
   return {
@@ -46,7 +45,7 @@ export function usePageCompanyOverview(
     queryKey: ["pages", "company-overview", id, year ?? "latest"],
     queryFn: () => getPageCompanyOverview(id, year),
     enabled: enabled && !!id,
-    staleTime: STALE_TIME,
+    staleTime: PAGES_QUERY_STALE_TIME,
     placeholderData: keepPreviousForSameCompany(id),
   });
 
@@ -62,13 +61,13 @@ export function usePageCompanyHistories(id: string, enabled = true) {
     queryKey: ["pages", "company-emissions-history", id],
     queryFn: () => getPageCompanyEmissionsHistory(id),
     enabled: enabled && !!id,
-    staleTime: STALE_TIME,
+    staleTime: PAGES_QUERY_STALE_TIME,
   });
   const turnover = useQuery({
     queryKey: ["pages", "company-turnover-history", id],
     queryFn: () => getPageCompanyTurnoverHistory(id),
     enabled: enabled && !!id,
-    staleTime: STALE_TIME,
+    staleTime: PAGES_QUERY_STALE_TIME,
   });
 
   return {
@@ -88,7 +87,7 @@ export function usePageCompanyScope3(
     queryKey: ["pages", "company-scope3", id, year ?? "latest"],
     queryFn: () => getPageCompanyScope3(id, year),
     enabled: enabled && !!id,
-    staleTime: STALE_TIME,
+    staleTime: PAGES_QUERY_STALE_TIME,
     placeholderData: keepPreviousForSameCompany(id),
   });
 

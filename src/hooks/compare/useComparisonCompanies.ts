@@ -6,9 +6,8 @@ import {
   getPageCompanyOverview,
 } from "@/lib/pagesApi";
 import type { PageExploreCompany } from "@/types/pages";
+import { PAGES_QUERY_STALE_TIME } from "@/hooks/pages/constants";
 import { exploreCompanyFromPageDetail } from "@/utils/pages/exploreCompanyFromPageDetail";
-
-const STALE_TIME = 1_800_000;
 
 type ComparisonCompanyQueryState = {
   isError: boolean;
@@ -82,7 +81,7 @@ export function useComparisonCompanies(
         return exploreCompanyFromPageDetail(header, overview, history);
       },
       enabled: enabled && segments.length > 0,
-      staleTime: STALE_TIME,
+      staleTime: PAGES_QUERY_STALE_TIME,
     })),
   });
 
