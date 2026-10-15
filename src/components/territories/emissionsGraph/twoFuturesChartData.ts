@@ -2,11 +2,11 @@ import type { DataPoint } from "@/types/emissions";
 
 export type TwoFuturesRow = {
   year: number;
-  /** Reported history up to the latest year with a measured total. */
+  /** Reported history. Missing years stay empty so the solid line breaks. */
   history?: number;
   /**
-   * Modelled years on the past path, plus the last reported year so the
-   * dashed segment stays connected to the solid line.
+   * Dashed past path: modelled years up to today, years skipped between
+   * reported points, and the reported endpoints that join those segments.
    */
   historyEstimated?: number;
   /** Projected path if nothing changes — from the current year onward. */
@@ -30,66 +30,142 @@ export function historyMarkerFlags(rows: TwoFuturesRow[]) {
   };
 }
 
+type PastPathPoint = {
+  year: number;
+  value: number;
+  reported: boolean;
+};
+
+function pastPathPoints(
+  data: DataPoint[],
+  currentYear: number,
+): PastPathPoint[] {
+  const byYear = new Map<number, PastPathPoint>();
+
+  for (const point of data) {
+    if (point.year > currentYear || point.total == null) continue;
+    byYear.set(point.year, {
+      year: point.year,
+      value: point.total,
+      reported: true,
+    });
+  }
+
+  const lastReportedYear = [...byYear.keys()].reduce(
+    (max, year) => Math.max(max, year),
+    0,
+  );
+
+  for (const point of data) {
+    if (
+      point.year > currentYear ||
+      point.year <= lastReportedYear ||
+      point.approximated == null ||
+      byYear.has(point.year)
+    ) {
+      continue;
+    }
+    byYear.set(point.year, {
+      year: point.year,
+      value: point.approximated,
+      reported: false,
+    });
+  }
+
+  return [...byYear.values()].sort((a, b) => a.year - b.year);
+}
+
+/**
+ * Years skipped between past-path points get a dashed value. A modelled
+ * value wins; otherwise the line is a straight bridge between the endpoints.
+ */
+function gapEstimates(
+  pastPoints: PastPathPoint[],
+  approximatedByYear: Map<number, number>,
+): { filled: Map<number, number>; anchors: Set<number> } {
+  const filled = new Map<number, number>();
+  const anchors = new Set<number>();
+
+  for (let i = 0; i < pastPoints.length - 1; i++) {
+    const left = pastPoints[i];
+    const right = pastPoints[i + 1];
+    const span = right.year - left.year;
+    const bridgesGap = span > 1 || !right.reported;
+    if (!bridgesGap) continue;
+
+    if (left.reported) anchors.add(left.year);
+    if (right.reported) anchors.add(right.year);
+
+    for (let year = left.year + 1; year < right.year; year++) {
+      const modelled = approximatedByYear.get(year);
+      const t = (year - left.year) / span;
+      filled.set(year, modelled ?? left.value + (right.value - left.value) * t);
+    }
+  }
+
+  return { filled, anchors };
+}
+
 export function buildTwoFuturesRows(
   data: DataPoint[],
   currentYear: number,
 ): TwoFuturesRow[] {
-  const lastReportedYear = data.reduce((max, point) => {
-    if (point.total == null) return max;
-    return Math.max(max, point.year);
-  }, 0);
+  const pastPoints = pastPathPoints(data, currentYear);
+  const pastByYear = new Map(pastPoints.map((point) => [point.year, point]));
+  const approximatedByYear = new Map<number, number>();
+  const pointByYear = new Map<number, DataPoint>();
 
-  const hasEstimateAfterLastReport = data.some(
-    (point) =>
-      point.year > lastReportedYear &&
-      point.year <= currentYear &&
-      point.approximated != null,
-  );
+  for (const point of data) {
+    pointByYear.set(point.year, point);
+    if (point.approximated != null) {
+      approximatedByYear.set(point.year, point.approximated);
+    }
+  }
 
-  return [...data]
-    .sort((a, b) => a.year - b.year)
-    .map((point) => {
-      const isNowOrPast = point.year <= currentYear;
-      const isReported =
-        isNowOrPast && point.year <= lastReportedYear && point.total != null;
-      const isEstimated =
-        isNowOrPast &&
-        point.year > lastReportedYear &&
-        point.approximated != null;
+  const { filled, anchors } = gapEstimates(pastPoints, approximatedByYear);
+  const years = new Set<number>([...pointByYear.keys(), ...filled.keys()]);
 
-      const history = isReported ? (point.total ?? undefined) : undefined;
+  return [...years]
+    .sort((a, b) => a - b)
+    .map((year) => {
+      const point = pointByYear.get(year);
+      const past = pastByYear.get(year);
+      const isReported = past?.reported === true;
+      const filledValue = filled.get(year);
+
       let historyEstimated: number | undefined;
-      if (hasEstimateAfterLastReport) {
-        if (isEstimated) {
-          historyEstimated = point.approximated ?? undefined;
-        } else if (point.year === lastReportedYear && point.total != null) {
-          historyEstimated = point.total;
-        }
+      let historyIsEstimated = false;
+      if (filledValue != null) {
+        historyEstimated = filledValue;
+        historyIsEstimated = true;
+      } else if (past && !past.reported) {
+        historyEstimated = past.value;
+        historyIsEstimated = true;
+      } else if (isReported && anchors.has(year)) {
+        historyEstimated = past.value;
       }
 
       const trend =
-        point.year >= currentYear ? (point.trend ?? undefined) : undefined;
+        year >= currentYear ? (point?.trend ?? undefined) : undefined;
       const paris =
-        point.year >= currentYear ? (point.carbonLaw ?? undefined) : undefined;
-
+        year >= currentYear ? (point?.carbonLaw ?? undefined) : undefined;
       const gap =
-        point.year >= currentYear && trend !== undefined && paris !== undefined
+        year >= currentYear && trend !== undefined && paris !== undefined
           ? Math.max(0, trend - paris)
           : undefined;
-
       const parisBase =
-        point.year >= currentYear && paris !== undefined ? paris : undefined;
+        year >= currentYear && paris !== undefined ? paris : undefined;
 
       return {
-        year: point.year,
-        history,
+        year,
+        history: isReported ? past.value : undefined,
         historyEstimated,
         trend,
         paris,
         parisBase,
         gap,
-        historyIsAIGenerated: isReported && point.isAIGenerated === true,
-        historyIsEstimated: isEstimated,
+        historyIsAIGenerated: isReported && point?.isAIGenerated === true,
+        historyIsEstimated,
       };
     });
 }
