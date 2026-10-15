@@ -64,19 +64,18 @@ export function CompanyList() {
     hasMore,
     loadMore,
     error,
-  } =
-    usePageExploreCompaniesList({
-      q: debouncedQuery,
-      sortBy: companyFilters.sortBy as ExploreListSortBy,
-      sortDir: toApiSortDir(
-        companyFilters.sortDirection,
-        companyFilters.sortBy,
-        sortOptions,
-      ),
-      meetsParis,
-      industryGroups,
-      countries,
-    });
+  } = usePageExploreCompaniesList({
+    q: debouncedQuery,
+    sortBy: companyFilters.sortBy as ExploreListSortBy,
+    sortDir: toApiSortDir(
+      companyFilters.sortDirection,
+      companyFilters.sortBy,
+      sortOptions,
+    ),
+    meetsParis,
+    industryGroups,
+    countries,
+  });
 
   const transformedCompanies: ListCardProps[] = useTransformCompanyListCard({
     filteredCompanies: companies,

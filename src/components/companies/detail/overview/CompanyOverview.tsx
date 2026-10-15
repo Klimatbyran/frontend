@@ -40,7 +40,8 @@ export function CompanyOverview({
   const { currentLanguage } = useLanguage();
 
   const sectorCode = (overview.sectorCode ?? header.sectorCode ?? undefined) as
-    SectorCode | undefined;
+    | SectorCode
+    | undefined;
   const notReported = t("companies.overview.notReported");
   const sectorName = getCompanySectorName(sectorCode, sectorNames, notReported);
   const industryGroupName = getCompanyIndustryGroupName(

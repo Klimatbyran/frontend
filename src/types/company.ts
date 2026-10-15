@@ -60,10 +60,8 @@ export type CompanyListItem = NonNullable<
 >;
 
 // Extended company type with metrics and optional rankings
-export interface RankedCompany extends Omit<
-  CompanyListItem,
-  "reportingPeriods"
-> {
+export interface RankedCompany
+  extends Omit<CompanyListItem, "reportingPeriods"> {
   reportingPeriods: ReportingPeriodFromList[];
   metrics: {
     emissionsReduction: number;

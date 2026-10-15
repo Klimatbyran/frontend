@@ -188,14 +188,13 @@ export function CompaniesTable({
     hasMore,
     loadMore,
     error,
-  } =
-    usePageCompaniesOverviewList({
-      sector,
-      q: debouncedQuery,
-      sortBy: toApiSortBy(sortKey),
-      sortDir: direction,
-      enabled,
-    });
+  } = usePageCompaniesOverviewList({
+    sector,
+    q: debouncedQuery,
+    sortBy: toApiSortBy(sortKey),
+    sortDir: direction,
+    enabled,
+  });
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {

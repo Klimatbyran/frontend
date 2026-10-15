@@ -10,7 +10,8 @@ export function getSelectionChipClassName(selected: boolean) {
   );
 }
 
-export interface SelectionChipProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface SelectionChipProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   selected?: boolean;
   icon?: ReactNode;
 }

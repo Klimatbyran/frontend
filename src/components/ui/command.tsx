@@ -49,9 +49,8 @@ const CommandDialog = ({
   );
 };
 
-interface CommandInputProps extends React.ComponentPropsWithoutRef<
-  typeof CommandPrimitive.Input
-> {
+interface CommandInputProps
+  extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> {
   wrapperClassName?: string;
 }
 
