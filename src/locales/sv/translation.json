@@ -147,7 +147,7 @@
     "ourApproachSection": {
       "title": "Vårt angreppssätt",
       "paragraph1": "Öppna data om växthusgasutsläppen ökar transparensen och ger oss möjlighet till ansvarsutkrävande. Med hjälp av klimatdata kan vi ställa beslutsfattare i politik och näringsliv till svars för sina löften om att minska utsläppen och klara Parisavtalet.",
-      "paragraph2": "Klimatkollen har utvecklat Garbo AI för datainhämtning och analys. På så sätt kan vi visa upp klimatdata för allt fler kommuner och bolag, både i Sverige och internationellt.",
+      "paragraph2": "Klimatkollen har utvecklat Garbo AI för datainhämtning och analys. På så sätt kan vi visa upp klimatdata för allt fler svenska kommuner och bolag.",
       "paragraph3": "Vi påstår inte att vi är felfria, det är mycket ny teknik och snårig data även för insatta. Men ju mer vi testar, utvecklar och lär oss, desto bättre blir Garbo AI – och därmed även vår data.",
       "paragraph4": "Klimatkollen är ett komplement till det offentliga. En myndighet kan – och ska – bara publicera noggrant processad data. Det har många fördelar. Samtidigt kan det gå långsamt, att korrigera eventuella fel kan dröja.",
       "paragraph5": "Vi vill vara snabbare. Wikipedia uppdateras dagligen av civilsamhället. Klimatkollen arbetar i samma anda.",
@@ -394,7 +394,6 @@
     "errorTitle": "Kunde inte hämta företagsinformation",
     "errorDescription": "Försök igen senare",
     "selectIndustry": "Välj sektor",
-    "selectCountry": "Välj land",
     "visualizations": {
       "noVisualizationAvailable": "Ingen visualisering tillgänglig för denna KPI",
       "noDataAvailable": "Ingen data tillgänglig",
@@ -759,7 +758,7 @@
         },
         "companiesIncluded": {
           "title": "Inkluderade företag",
-          "paragraph1": "Vår databas omfattar alla företag på Stockholmsbörsen (OMX Large Cap, Mid Cap och Small Cap), de 24 största statliga företagen, de fem största ekonomiska föreningarna, de olistade företagen IKEA och ICA Gruppen samt företag noterade på Nasdaq Baltic (samt ett par olistade balttiska företag).",
+          "paragraph1": "Vår databas omfattar svenska företag: alla företag på Stockholmsbörsen (OMX Large Cap, Mid Cap och Small Cap), de 24 största statliga företagen, de fem största ekonomiska föreningarna samt de olistade företagen IKEA och ICA Gruppen.",
           "paragraph2": "Företagen kategoriseras efter sektor enligt Global Industry Classification Standard (GICS).",
           "link": {
             "title": "GICS",
@@ -2409,8 +2408,6 @@
       "errorTitle": "Det gick inte att hämta företagsinformation",
       "errorDescription": "Försök igen senare",
       "filteringOptions": {
-        "country": "Land",
-        "allCountries": "Alla länder",
         "meetsParis": "Klarar Parisavtalet",
         "meetsParisYes": "Ja",
         "meetsParisNo": "Nej",
@@ -2437,13 +2434,6 @@
       "sectionTitle": "Företag",
       "noCompaniesInSection": "Inga företag i denna kategori"
     }
-  },
-  "companyCountries": {
-    "sweden": "Sverige",
-    "norway": "Norge",
-    "finland": "Finland",
-    "denmark": "Danmark",
-    "iceland": "Island"
   },
   "insightCategories": {
     "analysis": "Analys",

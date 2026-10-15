@@ -102,7 +102,6 @@ export async function getPageExploreCompanies(
       meetsParis: query?.meetsParis,
       sectors: query?.sectors,
       industryGroups: query?.industryGroups,
-      countries: query?.countries,
       page: query?.page,
       pageSize: query?.pageSize,
     })}`,

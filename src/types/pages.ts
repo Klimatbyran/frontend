@@ -228,7 +228,6 @@ export type PageExploreCompaniesQuery = {
   meetsParis?: "yes" | "no" | "unknown";
   sectors?: string;
   industryGroups?: string;
-  countries?: string;
   page?: number;
   pageSize?: number;
 };

@@ -55,7 +55,6 @@ function run(
   return filterAndSortCompanies(companies, {
     sectors: ["all"],
     industryGroups: ["all"],
-    selectedCountries: [],
     searchQuery: "",
     meetsParisFilter: "all",
     sortBy: "name",

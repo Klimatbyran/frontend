@@ -13,7 +13,6 @@ function exploreWindowKey(filters: {
   meetsParisFilter: string;
   sectors: string[];
   industryGroups: string[];
-  selectedCountries: string[];
 }) {
   return [
     filters.searchQuery,
@@ -22,7 +21,6 @@ function exploreWindowKey(filters: {
     filters.meetsParisFilter,
     filters.sectors.join(","),
     filters.industryGroups.join(","),
-    filters.selectedCountries.join(","),
   ].join("\0");
 }
 
