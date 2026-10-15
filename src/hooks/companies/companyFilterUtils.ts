@@ -24,7 +24,10 @@ import {
   companyMatchesCountries,
 } from "./companyCountryFilterUtils";
 import { FilterBadge } from "@/components/companies/list/FilterBadges";
-import { buildSearchRegex as buildLocalizedSearchRegex } from "@/utils/data/search";
+import {
+  buildSearchRegex as buildLocalizedSearchRegex,
+  buildWordStartSearchRegex,
+} from "@/utils/data/search";
 import { SupportedLanguage } from "@/lib/languageDetection";
 import { getCompanySectorName } from "@/utils/data/industryGrouping";
 
@@ -110,14 +113,31 @@ function matchesMeetsParis(
   return true;
 }
 
+function compareNullableNumbers(
+  a: number | null,
+  b: number | null,
+  sortDirection: SortDirection,
+): number {
+  if (a == null && b == null) return 0;
+  if (a == null) return 1;
+  if (b == null) return -1;
+  return sortDirection === "asc" ? a - b : b - a;
+}
+
 function compareEmissionsReduction(
   a: RankedCompany,
   b: RankedCompany,
   sortDirection: SortDirection,
 ): number {
-  const aChange = calculateEmissionsChange(a.reportingPeriods[0]) || 0;
-  const bChange = calculateEmissionsChange(b.reportingPeriods[0]) || 0;
-  return sortDirection === "asc" ? aChange - bChange : bChange - aChange;
+  const aChange = calculateEmissionsChange(
+    a.reportingPeriods[0],
+    a.reportingPeriods[1],
+  );
+  const bChange = calculateEmissionsChange(
+    b.reportingPeriods[0],
+    b.reportingPeriods[1],
+  );
+  return compareNullableNumbers(aChange, bChange, sortDirection);
 }
 
 function compareTotalEmissions(
@@ -174,10 +194,13 @@ function compareNames(
   a: RankedCompany,
   b: RankedCompany,
   sortDirection: SortDirection,
+  currentLanguage: SupportedLanguage,
 ): number {
-  return sortDirection === "asc"
-    ? a.name.localeCompare(b.name)
-    : b.name.localeCompare(a.name);
+  const locale = currentLanguage === "sv" ? "sv" : "en";
+  const comparison = a.name.localeCompare(b.name, locale, {
+    sensitivity: "base",
+  });
+  return sortDirection === "asc" ? comparison : -comparison;
 }
 
 function compareCompanies(
@@ -185,6 +208,7 @@ function compareCompanies(
   b: RankedCompany,
   sortBy: CompanySortBy,
   sortDirection: SortDirection,
+  currentLanguage: SupportedLanguage,
 ): number {
   switch (sortBy) {
     case "emissions_reduction":
@@ -197,7 +221,7 @@ function compareCompanies(
       return compareMeetsParis(a, b, sortDirection);
     case "name":
     default:
-      return compareNames(a, b, sortDirection);
+      return compareNames(a, b, sortDirection, currentLanguage);
   }
 }
 
@@ -222,8 +246,8 @@ export function filterAndSortCompanies(
     buildLocalizedSearchRegex(s, currentLanguage, true),
   );
 
-  const industrySearchPatterns = getSearchTerms(searchQuery).map(
-    (s) => new RegExp(`(?<!\\p{L})${s}`, "iu"),
+  const industrySearchPatterns = getSearchTerms(searchQuery).map((s) =>
+    buildWordStartSearchRegex(s),
   );
 
   const matchedSearchIndustryGroups = Object.entries(industryGroupNames)
@@ -245,7 +269,9 @@ export function filterAndSortCompanies(
         matchesMeetsParis(company, meetsParisFilter) &&
         companyMatchesCountries(company, selectedCountries),
     )
-    .sort((a, b) => compareCompanies(a, b, sortBy, sortDirection));
+    .sort((a, b) =>
+      compareCompanies(a, b, sortBy, sortDirection, currentLanguage),
+    );
 }
 
 function buildSectorFilterGroup(

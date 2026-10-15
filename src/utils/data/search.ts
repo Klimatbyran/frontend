@@ -38,6 +38,11 @@ function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, (match) => `\\${match}`);
 }
 
+/** Literal match at the start of a word. The term is never treated as regex. */
+export function buildWordStartSearchRegex(term: string): RegExp {
+  return new RegExp(`(?<!\\p{L})${escapeRegExp(term)}`, "iu");
+}
+
 export function buildSearchRegex(
   term: string,
   currentLanguage: SupportedLanguage,
