@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   INDUSTRY_GROUP_CODES_BY_SECTOR,
@@ -11,22 +10,19 @@ import { FilterOptionGroup } from "@/components/explore/FilterPopover";
 export const useSectorNames = () => {
   const { t } = useTranslation();
 
-  return useMemo(
-    () => ({
-      "10": t("sector.energy.name"),
-      "15": t("sector.materials.name"),
-      "20": t("sector.industrials.name"),
-      "25": t("sector.consumerDiscretionary.name"),
-      "30": t("sector.consumerStaples.name"),
-      "35": t("sector.healthCare.name"),
-      "40": t("sector.financials.name"),
-      "45": t("sector.informationTechnology.name"),
-      "50": t("sector.communicationServices.name"),
-      "55": t("sector.utilities.name"),
-      "60": t("sector.realEstate.name"),
-    }),
-    [t],
-  );
+  return {
+    "10": t("sector.energy.name"),
+    "15": t("sector.materials.name"),
+    "20": t("sector.industrials.name"),
+    "25": t("sector.consumerDiscretionary.name"),
+    "30": t("sector.consumerStaples.name"),
+    "35": t("sector.healthCare.name"),
+    "40": t("sector.financials.name"),
+    "45": t("sector.informationTechnology.name"),
+    "50": t("sector.communicationServices.name"),
+    "55": t("sector.utilities.name"),
+    "60": t("sector.realEstate.name"),
+  };
 };
 
 export const useSectorTitles = () => {
