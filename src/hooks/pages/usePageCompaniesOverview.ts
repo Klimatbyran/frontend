@@ -6,9 +6,56 @@ import {
 import type {
   PageCompaniesOverviewQuery,
   PageCompanyOverviewItem,
+  PageListResponse,
 } from "@/types/pages";
 import { PAGES_LIST_PAGE_SIZE, PAGES_QUERY_STALE_TIME } from "./constants";
 import { usePagesInfiniteList } from "./usePagesInfiniteList";
+
+/**
+ * Page size used to pull the whole overview list when sorting by Paris.
+ * The API rejects very large sizes; 100 stays under that cap.
+ */
+const PARIS_SORT_PAGE_SIZE = 100;
+
+/**
+ * Ascending Paris order from the API puts companies with no track status
+ * first. Load every page so the client can place those rows last. Descending
+ * already ends with the missing rows, so it can stay on the normal page size.
+ */
+async function loadOverviewCompanies(
+  query: PageCompaniesOverviewQuery,
+): Promise<PageListResponse<PageCompanyOverviewItem>> {
+  if (query.sortBy !== "paris" || query.sortDir !== "asc") {
+    return getPageCompaniesOverview(query);
+  }
+
+  const first = await getPageCompaniesOverview({
+    ...query,
+    page: 1,
+    pageSize: PARIS_SORT_PAGE_SIZE,
+  });
+  const totalPages = first.totalPages ?? 1;
+  if (totalPages <= 1) return first;
+
+  const rest = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, index) =>
+      getPageCompaniesOverview({
+        ...query,
+        page: index + 2,
+        pageSize: PARIS_SORT_PAGE_SIZE,
+      }),
+    ),
+  );
+
+  const items = [first, ...rest].flatMap((page) => page.items);
+  return {
+    ...first,
+    items,
+    page: 1,
+    pageSize: items.length,
+    totalPages: 1,
+  };
+}
 
 /**
  * Sector slot in the overview list query key. Sort and search sit after it,
@@ -58,7 +105,7 @@ export function usePageCompaniesOverviewList(options?: {
       sortDir,
     ],
     queryFn: (page) =>
-      getPageCompaniesOverview({
+      loadOverviewCompanies({
         sector: sector ?? undefined,
         q,
         sortBy,

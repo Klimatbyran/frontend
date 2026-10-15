@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import {
@@ -29,6 +29,7 @@ import {
   type OverviewListSortBy,
 } from "@/hooks/pages/usePageCompaniesOverview";
 import { cn } from "@/lib/utils";
+import { compareParisTrack } from "@/utils/data/parisTrackSort";
 
 type SortKey = "name" | "industry" | "emissions" | "change" | "paris";
 
@@ -171,6 +172,7 @@ export function CompaniesTable({
   const [sortKey, setSortKey] = useState<SortKey>("paris");
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
   const [mobileColumn, setMobileColumn] = useState<MetricColumn>("paris");
+  const [rowLimit, setRowLimit] = useState(PAGE_OVERVIEW_PAGE_SIZE);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
@@ -178,6 +180,10 @@ export function CompaniesTable({
     }, SEARCH_DEBOUNCE_MS);
     return () => window.clearTimeout(handle);
   }, [query]);
+
+  useEffect(() => {
+    setRowLimit(PAGE_OVERVIEW_PAGE_SIZE);
+  }, [sector, debouncedQuery]);
 
   const {
     companies,
@@ -205,8 +211,30 @@ export function CompaniesTable({
     }
   };
 
-  const remaining = Math.max(total - companies.length, 0);
+  const ordered = useMemo(() => {
+    if (sortKey !== "paris") return companies;
+    return [...companies].sort((a, b) =>
+      compareParisTrack(a.meetsParis, b.meetsParis, direction),
+    );
+  }, [companies, sortKey, direction]);
+
+  const shown = ordered.slice(0, rowLimit);
+  const remaining = Math.max(total - shown.length, 0);
   const showMoreCount = Math.min(PAGE_OVERVIEW_PAGE_SIZE, remaining);
+
+  const showMore = () => {
+    const nextLimit = rowLimit + PAGE_OVERVIEW_PAGE_SIZE;
+    setRowLimit(nextLimit);
+    if (
+      nextLimit > companies.length &&
+      hasMore &&
+      !fetchingMore &&
+      !loading &&
+      !refreshing
+    ) {
+      loadMore();
+    }
+  };
 
   return (
     <section className="min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7">
@@ -361,7 +389,7 @@ export function CompaniesTable({
                 </TableCell>
               </TableRow>
             )}
-            {companies.map((company, index) => {
+            {shown.map((company, index) => {
               const sectorCodeValue = overviewSectorCode(company);
               const change = company.emissionsChangeFromBaseYear;
               const emissions = latestEmissions(company);
@@ -469,10 +497,10 @@ export function CompaniesTable({
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
-        {hasMore && (
+        {remaining > 0 && (
           <button
             type="button"
-            onClick={loadMore}
+            onClick={showMore}
             disabled={fetchingMore || loading || refreshing}
             className="rounded-full bg-black-1 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 disabled:opacity-50"
           >
@@ -483,7 +511,7 @@ export function CompaniesTable({
         )}
         <span className="text-xs text-grey">
           {t("companiesOverviewPage.paris.showingCount", {
-            shown: companies.length,
+            shown: shown.length,
             total,
           })}
         </span>

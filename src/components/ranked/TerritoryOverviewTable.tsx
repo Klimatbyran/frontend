@@ -18,6 +18,7 @@ import {
   DEFAULT_STATISTICAL_GRADIENT_COLORS,
 } from "@/utils/ui/colorGradients";
 import { cn } from "@/lib/utils";
+import { compareParisTrack } from "@/utils/data/parisTrackSort";
 
 type SortKey = "name" | "county" | "value" | "paris";
 type MetricColumn = "county" | "value" | "paris";
@@ -52,12 +53,6 @@ interface TerritoryOverviewTableProps {
   nullLabel?: string;
   /** Hide the Paris column when the selected measure already is Paris. */
   showParis: boolean;
-}
-
-function parisScore(value: boolean | null | undefined): number {
-  if (value === true) return 1;
-  if (value === false) return 0;
-  return -1;
 }
 
 function numericValue(value: number | boolean | null): number | null {
@@ -231,7 +226,7 @@ export function TerritoryOverviewTable({
               factor,
             );
           case "paris":
-            return factor * (parisScore(a.paris) - parisScore(b.paris));
+            return compareParisTrack(a.paris, b.paris, direction);
         }
       };
 
