@@ -9,6 +9,7 @@ import {
   buildPerformerProps,
   calculateEntityStatistics,
   createSourceLinks,
+  percentShares,
 } from "@/utils/insights/rankedListUtils";
 import { getSortedEntityKPIValues } from "@/utils/data/sorting";
 import {
@@ -315,11 +316,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
                 />
               ))}
             </motion.div>
-            <DistributionRows
-              stats={stats}
-              total={totalDistribution}
-              revealed={show}
-            />
+            <DistributionRows stats={stats} revealed={show} />
           </div>
         )}
         {sourceBlock}
@@ -350,11 +347,7 @@ export function TerritoryAnswerCard<T extends { name: string }>({
         </div>
         <div className="flex w-full flex-col justify-center gap-3 lg:w-72 lg:shrink-0 lg:gap-5">
           {totalDistribution > 0 && (
-            <DistributionRows
-              stats={stats}
-              total={totalDistribution}
-              revealed={show}
-            />
+            <DistributionRows stats={stats} revealed={show} />
           )}
         </div>
       </div>
@@ -366,20 +359,19 @@ export function TerritoryAnswerCard<T extends { name: string }>({
 
 function DistributionRows({
   stats,
-  total,
   revealed,
 }: {
   stats: DistributionStat[];
-  total: number;
   revealed: boolean;
 }) {
   const { reduceMotion, fadeDuration, stagger, ease } = useChartMotion();
   const show = reduceMotion || revealed;
+  const shares = percentShares(stats.map((stat) => stat.count));
 
   return (
     <div className="space-y-2 lg:space-y-3.5">
       {stats.map((stat, index) => {
-        const percent = total > 0 ? Math.round((stat.count / total) * 100) : 0;
+        const percent = shares[index] ?? 0;
         return (
           <motion.div
             key={stat.label}

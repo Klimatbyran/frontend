@@ -90,7 +90,9 @@ export function ParisAnswerCard({
   const { t } = useTranslation();
   const { reduceMotion, fadeDuration, ease } = useChartMotion();
   const [emphasis, setEmphasis] = useState<"on" | "off" | null>(null);
-  const { total, onTrack, offTrack, unknown, onTrackPercent } = summary;
+  const { total, onTrack, offTrack, unknown } = summary;
+  // Of every company in view, including those with too little data to judge.
+  const onTrackPercent = total === 0 ? 0 : Math.round((onTrack / total) * 100);
 
   if (total === 0) {
     return (

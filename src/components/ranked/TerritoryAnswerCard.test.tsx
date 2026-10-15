@@ -89,4 +89,28 @@ describe("TerritoryAnswerCard", () => {
     expect(legendDots[0]).toHaveStyle({ backgroundColor: "var(--blue-3)" });
     expect(legendDots[1]).toHaveStyle({ backgroundColor: "var(--pink-3)" });
   });
+
+  it("makes the above and below shares add up to 100", () => {
+    render(
+      <TerritoryAnswerCard
+        entities={[
+          { name: "A", change: -10 },
+          { name: "B", change: -10 },
+          { name: "C", change: -10 },
+          { name: "D", change: -10 },
+          { name: "E", change: -10 },
+          { name: "F", change: 10 },
+          { name: "G", change: 10 },
+          { name: "H", change: 10 },
+        ]}
+        selectedKPI={kpi}
+        entityType="municipalities"
+        translationPrefix="municipalities.list"
+      />,
+    );
+
+    expect(screen.getByText("(63%)")).toBeInTheDocument();
+    expect(screen.getByText("(37%)")).toBeInTheDocument();
+    expect(screen.queryByText("(38%)")).not.toBeInTheDocument();
+  });
 });

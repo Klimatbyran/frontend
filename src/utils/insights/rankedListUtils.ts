@@ -152,7 +152,10 @@ export function calculateEntityStatistics<
     return value as number;
   });
 
-  const average = values.reduce((sum, val) => sum + val, 0) / values.length;
+  const average =
+    values.length > 0
+      ? values.reduce((sum, val) => sum + val, 0) / values.length
+      : 0;
 
   // For boolean KPIs, these counts have a different meaning
   const aboveAverageCount = selectedKPI.isBoolean
@@ -190,6 +193,37 @@ export function calculateEntityStatistics<
     distributionStats,
     formattedAverage,
   };
+}
+
+/**
+ * Integer percentages of `counts` that add up to 100.
+ * Each share is that count's portion of the total, with leftover points
+ * given to the largest remainders so independently rounded shares cannot
+ * land on 99 or 101.
+ */
+export function percentShares(counts: number[]): number[] {
+  const total = counts.reduce((sum, count) => sum + count, 0);
+  if (total <= 0) return counts.map(() => 0);
+
+  const exact = counts.map((count) => (count / total) * 100);
+  const shares = exact.map((value) => Math.floor(value));
+  let remainder = 100 - shares.reduce((sum, value) => sum + value, 0);
+
+  const byRemainder = exact
+    .map((value, index) => ({
+      index,
+      fraction: value - Math.floor(value),
+    }))
+    .sort((a, b) => b.fraction - a.fraction || a.index - b.index);
+
+  for (const entry of byRemainder) {
+    if (remainder <= 0) break;
+    if (counts[entry.index] <= 0) continue;
+    shares[entry.index] += 1;
+    remainder -= 1;
+  }
+
+  return shares;
 }
 
 /**

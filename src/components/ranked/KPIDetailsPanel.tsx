@@ -2,6 +2,7 @@ import { Fragment } from "react/jsx-runtime";
 import { useTranslation } from "react-i18next";
 import { COLORS } from "@/lib/colors";
 import { LocalizedLink } from "@/components/LocalizedLink";
+import { percentShares } from "@/utils/insights/rankedListUtils";
 
 interface DistributionStat {
   count: number;
@@ -103,6 +104,8 @@ function DistributionSection({
   distributionStats: DistributionStat[];
   totalDistribution: number;
 }) {
+  const shares = percentShares(distributionStats.map((stat) => stat.count));
+
   return (
     <div className="space-y-4 md:space-y-3 shrink-0">
       <div className="flex rounded-full overflow-hidden h-3">
@@ -122,11 +125,8 @@ function DistributionSection({
         })}
       </div>
       <div className="space-y-3 md:space-y-2">
-        {distributionStats.map((stat) => {
-          const pct =
-            totalDistribution > 0
-              ? ((stat.count / totalDistribution) * 100).toFixed(0)
-              : 0;
+        {distributionStats.map((stat, index) => {
+          const pct = shares[index] ?? 0;
           return (
             <div
               key={stat.label}

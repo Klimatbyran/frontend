@@ -163,6 +163,16 @@ describe("ParisAnswerCard", () => {
     ).toBeInTheDocument();
   });
 
+  it("derives the all-companies share from the on-track count", () => {
+    renderCard({ ...baseSummary, onTrackPercent: 99 });
+
+    expect(
+      screen.getByText("companiesOverviewPage.paris.share:30:10", {
+        exact: false,
+      }),
+    ).toBeInTheDocument();
+  });
+
   it("leaves out the too-little sentence when every company can be judged", () => {
     renderCard({ ...baseSummary, unknown: 0 });
 
