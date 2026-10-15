@@ -6,9 +6,8 @@ export function getTranslation(
   language: string,
   options?: Record<string, string>,
 ): string {
-  const currentLanguage = i18n.language;
-  i18n.changeLanguage(language);
-  const translated = i18n.t(key, options || {});
-  i18n.changeLanguage(currentLanguage);
-  return translated as string;
+  // Pass lng instead of changeLanguage. changeLanguage emits languageChanged
+  // synchronously, and a component that both subscribes to language changes
+  // and rebuilds this SEO during render will setState until React aborts.
+  return i18n.t(key, { ...options, lng: language }) as string;
 }
