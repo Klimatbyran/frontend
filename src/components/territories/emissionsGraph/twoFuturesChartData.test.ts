@@ -144,6 +144,14 @@ describe("buildTwoFuturesRows", () => {
         carbonLaw: 60,
         isAIGenerated: true,
       },
+      {
+        year: 2027,
+        total: undefined,
+        approximated: undefined,
+        trend: 70,
+        carbonLaw: 50,
+        isAIGenerated: true,
+      },
     ];
 
     const rows = buildTwoFuturesRows(data, currentYear);
@@ -159,6 +167,9 @@ describe("buildTwoFuturesRows", () => {
     expect(row(currentYear)?.historyIsAIGenerated).toBe(false);
     expect(row(currentYear)?.historyIsEstimated).toBe(true);
     expect(row(currentYear)?.history).toBeUndefined();
+    expect(row(2027)?.history).toBeUndefined();
+    expect(row(2027)?.historyIsAIGenerated).toBe(false);
+    expect(row(2027)?.trend).toBe(70);
   });
 
   it("does not draw an estimated segment when every past year is reported", () => {

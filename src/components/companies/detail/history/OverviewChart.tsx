@@ -41,12 +41,12 @@ import {
   getTwoFuturesChartMargin,
   getTwoFuturesYAxisProps,
 } from "@/components/charts/twoFutures/twoFuturesChartAxis";
+import { toEmissionsHistoryDataPoint } from "@/components/charts/historicEmissions/utils/reportedEmissionsAI";
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
   historyMarkerFlags,
 } from "@/components/territories/emissionsGraph/twoFuturesChartData";
-import type { DataPoint } from "@/types/emissions";
 
 interface OverviewChartProps {
   data: ChartData[];
@@ -89,16 +89,8 @@ export const OverviewChart: FC<OverviewChartProps> = ({
     return merged.filter((d) => d.year >= firstDataYear);
   }, [filteredData, approximatedData, firstDataYear]);
 
-  const projectedData: DataPoint[] = useMemo(
-    () =>
-      mergedForProjection.map((point) => ({
-        year: point.year,
-        total: point.total,
-        trend: point.trend,
-        approximated: point.approximated,
-        carbonLaw: point.carbonLaw,
-        isAIGenerated: point.isAIGenerated,
-      })),
+  const projectedData = useMemo(
+    () => mergedForProjection.map(toEmissionsHistoryDataPoint),
     [mergedForProjection],
   );
 

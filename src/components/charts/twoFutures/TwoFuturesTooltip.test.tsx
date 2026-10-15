@@ -57,4 +57,72 @@ describe("TwoFuturesTooltip", () => {
 
     expect(screen.queryByAltText("AI Icon")).toBeNull();
   });
+
+  it("marks only the reported history row when trend and Paris share the point", () => {
+    render(
+      <TwoFuturesTooltip
+        active
+        label={2026}
+        unit="t"
+        labels={labels}
+        payload={[
+          {
+            dataKey: "history",
+            value: 80,
+            color: "#fff",
+            payload: { year: 2026, historyIsAIGenerated: true },
+          },
+          {
+            dataKey: "trend",
+            value: 80,
+            color: "pink",
+            payload: { year: 2026, historyIsAIGenerated: true },
+          },
+          {
+            dataKey: "paris",
+            value: 60,
+            color: "green",
+            payload: { year: 2026, historyIsAIGenerated: true },
+          },
+          {
+            dataKey: "historyEstimated",
+            value: 80,
+            color: "#fff",
+            payload: { year: 2026, historyIsAIGenerated: true },
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getAllByAltText("AI Icon")).toHaveLength(1);
+    expect(screen.queryByText("Approximated")).toBeNull();
+  });
+
+  it("does not mark an approximated year", () => {
+    render(
+      <TwoFuturesTooltip
+        active
+        label={2026}
+        unit="t"
+        labels={labels}
+        payload={[
+          {
+            dataKey: "historyEstimated",
+            value: 80,
+            color: "#fff",
+            payload: { year: 2026, historyIsAIGenerated: true },
+          },
+          {
+            dataKey: "trend",
+            value: 80,
+            color: "pink",
+            payload: { year: 2026, historyIsAIGenerated: true },
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.queryByAltText("AI Icon")).toBeNull();
+    expect(screen.getByText("Approximated")).toBeInTheDocument();
+  });
 });

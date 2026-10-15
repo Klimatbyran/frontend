@@ -6,6 +6,7 @@ import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
 import { AiIcon } from "@/components/ui/ai-icon";
+import { isReportedEmissionsAIGenerated } from "./utils/reportedEmissionsAI";
 import type { Scope3Category } from "@/types/company";
 
 interface PayloadEntry {
@@ -50,12 +51,6 @@ interface ChartTooltipProps {
   showAIIndicators?: boolean;
 }
 
-function hasAIGeneratedScope3(
-  categories?: Array<Scope3Category & { isAIGenerated?: boolean }>,
-): boolean {
-  return categories?.some((cat) => cat.isAIGenerated) ?? false;
-}
-
 function isAIGeneratedEntry(
   entry: PayloadEntry,
   showAIIndicators: boolean,
@@ -64,13 +59,7 @@ function isAIGeneratedEntry(
   if (entry.dataKey === "turnover") {
     return entry.payload?.turnoverIsAIGenerated ?? false;
   }
-  const payload = entry.payload;
-  if (!payload) return false;
-  if (payload.isAIGenerated) return true;
-  if (payload.scope1?.isAIGenerated) return true;
-  if (payload.scope2?.isAIGenerated) return true;
-  if (payload.scope3?.isAIGenerated) return true;
-  return hasAIGeneratedScope3(payload.scope3Categories);
+  return isReportedEmissionsAIGenerated(entry.payload);
 }
 
 function filterOverviewPayload(payload: PayloadEntry[]): PayloadEntry[] {
