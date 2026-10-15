@@ -9,7 +9,10 @@ function TranslationDuringRender() {
   const { t } = useTranslation();
   // New object every render, same failure mode as an unstable SEO dependency.
   const unstable = { label: t("common.company") };
-  const text = useMemo(() => getTranslation("common.company", "en"), [unstable]);
+  const text = useMemo(
+    () => getTranslation("common.company", "en"),
+    [unstable],
+  );
   return <p>{text}</p>;
 }
 
@@ -29,7 +32,9 @@ describe("getTranslation", () => {
         getTranslation("companyDetailPage.metaDescription", "sv", {
           company: "Tele2",
         }),
-      ).toBe("Se utsläppsdata och klimatomställning för Tele2 på Klimatkollen.");
+      ).toBe(
+        "Se utsläppsdata och klimatomställning för Tele2 på Klimatkollen.",
+      );
       expect(i18n.language).toBe("sv");
       expect(events).toEqual([]);
     } finally {
