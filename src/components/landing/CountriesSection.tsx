@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { LandingNationVisualSkeleton } from "@/components/landing/LandingVisualSkeletons";
 import { NationIntroVisual } from "@/components/nation/story/NationIntroPunch";
 import { useNationStoryData } from "@/hooks/nation/useNationStoryData";
 import { Text } from "../ui/text";
@@ -71,7 +72,7 @@ export const CountriesSection = () => {
             )}
           >
             {loading ? (
-              <div className="h-[min(420px,60vh)] w-full animate-pulse rounded-level-2 bg-black-2" />
+              <LandingNationVisualSkeleton />
             ) : !metrics ? (
               <Text className="text-grey">{t("detailPage.graph.noData")}</Text>
             ) : (
