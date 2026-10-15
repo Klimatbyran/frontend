@@ -57,6 +57,7 @@ export type MetricsByYear = Record<
 export type EmissionDataPoint = {
   year: number;
   value: number;
+  isAIGenerated?: boolean;
 };
 
 export type EmissionsData = {

@@ -1,5 +1,7 @@
 import { useLanguage } from "@/components/LanguageProvider";
+import { AiIcon } from "@/components/ui/ai-icon";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
+import type { TwoFuturesRow } from "@/components/territories/emissionsGraph/twoFuturesChartData";
 
 export const FUTURE_LINE_DASH = "4 4";
 
@@ -8,7 +10,20 @@ type TooltipRow = {
   value?: number;
   name?: string;
   color?: string;
+  payload?: TwoFuturesRow;
 };
+
+export type TwoFuturesTooltipLabels = Record<
+  "history" | "historyEstimated" | "trend" | "paris",
+  string
+>;
+
+function isAnchorEstimate(entry: TooltipRow, payload: TooltipRow[]) {
+  if (entry.dataKey !== "historyEstimated") return false;
+  return payload.some(
+    (other) => other.dataKey === "history" && other.value != null,
+  );
+}
 
 export function TwoFuturesTooltip({
   active,
@@ -21,7 +36,7 @@ export function TwoFuturesTooltip({
   payload?: TooltipRow[];
   label?: string | number;
   unit: string;
-  labels: Record<"history" | "trend" | "paris", string>;
+  labels: TwoFuturesTooltipLabels;
 }) {
   const { currentLanguage } = useLanguage();
   if (!active || !payload?.length) return null;
@@ -30,7 +45,8 @@ export function TwoFuturesTooltip({
     (entry) =>
       entry.value != null &&
       entry.dataKey !== "parisBase" &&
-      entry.dataKey !== "gap",
+      entry.dataKey !== "gap" &&
+      !isAnchorEstimate(entry, payload),
   );
 
   return (
@@ -38,8 +54,11 @@ export function TwoFuturesTooltip({
       <p className="mb-2 font-medium text-white">{label}</p>
       <ul className="space-y-1">
         {rows.map((entry) => {
-          const key = entry.dataKey as keyof typeof labels;
+          const key = entry.dataKey as keyof TwoFuturesTooltipLabels;
           const name = labels[key] ?? entry.name;
+          const showAi =
+            entry.dataKey === "history" && entry.payload?.historyIsAIGenerated;
+          const swatchIsSolid = entry.dataKey === "history";
           return (
             <li
               key={entry.dataKey}
@@ -49,7 +68,7 @@ export function TwoFuturesTooltip({
                 <span
                   className="h-0.5 w-4"
                   style={
-                    entry.dataKey === "history"
+                    swatchIsSolid
                       ? { background: entry.color }
                       : {
                           background: "transparent",
@@ -60,8 +79,9 @@ export function TwoFuturesTooltip({
                 />
                 {name}
               </span>
-              <span className="text-white">
+              <span className="flex items-center gap-1 text-white">
                 {formatEmissionsAbsolute(entry.value!, currentLanguage)} {unit}
+                {showAi && <AiIcon size="sm" />}
               </span>
             </li>
           );

@@ -2,8 +2,13 @@ import type { DataPoint } from "@/types/emissions";
 
 export type TwoFuturesRow = {
   year: number;
-  /** Reported history, or the latest estimate for the current year. */
+  /** Reported history up to the latest year with a measured total. */
   history?: number;
+  /**
+   * Modelled years on the past path, plus the last reported year so the
+   * dashed segment stays connected to the solid line.
+   */
+  historyEstimated?: number;
   /** Projected path if nothing changes — from the current year onward. */
   trend?: number;
   /** Paris-compatible path — from the current year onward. */
@@ -12,7 +17,18 @@ export type TwoFuturesRow = {
   parisBase?: number;
   /** Trend minus Paris, for the shaded wedge. */
   gap?: number;
+  /** Reported total for this year was AI-extracted. */
+  historyIsAIGenerated?: boolean;
+  /** History value for this year comes from the modelled estimate. */
+  historyIsEstimated?: boolean;
 };
+
+export function historyMarkerFlags(rows: TwoFuturesRow[]) {
+  return {
+    ai: rows.some((row) => row.historyIsAIGenerated),
+    estimated: rows.some((row) => row.historyIsEstimated),
+  };
+}
 
 export function buildTwoFuturesRows(
   data: DataPoint[],
@@ -23,17 +39,31 @@ export function buildTwoFuturesRows(
     return Math.max(max, point.year);
   }, 0);
 
+  const hasEstimateAfterLastReport = data.some(
+    (point) =>
+      point.year > lastReportedYear &&
+      point.year <= currentYear &&
+      point.approximated != null,
+  );
+
   return [...data]
     .sort((a, b) => a.year - b.year)
     .map((point) => {
       const isNowOrPast = point.year <= currentYear;
+      const isReported =
+        isNowOrPast && point.year <= lastReportedYear && point.total != null;
+      const isEstimated =
+        isNowOrPast &&
+        point.year > lastReportedYear &&
+        point.approximated != null;
 
-      let history: number | undefined;
-      if (isNowOrPast) {
-        if (point.year <= lastReportedYear) {
-          history = point.total ?? undefined;
-        } else {
-          history = point.approximated ?? undefined;
+      const history = isReported ? (point.total ?? undefined) : undefined;
+      let historyEstimated: number | undefined;
+      if (hasEstimateAfterLastReport) {
+        if (isEstimated) {
+          historyEstimated = point.approximated ?? undefined;
+        } else if (point.year === lastReportedYear && point.total != null) {
+          historyEstimated = point.total;
         }
       }
 
@@ -53,10 +83,13 @@ export function buildTwoFuturesRows(
       return {
         year: point.year,
         history,
+        historyEstimated,
         trend,
         paris,
         parisBase,
         gap,
+        historyIsAIGenerated: isReported && point.isAIGenerated === true,
+        historyIsEstimated: isEstimated,
       };
     });
 }

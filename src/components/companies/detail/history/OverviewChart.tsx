@@ -32,6 +32,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
 import { createTwoFuturesLegendItems } from "@/components/charts/twoFutures/createTwoFuturesLegendItems";
 import { getTodayReferenceLineProps } from "@/components/charts/twoFutures/getTodayReferenceLineProps";
+import { HistoryLines } from "@/components/charts/twoFutures/HistoryLines";
 import {
   FUTURE_LINE_DASH,
   TwoFuturesTooltip,
@@ -43,6 +44,7 @@ import {
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
+  historyMarkerFlags,
 } from "@/components/territories/emissionsGraph/twoFuturesChartData";
 import type { DataPoint } from "@/types/emissions";
 
@@ -95,6 +97,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
         trend: point.trend,
         approximated: point.approximated,
         carbonLaw: point.carbonLaw,
+        isAIGenerated: point.isAIGenerated,
       })),
     [mergedForProjection],
   );
@@ -115,9 +118,20 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const isFirstYear = companyBaseYear === filteredData[0]?.year;
   const hasFuturePaths = Boolean(approximatedData);
 
+  const markers = useMemo(
+    () => historyMarkerFlags(filteredRows),
+    [filteredRows],
+  );
+
   const legendItems = useMemo(
-    () => createTwoFuturesLegendItems(t, TRANSLATION_PREFIX, hasFuturePaths),
-    [t, hasFuturePaths],
+    () =>
+      createTwoFuturesLegendItems(
+        t,
+        TRANSLATION_PREFIX,
+        hasFuturePaths,
+        markers,
+      ),
+    [t, hasFuturePaths, markers],
   );
 
   const pathComparison = useMemo(() => {
@@ -130,6 +144,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   const tooltipLabels = useMemo(
     () => ({
       history: t(`${TRANSLATION_PREFIX}.pastPath`),
+      historyEstimated: t(`${TRANSLATION_PREFIX}.approximated`),
       trend: t(`${TRANSLATION_PREFIX}.trendPath`),
       paris: t(`${TRANSLATION_PREFIX}.parisPath`),
     }),
@@ -231,15 +246,10 @@ export const OverviewChart: FC<OverviewChartProps> = ({
               </>
             )}
 
-            <Line
-              type="monotone"
-              dataKey="history"
-              stroke="#ffffff"
-              strokeWidth={2.5}
-              dot={false}
-              connectNulls={false}
-              isAnimationActive={false}
-              name={tooltipLabels.history}
+            <HistoryLines
+              historyName={tooltipLabels.history}
+              estimatedName={tooltipLabels.historyEstimated}
+              showEstimated={markers.estimated}
             />
 
             {hasFuturePaths && (

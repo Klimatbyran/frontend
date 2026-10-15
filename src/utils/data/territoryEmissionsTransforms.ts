@@ -42,9 +42,10 @@ export function transformTerritoryEmissionsData(
   return Array.from(years)
     .sort((a, b) => a - b)
     .map((yearNum) => {
-      const historical = territory.emissions.find(
+      const historicalPoint = territory.emissions.find(
         (d) => d?.year === yearNum,
-      )?.value;
+      );
+      const historical = historicalPoint?.value;
       const approximated = territory.approximatedHistoricalEmission.find(
         (d) => d?.year === yearNum,
       )?.value;
@@ -67,6 +68,7 @@ export function transformTerritoryEmissionsData(
         trend: toTonnes(trend),
         approximated: toTonnes(approximated),
         carbonLaw: toTonnes(carbonLaw),
+        isAIGenerated: historicalPoint?.isAIGenerated,
       };
     })
     .filter(

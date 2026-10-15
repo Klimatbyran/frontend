@@ -32,9 +32,10 @@ export function transformEmissionsData(
     .sort()
     .map((year) => {
       const yearNum = parseInt(year, 10);
-      const historical = municipality.emissions.find(
+      const historicalPoint = municipality.emissions.find(
         (d) => d?.year === year,
-      )?.value;
+      );
+      const historical = historicalPoint?.value;
       const approximated = municipality.approximatedHistoricalEmission.find(
         (d) => d?.year === year,
       )?.value;
@@ -57,6 +58,7 @@ export function transformEmissionsData(
         trend,
         approximated: approximated,
         carbonLaw,
+        isAIGenerated: historicalPoint?.isAIGenerated,
       };
     })
     .filter((d) => d.year >= 1990 && d.year <= 2050);

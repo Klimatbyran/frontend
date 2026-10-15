@@ -25,10 +25,12 @@ import { useLanguage } from "@/components/LanguageProvider";
 import {
   buildTwoFuturesRows,
   compareFuturePathTotals,
+  historyMarkerFlags,
 } from "@/components/territories/emissionsGraph/twoFuturesChartData";
 import { FutureTotalsCaption } from "@/components/charts/twoFutures/FutureTotalsCaption";
 import { createTwoFuturesLegendItems } from "@/components/charts/twoFutures/createTwoFuturesLegendItems";
 import { getTodayReferenceLineProps } from "@/components/charts/twoFutures/getTodayReferenceLineProps";
+import { HistoryLines } from "@/components/charts/twoFutures/HistoryLines";
 import {
   FUTURE_LINE_DASH,
   TwoFuturesTooltip,
@@ -60,9 +62,14 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
     [rows, chartEndYear],
   );
 
+  const markers = useMemo(
+    () => historyMarkerFlags(filteredRows),
+    [filteredRows],
+  );
+
   const legendItems = useMemo(
-    () => createTwoFuturesLegendItems(t, "detailPage.graph"),
-    [t],
+    () => createTwoFuturesLegendItems(t, "detailPage.graph", true, markers),
+    [t, markers],
   );
 
   const pathComparison = useMemo(
@@ -73,6 +80,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
   const tooltipLabels = useMemo(
     () => ({
       history: t("detailPage.graph.pastPath"),
+      historyEstimated: t("detailPage.graph.estimated"),
       trend: t("detailPage.graph.trendPath"),
       paris: t("detailPage.graph.parisPath"),
     }),
@@ -130,15 +138,10 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
               legendType="none"
             />
 
-            <Line
-              type="monotone"
-              dataKey="history"
-              stroke="#ffffff"
-              strokeWidth={2.5}
-              dot={false}
-              connectNulls={false}
-              isAnimationActive={false}
-              name={tooltipLabels.history}
+            <HistoryLines
+              historyName={tooltipLabels.history}
+              estimatedName={tooltipLabels.historyEstimated}
+              showEstimated={markers.estimated}
             />
             <Line
               type="monotone"

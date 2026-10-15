@@ -37,9 +37,72 @@ describe("buildTwoFuturesRows", () => {
     const rows = buildTwoFuturesRows(data, currentYear);
     expect(rows[0].history).toBe(100);
     expect(rows[0].trend).toBeUndefined();
-    expect(rows[1].history).toBe(80); // after last reported year → approximated
+    expect(rows[0].historyEstimated).toBe(100);
+    expect(rows[1].history).toBeUndefined();
+    expect(rows[1].historyEstimated).toBe(80);
+    expect(rows[1].historyIsEstimated).toBe(true);
     expect(rows[1].trend).toBe(80);
     expect(rows[2].gap).toBe(20);
+  });
+
+  it("marks AI-extracted reported years and leaves verified years unmarked", () => {
+    const data: DataPoint[] = [
+      {
+        year: 2022,
+        total: 110,
+        isAIGenerated: true,
+        trend: undefined,
+        approximated: undefined,
+        carbonLaw: undefined,
+      },
+      {
+        year: 2024,
+        total: 100,
+        isAIGenerated: false,
+        trend: undefined,
+        approximated: undefined,
+        carbonLaw: undefined,
+      },
+      {
+        year: currentYear,
+        total: undefined,
+        approximated: 80,
+        trend: 80,
+        carbonLaw: 60,
+        isAIGenerated: true,
+      },
+    ];
+
+    const rows = buildTwoFuturesRows(data, currentYear);
+    expect(rows[0].historyIsAIGenerated).toBe(true);
+    expect(rows[0].historyIsEstimated).toBe(false);
+    expect(rows[1].historyIsAIGenerated).toBe(false);
+    expect(rows[2].historyIsAIGenerated).toBe(false);
+    expect(rows[2].historyIsEstimated).toBe(true);
+    expect(rows[2].history).toBeUndefined();
+  });
+
+  it("does not draw an estimated segment when every past year is reported", () => {
+    const data: DataPoint[] = [
+      {
+        year: 2020,
+        total: 100,
+        trend: undefined,
+        approximated: 100,
+        carbonLaw: undefined,
+      },
+      {
+        year: 2021,
+        total: 90,
+        trend: undefined,
+        approximated: 90,
+        carbonLaw: undefined,
+      },
+    ];
+
+    const rows = buildTwoFuturesRows(data, currentYear);
+    expect(rows.every((row) => row.historyEstimated == null)).toBe(true);
+    expect(rows.every((row) => !row.historyIsEstimated)).toBe(true);
   });
 });
 

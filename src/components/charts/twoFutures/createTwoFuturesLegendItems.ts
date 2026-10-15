@@ -1,9 +1,21 @@
 import type { LegendItem } from "@/types/charts";
 
+export type TwoFuturesLegendMarkers = {
+  ai?: boolean;
+  estimated?: boolean;
+};
+
+function estimatedLabelKey(translationPrefix: string) {
+  return translationPrefix.startsWith("detailPage")
+    ? `${translationPrefix}.estimated`
+    : `${translationPrefix}.approximated`;
+}
+
 export function createTwoFuturesLegendItems(
   t: (key: string) => string,
   translationPrefix: string,
   includeFuturePaths = true,
+  markers: TwoFuturesLegendMarkers = {},
 ): LegendItem[] {
   const items: LegendItem[] = [
     {
@@ -14,6 +26,27 @@ export function createTwoFuturesLegendItems(
       isDashed: false,
     },
   ];
+
+  if (markers.ai) {
+    items.push({
+      name: t(`${translationPrefix}.aiGenerated`),
+      color: "var(--grey)",
+      isClickable: false,
+      isHidden: false,
+      isDashed: false,
+      marker: "ai",
+    });
+  }
+
+  if (markers.estimated) {
+    items.push({
+      name: t(estimatedLabelKey(translationPrefix)),
+      color: "#ffffff",
+      isClickable: false,
+      isHidden: false,
+      isDashed: true,
+    });
+  }
 
   if (!includeFuturePaths) return items;
 

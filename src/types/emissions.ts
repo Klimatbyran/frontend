@@ -44,4 +44,6 @@ export type DataPoint = {
   trend: number | undefined;
   approximated: number | undefined;
   carbonLaw: number | undefined;
+  /** Reported total was extracted by AI rather than manually verified. */
+  isAIGenerated?: boolean;
 };

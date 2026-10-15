@@ -6,6 +6,8 @@ export interface LegendItem {
   isHidden?: boolean;
   isClickable?: boolean;
   isDashed?: boolean;
+  /** Replaces the color swatch. `ai` is the AI-extracted mark. */
+  marker?: "ai";
   metadata?: {
     value?: number;
     percentage?: number;
