@@ -8,7 +8,6 @@ import type {
   PageCompanyOverviewItem,
   PageCompanyScope3,
   PageCompanyTurnoverHistory,
-  PageExploreCompaniesQuery,
   PageExploreCompany,
   PageListResponse,
   PageSitemap,
@@ -91,22 +90,10 @@ export async function getPageCompaniesOverviewSummary(
   );
 }
 
-export async function getPageExploreCompanies(
-  query?: PageExploreCompaniesQuery,
-): Promise<PageListResponse<PageExploreCompany>> {
-  return fetchPageJson(
-    `/pages/explore/companies${toQuery({
-      q: query?.q,
-      sortBy: query?.sortBy,
-      sortDir: query?.sortDir,
-      meetsParis: query?.meetsParis,
-      sectors: query?.sectors,
-      industryGroups: query?.industryGroups,
-      countries: query?.countries,
-      page: query?.page,
-      pageSize: query?.pageSize,
-    })}`,
-  );
+export async function getPageExploreCompanies(): Promise<
+  PageListResponse<PageExploreCompany>
+> {
+  return fetchPageJson("/pages/explore/companies");
 }
 
 export async function getPageSitemap(): Promise<PageSitemap> {

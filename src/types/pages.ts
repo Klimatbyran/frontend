@@ -215,20 +215,3 @@ export type PageCompaniesOverviewQuery = {
   page?: number;
   pageSize?: number;
 };
-
-export type PageExploreCompaniesQuery = {
-  q?: string;
-  sortBy?:
-    | "name"
-    | "total_emissions"
-    | "emissions_reduction"
-    | "meets_paris"
-    | "scope3_coverage";
-  sortDir?: "asc" | "desc";
-  meetsParis?: "yes" | "no" | "unknown";
-  sectors?: string;
-  industryGroups?: string;
-  countries?: string;
-  page?: number;
-  pageSize?: number;
-};
