@@ -1,76 +1,73 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCompanyFilters } from "@/hooks/companies/useCompanyFilters";
 import { useSortOptions } from "@/hooks/companies/useCompanySorting";
 import {
-  usePageExploreCompaniesList,
-  type ExploreListSortBy,
+  PAGE_EXPLORE_COMPANIES_PAGE_SIZE,
+  usePageExploreCompanies,
 } from "@/hooks/pages/usePageExploreCompanies";
 
-const SEARCH_DEBOUNCE_MS = 300;
-
-function toApiSortDir(
-  direction: "none" | "asc" | "desc",
-  sortBy: string,
-  sortOptions: ReturnType<typeof useSortOptions>,
-): "asc" | "desc" {
-  if (direction === "asc" || direction === "desc") return direction;
-  return (
-    sortOptions.find((option) => option.value === sortBy)?.defaultDirection ??
-    "desc"
-  );
+function exploreWindowKey(filters: {
+  searchQuery: string;
+  sortBy: string;
+  sortDirection: string;
+  meetsParisFilter: string;
+  sectors: string[];
+  industryGroups: string[];
+  selectedCountries: string[];
+}) {
+  return [
+    filters.searchQuery,
+    filters.sortBy,
+    filters.sortDirection,
+    filters.meetsParisFilter,
+    filters.sectors.join(","),
+    filters.industryGroups.join(","),
+    filters.selectedCountries.join(","),
+  ].join("\0");
 }
 
-/** Explore companies list, including the URL filters that shape the request. */
+/** Full explore list, filtered locally, shown in pages of 12. */
 export function useExploreCompaniesData(enabled = true) {
-  const companyFilters = useCompanyFilters([], {
+  const list = usePageExploreCompanies(enabled);
+  const companyFilters = useCompanyFilters(list.companies, {
     includeSectorFilter: false,
     includeIndustryGroupFilter: true,
-    serverSide: true,
   });
   const sortOptions = useSortOptions();
-  const [debouncedQuery, setDebouncedQuery] = useState(() =>
-    companyFilters.searchQuery.trim(),
-  );
-
-  useEffect(() => {
-    const trimmed = companyFilters.searchQuery.trim();
-    if (trimmed === debouncedQuery) return;
-
-    const handle = window.setTimeout(() => {
-      setDebouncedQuery(trimmed);
-    }, SEARCH_DEBOUNCE_MS);
-    return () => window.clearTimeout(handle);
-  }, [companyFilters.searchQuery, debouncedQuery]);
-
-  const industryGroups = companyFilters.industryGroups.includes("all")
-    ? undefined
-    : companyFilters.industryGroups.join(",");
-  const countries =
-    companyFilters.selectedCountries.length > 0
-      ? companyFilters.selectedCountries.join(",")
-      : undefined;
-  const meetsParis =
-    companyFilters.meetsParisFilter === "all"
-      ? undefined
-      : companyFilters.meetsParisFilter;
-
-  const list = usePageExploreCompaniesList({
-    q: debouncedQuery,
-    sortBy: companyFilters.sortBy as ExploreListSortBy,
-    sortDir: toApiSortDir(
-      companyFilters.sortDirection,
-      companyFilters.sortBy,
-      sortOptions,
-    ),
-    meetsParis,
-    industryGroups,
-    countries,
-    enabled,
+  const windowKey = exploreWindowKey(companyFilters);
+  const [windowState, setWindowState] = useState({
+    key: windowKey,
+    count: PAGE_EXPLORE_COMPANIES_PAGE_SIZE,
   });
+
+  if (windowState.key !== windowKey) {
+    setWindowState({
+      key: windowKey,
+      count: PAGE_EXPLORE_COMPANIES_PAGE_SIZE,
+    });
+  }
+
+  const visibleCount =
+    windowState.key === windowKey
+      ? windowState.count
+      : PAGE_EXPLORE_COMPANIES_PAGE_SIZE;
+  const filtered = companyFilters.filteredCompanies;
 
   return {
     companyFilters,
     sortOptions,
-    ...list,
+    companies: filtered.slice(0, visibleCount),
+    total: filtered.length,
+    loading: list.loading,
+    refreshing: list.refreshing,
+    fetchingMore: false,
+    hasMore: visibleCount < filtered.length,
+    loadMore: () => {
+      setWindowState({
+        key: windowKey,
+        count: visibleCount + PAGE_EXPLORE_COMPANIES_PAGE_SIZE,
+      });
+    },
+    error: list.error,
   };
 }

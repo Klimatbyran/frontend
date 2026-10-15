@@ -114,6 +114,22 @@ describe("filterAndSortCompanies", () => {
     expect(run(companies, { industryGroups: ["3020"] })).toEqual(["Kroger"]);
   });
 
+  it("sorts missing total emissions last, and keeps a reported zero", () => {
+    const ranked = [
+      company("No data"),
+      company("Zero", { emissions: 0 }),
+      company("Small", { emissions: 1 }),
+      company("Large", { emissions: 40 }),
+    ];
+
+    expect(
+      run(ranked, { sortBy: "total_emissions", sortDirection: "desc" }),
+    ).toEqual(["Large", "Small", "Zero", "No data"]);
+    expect(
+      run(ranked, { sortBy: "total_emissions", sortDirection: "asc" }),
+    ).toEqual(["Zero", "Small", "Large", "No data"]);
+  });
+
   it("sorts total emissions from high to low", () => {
     expect(
       run(companies, { sortBy: "total_emissions", sortDirection: "desc" }),

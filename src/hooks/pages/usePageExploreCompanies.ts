@@ -1,71 +1,27 @@
+import { useQuery } from "@tanstack/react-query";
 import { getPageExploreCompanies } from "@/lib/pagesApi";
-import type {
-  PageExploreCompaniesQuery,
-  PageExploreCompany,
-} from "@/types/pages";
-import { PAGES_LIST_PAGE_SIZE } from "./constants";
-import { usePagesInfiniteList } from "./usePagesInfiniteList";
+import { PAGES_LIST_PAGE_SIZE, PAGES_QUERY_STALE_TIME } from "./constants";
 
-/** Matches API explore default page size and the list "show more" step. */
+/** Client-side "show more" step. The API returns the full Swedish list. */
 export const PAGE_EXPLORE_COMPANIES_PAGE_SIZE = PAGES_LIST_PAGE_SIZE;
 
-export type ExploreListSortBy = NonNullable<
-  PageExploreCompaniesQuery["sortBy"]
->;
-
-export function usePageExploreCompaniesList(options?: {
-  q?: string;
-  sortBy?: ExploreListSortBy;
-  sortDir?: "asc" | "desc";
-  meetsParis?: "yes" | "no" | "unknown";
-  sectors?: string;
-  industryGroups?: string;
-  countries?: string;
-  enabled?: boolean;
-}) {
-  const q = options?.q?.trim() || undefined;
-  const sortBy = options?.sortBy ?? "total_emissions";
-  const sortDir = options?.sortDir ?? "desc";
-  const meetsParis = options?.meetsParis;
-  const sectors = options?.sectors || undefined;
-  const industryGroups = options?.industryGroups || undefined;
-  const countries = options?.countries || undefined;
-
-  const list = usePagesInfiniteList<PageExploreCompany>({
-    queryKey: [
-      "pages",
-      "explore-companies",
-      q ?? "",
-      sortBy,
-      sortDir,
-      meetsParis ?? "",
-      sectors ?? "",
-      industryGroups ?? "",
-      countries ?? "",
-    ],
-    queryFn: (page) =>
-      getPageExploreCompanies({
-        q,
-        sortBy,
-        sortDir,
-        meetsParis,
-        industryGroups,
-        countries,
-        sectors,
-        page,
-        pageSize: PAGES_LIST_PAGE_SIZE,
-      }),
-    enabled: options?.enabled ?? true,
+/**
+ * One fetch of every Swedish explore card. Filter and sort that array locally;
+ * the list is a few hundred companies, and each filter used to repeat the
+ * full-list read on the server.
+ */
+export function usePageExploreCompanies(enabled = true) {
+  const query = useQuery({
+    queryKey: ["pages", "explore-companies"],
+    queryFn: () => getPageExploreCompanies(),
+    enabled,
+    staleTime: PAGES_QUERY_STALE_TIME,
   });
 
   return {
-    companies: list.items,
-    total: list.total,
-    loading: list.loading,
-    refreshing: list.refreshing,
-    fetchingMore: list.fetchingMore,
-    hasMore: list.hasMore,
-    loadMore: list.loadMore,
-    error: list.error,
+    companies: query.data?.items ?? [],
+    loading: query.isLoading,
+    refreshing: query.isFetching && !query.isLoading,
+    error: query.error,
   };
 }

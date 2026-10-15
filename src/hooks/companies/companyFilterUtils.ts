@@ -129,11 +129,11 @@ function compareTotalEmissions(
   b: PageExploreCompany,
   sortDirection: SortDirection,
 ): number {
-  const aEmissions = a.latestTotalEmissions || 0;
-  const bEmissions = b.latestTotalEmissions || 0;
-  return sortDirection === "asc"
-    ? aEmissions - bEmissions
-    : bEmissions - aEmissions;
+  return compareNullableNumbers(
+    a.latestTotalEmissions,
+    b.latestTotalEmissions,
+    sortDirection,
+  );
 }
 
 function compareScope3Coverage(
