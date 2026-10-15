@@ -38,7 +38,7 @@ function ChipFilterSkeleton() {
 /** Mid-sized dots and a full block, matching a typical unfiltered selection. */
 const DOT_COUNT = 48;
 
-function AnswerCardSkeleton() {
+export function ParisAnswerCardSkeleton() {
   return (
     <section className="grid items-center gap-9 rounded-level-2 bg-black-2 px-6 py-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.85fr)] md:gap-14 md:px-10 md:py-9">
       <div>
@@ -96,6 +96,45 @@ function VerdictListSkeleton() {
         ))}
       </div>
     </div>
+  );
+}
+
+export function VerdictListsSkeleton() {
+  return (
+    <div
+      className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2"
+      aria-hidden="true"
+    >
+      <VerdictListSkeleton />
+      <VerdictListSkeleton />
+    </div>
+  );
+}
+
+export function ReportingCoverageSkeleton() {
+  return (
+    <section
+      className="rounded-level-2 bg-black-2 p-6 md:p-7"
+      aria-hidden="true"
+    >
+      <Block className="h-6 w-72 md:h-7" />
+      <div className="mt-2 space-y-2">
+        <Block className="h-4 w-full" />
+        <Block className="h-4 w-full" />
+        <Block className="h-4 w-2/3" />
+      </div>
+      <Block className="mt-6 h-4 w-full rounded-full" />
+      <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <Block className="h-9 w-16" />
+          <Block className="mt-2 h-4 w-44" />
+        </div>
+        <div>
+          <Block className="h-9 w-16" />
+          <Block className="mt-2 h-4 w-40" />
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -197,35 +236,14 @@ export function CompaniesOverviewSkeleton() {
           <div className="space-y-5 md:space-y-7">
             <HeaderSkeleton />
             <ChipFilterSkeleton />
-            <AnswerCardSkeleton />
+            <ParisAnswerCardSkeleton />
           </div>
 
-          <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-2">
-            <VerdictListSkeleton />
-            <VerdictListSkeleton />
-          </div>
+          <VerdictListsSkeleton />
 
           <IndustryPieSkeleton />
 
-          <section className="rounded-level-2 bg-black-2 p-6 md:p-7">
-            <Block className="h-6 w-72 md:h-7" />
-            <div className="mt-2 space-y-2">
-              <Block className="h-4 w-full" />
-              <Block className="h-4 w-full" />
-              <Block className="h-4 w-2/3" />
-            </div>
-            <Block className="mt-6 h-4 w-full rounded-full" />
-            <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <Block className="h-9 w-16" />
-                <Block className="mt-2 h-4 w-44" />
-              </div>
-              <div>
-                <Block className="h-9 w-16" />
-                <Block className="mt-2 h-4 w-40" />
-              </div>
-            </div>
-          </section>
+          <ReportingCoverageSkeleton />
 
           <CompaniesTableSkeleton />
         </OverviewPageRoot>

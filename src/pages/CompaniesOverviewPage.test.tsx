@@ -10,6 +10,7 @@ const HEALTHCARE_SECTOR = "35";
 const {
   mockCompanies,
   buildSummary,
+  summaryState,
   capturedLists,
   capturedPieSectors,
   capturedPieSelected,
@@ -94,9 +95,15 @@ const {
     };
   }
 
+  const summaryState = {
+    loading: false,
+    error: null as Error | null,
+  };
+
   return {
     mockCompanies: companies,
     buildSummary: summaryFor,
+    summaryState,
     capturedLists: [] as string[][],
     capturedPieSectors: [] as string[][],
     capturedPieSelected: [] as Array<string | null>,
@@ -105,9 +112,12 @@ const {
 
 vi.mock("@/hooks/pages/usePageCompaniesOverview", () => ({
   usePageCompaniesOverviewSummary: (options?: { sector?: string | null }) => ({
-    summary: buildSummary(options?.sector ?? null),
-    loading: false,
-    error: null,
+    summary:
+      summaryState.loading || summaryState.error
+        ? undefined
+        : buildSummary(options?.sector ?? null),
+    loading: summaryState.loading,
+    error: summaryState.error,
   }),
   usePageCompaniesOverviewChrome: () => ({
     summary: buildSummary(null),
@@ -194,6 +204,8 @@ describe("CompaniesOverviewPage", () => {
     capturedLists.length = 0;
     capturedPieSectors.length = 0;
     capturedPieSelected.length = 0;
+    summaryState.loading = false;
+    summaryState.error = null;
   });
 
   it("loads page companies into the table and full industry pie", async () => {
@@ -224,6 +236,34 @@ describe("CompaniesOverviewPage", () => {
     });
 
     expect(capturedLists.at(-1)).toEqual(["Duni AB", "Materials Two"]);
+    expect(capturedPieSelected.at(-1)).toBe(MATERIALS_SECTOR);
+  });
+
+  it("keeps the selected sector chip without painting another sector's paris stats", async () => {
+    summaryState.loading = true;
+    renderPage(`/companies?sector=${MATERIALS_SECTOR}`);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("companiesOverviewPage.paris.allIndustries"),
+      ).toBeInTheDocument();
+    });
+
+    expect(screen.getByRole("button", { name: /Materials/ })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(
+      screen.queryByText("companiesOverviewPage.paris.kicker"),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("companiesOverviewPage.errorTitle"),
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId("companies-table")).toHaveAttribute(
+      "data-sector",
+      MATERIALS_SECTOR,
+    );
     expect(capturedPieSelected.at(-1)).toBe(MATERIALS_SECTOR);
   });
 });
