@@ -59,19 +59,17 @@ const projectedData: DataPoint[] = [
 ];
 
 describe("territory OverviewChart", () => {
-  it("labels AI-extracted history and the modelled tail", () => {
+  it("keeps AI marks out of the graph and labels the modelled tail", () => {
     const { container } = render(
       <OverviewChart projectedData={projectedData} />,
     );
 
-    expect(
-      screen.getByText("detailPage.graph.aiGenerated"),
-    ).toBeInTheDocument();
+    expect(screen.queryByText("detailPage.graph.aiGenerated")).toBeNull();
     expect(screen.getByText("detailPage.graph.estimated")).toBeInTheDocument();
     expect(
       [...container.querySelectorAll("svg")].some((node) =>
         node.innerHTML.includes(">AI<"),
       ),
-    ).toBe(true);
+    ).toBe(false);
   });
 });

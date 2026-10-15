@@ -25,7 +25,6 @@ export type TwoFuturesRow = {
 
 export function historyMarkerFlags(rows: TwoFuturesRow[]) {
   return {
-    ai: rows.some((row) => row.historyIsAIGenerated),
     estimated: rows.some((row) => row.historyIsEstimated),
   };
 }

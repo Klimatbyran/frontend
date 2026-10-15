@@ -1,7 +1,6 @@
 import type { LegendItem } from "@/types/charts";
 
 export type TwoFuturesLegendMarkers = {
-  ai?: boolean;
   estimated?: boolean;
 };
 
@@ -26,17 +25,6 @@ export function createTwoFuturesLegendItems(
       isDashed: false,
     },
   ];
-
-  if (markers.ai) {
-    items.push({
-      name: t(`${translationPrefix}.aiGenerated`),
-      color: "var(--grey)",
-      isClickable: false,
-      isHidden: false,
-      isDashed: false,
-      marker: "ai",
-    });
-  }
 
   if (markers.estimated) {
     items.push({
