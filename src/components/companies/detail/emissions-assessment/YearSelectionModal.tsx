@@ -7,7 +7,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Text } from "@/components/ui/text";
-import type { ReportingPeriod } from "@/types/company";
 
 interface YearSelectionModalProps {
   isOpen: boolean;
@@ -15,7 +14,7 @@ interface YearSelectionModalProps {
   selectedYears: string[];
   onYearSelection: (year: string) => void;
   onAssess: () => void;
-  sortedPeriods: ReportingPeriod[];
+  sortedPeriods: Array<{ startDate: string; endDate: string }>;
   assessmentError: string | null;
 }
 

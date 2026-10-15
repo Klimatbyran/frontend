@@ -389,6 +389,9 @@
       "badgeOffTrack": "Off track",
       "badgeNoData": "No data",
       "noComparableData": "Not enough data",
+      "tableLoading": "Loading companies…",
+      "tableError": "Could not load the company list. Try again later.",
+      "tableEmpty": "No companies match this search.",
       "showMoreRows": "Show {{count}} more",
       "showingCount": "Showing {{shown}} of {{total}} companies in view"
     },
@@ -2252,6 +2255,9 @@
       "variantMismatchMessage": "You can only compare municipalities, regions, or companies of the same type. Clear your selection to start over.",
       "notEnoughSelected": "Select more entities to compare",
       "notEnoughSelectedDescription": "Choose at least {{min}} entities to open the comparison view.",
+      "loadErrorTitle": "Could not load comparison",
+      "loadErrorDescription": "One or more selected entities could not be loaded. Try again or go back and change your selection.",
+      "pickerLoadError": "Could not load selected entities. Try again or remove an item from your selection.",
       "addEntity": {
         "default": "Add entities",
         "company": "Add company",
@@ -2376,6 +2382,8 @@
       "searchPlaceholder": "Search companies (separate w/ commas)",
       "noCompaniesFound": "No companies found",
       "tryDifferentCriteria": "Try adjusting your search criteria.",
+      "showMoreRows": "Show {{count}} more",
+      "showingCount": "Showing {{shown}} of {{total}} companies",
       "sorting": "Sorting:",
       "filtering": "Filter:",
       "allSectors": "All sectors",

@@ -23,14 +23,6 @@ export interface ChartData {
   [key: string]: any;
 }
 
-import type { CompanyDetails } from "@/types/company";
-
-export interface EmissionsHistoryProps {
-  company: CompanyDetails;
-  onYearSelect?: (year: string) => void;
-  className?: string;
-}
-
 export type SectorEmissionsByYear = {
   [year: string]: {
     [sector: string]: number;

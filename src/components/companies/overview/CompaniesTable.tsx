@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import {
@@ -19,10 +19,15 @@ import {
 import { sectorColors } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
-import { getSearchTerms } from "@/hooks/explore/exploreFilterUtils";
-import { latestEmissions } from "@/hooks/companies/parisOverviewUtils";
-import { buildSearchRegex } from "@/utils/data/search";
-import type { CompanyWithKPIs } from "@/types/company";
+import {
+  latestEmissions,
+  overviewSectorCode,
+} from "@/hooks/companies/parisOverviewUtils";
+import {
+  PAGE_OVERVIEW_PAGE_SIZE,
+  usePageCompaniesOverviewList,
+  type OverviewListSortBy,
+} from "@/hooks/pages/usePageCompaniesOverview";
 import { cn } from "@/lib/utils";
 
 type SortKey = "name" | "industry" | "emissions" | "change" | "paris";
@@ -43,7 +48,20 @@ const METRIC_LABEL: Record<MetricColumn, string> = {
   paris: "companiesOverviewPage.paris.colOnTrack",
 };
 
-const PAGE_SIZE = 12;
+/** Default direction per column the first time it is selected. */
+const DEFAULT_DIRECTION: Record<SortKey, "asc" | "desc"> = {
+  name: "asc",
+  industry: "asc",
+  emissions: "desc",
+  change: "asc",
+  paris: "desc",
+};
+
+const SEARCH_DEBOUNCE_MS = 300;
+
+function toApiSortBy(sortKey: SortKey): OverviewListSortBy {
+  return sortKey === "industry" ? "sector" : sortKey;
+}
 
 /** On small screens one metric sits beside the name. The rest return at md. */
 function metricColumnClass(
@@ -55,83 +73,6 @@ function metricColumnClass(
     column === selected ? "table-cell w-[8.5rem]" : "hidden md:table-cell",
     desktopWidth,
   );
-}
-
-/** Default direction per column the first time it is selected. */
-const DEFAULT_DIRECTION: Record<SortKey, "asc" | "desc"> = {
-  name: "asc",
-  industry: "asc",
-  emissions: "desc",
-  change: "asc",
-  paris: "desc",
-};
-
-function sectorCode(company: CompanyWithKPIs): SectorCode | undefined {
-  return company.industry?.industryGics?.sectorCode as SectorCode | undefined;
-}
-
-function parisScore(company: CompanyWithKPIs): number {
-  if (company.meetsParis === true) return 1;
-  if (company.meetsParis === false) return 0;
-  return -1;
-}
-
-function compareNullableNumber(
-  a: number | null | undefined,
-  b: number | null | undefined,
-  factor: number,
-): number {
-  const missingA = a == null;
-  const missingB = b == null;
-  if (missingA && missingB) return 0;
-  if (missingA) return 1;
-  if (missingB) return -1;
-  return factor * (a - b);
-}
-
-function compareStringsEmptyLast(
-  a: string,
-  b: string,
-  factor: number,
-  locale: string,
-): number {
-  if (!a && !b) return 0;
-  if (!a) return 1;
-  if (!b) return -1;
-  return factor * a.localeCompare(b, locale);
-}
-
-function compareCompanies(
-  a: CompanyWithKPIs,
-  b: CompanyWithKPIs,
-  sortKey: SortKey,
-  factor: number,
-  locale: string,
-  sectorNames: Record<string, string>,
-): number {
-  switch (sortKey) {
-    case "name":
-      return factor * a.name.localeCompare(b.name, locale);
-    case "industry": {
-      const labelA = sectorCode(a) ? (sectorNames[sectorCode(a)!] ?? "") : "";
-      const labelB = sectorCode(b) ? (sectorNames[sectorCode(b)!] ?? "") : "";
-      return compareStringsEmptyLast(labelA, labelB, factor, locale);
-    }
-    case "emissions":
-      return compareNullableNumber(
-        latestEmissions(a),
-        latestEmissions(b),
-        factor,
-      );
-    case "change":
-      return compareNullableNumber(
-        a.emissionsChangeFromBaseYear,
-        b.emissionsChangeFromBaseYear,
-        factor,
-      );
-    case "paris":
-      return factor * (parisScore(a) - parisScore(b));
-  }
 }
 
 function ParisBadge({ value }: { value: boolean | null | undefined }) {
@@ -211,60 +152,49 @@ function SortableColumnHead({
 }
 
 export interface CompaniesTableProps {
-  companies: CompanyWithKPIs[];
+  sector: SectorCode | null;
+  /** When false, skip list fetches (e.g. while a URL sector is still validating). */
+  enabled?: boolean;
 }
 
-/** The overview's own list: one row per company with the two figures the page
- * is about, rather than the card grid used on Explore. */
-export function CompaniesTable({ companies }: CompaniesTableProps) {
+/** Server-paged overview table: sort/search/show-more hit `/pages/companies-overview`. */
+export function CompaniesTable({
+  sector,
+  enabled = true,
+}: CompaniesTableProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const sectorNames = useSectorNames();
 
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("paris");
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
-  const [limit, setLimit] = useState(PAGE_SIZE);
   const [mobileColumn, setMobileColumn] = useState<MetricColumn>("paris");
 
-  const { sorted, rankById } = useMemo(() => {
-    const patterns = getSearchTerms(query).map((term) =>
-      buildSearchRegex(term, currentLanguage, true),
-    );
-    const filtered = patterns.length
-      ? companies.filter((company) => {
-          const sector = sectorCode(company);
-          const sectorName = sector ? (sectorNames[sector] ?? "") : "";
-          return patterns.some(
-            (pattern) => pattern.test(company.name) || pattern.test(sectorName),
-          );
-        })
-      : companies;
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      setDebouncedQuery(query.trim());
+    }, SEARCH_DEBOUNCE_MS);
+    return () => window.clearTimeout(handle);
+  }, [query]);
 
-    const compare =
-      (factor: number) => (a: CompanyWithKPIs, b: CompanyWithKPIs) =>
-        compareCompanies(a, b, sortKey, factor, currentLanguage, sectorNames);
-
-    const factor = direction === "asc" ? 1 : -1;
-    const sortedRows = [...filtered].sort(compare(factor));
-
-    // Rank is the company's place in this column's default direction, so
-    // reversing the sort keeps the number on the company.
-    const defaultFactor = DEFAULT_DIRECTION[sortKey] === "asc" ? 1 : -1;
-    const ranked =
-      direction === DEFAULT_DIRECTION[sortKey]
-        ? sortedRows
-        : [...filtered].sort(compare(defaultFactor));
-
-    return {
-      sorted: sortedRows,
-      rankById: new Map(
-        ranked.map((company, index) => [company.id, index + 1]),
-      ),
-    };
-  }, [companies, query, sortKey, direction, currentLanguage, sectorNames]);
-
-  const shown = sorted.slice(0, limit);
+  const {
+    companies,
+    total,
+    loading,
+    refreshing,
+    fetchingMore,
+    hasMore,
+    loadMore,
+    error,
+  } = usePageCompaniesOverviewList({
+    sector,
+    q: debouncedQuery,
+    sortBy: toApiSortBy(sortKey),
+    sortDir: direction,
+    enabled,
+  });
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -274,6 +204,9 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
       setDirection(DEFAULT_DIRECTION[key]);
     }
   };
+
+  const remaining = Math.max(total - companies.length, 0);
+  const showMoreCount = Math.min(PAGE_OVERVIEW_PAGE_SIZE, remaining);
 
   return (
     <section className="min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7">
@@ -291,10 +224,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
         <input
           type="search"
           value={query}
-          onChange={(event) => {
-            setQuery(event.target.value);
-            setLimit(PAGE_SIZE);
-          }}
+          onChange={(event) => setQuery(event.target.value)}
           placeholder={t("companiesOverviewPage.paris.searchPlaceholder")}
           className="h-10 w-full rounded-full bg-black-1 pl-9 pr-4 text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-1 focus:ring-blue-3/60"
         />
@@ -375,7 +305,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   metricColumnClass(
                     "change",
                     mobileColumn,
-                    "md:w-[6.5rem] lg:w-[9rem]",
+                    "md:w-[6.5rem] lg:w-[9.5rem]",
                   ),
                 )}
               >
@@ -401,13 +331,40 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {shown.map((company) => {
-              const sector = company.industry?.industryGics?.sectorCode as
-                | SectorCode
-                | undefined;
+            {loading && companies.length === 0 && (
+              <TableRow className="border-white/5 hover:bg-transparent">
+                <TableCell
+                  colSpan={6}
+                  className="py-10 text-center text-sm text-white/45"
+                >
+                  {t("companiesOverviewPage.paris.tableLoading")}
+                </TableCell>
+              </TableRow>
+            )}
+            {!loading && error && companies.length === 0 && (
+              <TableRow className="border-white/5 hover:bg-transparent">
+                <TableCell
+                  colSpan={6}
+                  className="py-10 text-center text-sm text-red-400"
+                >
+                  {t("companiesOverviewPage.paris.tableError")}
+                </TableCell>
+              </TableRow>
+            )}
+            {!loading && !error && companies.length === 0 && (
+              <TableRow className="border-white/5 hover:bg-transparent">
+                <TableCell
+                  colSpan={6}
+                  className="py-10 text-center text-sm text-white/45"
+                >
+                  {t("companiesOverviewPage.paris.tableEmpty")}
+                </TableCell>
+              </TableRow>
+            )}
+            {companies.map((company, index) => {
+              const sectorCodeValue = overviewSectorCode(company);
               const change = company.emissionsChangeFromBaseYear;
               const emissions = latestEmissions(company);
-
               const detailPath = getCompanyDetailPath(company);
 
               return (
@@ -416,7 +373,7 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                   className="border-white/5 hover:bg-white/5"
                 >
                   <TableCell className="py-3 text-right font-mono text-xs text-white/30">
-                    {rankById.get(company.id)}
+                    {index + 1}
                   </TableCell>
                   <TableCell className="max-w-0 overflow-hidden py-3">
                     <LocalizedLink
@@ -432,15 +389,15 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
                       metricColumnClass("industry", mobileColumn, "md:w-[18%]"),
                     )}
                   >
-                    {sector && (
+                    {sectorCodeValue && (
                       <span className="inline-flex items-center gap-2">
                         <i
                           className="size-2 rounded-full"
                           style={{
-                            backgroundColor: sectorColors[sector].base,
+                            backgroundColor: sectorColors[sectorCodeValue].base,
                           }}
                         />
-                        {sectorNames[sector]}
+                        {sectorNames[sectorCodeValue]}
                       </span>
                     )}
                   </TableCell>
@@ -512,21 +469,22 @@ export function CompaniesTable({ companies }: CompaniesTableProps) {
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
-        {limit < sorted.length && (
+        {hasMore && (
           <button
             type="button"
-            onClick={() => setLimit((value) => value + PAGE_SIZE)}
-            className="rounded-full bg-black-1 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10"
+            onClick={loadMore}
+            disabled={fetchingMore || loading || refreshing}
+            className="rounded-full bg-black-1 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 disabled:opacity-50"
           >
             {t("companiesOverviewPage.paris.showMoreRows", {
-              count: PAGE_SIZE,
+              count: showMoreCount,
             })}
           </button>
         )}
         <span className="text-xs text-grey">
           {t("companiesOverviewPage.paris.showingCount", {
-            shown: shown.length,
-            total: sorted.length,
+            shown: companies.length,
+            total,
           })}
         </span>
       </div>

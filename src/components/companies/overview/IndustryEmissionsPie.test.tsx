@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { IndustryEmissionsPie } from "./IndustryEmissionsPie";
-import type { IndustryBreakdownRow } from "@/hooks/companies/parisOverviewUtils";
+import type { PageIndustryBreakdown } from "@/types/pages";
 
 const chartProps = vi.fn();
 const legendProps = vi.fn();
@@ -40,16 +40,18 @@ vi.mock("@/hooks/companies/useCompanySectors", () => ({
   }),
 }));
 
-const rows: IndustryBreakdownRow[] = [
+const rows: PageIndustryBreakdown[] = [
   {
     code: "15",
     emissions: 1000,
     companyCount: 2,
+    onTrackShare: 50,
   },
   {
     code: "35",
     emissions: 500,
     companyCount: 2,
+    onTrackShare: 50,
   },
 ];
 

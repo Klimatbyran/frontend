@@ -46,3 +46,39 @@ export function getComparisonLoading(options: {
   if (loadRegions) return regionsLoading;
   return false;
 }
+
+function toError(value: unknown): Error {
+  if (value instanceof Error) {
+    return value;
+  }
+  return new Error(String(value));
+}
+
+export function getComparisonError(options: {
+  loadCompanies: boolean;
+  loadMunicipalities: boolean;
+  loadRegions: boolean;
+  companiesError: Error | null;
+  municipalitiesError: unknown;
+  regionsError: unknown;
+}): Error | null {
+  const {
+    loadCompanies,
+    loadMunicipalities,
+    loadRegions,
+    companiesError,
+    municipalitiesError,
+    regionsError,
+  } = options;
+
+  if (loadCompanies && companiesError) {
+    return companiesError;
+  }
+  if (loadMunicipalities && municipalitiesError) {
+    return toError(municipalitiesError);
+  }
+  if (loadRegions && regionsError) {
+    return toError(regionsError);
+  }
+  return null;
+}

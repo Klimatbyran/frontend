@@ -385,6 +385,9 @@
       "badgeOffTrack": "Inte på rätt väg",
       "badgeNoData": "Ingen data",
       "noComparableData": "För lite data",
+      "tableLoading": "Laddar företag…",
+      "tableError": "Kunde inte ladda listan. Försök igen senare.",
+      "tableEmpty": "Inga företag matchar sökningen.",
       "showMoreRows": "Visa {{count}} till",
       "showingCount": "Visar {{shown}} av {{total}} företag i vyn"
     },
@@ -2298,6 +2301,9 @@
       "variantMismatchMessage": "Du kan bara jämföra kommuner, län eller företag av samma typ. Rensa ditt val för att börja om.",
       "notEnoughSelected": "Välj fler enheter att jämföra",
       "notEnoughSelectedDescription": "Välj minst {{min}} enheter för att öppna jämförelsevyn.",
+      "loadErrorTitle": "Kunde inte ladda jämförelsen",
+      "loadErrorDescription": "En eller flera valda enheter kunde inte laddas. Försök igen eller gå tillbaka och ändra ditt val.",
+      "pickerLoadError": "Kunde inte ladda valda enheter. Försök igen eller ta bort ett val från listan.",
       "addEntity": {
         "default": "Lägg till enheter",
         "company": "Lägg till företag",
@@ -2422,6 +2428,8 @@
       "searchPlaceholder": "Sök företag (separera med komma)",
       "noCompaniesFound": "Inga företag hittades",
       "tryDifferentCriteria": "Försök med andra sökkriterier",
+      "showMoreRows": "Visa {{count}} till",
+      "showingCount": "Visar {{shown}} av {{total}} företag",
       "sorting": "Sorterar:",
       "filtering": "Filter:",
       "allSectors": "Alla sektorer",

@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
-import type { ReportingPeriod } from "@/types/company";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   formatEmissionsAbsolute,
@@ -19,7 +18,7 @@ import { CompanyOverviewTooltip } from "./CompanyOverviewTooltip";
 
 interface CompanyOverviewActionsProps {
   companyId: string;
-  sortedPeriods: ReportingPeriod[];
+  sortedPeriods: Array<{ startDate: string; endDate: string }>;
 }
 
 export function CompanyOverviewActions({

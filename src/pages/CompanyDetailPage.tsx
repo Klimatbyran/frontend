@@ -1,8 +1,13 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
-import { useCompanyDetails } from "@/hooks/companies/useCompanyDetails";
+import {
+  usePageCompanyHeader,
+  usePageCompanyHistories,
+  usePageCompanyOverview,
+  usePageCompanyScope3,
+} from "@/hooks/pages/usePageCompanyDetail";
 import { CompanyOverview } from "@/components/companies/detail/overview/CompanyOverview";
 import { CompanyOverviewNoData } from "@/components/companies/detail/overview/CompanyOverviewNoData";
 import { EmissionsHistory } from "@/components/companies/detail/history/EmissionsHistory";
@@ -11,156 +16,97 @@ import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/relatableNumbers";
-import type { CompanyDetails, ReportingPeriod } from "@/types/company";
 import { PageLoading } from "@/components/pageStates/Loading";
 import { PageError } from "@/components/pageStates/Error";
 import { PageNoData } from "@/components/pageStates/NoData";
-import { calculateEmissionsChange } from "@/utils/calculations/emissionsCalculations";
+import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { generateCompanySeoMeta } from "@/utils/seo/entitySeo";
+import {
+  getCompanySectorName,
+  industryGicsForSeo,
+} from "@/utils/data/industryGrouping";
 import { getSeoForRoute } from "@/seo/routes";
-import { yearFromIsoDate } from "@/utils/date";
-
-function sortPeriodsByDate(periods: ReportingPeriod[]): ReportingPeriod[] {
-  return [...periods].sort(
-    (a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime(),
-  );
-}
-
-function selectPeriod(
-  sortedPeriods: ReportingPeriod[],
-  selectedYear: string,
-): ReportingPeriod {
-  if (selectedYear === "latest") return sortedPeriods[0];
-  return (
-    sortedPeriods.find((p) => yearFromIsoDate(p.endDate) === selectedYear) ||
-    sortedPeriods[0]
-  );
-}
-
-function computeEmissionsChangeInfo(
-  selectedPeriod: ReportingPeriod,
-  previousPeriod?: ReportingPeriod,
-) {
-  const prevEmissions = previousPeriod?.emissions?.calculatedTotalEmissions;
-  const validEmissionsChangeNumber = prevEmissions
-    ? Math.abs(
-        selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions,
-      )
-    : null;
-  const emissionsChangeStatus =
-    selectedPeriod?.emissions?.calculatedTotalEmissions - prevEmissions > 0
-      ? "increased"
-      : "decreased";
-  const yearOverYearChange = calculateEmissionsChange(
-    selectedPeriod,
-    previousPeriod,
-  );
-  return {
-    validEmissionsChangeNumber,
-    emissionsChangeStatus,
-    yearOverYearChange,
-  };
-}
-
-function CompanyDetailContent({
-  company,
-  seoMeta,
-  selectedYear,
-  onYearSelect,
-  currentLanguage,
-}: {
-  company: CompanyDetails;
-  seoMeta: ReturnType<typeof generateCompanySeoMeta>;
-  selectedYear: string;
-  onYearSelect: (year: string) => void;
-  currentLanguage: string;
-}) {
-  const comparisonChip = (
-    <ComparisonDetailChip
-      linkTo={buildComparisonLinkTo("company", company.wikidataId)}
-      variant="company"
-      name={company.name}
-    />
-  );
-
-  if (!company.reportingPeriods?.length) {
-    return (
-      <>
-        <Seo meta={seoMeta} />
-        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
-          <CompanyOverviewNoData
-            company={company}
-            headerChip={comparisonChip}
-          />
-        </div>
-      </>
-    );
-  }
-
-  const sortedPeriods = sortPeriodsByDate(company.reportingPeriods);
-  const selectedPeriod = selectPeriod(sortedPeriods, selectedYear);
-  const selectedIndex = sortedPeriods.findIndex(
-    (p) => p.endDate === selectedPeriod.endDate,
-  );
-  const previousPeriod =
-    selectedIndex < sortedPeriods.length - 1
-      ? sortedPeriods[selectedIndex + 1]
-      : undefined;
-
-  const {
-    validEmissionsChangeNumber,
-    emissionsChangeStatus,
-    yearOverYearChange,
-  } = computeEmissionsChangeInfo(selectedPeriod, previousPeriod);
-
-  return (
-    <>
-      <Seo meta={seoMeta} />
-      <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
-        <CompanyOverview
-          company={company}
-          selectedPeriod={selectedPeriod}
-          previousPeriod={previousPeriod}
-          yearOverYearChange={yearOverYearChange}
-          headerChip={comparisonChip}
-        />
-        {validEmissionsChangeNumber && validEmissionsChangeNumber > 100 && (
-          <RelatableNumbers
-            emissionsChange={validEmissionsChangeNumber}
-            currentLanguage={currentLanguage}
-            companyName={company.name}
-            emissionsChangeStatus={emissionsChangeStatus}
-            yearOverYearChange={yearOverYearChange}
-          />
-        )}
-        <EmissionsHistory company={company} onYearSelect={onYearSelect} />
-        <TurnoverEmissionsHistory
-          company={company}
-          onYearSelect={onYearSelect}
-        />
-        <CompanyScope3 emissions={selectedPeriod.emissions!} />
-      </div>
-    </>
-  );
-}
+import { getCompanyUrlSegment } from "@/utils/companyRouting";
 
 export function CompanyDetailPage() {
   const { id } = useParams<{ id: string; slug?: string }>();
   const location = useLocation();
-  const { company, loading, error } = useCompanyDetails(id!);
   const [selectedYear, setSelectedYear] = useState<string>("latest");
   const { currentLanguage } = useLanguage();
+  const sectorNames = useSectorNames();
 
-  const latestYear = company?.reportingPeriods?.[0]
-    ? Number(yearFromIsoDate(company.reportingPeriods[0].endDate))
-    : new Date().getFullYear();
+  useEffect(() => {
+    setSelectedYear("latest");
+  }, [id]);
+
+  const {
+    header,
+    loading: headerLoading,
+    error: headerError,
+  } = usePageCompanyHeader(id!);
+
+  const availableYears = header?.availableYears ?? [];
+  const yearNumber = useMemo(() => {
+    if (selectedYear === "latest") return undefined;
+    const year = Number(selectedYear);
+    if (!Number.isFinite(year) || !availableYears.includes(year)) {
+      return undefined;
+    }
+    return year;
+  }, [selectedYear, availableYears]);
+
+  const {
+    overview,
+    loading: overviewLoading,
+    error: overviewError,
+  } = usePageCompanyOverview(id!, yearNumber, !!header);
+  const { emissionsHistory, turnoverHistory } = usePageCompanyHistories(
+    id!,
+    !!header,
+  );
+  const { scope3 } = usePageCompanyScope3(id!, yearNumber, !!header);
+
+  // Year changes keep previous overview/scope3 for the same company only.
+  const loading = headerLoading || overviewLoading;
+  const error = headerError || (!overview && overviewError);
+
+  const latestYear = useMemo(() => {
+    if (availableYears.length > 0) {
+      return Math.max(...availableYears);
+    }
+    return overview?.year ?? new Date().getFullYear();
+  }, [availableYears, overview?.year]);
 
   const seoMeta = useMemo(() => {
-    if (!company) {
+    if (!header) {
       return getSeoForRoute(location.pathname, { id: id || "" });
     }
-    return generateCompanySeoMeta(company, location.pathname, { latestYear });
-  }, [company, location.pathname, latestYear, id]);
+    const seoYear = overview?.year ?? latestYear;
+    const sectorCode = header.sectorCode ?? overview?.sectorCode ?? null;
+    const industry = industryGicsForSeo(
+      sectorCode,
+      getCompanySectorName(sectorCode, sectorNames),
+    );
+    return generateCompanySeoMeta(
+      {
+        name: header.name,
+        industry,
+        reportingPeriods:
+          overview?.totalEmissions != null && overview.year != null
+            ? [
+                {
+                  endDate: `${overview.year}-12-31`,
+                  emissions: {
+                    calculatedTotalEmissions: overview.totalEmissions,
+                  },
+                },
+              ]
+            : [],
+      },
+      location.pathname,
+      { latestYear: seoYear },
+    );
+  }, [header, overview, location.pathname, latestYear, id, sectorNames]);
 
   if (loading) return <PageLoading />;
 
@@ -173,7 +119,7 @@ export function CompanyDetailPage() {
     );
   }
 
-  if (!company) {
+  if (!header) {
     return (
       <PageNoData
         titleKey="companyDetailPage.notFoundTitle"
@@ -182,13 +128,88 @@ export function CompanyDetailPage() {
     );
   }
 
-  return (
-    <CompanyDetailContent
-      company={company}
-      seoMeta={seoMeta}
-      selectedYear={selectedYear}
-      onYearSelect={setSelectedYear}
-      currentLanguage={currentLanguage}
+  const comparisonChip = (
+    <ComparisonDetailChip
+      linkTo={buildComparisonLinkTo("company", getCompanyUrlSegment(header))}
+      variant="company"
+      name={header.name}
     />
+  );
+
+  const hasPeriods = availableYears.length > 0;
+
+  // Only the true empty company — not a year that failed to resolve.
+  if (!hasPeriods) {
+    return (
+      <>
+        <Seo meta={seoMeta} />
+        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+          <CompanyOverviewNoData header={header} headerChip={comparisonChip} />
+        </div>
+      </>
+    );
+  }
+
+  if (!overview || overview.year == null) {
+    return (
+      <>
+        <Seo meta={seoMeta} />
+        <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+          <CompanyOverviewNoData header={header} headerChip={comparisonChip} />
+          {emissionsHistory && (
+            <EmissionsHistory
+              history={emissionsHistory}
+              onYearSelect={setSelectedYear}
+            />
+          )}
+          {turnoverHistory && (
+            <TurnoverEmissionsHistory
+              history={turnoverHistory}
+              onYearSelect={setSelectedYear}
+            />
+          )}
+          <CompanyScope3 scope3={scope3} />
+        </div>
+      </>
+    );
+  }
+
+  const changeTons = overview.emissionsChangeAbsolute;
+
+  return (
+    <>
+      <Seo meta={seoMeta} />
+      <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
+        <CompanyOverview
+          header={header}
+          overview={overview}
+          headerChip={comparisonChip}
+        />
+        {changeTons != null &&
+          Math.abs(changeTons) > 100 &&
+          overview.emissionsChangeStatus != null && (
+            <RelatableNumbers
+              emissionsChange={Math.abs(changeTons)}
+              currentLanguage={currentLanguage}
+              companyName={header.name}
+              emissionsChangeStatus={overview.emissionsChangeStatus}
+              yearOverYearChange={overview.emissionsChangeLastTwoYears}
+            />
+          )}
+        {emissionsHistory && (
+          <EmissionsHistory
+            history={emissionsHistory}
+            onYearSelect={setSelectedYear}
+          />
+        )}
+        {turnoverHistory && (
+          <TurnoverEmissionsHistory
+            history={turnoverHistory}
+            onYearSelect={setSelectedYear}
+          />
+        )}
+        <CompanyScope3 scope3={scope3} />
+      </div>
+    </>
   );
 }

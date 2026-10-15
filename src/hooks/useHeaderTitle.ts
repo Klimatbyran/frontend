@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { useCompanyDetails } from "./companies/useCompanyDetails";
+import { usePageCompanyHeader } from "./pages/usePageCompanyDetail";
 import { useMunicipalityDetails } from "./municipalities/useMunicipalityDetails";
 const NON_ID_ROUTES = new Set([
   "sectors",
@@ -27,13 +27,16 @@ const useHeaderTitle = () => {
   const isMunicipalityPage =
     pathSegments.includes("municipalities") && isDetailsPage;
 
-  const viewedCompany = useCompanyDetails(isCompanyPage ? id! : "");
+  const viewedCompany = usePageCompanyHeader(
+    isCompanyPage ? id! : "",
+    isCompanyPage,
+  );
   const viewedMunicipality = useMunicipalityDetails(
     isMunicipalityPage ? id! : "",
   );
 
   const headerTitle = isCompanyPage
-    ? viewedCompany.company?.name
+    ? viewedCompany.header?.name
     : isMunicipalityPage
       ? viewedMunicipality.municipality?.name
       : undefined;

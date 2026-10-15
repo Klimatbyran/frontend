@@ -2,8 +2,10 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { ParisAnswerCard } from "./ParisAnswerCard";
-import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
-import type { CompanyWithKPIs } from "@/types/company";
+import type {
+  PageCompaniesOverviewSummary,
+  PageParisDotCompany,
+} from "@/types/pages";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -39,7 +41,7 @@ vi.mock("@/hooks/useChartMotion", () => ({
   }),
 }));
 
-const baseSummary: ParisSummary = {
+const baseSummary: PageCompaniesOverviewSummary["paris"] = {
   total: 10,
   onTrack: 3,
   offTrack: 5,
@@ -47,38 +49,36 @@ const baseSummary: ParisSummary = {
   onTrackPercent: 30,
 };
 
-function dotCompany(name: string, meetsParis: boolean | null): CompanyWithKPIs {
+function dot(name: string, onTrack: boolean): PageParisDotCompany {
   return {
     id: name,
     name,
     wikidataId: `Q${name}`,
-    meetsParis,
-  } as unknown as CompanyWithKPIs;
+    onTrack,
+  };
 }
 
-const judgedCompanies = [
-  dotCompany("OnA", true),
-  dotCompany("OnB", true),
-  dotCompany("OnC", true),
-  dotCompany("OffA", false),
-  dotCompany("OffB", false),
-  dotCompany("OffC", false),
-  dotCompany("OffD", false),
-  dotCompany("OffE", false),
-  dotCompany("UnknownA", null),
-  dotCompany("UnknownB", null),
+const judgedDots = [
+  dot("OnA", true),
+  dot("OnB", true),
+  dot("OnC", true),
+  dot("OffA", false),
+  dot("OffB", false),
+  dot("OffC", false),
+  dot("OffD", false),
+  dot("OffE", false),
 ];
 
 function renderCard(
-  summary: ParisSummary = baseSummary,
-  companies: CompanyWithKPIs[] = judgedCompanies,
+  summary: PageCompaniesOverviewSummary["paris"] = baseSummary,
+  parisDots: PageParisDotCompany[] = judgedDots,
 ) {
   return render(
     <MemoryRouter>
       <ParisAnswerCard
         summary={summary}
-        companies={companies}
-        industryTitle={null}
+        parisDots={parisDots}
+        industryLabel={null}
       />
     </MemoryRouter>,
   );
@@ -127,10 +127,7 @@ describe("ParisAnswerCard", () => {
   });
 
   it("keeps the full company count when nobody can be judged yet", () => {
-    renderCard({ ...baseSummary, onTrack: 0, offTrack: 0, unknown: 10 }, [
-      dotCompany("UnknownA", null),
-      dotCompany("UnknownB", null),
-    ]);
+    renderCard({ ...baseSummary, onTrack: 0, offTrack: 0, unknown: 10 }, []);
 
     expect(
       screen.getByText("companiesOverviewPage.paris.heading:10"),
@@ -142,7 +139,7 @@ describe("ParisAnswerCard", () => {
       <MemoryRouter>
         <ParisAnswerCard
           summary={baseSummary}
-          companies={judgedCompanies}
+          parisDots={judgedDots}
           industryLabel="Industrials Sector"
         />
       </MemoryRouter>,

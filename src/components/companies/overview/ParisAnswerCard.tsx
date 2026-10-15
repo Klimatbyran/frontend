@@ -2,7 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useChartMotion } from "@/hooks/useChartMotion";
-import type { ParisSummary } from "@/hooks/companies/parisOverviewUtils";
+import type {
+  PageCompaniesOverviewSummary,
+  PageParisDotCompany,
+} from "@/types/pages";
 import { ParisCompanyDots } from "./ParisCompanyDots";
 import { cn } from "@/lib/utils";
 
@@ -73,15 +76,15 @@ function BreakdownRow({
 }
 
 export interface ParisAnswerCardProps {
-  summary: ParisSummary;
-  companies: CompanyWithKPIs[];
+  summary: PageCompaniesOverviewSummary["paris"];
+  parisDots: PageParisDotCompany[];
   /** Sector title when one is selected, such as "Industrials Sector". */
   industryLabel: string | null;
 }
 
 export function ParisAnswerCard({
   summary,
-  companies,
+  parisDots,
   industryLabel,
 }: ParisAnswerCardProps) {
   const { t } = useTranslation();
@@ -188,7 +191,7 @@ export function ParisAnswerCard({
       </div>
 
       <div>
-        <ParisCompanyDots companies={companies} emphasis={emphasis} />
+        <ParisCompanyDots dots={parisDots} emphasis={emphasis} />
         <div className="mt-3.5">
           <BreakdownRow
             color="var(--blue-3)"

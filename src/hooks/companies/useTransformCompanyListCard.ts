@@ -1,14 +1,13 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { RankedCompany } from "@/types/company";
+import type { PageExploreCompany } from "@/types/pages";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useVerificationStatus } from "../useVerificationStatus";
 import { useIndustryGroupNames, useSectorNames } from "./useCompanySectors";
 import type { ListCardProps } from "@/components/explore/ListCard";
 import { transformCompanyToListCard } from "./transformCompanyListCard";
 
 interface IUseTransformCompanyListCard {
-  filteredCompanies: RankedCompany[];
+  filteredCompanies: PageExploreCompany[];
 }
 
 const useTransformCompanyListCard = ({
@@ -16,7 +15,6 @@ const useTransformCompanyListCard = ({
 }: IUseTransformCompanyListCard): ListCardProps[] => {
   const sectorNames = useSectorNames();
   const industryGroupNames = useIndustryGroupNames();
-  const { isEmissionsAIGenerated } = useVerificationStatus();
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
 
@@ -28,18 +26,11 @@ const useTransformCompanyListCard = ({
       transformCompanyToListCard(company, {
         sectorNames,
         industryGroupNames,
-        isEmissionsAIGenerated,
         currentLanguage,
         t,
       }),
     );
-  }, [
-    filteredCompanies,
-    sectorNames,
-    isEmissionsAIGenerated,
-    currentLanguage,
-    t,
-  ]);
+  }, [filteredCompanies, sectorNames, industryGroupNames, currentLanguage, t]);
 
   return transformedCards;
 };

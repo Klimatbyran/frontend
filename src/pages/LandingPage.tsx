@@ -3,9 +3,11 @@ import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Typewriter } from "@/components/ui/typewriter";
 import { PageSEO } from "@/components/SEO/PageSEO";
-import { SCROLL_FADE_THRESHOLD } from "@/hooks/landing/useLandingPageData";
 import useThrottle from "@/hooks/useThrottle";
-import { SCROLL_THROTTLE_DELAY } from "@/lib/constants/landingPage";
+import {
+  SCROLL_FADE_THRESHOLD,
+  SCROLL_THROTTLE_DELAY,
+} from "@/lib/constants/landingPage";
 import { LandingPageCTA } from "@/components/landing/LandingPageCTA";
 import {
   VALET_BANNER_LANDING_HERO_PAD_CLASS,

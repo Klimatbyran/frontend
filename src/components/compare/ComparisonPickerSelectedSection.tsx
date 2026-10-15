@@ -10,6 +10,7 @@ interface ComparisonPickerSelectedSectionProps {
   selectedCount: number;
   selectedItems: ListCardProps[];
   loading: boolean;
+  loadError?: boolean;
   activeVariant: ComparisonEntityVariant | null;
   onToggle: (linkTo: string, variant: ComparisonEntityVariant) => void;
 }
@@ -18,6 +19,7 @@ export function ComparisonPickerSelectedSection({
   selectedCount,
   selectedItems,
   loading,
+  loadError = false,
   activeVariant,
   onToggle,
 }: ComparisonPickerSelectedSectionProps) {
@@ -38,6 +40,10 @@ export function ComparisonPickerSelectedSection({
       {loading ? (
         <p className="text-grey text-sm">
           {t("explorePage.comparison.pickerLoading")}
+        </p>
+      ) : loadError ? (
+        <p className="text-sm text-red-500">
+          {t("explorePage.comparison.pickerLoadError")}
         </p>
       ) : (
         <div className="space-y-0.5">

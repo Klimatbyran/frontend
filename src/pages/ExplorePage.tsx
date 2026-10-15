@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { useCompanies } from "@/hooks/companies/useCompanies";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
@@ -26,17 +25,16 @@ function isExploreFilter(value?: string): value is ExploreFilter {
 
 function getActiveError(
   mainFilter: ExploreFilter,
-  companiesError: unknown,
   municipalitiesError: unknown,
   regionsError: unknown,
 ) {
-  if (mainFilter === "companies") {
-    return companiesError;
-  }
   if (mainFilter === "municipalities") {
     return municipalitiesError;
   }
-  return regionsError;
+  if (mainFilter === "regions") {
+    return regionsError;
+  }
+  return null;
 }
 
 export function ExplorePage() {
@@ -44,15 +42,11 @@ export function ExplorePage() {
   const screenSize = useScreenSize();
   const navigate = useNavigate();
   const { mainFilter: mainFilterParam } = useParams();
-  const isCompaniesTab = mainFilterParam === "companies";
   const isMunicipalitiesTab = mainFilterParam === "municipalities";
   const isRegionsTab = mainFilterParam === "regions";
 
   const { municipalities, municipalitiesLoading, municipalitiesError } =
     useMunicipalities({ enabled: isMunicipalitiesTab });
-  const { companies, companiesLoading, companiesError } = useCompanies({
-    enabled: isCompaniesTab,
-  });
   const {
     regions,
     loading: regionsLoading,
@@ -67,14 +61,12 @@ export function ExplorePage() {
 
   const mainFilter = mainFilterParam;
   const isLoading =
-    (isCompaniesTab && companiesLoading && companies.length === 0) ||
     (isMunicipalitiesTab &&
       municipalitiesLoading &&
       municipalities.length === 0) ||
     (isRegionsTab && regionsLoading && regions.length === 0);
   const activeError = getActiveError(
     mainFilter,
-    companiesError,
     municipalitiesError,
     regionsError,
   );
@@ -108,7 +100,6 @@ export function ExplorePage() {
 
       <ExploreEntityList
         mainFilter={mainFilter}
-        companies={companies}
         municipalities={municipalities}
         regions={regions}
       />

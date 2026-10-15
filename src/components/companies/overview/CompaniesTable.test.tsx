@@ -1,5 +1,11 @@
-import { render, screen, fireEvent, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import {
+  render,
+  screen,
+  fireEvent,
+  within,
+  waitFor,
+} from "@testing-library/react";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import {
   MemoryRouter,
   Outlet,
@@ -7,8 +13,39 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
-import type { CompanyWithKPIs } from "@/types/company";
+import type { PageCompanyOverviewItem } from "@/types/pages";
 import { CompaniesTable } from "./CompaniesTable";
+
+const { mockLoadMore, mockListState, capturedListOptions } = vi.hoisted(() => {
+  const loadMore = vi.fn();
+  const state = {
+    companies: [] as PageCompanyOverviewItem[],
+    total: 0,
+    loading: false,
+    fetchingMore: false,
+    hasMore: false,
+    loadMore,
+    error: null as Error | null,
+  };
+  return {
+    mockLoadMore: loadMore,
+    mockListState: state,
+    capturedListOptions: [] as Array<Record<string, unknown>>,
+  };
+});
+
+vi.mock("@/hooks/pages/usePageCompaniesOverview", async () => {
+  const actual = await vi.importActual<
+    typeof import("@/hooks/pages/usePageCompaniesOverview")
+  >("@/hooks/pages/usePageCompaniesOverview");
+  return {
+    ...actual,
+    usePageCompaniesOverviewList: (options?: Record<string, unknown>) => {
+      capturedListOptions.push(options ?? {});
+      return mockListState;
+    },
+  };
+});
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -34,16 +71,21 @@ function company(
   change: number | null,
   emissions: number,
   sectorCode = "15",
-): CompanyWithKPIs {
+): PageCompanyOverviewItem {
   return {
     id: name,
     name,
     wikidataId: `Q-${name}`,
-    industry: { industryGics: { sectorCode } },
-    reportingPeriods: [{ emissions: { calculatedTotalEmissions: emissions } }],
+    tags: ["sweden"],
+    logoUrl: null,
+    sectorCode,
+    industryGroupCode: null,
+    baseYear: 2019,
     meetsParis,
     emissionsChangeFromBaseYear: change,
-  } as unknown as CompanyWithKPIs;
+    latestYear: 2024,
+    latestTotalEmissions: emissions,
+  };
 }
 
 const companies = [
@@ -52,10 +94,10 @@ const companies = [
   company("Charlie", null, null, 500, "35"),
 ];
 
-function renderTable(list: CompanyWithKPIs[] = companies) {
+function renderTable(sector: "15" | "35" | null = null) {
   return render(
     <MemoryRouter>
-      <CompaniesTable companies={list} />
+      <CompaniesTable sector={sector} />
     </MemoryRouter>,
   );
 }
@@ -66,173 +108,108 @@ function rowNames(): string[] {
     .map((row) => row.querySelector("td:nth-child(2) a")?.textContent ?? "");
 }
 
-function rowRanks(): string[] {
-  return within(document.querySelector("tbody")!)
-    .getAllByRole("row")
-    .map((row) => row.querySelector("td")?.textContent?.trim() ?? "");
-}
+beforeEach(() => {
+  mockLoadMore.mockClear();
+  capturedListOptions.length = 0;
+  mockListState.companies = companies;
+  mockListState.total = companies.length;
+  mockListState.loading = false;
+  mockListState.fetchingMore = false;
+  mockListState.hasMore = false;
+  mockListState.error = null;
+});
 
 describe("CompaniesTable", () => {
-  it("renders one row per company", () => {
+  it("renders one row per loaded company", () => {
     renderTable();
     expect(document.querySelectorAll("tbody tr")).toHaveLength(3);
   });
 
-  it("shows one extra column on small screens and the rest from md", () => {
-    renderTable();
-    const table = document.querySelector("table");
-    expect(table).toHaveClass("table-fixed");
-    expect(table).not.toHaveClass("min-w-[36rem]");
-    expect(table?.parentElement?.parentElement).not.toHaveClass(
-      "overflow-x-auto",
-    );
-
-    const header = (name: RegExp) =>
-      screen.getByRole("button", { name }).closest("th")!;
-    const cells = () => document.querySelectorAll("tbody tr:first-child td");
-
-    expect(header(/colOnTrack/)).toHaveClass("table-cell");
-    expect(header(/colOnTrack/)).not.toHaveClass("hidden");
-    expect(header(/colIndustry/)).toHaveClass("hidden", "md:table-cell");
-    expect(header(/colEmissions/)).toHaveClass("hidden", "md:table-cell");
-    expect(header(/colChange/)).toHaveClass("hidden", "md:table-cell");
-    expect(cells()[5]).toHaveClass("table-cell");
-    expect(cells()[3]).toHaveClass("hidden");
-
-    fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: "emissions" },
+  it("passes sector and default paris sort to the pages list hook", () => {
+    renderTable("35");
+    expect(capturedListOptions.at(-1)).toMatchObject({
+      sector: "35",
+      sortBy: "paris",
+      sortDir: "desc",
     });
-
-    expect(header(/colEmissions/)).toHaveClass("table-cell");
-    expect(header(/colEmissions/)).not.toHaveClass("hidden");
-    expect(header(/colOnTrack/)).toHaveClass("hidden", "md:table-cell");
-    expect(cells()[3]).toHaveClass("table-cell");
-    expect(cells()[3]).not.toHaveClass("hidden");
-    expect(cells()[5]).toHaveClass("hidden");
   });
 
-  it("sorts on-track companies first by default", () => {
-    renderTable();
-    // Bravo meets Paris, Alpha does not, Charlie can't be judged.
-    expect(rowNames()).toEqual(["Bravo", "Alpha", "Charlie"]);
-  });
-
-  it("sorts by emissions when the column header is clicked", () => {
-    renderTable();
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: /companiesOverviewPage\.paris\.colEmissions/,
-      }),
-    );
-    expect(rowNames()).toEqual(["Alpha", "Charlie", "Bravo"]);
-  });
-
-  it("keeps each company's rank when the sort is reversed", () => {
-    renderTable();
-    const emissions = screen.getByRole("button", {
-      name: /companiesOverviewPage\.paris\.colEmissions/,
-    });
-    fireEvent.click(emissions);
-    expect(rowRanks()).toEqual(["1", "2", "3"]);
-
-    fireEvent.click(emissions);
-    expect(rowNames()).toEqual(["Bravo", "Charlie", "Alpha"]);
-    expect(rowRanks()).toEqual(["3", "2", "1"]);
-  });
-
-  it("flips the sort direction when the active column header is clicked again", () => {
-    renderTable();
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: /companiesOverviewPage\.paris\.colOnTrack/,
-      }),
-    );
-    expect(rowNames()).toEqual(["Charlie", "Alpha", "Bravo"]);
-  });
-
-  it("sorts by industry name when the column header is clicked", () => {
+  it("maps industry sort to API sector sort", () => {
     renderTable();
     fireEvent.click(
       screen.getByRole("button", {
         name: /companiesOverviewPage\.paris\.colIndustry/,
       }),
     );
-    expect(rowNames()).toEqual(["Alpha", "Charlie", "Bravo"]);
+    expect(capturedListOptions.at(-1)).toMatchObject({
+      sortBy: "sector",
+      sortDir: "asc",
+    });
   });
 
-  it("sorts by emissions change with missing values last", () => {
-    renderTable();
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: /companiesOverviewPage\.paris\.colChange/,
-      }),
-    );
-    expect(rowNames()).toEqual(["Bravo", "Alpha", "Charlie"]);
-  });
-
-  it("shows the rank as a label rather than a sort control", () => {
-    renderTable();
-    expect(
-      screen.queryByRole("button", { name: /^#$/ }),
-    ).not.toBeInTheDocument();
-    expect(screen.getByText("#")).toBeInTheDocument();
-  });
-
-  it("filters by search query", () => {
+  it("debounces search into the list query", async () => {
     renderTable();
     fireEvent.change(screen.getByRole("searchbox"), {
-      target: { value: "brav" },
+      target: { value: "alp" },
     });
-    expect(rowNames()).toEqual(["Bravo"]);
+    await waitFor(() => {
+      expect(capturedListOptions.at(-1)).toMatchObject({ q: "alp" });
+    });
   });
 
-  it("matches the start of a word, including comma-separated terms and sector names", () => {
+  it("shows one extra column on small screens and the rest from md", () => {
     renderTable();
-    const search = screen.getByRole("searchbox");
+    const table = document.querySelector("table");
+    expect(table).toHaveClass("table-fixed");
 
-    fireEvent.change(search, { target: { value: "lpha" } });
-    expect(rowNames()).toEqual([]);
+    const header = (name: RegExp) =>
+      screen.getByRole("button", { name }).closest("th")!;
 
-    fireEvent.change(search, { target: { value: "alp, char" } });
-    expect(rowNames()).toEqual(["Alpha", "Charlie"]);
-
-    fireEvent.change(search, { target: { value: "health" } });
-    expect(rowNames()).toEqual(["Alpha", "Charlie"]);
+    expect(header(/colOnTrack/)).toHaveClass("table-cell");
+    expect(header(/colIndustry/)).toHaveClass("hidden", "md:table-cell");
   });
 
-  it("paginates with show more", () => {
-    const many = Array.from({ length: 20 }, (_, i) =>
-      company(`Co ${String(i).padStart(2, "0")}`, true, -30, 100 - i),
-    );
-    renderTable(many);
-
-    expect(document.querySelectorAll("tbody tr")).toHaveLength(12);
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: /companiesOverviewPage\.paris\.showMoreRows/,
-      }),
-    );
-    expect(document.querySelectorAll("tbody tr")).toHaveLength(20);
-  });
-
-  it("keeps the expanded list when a column is sorted", () => {
-    const many = Array.from({ length: 20 }, (_, i) =>
-      company(`Co ${String(i).padStart(2, "0")}`, true, -30, 100 - i),
-    );
-    renderTable(many);
+  it("loads the next page when show more is clicked", () => {
+    mockListState.hasMore = true;
+    mockListState.total = 20;
+    renderTable();
 
     fireEvent.click(
       screen.getByRole("button", {
         name: /companiesOverviewPage\.paris\.showMoreRows/,
       }),
     );
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: /companiesOverviewPage\.paris\.colEmissions/,
-      }),
-    );
+    expect(mockLoadMore).toHaveBeenCalledTimes(1);
+  });
 
-    expect(document.querySelectorAll("tbody tr")).toHaveLength(20);
+  it("hides show more when every row is loaded", () => {
+    mockListState.hasMore = false;
+    renderTable();
+    expect(
+      screen.queryByRole("button", {
+        name: /companiesOverviewPage\.paris\.showMoreRows/,
+      }),
+    ).toBeNull();
+  });
+
+  it("shows a loading row while the first page is fetching", () => {
+    mockListState.companies = [];
+    mockListState.total = 0;
+    mockListState.loading = true;
+    renderTable();
+    expect(
+      screen.getByText("companiesOverviewPage.paris.tableLoading"),
+    ).toBeInTheDocument();
+  });
+
+  it("shows an error row when the list request fails", () => {
+    mockListState.companies = [];
+    mockListState.total = 0;
+    mockListState.error = new Error("failed");
+    renderTable();
+    expect(
+      screen.getByText("companiesOverviewPage.paris.tableError"),
+    ).toBeInTheDocument();
   });
 
   it("links each company to its detail page", () => {
@@ -261,7 +238,7 @@ describe("CompaniesTable", () => {
           >
             <Route
               path="/en/companies-overview"
-              element={<CompaniesTable companies={companies} />}
+              element={<CompaniesTable sector={null} />}
             />
             <Route path="/en/companies/:id" element={<div>Detail</div>} />
           </Route>
@@ -269,12 +246,10 @@ describe("CompaniesTable", () => {
       </MemoryRouter>,
     );
 
-    const bravoRow = screen.getByRole("link", { name: /Bravo/ }).closest("tr")!;
-    fireEvent.click(within(bravoRow).getAllByRole("cell")[0]);
-
+    fireEvent.click(screen.getByText("900"));
     expect(screen.getByTestId("location")).toHaveTextContent(
       "/en/companies-overview",
     );
-    expect(screen.queryByText("Detail")).not.toBeInTheDocument();
+    expect(rowNames()).toContain("Alpha");
   });
 });

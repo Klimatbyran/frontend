@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
-import { useVerificationStatus } from "@/hooks/useVerificationStatus";
 import { orderSelectedCards } from "@/utils/compare/comparisonUtils";
 import { enrichComparisonCards } from "./comparisonItemsUtils";
 import {
+  getComparisonError,
   getComparisonLoading,
   useComparisonViewState,
 } from "./comparisonViewState";
@@ -31,14 +31,17 @@ export function useComparisonItems() {
     companiesLoading,
     municipalitiesLoading,
     regionsLoading,
+    companiesError,
+    municipalitiesError,
+    regionsError,
   } = useComparisonSourceCards({
+    selectedCompanyLinkTos: loadCompanies ? activeIds : [],
     loadCompanies,
     loadMunicipalities,
     loadRegions,
   });
   const { currentLanguage } = useLanguage();
   const { t } = useTranslation();
-  const { isAIGenerated } = useVerificationStatus();
 
   const items = useMemo(() => {
     if (!hasViewData || !activeVariant) return [];
@@ -57,7 +60,6 @@ export function useComparisonItems() {
       regions: regions ?? [],
       currentLanguage,
       t,
-      isAIGenerated,
     });
   }, [
     activeIds,
@@ -68,22 +70,35 @@ export function useComparisonItems() {
     companies,
     currentLanguage,
     hasViewData,
-    isAIGenerated,
     municipalities,
     regions,
     t,
   ]);
 
+  const loading = getComparisonLoading({
+    loadCompanies,
+    loadMunicipalities,
+    loadRegions,
+    companiesLoading,
+    municipalitiesLoading,
+    regionsLoading,
+  });
+
+  const error = loading
+    ? null
+    : getComparisonError({
+        loadCompanies,
+        loadMunicipalities,
+        loadRegions,
+        companiesError,
+        municipalitiesError,
+        regionsError,
+      });
+
   return {
     items,
-    loading: getComparisonLoading({
-      loadCompanies,
-      loadMunicipalities,
-      loadRegions,
-      companiesLoading,
-      municipalitiesLoading,
-      regionsLoading,
-    }),
+    loading,
+    error,
     variant: activeVariant,
     viewCount: activeIds.length,
   };

@@ -1,53 +1,41 @@
 import { describe, expect, it } from "vitest";
-import type { RankedCompany } from "@/types/company";
+import type { PageExploreCompany } from "@/types/pages";
 import { filterAndSortCompanies } from "./companyFilterUtils";
 
 function company(
   name: string,
   options: {
-    sectorCode?: string;
-    groupCode?: string;
+    sectorCode?: string | null;
+    industryGroupCode?: string | null;
     emissions?: number | null;
-    previousEmissions?: number | null;
     change?: number | null;
   } = {},
-): RankedCompany {
-  const reportingPeriods = [];
-  if (options.emissions !== undefined || options.change !== undefined) {
-    reportingPeriods.push({
-      endDate: "2024-12-31",
-      emissions:
-        options.emissions === undefined
-          ? null
-          : { calculatedTotalEmissions: options.emissions },
-      emissionsChangeLastTwoYears:
-        options.change === undefined
-          ? undefined
-          : { absolute: options.change, adjusted: options.change },
-    });
-  }
-  if (options.previousEmissions !== undefined) {
-    reportingPeriods.push({
-      endDate: "2023-12-31",
-      emissions: { calculatedTotalEmissions: options.previousEmissions },
-    });
-  }
-
+): PageExploreCompany {
   return {
     id: name,
     name,
     tags: [],
-    industry:
-      options.sectorCode || options.groupCode
-        ? {
-            industryGics: {
-              sectorCode: options.sectorCode ?? "",
-              groupCode: options.groupCode ?? "",
-            },
-          }
-        : null,
-    reportingPeriods,
-  } as unknown as RankedCompany;
+    sectorCode: options.sectorCode ?? null,
+    industryGroupCode: options.industryGroupCode ?? null,
+    baseYear: null,
+    meetsParis: null,
+    emissionsChangeFromBaseYear: null,
+    latestYear: options.emissions == null ? null : 2024,
+    latestTotalEmissions: options.emissions ?? null,
+    emissionsChangeLastTwoYears: options.change ?? null,
+    emissionsIsAIGenerated: false,
+    changeRateIsAIGenerated: false,
+    hasScope3Coverage: false,
+    isFinancialsSector: false,
+    scope1Emissions: null,
+    scope2Emissions: null,
+    scope3Emissions: null,
+    turnover: null,
+    turnoverCurrency: null,
+    turnoverIsAIGenerated: false,
+    employees: null,
+    employeesIsAIGenerated: false,
+  };
 }
 
 const sectorNames = {
@@ -61,7 +49,7 @@ const industryGroupNames = {
 };
 
 function run(
-  companies: RankedCompany[],
+  companies: PageExploreCompany[],
   overrides: Partial<Parameters<typeof filterAndSortCompanies>[1]> = {},
 ) {
   return filterAndSortCompanies(companies, {
@@ -83,21 +71,29 @@ describe("filterAndSortCompanies", () => {
   const companies = [
     company("Naturgy Energy Group, S.A.", {
       sectorCode: "20",
-      groupCode: "2010",
+      industryGroupCode: "2010",
       emissions: 10,
     }),
     company("Kroger", {
       sectorCode: "30",
-      groupCode: "3020",
+      industryGroupCode: "3020",
       emissions: 50,
     }),
-    company("Series *A", { sectorCode: "20", groupCode: "2010", emissions: 5 }),
+    company("Series *A", {
+      sectorCode: "20",
+      industryGroupCode: "2010",
+      emissions: 5,
+    }),
     company("Enity Holding AB (publ)", {
       sectorCode: "20",
-      groupCode: "2010",
+      industryGroupCode: "2010",
       emissions: 1,
     }),
-    company("Volvo", { sectorCode: "20", groupCode: "2010", emissions: 20 }),
+    company("Volvo", {
+      sectorCode: "20",
+      industryGroupCode: "2010",
+      emissions: 20,
+    }),
   ];
 
   it("keeps sorting and filtering working when the search has regex characters", () => {
@@ -156,15 +152,12 @@ describe("filterAndSortCompanies", () => {
     ).toEqual(["Öresund", "Åhléns", "Zet", "Volvo", "Arla"]);
   });
 
-  it("sorts emissions change from the same periods shown on the card, with missing values last", () => {
+  it("sorts the emissions change shown on the card, with missing values last", () => {
     const ranked = [
       company("No data"),
       company("Api increase", { emissions: 100, change: 25 }),
-      company("Calculated cut", {
-        emissions: 80,
-        previousEmissions: 100,
-        change: null,
-      }),
+      company("Flat", { emissions: 80, change: 0 }),
+      company("Cut", { emissions: 80, change: -20 }),
     ];
 
     expect(
@@ -172,6 +165,6 @@ describe("filterAndSortCompanies", () => {
         sortBy: "emissions_reduction",
         sortDirection: "asc",
       }),
-    ).toEqual(["Calculated cut", "Api increase", "No data"]);
+    ).toEqual(["Cut", "Flat", "Api increase", "No data"]);
   });
 });

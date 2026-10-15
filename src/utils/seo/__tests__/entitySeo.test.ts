@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import type { CompanyDetails, CompanyWithIndustryGics } from "@/types/company";
 import type { Municipality } from "@/types/municipality";
+import { industryGicsForSeo } from "@/utils/data/industryGrouping";
 import {
   truncateDescription,
   buildCompanySeoDescription,
@@ -87,6 +88,16 @@ describe("buildCompanySeoDescription", () => {
     } as CompanyDetails;
     const result = buildCompanySeoDescription(companyWithIndustry);
     expect(result).toContain("Technology");
+    expect(result).toContain("industry");
+  });
+
+  it("includes industry from sector code via industryGicsForSeo", () => {
+    const companyWithIndustry = {
+      ...mockCompany,
+      industry: industryGicsForSeo("45", "Information Technology"),
+    } as CompanyDetails;
+    const result = buildCompanySeoDescription(companyWithIndustry);
+    expect(result).toContain("Information Technology");
     expect(result).toContain("industry");
   });
 
