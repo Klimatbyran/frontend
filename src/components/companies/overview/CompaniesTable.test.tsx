@@ -125,6 +125,18 @@ describe("CompaniesTable", () => {
     expect(document.querySelectorAll("tbody tr")).toHaveLength(3);
   });
 
+  it("keeps companies with no Paris status at the bottom in both directions", () => {
+    renderTable();
+    expect(rowNames()).toEqual(["Bravo", "Alpha", "Charlie"]);
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /companiesOverviewPage\.paris\.colOnTrack/,
+      }),
+    );
+    expect(rowNames()).toEqual(["Alpha", "Bravo", "Charlie"]);
+  });
+
   it("passes sector and default paris sort to the pages list hook", () => {
     renderTable("35");
     expect(capturedListOptions.at(-1)).toMatchObject({

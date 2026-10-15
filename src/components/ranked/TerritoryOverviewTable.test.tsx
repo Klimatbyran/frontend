@@ -81,6 +81,22 @@ describe("TerritoryOverviewTable", () => {
     expect(rankFor("Gamma")).toBe("–");
   });
 
+  it("keeps missing Paris status at the bottom in both directions", () => {
+    renderTable();
+    const names = () =>
+      screen.getAllByRole("link").map((link) => link.textContent);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "On track for Paris?" }),
+    );
+    expect(names()).toEqual(["Alpha", "Beta", "Gamma"]);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "On track for Paris?" }),
+    );
+    expect(names()).toEqual(["Beta", "Alpha", "Gamma"]);
+  });
+
   it("puts the sort state on the column header", () => {
     renderTable();
     const nameHeader = screen.getByRole("columnheader", {
@@ -90,6 +106,49 @@ describe("TerritoryOverviewTable", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Municipality" }));
     expect(nameHeader).toHaveAttribute("aria-sort", "ascending");
+  });
+
+  it("keeps a missing yes or no measure at the bottom in both directions", () => {
+    render(
+      <MemoryRouter>
+        <TerritoryOverviewTable
+          rows={[
+            {
+              id: "alpha",
+              name: "Alpha",
+              href: "/municipalities/alpha",
+              kpiValue: null,
+            },
+            {
+              id: "beta",
+              name: "Beta",
+              href: "/municipalities/beta",
+              kpiValue: false,
+            },
+            {
+              id: "gamma",
+              name: "Gamma",
+              href: "/municipalities/gamma",
+              kpiValue: true,
+            },
+          ]}
+          entityType="municipalities"
+          kpiLabel="Paris"
+          unit=""
+          isBoolean
+          higherIsBetter
+          booleanLabels={{ true: "On track", false: "Off track" }}
+          showParis={false}
+        />
+      </MemoryRouter>,
+    );
+
+    const names = () =>
+      screen.getAllByRole("link").map((link) => link.textContent);
+    expect(names()).toEqual(["Gamma", "Beta", "Alpha"]);
+
+    fireEvent.click(screen.getByRole("button", { name: "Paris" }));
+    expect(names()).toEqual(["Beta", "Gamma", "Alpha"]);
   });
 
   it("does not rank yes or no measures", () => {

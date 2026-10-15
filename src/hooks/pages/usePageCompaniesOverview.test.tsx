@@ -134,6 +134,42 @@ describe("usePageCompaniesOverviewList", () => {
     expect(result.current.loading).toBe(false);
   });
 
+  it("loads every page when Paris is sorted ascending so missing statuses can sink", async () => {
+    getPageCompaniesOverview.mockImplementation(
+      async (query: {
+        page?: number;
+        sortBy?: string;
+        sortDir?: string;
+        pageSize?: number;
+      }) => {
+        expect(query.sortBy).toBe("paris");
+        expect(query.sortDir).toBe("asc");
+        expect(query.pageSize).toBe(100);
+        const page = query.page ?? 1;
+        return {
+          ...listPage(page === 1 ? "First" : "Second"),
+          total: 2,
+          page,
+          totalPages: 2,
+        };
+      },
+    );
+
+    const { result } = renderWithClient(
+      () => usePageCompaniesOverviewList({ sortBy: "paris", sortDir: "asc" }),
+      {},
+    );
+
+    await waitFor(() => {
+      expect(result.current.companies.map((company) => company.name)).toEqual([
+        "First",
+        "Second",
+      ]);
+    });
+    expect(result.current.hasMore).toBe(false);
+    expect(getPageCompaniesOverview).toHaveBeenCalledTimes(2);
+  });
+
   it("keeps rows while the same sector is re-sorted", async () => {
     const next = deferred<PageListResponse<PageCompanyOverviewItem>>();
     getPageCompaniesOverview.mockImplementation(
