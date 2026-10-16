@@ -239,7 +239,7 @@ export function CompaniesTable({
                 align="end"
                 className={cn(
                   "text-white/40",
-                  metricColumnClass("emissions", "md:w-[16%]"),
+                  metricColumnClass("emissions", mobileColumn, "md:w-[17%]"),
                 )}
               >
                 {t("companiesOverviewPage.paris.colEmissions")}
@@ -352,7 +352,7 @@ export function CompaniesTable({
                     )}
                   >
                     {emissions === null ? (
-                      t("companiesOverviewPage.paris.noComparableData")
+                      t("companiesOverviewPage.paris.noData")
                     ) : (
                       <>
                         {formatEmissionsAbsoluteCompact(

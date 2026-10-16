@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { LocalizedLink } from "@/components/LocalizedLink";
 import { ArrowRight } from "lucide-react";
 import { CompanySearchInput } from "./CompanySearchInput";
+import { LandingCompanyChartSkeleton } from "./LandingVisualSkeletons";
 import { cn } from "@/lib/utils";
 import {
   LANDING_CHART_PANEL_HEIGHT_CLASS,
@@ -30,7 +31,7 @@ export const CompaniesSection = () => {
   const [selectedCompany, setSelectedCompany] = useState<RankedCompany | null>(
     null,
   );
-  const [isCompanySearchBusy, setIsCompanySearchBusy] = useState(false);
+  const [isCompanySearchBusy, setIsCompanySearchBusy] = useState(true);
   const handleSearchBusyChange = useCallback((busy: boolean) => {
     setIsCompanySearchBusy(busy);
   }, []);
@@ -140,18 +141,25 @@ export const CompaniesSection = () => {
                 <Text className="text-lg font-light text-[18px] text-grey">
                   {t("landingPage.companiesSection.currentlyViewing")}
                 </Text>
-                <Text className="text-white text-lg font-medium">
-                  {selectedCompany?.name ?? "-"}
-                </Text>
+                {isCompanySearchBusy ? (
+                  <span
+                    className="inline-block h-5 w-28 animate-pulse rounded bg-white/15"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <Text className="text-white text-lg font-medium">
+                    {selectedCompany?.name ?? "-"}
+                  </Text>
+                )}
               </div>
             </div>
 
             {isCompanySearchBusy ? (
-              <div
-                className={cn(
-                  LANDING_CHART_PANEL_HEIGHT_CLASS,
-                  "animate-pulse bg-black-2 rounded-level-2",
-                )}
+              <LandingCompanyChartSkeleton
+                chartEndYear={chartEndYear}
+                shortEndYear={shortEndYear}
+                longEndYear={longEndYear}
+                setChartEndYear={setChartEndYear}
               />
             ) : (
               chartSection

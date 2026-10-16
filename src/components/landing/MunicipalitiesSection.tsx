@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LandingMapSkeleton } from "./LandingVisualSkeletons";
 import { useMunicipalitiesSection } from "./useMunicipalitiesSection";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { cn } from "@/lib/utils";
@@ -105,7 +106,7 @@ export const MunicipalitiesSection = () => {
 
             <div className="relative w-full h-[55vh] md:h-[65vh] lg:h-[75vh]">
               {mapLoading ? (
-                <div className="h-full w-full animate-pulse bg-black-2 rounded-level-2" />
+                <LandingMapSkeleton />
               ) : (
                 <TerritoryMap
                   key={territoryMode}
