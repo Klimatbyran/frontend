@@ -239,7 +239,7 @@ export function CompaniesTable({
                 align="end"
                 className={cn(
                   "text-white/40",
-                  metricColumnClass("emissions", mobileColumn, "md:w-[17%]"),
+                  metricColumnClass("emissions", "md:w-[17%]"),
                 )}
               >
                 {t("companiesOverviewPage.paris.colEmissions")}
