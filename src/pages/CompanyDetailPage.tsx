@@ -1,5 +1,6 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
 import {
@@ -27,6 +28,72 @@ import {
 } from "@/utils/data/industryGrouping";
 import { getSeoForRoute } from "@/seo/routes";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
+import type {
+  PageCompanyEmissionsHistory,
+  PageCompanyScope3,
+  PageCompanyTurnoverHistory,
+} from "@/types/pages";
+
+function SectionLoadError({ titleKey }: { titleKey: string }) {
+  const { t } = useTranslation();
+
+  return (
+    <section className="rounded-level-2 bg-black-2 px-6 py-10 text-center">
+      <h2 className="mb-2 text-xl text-red-500">{t(titleKey)}</h2>
+      <p className="text-grey">{t("companyDetailPage.errorDescription")}</p>
+    </section>
+  );
+}
+
+function CompanyDetailCharts({
+  emissionsHistory,
+  turnoverHistory,
+  emissionsError,
+  turnoverError,
+  scope3,
+  scope3Error,
+  onYearSelect,
+}: {
+  emissionsHistory: PageCompanyEmissionsHistory | undefined;
+  turnoverHistory: PageCompanyTurnoverHistory | undefined;
+  emissionsError: unknown;
+  turnoverError: unknown;
+  scope3: PageCompanyScope3 | undefined;
+  scope3Error: unknown;
+  onYearSelect: (year: string) => void;
+}) {
+  return (
+    <>
+      {emissionsHistory ? (
+        <EmissionsHistory
+          history={emissionsHistory}
+          onYearSelect={onYearSelect}
+        />
+      ) : (
+        emissionsError && (
+          <SectionLoadError titleKey="companyDetailPage.emissionsHistoryErrorTitle" />
+        )
+      )}
+      {turnoverHistory ? (
+        <TurnoverEmissionsHistory
+          history={turnoverHistory}
+          onYearSelect={onYearSelect}
+        />
+      ) : (
+        turnoverError && (
+          <SectionLoadError titleKey="companyDetailPage.turnoverHistoryErrorTitle" />
+        )
+      )}
+      {scope3 ? (
+        <CompanyScope3 scope3={scope3} />
+      ) : (
+        scope3Error && (
+          <SectionLoadError titleKey="companyDetailPage.scope3ErrorTitle" />
+        )
+      )}
+    </>
+  );
+}
 
 export function CompanyDetailPage() {
   const { id } = useParams<{ id: string; slug?: string }>();
@@ -67,12 +134,14 @@ export function CompanyDetailPage() {
     emissionsHistory,
     turnoverHistory,
     loading: historiesLoading,
+    emissionsError,
+    turnoverError,
   } = usePageCompanyHistories(id!, detailSectionsEnabled);
-  const { scope3, loading: scope3Loading } = usePageCompanyScope3(
-    id!,
-    yearNumber,
-    detailSectionsEnabled,
-  );
+  const {
+    scope3,
+    loading: scope3Loading,
+    error: scope3Error,
+  } = usePageCompanyScope3(id!, yearNumber, detailSectionsEnabled);
 
   // Year changes keep previous overview/scope3 for the same company only.
   // Histories and scope 3 stay behind the loader until the first response,
@@ -167,19 +236,15 @@ export function CompanyDetailPage() {
         <Seo meta={seoMeta} />
         <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
           <CompanyOverviewNoData header={header} headerChip={comparisonChip} />
-          {emissionsHistory && (
-            <EmissionsHistory
-              history={emissionsHistory}
-              onYearSelect={setSelectedYear}
-            />
-          )}
-          {turnoverHistory && (
-            <TurnoverEmissionsHistory
-              history={turnoverHistory}
-              onYearSelect={setSelectedYear}
-            />
-          )}
-          <CompanyScope3 scope3={scope3} />
+          <CompanyDetailCharts
+            emissionsHistory={emissionsHistory}
+            turnoverHistory={turnoverHistory}
+            emissionsError={emissionsError}
+            turnoverError={turnoverError}
+            scope3={scope3}
+            scope3Error={scope3Error}
+            onYearSelect={setSelectedYear}
+          />
         </div>
       </>
     );
@@ -207,19 +272,15 @@ export function CompanyDetailPage() {
               yearOverYearChange={overview.emissionsChangeLastTwoYears}
             />
           )}
-        {emissionsHistory && (
-          <EmissionsHistory
-            history={emissionsHistory}
-            onYearSelect={setSelectedYear}
-          />
-        )}
-        {turnoverHistory && (
-          <TurnoverEmissionsHistory
-            history={turnoverHistory}
-            onYearSelect={setSelectedYear}
-          />
-        )}
-        <CompanyScope3 scope3={scope3} />
+        <CompanyDetailCharts
+          emissionsHistory={emissionsHistory}
+          turnoverHistory={turnoverHistory}
+          emissionsError={emissionsError}
+          turnoverError={turnoverError}
+          scope3={scope3}
+          scope3Error={scope3Error}
+          onYearSelect={setSelectedYear}
+        />
       </div>
     </>
   );

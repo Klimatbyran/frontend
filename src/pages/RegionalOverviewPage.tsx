@@ -9,7 +9,8 @@ import {
   OVERVIEW_MAP_FIT_BOUNDS_PADDING,
 } from "@/components/maps/mapConstants";
 import regionGeoJson from "@/data/regionGeo.json";
-import { useRankedRegionsURLParams } from "@/hooks/regions/useRankedRegionsURLParams";
+import { useTerritoryKpiSelection } from "@/hooks/ranked/useTerritoryKpiSelection";
+import { OverviewPageError } from "@/components/pageStates/Error";
 import { useRegionsKPIs, useRegionalKPIs } from "@/hooks/regions/useRegionKPIs";
 import { TerritoryInsightsPanel } from "@/components/ranked/TerritoryInsightsPanel";
 import { Region } from "@/types/region";
@@ -44,7 +45,7 @@ export function RegionalOverviewPage() {
   const navigate = useNavigate();
 
   const { selectedKPI, displayKPI, setSelectedKPI, setKPIInURL } =
-    useRankedRegionsURLParams(regionalKPIs);
+    useTerritoryKpiSelection(regionalKPIs);
 
   const handleRegionClick = createEntityClickHandler(navigate, "region");
 
@@ -94,14 +95,10 @@ export function RegionalOverviewPage() {
 
   if (regionsError) {
     return (
-      <div className="text-center py-24">
-        <h3 className="text-red-500 mb-4 text-xl">
-          {t("regionalOverviewPage.errorTitle")}
-        </h3>
-        <p className="text-grey">
-          {t("regionalOverviewPage.errorDescription")}
-        </p>
-      </div>
+      <OverviewPageError
+        titleKey="regionalOverviewPage.errorTitle"
+        descriptionKey="regionalOverviewPage.errorDescription"
+      />
     );
   }
 

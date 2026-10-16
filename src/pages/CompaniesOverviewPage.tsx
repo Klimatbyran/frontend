@@ -5,6 +5,8 @@ import {
   usePageCompaniesOverviewChrome,
   usePageCompaniesOverviewSummary,
 } from "@/hooks/pages/usePageCompaniesOverview";
+import { sectorBaseColor } from "@/lib/constants/companyColors";
+import { OverviewPageError } from "@/components/pageStates/Error";
 import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 import { PageHeader } from "@/components/layout/PageHeader";
 import {
@@ -97,7 +99,10 @@ export function CompaniesOverviewPage() {
   const chrome = usePageCompaniesOverviewChrome();
 
   const availableSectors = useMemo(
-    () => chrome.summary?.industryFilters.map((row) => row.code) ?? [],
+    () =>
+      chrome.summary?.industryFilters
+        .filter((row) => sectorBaseColor(row.code))
+        .map((row) => row.code) ?? [],
     [chrome.summary],
   );
 
@@ -126,18 +131,16 @@ export function CompaniesOverviewPage() {
 
   if (error || !chrome.summary) {
     return (
-      <div className="py-24 text-center">
-        <h3 className="mb-4 text-xl text-red-500">
-          {t("companiesOverviewPage.errorTitle")}
-        </h3>
-        <p className="text-grey">
-          {t("companiesOverviewPage.errorDescription")}
-        </p>
-      </div>
+      <OverviewPageError
+        titleKey="companiesOverviewPage.errorTitle"
+        descriptionKey="companiesOverviewPage.errorDescription"
+      />
     );
   }
 
-  const industryRows = chrome.summary.industryFilters;
+  const industryRows = chrome.summary.industryFilters.filter((row) =>
+    sectorBaseColor(row.code),
+  );
 
   return (
     <OverviewPageRoot leadIn={<OverviewScrollProgress />}>

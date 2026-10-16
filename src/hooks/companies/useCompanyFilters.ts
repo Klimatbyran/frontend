@@ -121,10 +121,13 @@ function useCompanyFilterGroups(options: {
   } = options;
 
   const meetsParisFilter = parseMeetsParisFilter(searchParams);
-  const sectors = parseCompanySectors(searchParams, includeSectorFilter);
-  const industryGroups = parseIndustryGroups(
-    searchParams,
-    includeIndustryGroupFilter,
+  const sectors = useMemo(
+    () => parseCompanySectors(searchParams, includeSectorFilter),
+    [searchParams, includeSectorFilter],
+  );
+  const industryGroups = useMemo(
+    () => parseIndustryGroups(searchParams, includeIndustryGroupFilter),
+    [searchParams, includeIndustryGroupFilter],
   );
 
   const { filterGroups, activeFilters } = useMemo(
@@ -202,17 +205,31 @@ function useCompanyFilterUiState(
     activeFilters,
   } = useCompanyFilterGroups(options);
 
-  const clientFilteredCompanies = useFilteredCompanies(companies, {
-    sectors,
-    industryGroups,
-    searchQuery: exploreFilters.searchQuery,
-    meetsParisFilter,
-    sortBy: exploreFilters.sortBy,
-    sortDirection: exploreFilters.sortDirection,
-    sectorNames,
-    industryGroupNames,
-    currentLanguage,
-  });
+  const filterParams = useMemo(
+    () => ({
+      sectors,
+      industryGroups,
+      searchQuery: exploreFilters.searchQuery,
+      meetsParisFilter,
+      sortBy: exploreFilters.sortBy,
+      sortDirection: exploreFilters.sortDirection,
+      sectorNames,
+      industryGroupNames,
+      currentLanguage,
+    }),
+    [
+      sectors,
+      industryGroups,
+      exploreFilters.searchQuery,
+      exploreFilters.sortBy,
+      exploreFilters.sortDirection,
+      meetsParisFilter,
+      sectorNames,
+      industryGroupNames,
+      currentLanguage,
+    ],
+  );
+  const clientFilteredCompanies = useFilteredCompanies(companies, filterParams);
   const filteredCompanies = serverSide ? companies : clientFilteredCompanies;
 
   return {

@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -19,6 +18,14 @@ import {
 } from "@/utils/ui/colorGradients";
 import { cn } from "@/lib/utils";
 import { compareParisTrack } from "@/utils/data/parisTrackSort";
+import {
+  OverviewMobileColumnSelect,
+  OverviewShowMoreFooter,
+  OverviewSortableColumnHead,
+  OverviewStatusBadge,
+  OverviewTableSearch,
+  overviewMetricColumnClass,
+} from "@/components/overview/overviewTableChrome";
 
 type SortKey = "name" | "county" | "value" | "paris";
 type MetricColumn = "county" | "value" | "paris";
@@ -70,87 +77,6 @@ function compareNullableNumber(
   if (a == null) return 1;
   if (b == null) return -1;
   return factor * (a - b);
-}
-
-function StatusBadge({
-  value,
-  onLabel,
-  offLabel,
-}: {
-  value: boolean | null | undefined;
-  onLabel: string;
-  offLabel: string;
-}) {
-  const { t } = useTranslation();
-  if (value === true) {
-    return (
-      <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-blue-5/40 px-2.5 py-1 text-xs font-medium text-blue-2">
-        <i className="size-1.5 shrink-0 rounded-full bg-blue-3" />
-        {onLabel}
-      </span>
-    );
-  }
-  if (value === false) {
-    return (
-      <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-pink-5/30 px-2.5 py-1 text-xs font-medium text-pink-2">
-        <i className="size-1.5 shrink-0 rounded-full bg-pink-3" />
-        {offLabel}
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white/5 px-2.5 py-1 text-xs text-white/45">
-      <i className="size-1.5 shrink-0 rounded-full bg-white/25" />
-      {t("territoryOverview.badgeNoData")}
-    </span>
-  );
-}
-
-function SortableColumnHead({
-  columnKey,
-  activeKey,
-  direction,
-  onSort,
-  className,
-  align = "start",
-  children,
-}: {
-  columnKey: SortKey;
-  activeKey: SortKey;
-  direction: "asc" | "desc";
-  onSort: (key: SortKey) => void;
-  className?: string;
-  align?: "start" | "center" | "end";
-  children: React.ReactNode;
-}) {
-  const active = activeKey === columnKey;
-  return (
-    <TableHead
-      aria-sort={
-        active ? (direction === "asc" ? "ascending" : "descending") : "none"
-      }
-      className={className}
-    >
-      <button
-        type="button"
-        onClick={() => onSort(columnKey)}
-        className={cn(
-          "inline-flex w-full min-w-0 items-center gap-1 font-normal transition-colors hover:text-white/70",
-          align === "end" && "justify-end",
-          align === "center" && "justify-center",
-          active ? "text-white/70" : "text-inherit",
-        )}
-      >
-        {children}
-        {active &&
-          (direction === "asc" ? (
-            <ArrowUp className="size-3.5 shrink-0 opacity-80" aria-hidden />
-          ) : (
-            <ArrowDown className="size-3.5 shrink-0 opacity-80" aria-hidden />
-          ))}
-      </button>
-    </TableHead>
-  );
 }
 
 function formatKpi(
@@ -275,10 +201,7 @@ export function TerritoryOverviewTable({
       : t("territoryOverview.colMunicipality");
 
   const columnClass = (column: MetricColumn, desktop: string) =>
-    cn(
-      column === mobileColumn ? "table-cell" : "hidden md:table-cell",
-      desktop,
-    );
+    overviewMetricColumnClass(column === mobileColumn, desktop);
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -298,45 +221,31 @@ export function TerritoryOverviewTable({
         {t("territoryOverview.everyDescription")}
       </p>
 
-      <div className="relative mt-5">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/35" />
-        <input
-          type="search"
-          value={query}
-          onChange={(event) => {
-            setQuery(event.target.value);
-            setLimit(PAGE_SIZE);
-          }}
-          placeholder={t(searchKey)}
-          className="h-10 w-full rounded-full bg-black-1 pl-9 pr-4 text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-1 focus:ring-blue-3/60"
-        />
-      </div>
+      <OverviewTableSearch
+        value={query}
+        onChange={(value) => {
+          setQuery(value);
+          setLimit(PAGE_SIZE);
+        }}
+        placeholder={t(searchKey)}
+      />
 
       {metricColumns.length > 1 && (
-        <label
-          htmlFor="territory-metric-column"
-          className="mt-4 flex items-center gap-3 text-sm text-white/60 md:hidden"
-        >
-          <span className="shrink-0">{t("territoryOverview.showColumn")}</span>
-          <select
-            id="territory-metric-column"
-            value={mobileColumn}
-            onChange={(event) =>
-              setMobileColumn(event.target.value as MetricColumn)
-            }
-            className="h-10 min-w-0 flex-1 rounded-full bg-black-1 px-4 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-3/60"
-          >
-            {metricColumns.map((column) => (
-              <option key={column} value={column}>
-                {column === "county"
-                  ? t("territoryOverview.colCounty")
-                  : column === "paris"
-                    ? t("territoryOverview.colOnTrack")
-                    : kpiLabel}
-              </option>
-            ))}
-          </select>
-        </label>
+        <OverviewMobileColumnSelect
+          id="territory-metric-column"
+          label={t("territoryOverview.showColumn")}
+          value={mobileColumn}
+          onChange={(value) => setMobileColumn(value as MetricColumn)}
+          options={metricColumns.map((column) => ({
+            value: column,
+            label:
+              column === "county"
+                ? t("territoryOverview.colCounty")
+                : column === "paris"
+                  ? t("territoryOverview.colOnTrack")
+                  : kpiLabel,
+          }))}
+        />
       )}
 
       <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)]">
@@ -348,7 +257,7 @@ export function TerritoryOverviewTable({
                   #
                 </TableHead>
               )}
-              <SortableColumnHead
+              <OverviewSortableColumnHead
                 columnKey="name"
                 activeKey={sortKey}
                 direction={direction}
@@ -356,9 +265,9 @@ export function TerritoryOverviewTable({
                 className="text-white/40"
               >
                 {nameLabel}
-              </SortableColumnHead>
+              </OverviewSortableColumnHead>
               {showCounty && (
-                <SortableColumnHead
+                <OverviewSortableColumnHead
                   columnKey="county"
                   activeKey={sortKey}
                   direction={direction}
@@ -369,9 +278,9 @@ export function TerritoryOverviewTable({
                   )}
                 >
                   {t("territoryOverview.colCounty")}
-                </SortableColumnHead>
+                </OverviewSortableColumnHead>
               )}
-              <SortableColumnHead
+              <OverviewSortableColumnHead
                 columnKey="value"
                 activeKey={sortKey}
                 direction={direction}
@@ -383,9 +292,9 @@ export function TerritoryOverviewTable({
                 )}
               >
                 {kpiLabel}
-              </SortableColumnHead>
+              </OverviewSortableColumnHead>
               {showParis && (
-                <SortableColumnHead
+                <OverviewSortableColumnHead
                   columnKey="paris"
                   activeKey={sortKey}
                   direction={direction}
@@ -397,7 +306,7 @@ export function TerritoryOverviewTable({
                   )}
                 >
                   {t("territoryOverview.colOnTrack")}
-                </SortableColumnHead>
+                </OverviewSortableColumnHead>
               )}
             </TableRow>
           </TableHeader>
@@ -449,7 +358,7 @@ export function TerritoryOverviewTable({
                     style={valueColor ? { color: valueColor } : undefined}
                   >
                     {isBoolean ? (
-                      <StatusBadge
+                      <OverviewStatusBadge
                         value={
                           typeof row.kpiValue === "boolean"
                             ? row.kpiValue
@@ -457,6 +366,7 @@ export function TerritoryOverviewTable({
                         }
                         onLabel={booleanLabels?.true ?? ""}
                         offLabel={booleanLabels?.false ?? ""}
+                        noDataLabel={noData}
                       />
                     ) : (
                       formatKpi(row.kpiValue, unit, nullLabel || noData)
@@ -469,10 +379,11 @@ export function TerritoryOverviewTable({
                         columnClass("paris", ""),
                       )}
                     >
-                      <StatusBadge
+                      <OverviewStatusBadge
                         value={row.paris}
                         onLabel={t("territoryOverview.badgeOnTrack")}
                         offLabel={t("territoryOverview.badgeOffTrack")}
+                        noDataLabel={noData}
                       />
                     </TableCell>
                   )}
@@ -483,22 +394,23 @@ export function TerritoryOverviewTable({
         </Table>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-4">
-        {limit < sorted.length && (
-          <button
-            type="button"
-            onClick={() => setLimit((value) => value + PAGE_SIZE)}
-            className="rounded-full bg-black-1 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10"
-          >
-            {t("territoryOverview.showMoreRows", { count: PAGE_SIZE })}
-          </button>
-        )}
-        <span className="text-xs text-grey">
-          {sorted.length === 0
+      <OverviewShowMoreFooter
+        showMoreLabel={
+          limit < sorted.length
+            ? t("territoryOverview.showMoreRows", { count: PAGE_SIZE })
+            : undefined
+        }
+        onShowMore={
+          limit < sorted.length
+            ? () => setLimit((value) => value + PAGE_SIZE)
+            : undefined
+        }
+        countLabel={
+          sorted.length === 0
             ? t("territoryOverview.noMatches")
-            : t(showingKey, { shown: shown.length, total: sorted.length })}
-        </span>
-      </div>
+            : t(showingKey, { shown: shown.length, total: sorted.length })
+        }
+      />
     </section>
   );
 }

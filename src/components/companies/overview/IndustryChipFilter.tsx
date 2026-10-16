@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { sectorColors } from "@/lib/constants/companyColors";
+import { sectorBaseColor } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import { cn } from "@/lib/utils";
@@ -76,24 +76,29 @@ export function IndustryChipFilter({
         </span>
       </Chip>
 
-      {visible.map((option) => (
-        <Chip
-          key={option.code}
-          active={selected === option.code}
-          onClick={() =>
-            onSelect(selected === option.code ? null : option.code)
-          }
-        >
-          <i
-            className="size-2 rounded-full"
-            style={{ backgroundColor: sectorColors[option.code].base }}
-          />
-          {sectorNames[option.code]}
-          <span className="text-[11px] text-white/45 tabular-nums">
-            {option.companyCount}
-          </span>
-        </Chip>
-      ))}
+      {visible.map((option) => {
+        const color = sectorBaseColor(option.code);
+        return (
+          <Chip
+            key={option.code}
+            active={selected === option.code}
+            onClick={() =>
+              onSelect(selected === option.code ? null : option.code)
+            }
+          >
+            {color && (
+              <i
+                className="size-2 rounded-full"
+                style={{ backgroundColor: color }}
+              />
+            )}
+            {sectorNames[option.code]}
+            <span className="text-[11px] text-white/45 tabular-nums">
+              {option.companyCount}
+            </span>
+          </Chip>
+        );
+      })}
 
       <button
         type="button"

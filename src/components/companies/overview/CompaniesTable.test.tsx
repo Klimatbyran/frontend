@@ -24,6 +24,7 @@ const { mockLoadMore, mockListState, capturedListOptions } = vi.hoisted(() => {
     loading: false,
     fetchingMore: false,
     hasMore: false,
+    refreshing: false,
     loadMore,
     error: null as Error | null,
   };
@@ -116,6 +117,7 @@ beforeEach(() => {
   mockListState.loading = false;
   mockListState.fetchingMore = false;
   mockListState.hasMore = false;
+  mockListState.refreshing = false;
   mockListState.error = null;
 });
 
@@ -202,6 +204,18 @@ describe("CompaniesTable", () => {
         name: /companiesOverviewPage\.paris\.showMoreRows/,
       }),
     ).toBeNull();
+  });
+
+  it("marks the table as updating while a new sort is still loading", () => {
+    mockListState.refreshing = true;
+    renderTable();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "companiesOverviewPage.paris.tableLoading",
+    );
+    expect(document.querySelector("section")).toHaveAttribute(
+      "aria-busy",
+      "true",
+    );
   });
 
   it("shows a loading row while the first page is fetching", () => {

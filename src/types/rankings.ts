@@ -16,23 +16,6 @@ export interface DataItem {
   [key: string]: string | number | boolean | null | undefined | Array<unknown>;
 }
 
-export interface DataPoint<T> {
-  label: string;
-  key: keyof T;
-  unit?: string;
-  description?: string;
-  higherIsBetter: boolean;
-  nullValues?: string;
-  isBoolean?: boolean;
-  booleanLabels?: { true: string; false: string };
-  formatter?: (value: T[keyof T]) => string | React.ReactNode;
-}
-
-export type RankedListItem = DataItem & {
-  mapName: string;
-  displayName: string;
-};
-
 /**
  * Generic KPI value type that can be used for any entity type
  * @template T - The entity type (Municipality, Region, CompanyWithKPIs, etc.)

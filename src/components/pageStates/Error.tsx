@@ -21,3 +21,18 @@ export const PageError = ({
     </div>
   );
 };
+
+/** Same message as the overview pages already show: a compact title, not the detail-page heading. */
+export function OverviewPageError({
+  titleKey,
+  descriptionKey,
+}: Required<ErrorProps>) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="py-24 text-center">
+      <h3 className="mb-4 text-xl text-red-500">{t(titleKey)}</h3>
+      <p className="text-grey">{t(descriptionKey)}</p>
+    </div>
+  );
+}

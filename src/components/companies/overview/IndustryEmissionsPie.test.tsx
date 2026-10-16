@@ -120,4 +120,28 @@ describe("IndustryEmissionsPie", () => {
       screen.queryByText("companiesOverviewPage.paris.rampLow"),
     ).toBeNull();
   });
+
+  it("skips a sector code this app does not know", () => {
+    chartProps.mockClear();
+
+    render(
+      <IndustryEmissionsPie
+        rows={[
+          ...rows,
+          {
+            code: "not-a-sector",
+            emissions: 999,
+            companyCount: 1,
+            onTrackShare: null,
+          },
+        ]}
+        selected={null}
+      />,
+    );
+
+    const chartCall = chartProps.mock.calls.at(-1)?.[0] as {
+      data: Array<{ key: string }>;
+    };
+    expect(chartCall.data.map((item) => item.key)).toEqual(["15", "35"]);
+  });
 });

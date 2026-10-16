@@ -7,7 +7,7 @@ import SectorPieChart, {
   type PieChartItem,
 } from "@/components/charts/sectorChart/SectorPieChart";
 import SectorPieLegend from "@/components/charts/sectorChart/SectorPieLegend";
-import { sectorColors } from "@/lib/constants/companyColors";
+import { sectorBaseColor } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import type { PageIndustryBreakdown } from "@/types/pages";
@@ -34,19 +34,21 @@ export function IndustryEmissionsPie({
   });
   const show = reduceMotion || entered;
 
-  const data = useMemo<PieChartItem[]>(
-    () =>
-      rows.map((row) => {
-        const code = row.code as SectorCode;
-        return {
-          key: code,
-          name: sectorNames[code],
-          value: row.emissions,
-          color: sectorColors[code].base,
-        };
-      }),
-    [rows, sectorNames],
-  );
+  const data = useMemo<PieChartItem[]>(() => {
+    const items: PieChartItem[] = [];
+    for (const row of rows) {
+      const color = sectorBaseColor(row.code);
+      if (!color) continue;
+      const code = row.code as SectorCode;
+      items.push({
+        key: code,
+        name: sectorNames[code] ?? row.code,
+        value: row.emissions,
+        color,
+      });
+    }
+    return items;
+  }, [rows, sectorNames]);
 
   const total = useMemo(
     () => data.reduce((sum, item) => sum + item.value, 0),

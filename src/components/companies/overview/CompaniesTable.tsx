@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -16,7 +15,7 @@ import {
   formatEmissionsAbsoluteCompact,
   formatPercentChange,
 } from "@/utils/formatting/localization";
-import { sectorColors } from "@/lib/constants/companyColors";
+import { sectorBaseColor } from "@/lib/constants/companyColors";
 import type { SectorCode } from "@/lib/constants/sectors";
 import { useSectorNames } from "@/hooks/companies/useCompanySectors";
 import {
@@ -30,6 +29,14 @@ import {
 } from "@/hooks/pages/usePageCompaniesOverview";
 import { cn } from "@/lib/utils";
 import { compareParisTrack } from "@/utils/data/parisTrackSort";
+import {
+  OverviewMobileColumnSelect,
+  OverviewShowMoreFooter,
+  OverviewSortableColumnHead,
+  OverviewStatusBadge,
+  OverviewTableSearch,
+  overviewMetricColumnClass,
+} from "@/components/overview/overviewTableChrome";
 
 type SortKey = "name" | "industry" | "emissions" | "change" | "paris";
 
@@ -62,94 +69,6 @@ const SEARCH_DEBOUNCE_MS = 300;
 
 function toApiSortBy(sortKey: SortKey): OverviewListSortBy {
   return sortKey === "industry" ? "sector" : sortKey;
-}
-
-/** On small screens one metric sits beside the name. The rest return at md. */
-function metricColumnClass(
-  column: MetricColumn,
-  selected: MetricColumn,
-  desktopWidth: string,
-) {
-  return cn(
-    column === selected ? "table-cell w-[8.5rem]" : "hidden md:table-cell",
-    desktopWidth,
-  );
-}
-
-function ParisBadge({ value }: { value: boolean | null | undefined }) {
-  const { t } = useTranslation();
-
-  if (value === true) {
-    return (
-      <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-blue-5/40 px-2.5 py-1 text-xs font-medium text-blue-2 sm:whitespace-normal md:whitespace-nowrap">
-        <i className="size-1.5 shrink-0 rounded-full bg-blue-3" />
-        {t("companiesOverviewPage.paris.badgeOnTrack")}
-      </span>
-    );
-  }
-  if (value === false) {
-    return (
-      <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-pink-5/30 px-2.5 py-1 text-xs font-medium text-pink-2 sm:whitespace-normal md:whitespace-nowrap">
-        <i className="size-1.5 shrink-0 rounded-full bg-pink-3" />
-        {t("companiesOverviewPage.paris.badgeOffTrack")}
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white/5 px-2.5 py-1 text-xs text-white/45 sm:whitespace-normal md:whitespace-nowrap">
-      <i className="size-1.5 shrink-0 rounded-full bg-white/25" />
-      {t("companiesOverviewPage.paris.badgeNoData")}
-    </span>
-  );
-}
-
-function SortableColumnHead({
-  columnKey,
-  activeKey,
-  direction,
-  onSort,
-  className,
-  align = "start",
-  children,
-}: {
-  columnKey: SortKey;
-  activeKey: SortKey;
-  direction: "asc" | "desc";
-  onSort: (key: SortKey) => void;
-  className?: string;
-  align?: "start" | "center" | "end";
-  children: React.ReactNode;
-}) {
-  const active = activeKey === columnKey;
-  return (
-    <TableHead className={className}>
-      <button
-        type="button"
-        onClick={() => onSort(columnKey)}
-        aria-sort={
-          active
-            ? direction === "asc"
-              ? "ascending"
-              : "descending"
-            : undefined
-        }
-        className={cn(
-          "inline-flex w-full min-w-0 items-center gap-1 font-normal transition-colors hover:text-white/70",
-          align === "end" && "justify-end",
-          align === "center" && "justify-center",
-          active ? "text-white/70" : "text-inherit",
-        )}
-      >
-        {children}
-        {active &&
-          (direction === "asc" ? (
-            <ArrowUp className="size-3.5 shrink-0 opacity-80" aria-hidden />
-          ) : (
-            <ArrowDown className="size-3.5 shrink-0 opacity-80" aria-hidden />
-          ))}
-      </button>
-    </TableHead>
-  );
 }
 
 export interface CompaniesTableProps {
@@ -222,6 +141,15 @@ export function CompaniesTable({
   const remaining = Math.max(total - shown.length, 0);
   const showMoreCount = Math.min(PAGE_OVERVIEW_PAGE_SIZE, remaining);
 
+  const metricColumnClass = (column: MetricColumn, desktopWidth: string) =>
+    overviewMetricColumnClass(
+      column === mobileColumn,
+      desktopWidth,
+      "w-[8.5rem]",
+    );
+
+  const showingStaleRows = Boolean(refreshing) && companies.length > 0;
+
   const showMore = () => {
     const nextLimit = rowLimit + PAGE_OVERVIEW_PAGE_SIZE;
     setRowLimit(nextLimit);
@@ -237,7 +165,18 @@ export function CompaniesTable({
   };
 
   return (
-    <section className="min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7">
+    <section
+      className={cn(
+        "min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7",
+        showingStaleRows && "opacity-60",
+      )}
+      aria-busy={showingStaleRows || undefined}
+    >
+      {showingStaleRows && (
+        <span className="sr-only" role="status">
+          {t("companiesOverviewPage.paris.tableLoading")}
+        </span>
+      )}
       <div>
         <h2 className="text-xl font-light md:text-[21px]">
           {t("companiesOverviewPage.paris.everyCompanyTitle")}
@@ -247,39 +186,22 @@ export function CompaniesTable({
         </p>
       </div>
 
-      <div className="relative mt-5">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/35" />
-        <input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder={t("companiesOverviewPage.paris.searchPlaceholder")}
-          className="h-10 w-full rounded-full bg-black-1 pl-9 pr-4 text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-1 focus:ring-blue-3/60"
-        />
-      </div>
+      <OverviewTableSearch
+        value={query}
+        onChange={setQuery}
+        placeholder={t("companiesOverviewPage.paris.searchPlaceholder")}
+      />
 
-      <label
-        htmlFor="company-metric-column"
-        className="mt-4 flex items-center gap-3 text-sm text-white/60 md:hidden"
-      >
-        <span className="shrink-0">
-          {t("companiesOverviewPage.paris.showColumn")}
-        </span>
-        <select
-          id="company-metric-column"
-          value={mobileColumn}
-          onChange={(event) =>
-            setMobileColumn(event.target.value as MetricColumn)
-          }
-          className="h-10 min-w-0 flex-1 rounded-full bg-black-1 px-4 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-3/60"
-        >
-          {METRIC_COLUMNS.map((column) => (
-            <option key={column} value={column}>
-              {t(METRIC_LABEL[column])}
-            </option>
-          ))}
-        </select>
-      </label>
+      <OverviewMobileColumnSelect
+        id="company-metric-column"
+        label={t("companiesOverviewPage.paris.showColumn")}
+        value={mobileColumn}
+        onChange={(value) => setMobileColumn(value as MetricColumn)}
+        options={METRIC_COLUMNS.map((column) => ({
+          value: column,
+          label: t(METRIC_LABEL[column]),
+        }))}
+      />
 
       <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)]">
         <Table className="table-fixed">
@@ -288,7 +210,7 @@ export function CompaniesTable({
               <TableHead className="w-8 text-right text-white/40 md:w-10">
                 #
               </TableHead>
-              <SortableColumnHead
+              <OverviewSortableColumnHead
                 columnKey="name"
                 activeKey={sortKey}
                 direction={direction}
@@ -296,20 +218,20 @@ export function CompaniesTable({
                 className="text-white/40"
               >
                 {t("companiesOverviewPage.paris.colCompany")}
-              </SortableColumnHead>
-              <SortableColumnHead
+              </OverviewSortableColumnHead>
+              <OverviewSortableColumnHead
                 columnKey="industry"
                 activeKey={sortKey}
                 direction={direction}
                 onSort={toggleSort}
                 className={cn(
                   "text-white/40",
-                  metricColumnClass("industry", mobileColumn, "md:w-[18%]"),
+                  metricColumnClass("industry", "md:w-[18%]"),
                 )}
               >
                 {t("companiesOverviewPage.paris.colIndustry")}
-              </SortableColumnHead>
-              <SortableColumnHead
+              </OverviewSortableColumnHead>
+              <OverviewSortableColumnHead
                 columnKey="emissions"
                 activeKey={sortKey}
                 direction={direction}
@@ -317,12 +239,12 @@ export function CompaniesTable({
                 align="end"
                 className={cn(
                   "text-white/40",
-                  metricColumnClass("emissions", mobileColumn, "md:w-[16%]"),
+                  metricColumnClass("emissions", "md:w-[16%]"),
                 )}
               >
                 {t("companiesOverviewPage.paris.colEmissions")}
-              </SortableColumnHead>
-              <SortableColumnHead
+              </OverviewSortableColumnHead>
+              <OverviewSortableColumnHead
                 columnKey="change"
                 activeKey={sortKey}
                 direction={direction}
@@ -330,16 +252,12 @@ export function CompaniesTable({
                 align="end"
                 className={cn(
                   "text-white/40",
-                  metricColumnClass(
-                    "change",
-                    mobileColumn,
-                    "md:w-[6.5rem] lg:w-[9.5rem]",
-                  ),
+                  metricColumnClass("change", "md:w-[6.5rem] lg:w-[9.5rem]"),
                 )}
               >
                 {t("companiesOverviewPage.paris.colChange")}
-              </SortableColumnHead>
-              <SortableColumnHead
+              </OverviewSortableColumnHead>
+              <OverviewSortableColumnHead
                 columnKey="paris"
                 activeKey={sortKey}
                 direction={direction}
@@ -347,15 +265,11 @@ export function CompaniesTable({
                 align="center"
                 className={cn(
                   "text-white/40",
-                  metricColumnClass(
-                    "paris",
-                    mobileColumn,
-                    "md:w-[9.5rem] lg:w-[11.5rem]",
-                  ),
+                  metricColumnClass("paris", "md:w-[9.5rem] lg:w-[11.5rem]"),
                 )}
               >
                 {t("companiesOverviewPage.paris.colOnTrack")}
-              </SortableColumnHead>
+              </OverviewSortableColumnHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -391,6 +305,9 @@ export function CompaniesTable({
             )}
             {shown.map((company, index) => {
               const sectorCodeValue = overviewSectorCode(company);
+              const industryColor = sectorCodeValue
+                ? sectorBaseColor(sectorCodeValue)
+                : undefined;
               const change = company.emissionsChangeFromBaseYear;
               const emissions = latestEmissions(company);
               const detailPath = getCompanyDetailPath(company);
@@ -414,16 +331,14 @@ export function CompaniesTable({
                   <TableCell
                     className={cn(
                       "py-3 text-grey",
-                      metricColumnClass("industry", mobileColumn, "md:w-[18%]"),
+                      metricColumnClass("industry", "md:w-[18%]"),
                     )}
                   >
-                    {sectorCodeValue && (
+                    {sectorCodeValue && industryColor && (
                       <span className="inline-flex items-center gap-2">
                         <i
                           className="size-2 rounded-full"
-                          style={{
-                            backgroundColor: sectorColors[sectorCodeValue].base,
-                          }}
+                          style={{ backgroundColor: industryColor }}
                         />
                         {sectorNames[sectorCodeValue]}
                       </span>
@@ -432,11 +347,7 @@ export function CompaniesTable({
                   <TableCell
                     className={cn(
                       "py-3 text-right tabular-nums",
-                      metricColumnClass(
-                        "emissions",
-                        mobileColumn,
-                        "md:w-[16%]",
-                      ),
+                      metricColumnClass("emissions", "md:w-[16%]"),
                       emissions === null && "text-white/30",
                     )}
                   >
@@ -457,11 +368,7 @@ export function CompaniesTable({
                   <TableCell
                     className={cn(
                       "py-3 text-right tabular-nums",
-                      metricColumnClass(
-                        "change",
-                        mobileColumn,
-                        "md:w-[6.5rem] lg:w-[9rem]",
-                      ),
+                      metricColumnClass("change", "md:w-[6.5rem] lg:w-[9rem]"),
                       change === null || change === undefined
                         ? "text-white/30"
                         : change < 0
@@ -482,12 +389,17 @@ export function CompaniesTable({
                       "py-3 text-center",
                       metricColumnClass(
                         "paris",
-                        mobileColumn,
                         "md:w-[9.5rem] lg:w-[11.5rem]",
                       ),
                     )}
                   >
-                    <ParisBadge value={company.meetsParis} />
+                    <OverviewStatusBadge
+                      value={company.meetsParis}
+                      onLabel={t("companiesOverviewPage.paris.badgeOnTrack")}
+                      offLabel={t("companiesOverviewPage.paris.badgeOffTrack")}
+                      noDataLabel={t("companiesOverviewPage.paris.badgeNoData")}
+                      className="sm:whitespace-normal md:whitespace-nowrap"
+                    />
                   </TableCell>
                 </TableRow>
               );
@@ -496,26 +408,21 @@ export function CompaniesTable({
         </Table>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-4">
-        {remaining > 0 && (
-          <button
-            type="button"
-            onClick={showMore}
-            disabled={fetchingMore || loading || refreshing}
-            className="rounded-full bg-black-1 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 disabled:opacity-50"
-          >
-            {t("companiesOverviewPage.paris.showMoreRows", {
-              count: showMoreCount,
-            })}
-          </button>
-        )}
-        <span className="text-xs text-grey">
-          {t("companiesOverviewPage.paris.showingCount", {
-            shown: shown.length,
-            total,
-          })}
-        </span>
-      </div>
+      <OverviewShowMoreFooter
+        showMoreLabel={
+          remaining > 0
+            ? t("companiesOverviewPage.paris.showMoreRows", {
+                count: showMoreCount,
+              })
+            : undefined
+        }
+        onShowMore={remaining > 0 ? showMore : undefined}
+        showMoreDisabled={fetchingMore || loading || refreshing}
+        countLabel={t("companiesOverviewPage.paris.showingCount", {
+          shown: shown.length,
+          total,
+        })}
+      />
     </section>
   );
 }

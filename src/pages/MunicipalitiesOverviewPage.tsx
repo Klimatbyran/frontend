@@ -1,10 +1,4 @@
-import {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useDeferredValue,
-} from "react";
+import { useState, useMemo } from "react";
 import {
   Leaf,
   ArrowDownCircle,
@@ -13,7 +7,7 @@ import {
   Zap,
   ArrowUpCircle,
 } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FeatureCollection } from "geojson";
 import { TerritoryInsightsPanel } from "@/components/ranked/TerritoryInsightsPanel";
@@ -27,7 +21,8 @@ import {
   useMunicipalityKPIs,
   useMunicipalityKPIDefinitions,
 } from "@/hooks/municipalities/useMunicipalityKPIs";
-import { type KPIValue } from "@/types/rankings";
+import { useTerritoryKpiSelection } from "@/hooks/ranked/useTerritoryKpiSelection";
+import { OverviewPageError } from "@/components/pageStates/Error";
 import { createEntityClickHandler, getEntityDetailPath } from "@/utils/routing";
 import {
   normalizeMunicipalityKpiApiItem,
@@ -54,31 +49,6 @@ const MUNICIPALITY_KPI_ICONS: Record<string, React.ReactNode> = {
   bicycleMetrePerCapita: <ArrowUpCircle className="w-4 h-4" />,
 };
 
-function useMunicipalityUrlState(municipalityKPIs: KPIValue<Municipality>[]) {
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const getKPIFromURL = useCallback(() => {
-    const params = new URLSearchParams(location.search);
-    const kpiKey = params.get("kpi");
-    return (
-      municipalityKPIs.find((kpi) => String(kpi.key) === kpiKey) ||
-      municipalityKPIs.find(
-        (kpi) => String(kpi.key) === "historicalEmissionChangePercent",
-      ) ||
-      municipalityKPIs[0]
-    );
-  }, [location.search, municipalityKPIs]);
-
-  const setKPIInURL = (kpiId: string) => {
-    const params = new URLSearchParams(location.search);
-    params.set("kpi", kpiId);
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
-  return { getKPIFromURL, setKPIInURL };
-}
-
 export function MunicipalitiesOverviewPage() {
   const { t } = useTranslation();
   const { isMobile } = useScreenSize();
@@ -99,19 +69,8 @@ export function MunicipalitiesOverviewPage() {
     [municipalitiesData],
   );
 
-  const { getKPIFromURL, setKPIInURL } =
-    useMunicipalityUrlState(municipalityKPIs);
-  const [selectedKPI, setSelectedKPI] = useState(getKPIFromURL);
-  // Chips update immediately; map/lists/charts keep the previous KPI painted
-  // until the heavy re-render is ready (avoids empty flashes on stage/prod).
-  const displayKPI = useDeferredValue(selectedKPI);
-
-  useEffect(() => {
-    const kpiFromUrl = getKPIFromURL();
-    setSelectedKPI((current) =>
-      String(kpiFromUrl.key) === String(current.key) ? current : kpiFromUrl,
-    );
-  }, [getKPIFromURL]);
+  const { selectedKPI, displayKPI, setSelectedKPI, setKPIInURL } =
+    useTerritoryKpiSelection(municipalityKPIs);
 
   const handleMunicipalityClick = createEntityClickHandler(
     navigate,
@@ -150,14 +109,10 @@ export function MunicipalitiesOverviewPage() {
 
   if (municipalitiesError) {
     return (
-      <div className="text-center py-24">
-        <h3 className="text-red-500 mb-4 text-xl">
-          {t("municipalitiesOverviewPage.errorTitle")}
-        </h3>
-        <p className="text-grey">
-          {t("municipalitiesOverviewPage.errorDescription")}
-        </p>
-      </div>
+      <OverviewPageError
+        titleKey="municipalitiesOverviewPage.errorTitle"
+        descriptionKey="municipalitiesOverviewPage.errorDescription"
+      />
     );
   }
 

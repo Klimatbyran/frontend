@@ -80,6 +80,12 @@ export const sectorColors: SectorColors = {
   },
 };
 
+/** Sector colour, or undefined when the API sends a code this app does not know. */
+export function sectorBaseColor(code: string): string | undefined {
+  if (!(code in sectorColors)) return undefined;
+  return sectorColors[code as SectorCode].base;
+}
+
 export const getCompanyColors = (index: number) => {
   const colors = Object.values(sectorColors);
   return colors[index % colors.length];

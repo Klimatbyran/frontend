@@ -74,7 +74,8 @@ export function usePageCompanyHistories(id: string, enabled = true) {
     emissionsHistory: emissions.data,
     turnoverHistory: turnover.data,
     loading: emissions.isLoading || turnover.isLoading,
-    error: emissions.error || turnover.error,
+    emissionsError: emissions.error,
+    turnoverError: turnover.error,
   };
 }
 

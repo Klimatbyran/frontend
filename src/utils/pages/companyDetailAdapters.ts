@@ -42,7 +42,8 @@ export function chartDataFromEmissionsHistory(
 
     return {
       year: period.year,
-      total: period.total ?? 0,
+      // A missing total is a gap. Zero is a reported zero and stays on the chart.
+      total: period.total ?? undefined,
       isAIGenerated: period.isAIGenerated,
       scope1: period.scope1
         ? {
