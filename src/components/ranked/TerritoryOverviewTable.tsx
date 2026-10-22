@@ -38,6 +38,29 @@ const DEFAULT_DIRECTION: Record<Exclude<SortKey, "value">, "asc" | "desc"> = {
   paris: "desc",
 };
 
+/**
+ * Measures whose overview column is emissions. Those lists open with the
+ * largest figure first. Other measures keep the better-first direction.
+ */
+const EMISSIONS_OVERVIEW_KPI_KEYS = new Set([
+  "historicalEmissionChangePercent",
+  "totalConsumptionEmission",
+]);
+
+export function territoryOverviewSortsByLargest(
+  kpiKey: string | number | symbol,
+): boolean {
+  return EMISSIONS_OVERVIEW_KPI_KEYS.has(String(kpiKey));
+}
+
+function measureDefaultDirection(
+  sortLargestFirst: boolean,
+  higherIsBetter: boolean,
+): "asc" | "desc" {
+  if (sortLargestFirst || higherIsBetter) return "desc";
+  return "asc";
+}
+
 export interface TerritoryTableRow {
   id: string;
   name: string;
@@ -60,6 +83,11 @@ interface TerritoryOverviewTableProps {
   nullLabel?: string;
   /** Hide the Paris column when the selected measure already is Paris. */
   showParis: boolean;
+  /**
+   * Open the measure column on the largest number. Used when that column
+   * is emissions and is on screen.
+   */
+  sortLargestFirst?: boolean;
 }
 
 function numericValue(value: number | boolean | null): number | null {
@@ -100,6 +128,7 @@ export function TerritoryOverviewTable({
   booleanLabels,
   nullLabel,
   showParis,
+  sortLargestFirst = false,
 }: TerritoryOverviewTableProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
@@ -110,7 +139,10 @@ export function TerritoryOverviewTable({
     ...(showParis ? (["paris"] as const) : []),
   ];
 
-  const defaultDirection: "asc" | "desc" = higherIsBetter ? "desc" : "asc";
+  const defaultDirection = measureDefaultDirection(
+    sortLargestFirst,
+    higherIsBetter,
+  );
 
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("value");

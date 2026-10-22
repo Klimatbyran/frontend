@@ -91,7 +91,7 @@ export function usePageCompaniesOverviewList(options?: {
 }) {
   const sector = options?.sector ?? null;
   const q = options?.q?.trim() || undefined;
-  const sortBy = options?.sortBy ?? "paris";
+  const sortBy = options?.sortBy ?? "emissions";
   const sortDir = options?.sortDir ?? "desc";
 
   const sectorKey = sector ?? "all";

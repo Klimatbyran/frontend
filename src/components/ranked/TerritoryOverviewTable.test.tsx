@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import i18n from "@/i18n";
 import {
   TerritoryOverviewTable,
+  territoryOverviewSortsByLargest,
   type TerritoryTableRow,
 } from "./TerritoryOverviewTable";
 
@@ -58,7 +59,54 @@ beforeAll(async () => {
   await i18n.changeLanguage("en");
 });
 
+describe("territoryOverviewSortsByLargest", () => {
+  it("is true only for the emissions columns", () => {
+    expect(
+      territoryOverviewSortsByLargest("historicalEmissionChangePercent"),
+    ).toBe(true);
+    expect(territoryOverviewSortsByLargest("totalConsumptionEmission")).toBe(
+      true,
+    );
+    expect(territoryOverviewSortsByLargest("meetsParis")).toBe(false);
+    expect(territoryOverviewSortsByLargest("bicycleMetrePerCapita")).toBe(
+      false,
+    );
+  });
+});
+
 describe("TerritoryOverviewTable", () => {
+  it("keeps a lower-is-better measure smallest-first", () => {
+    renderTable();
+    expect(screen.getAllByRole("link").map((link) => link.textContent)).toEqual(
+      ["Alpha", "Beta", "Gamma"],
+    );
+  });
+
+  it("starts an emissions measure with the largest figures", () => {
+    render(
+      <MemoryRouter>
+        <TerritoryOverviewTable
+          rows={rows}
+          entityType="municipalities"
+          kpiLabel="Emissions"
+          unit="%"
+          higherIsBetter={false}
+          sortLargestFirst
+          showParis
+        />
+      </MemoryRouter>,
+    );
+
+    const names = () =>
+      screen.getAllByRole("link").map((link) => link.textContent);
+    expect(names()).toEqual(["Beta", "Alpha", "Gamma"]);
+    expect(rankFor("Beta")).toBe("2");
+
+    fireEvent.click(screen.getByRole("button", { name: "Emissions" }));
+    expect(names()).toEqual(["Alpha", "Beta", "Gamma"]);
+    expect(rankFor("Beta")).toBe("2");
+  });
+
   it("keeps the measure rank when the list is searched or sorted by name", () => {
     renderTable();
 

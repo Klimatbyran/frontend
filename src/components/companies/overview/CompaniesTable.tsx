@@ -88,9 +88,11 @@ export function CompaniesTable({
 
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const [sortKey, setSortKey] = useState<SortKey>("paris");
-  const [direction, setDirection] = useState<"asc" | "desc">("desc");
-  const [mobileColumn, setMobileColumn] = useState<MetricColumn>("paris");
+  const [sortKey, setSortKey] = useState<SortKey>("emissions");
+  const [direction, setDirection] = useState<"asc" | "desc">(
+    DEFAULT_DIRECTION.emissions,
+  );
+  const [mobileColumn, setMobileColumn] = useState<MetricColumn>("emissions");
   const [rowLimit, setRowLimit] = useState(PAGE_OVERVIEW_PAGE_SIZE);
 
   useEffect(() => {

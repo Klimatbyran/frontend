@@ -33,7 +33,10 @@ import { DataChipSelector } from "@/components/ranked/DataChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { TerritoryAnswerCard } from "@/components/ranked/TerritoryAnswerCard";
 import { TerritoryOverviewLayout } from "@/components/ranked/TerritoryOverviewLayout";
-import { TerritoryOverviewTable } from "@/components/ranked/TerritoryOverviewTable";
+import {
+  TerritoryOverviewTable,
+  territoryOverviewSortsByLargest,
+} from "@/components/ranked/TerritoryOverviewTable";
 import type { TerritoryTableRow } from "@/components/ranked/TerritoryOverviewTable";
 import { isMeetsParisKpiKey } from "@/utils/ui/colors";
 import { getRegionForMunicipality } from "@/lib/constants/regions";
@@ -199,6 +202,7 @@ export function MunicipalitiesOverviewPage() {
           booleanLabels={displayKPI.booleanLabels}
           nullLabel={displayKPI.nullValues}
           showParis={!isMeetsParisKpiKey(displayKPI.key)}
+          sortLargestFirst={territoryOverviewSortsByLargest(displayKPI.key)}
         />
       }
     />

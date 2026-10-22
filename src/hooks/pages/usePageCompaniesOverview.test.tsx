@@ -96,6 +96,18 @@ beforeEach(() => {
 });
 
 describe("usePageCompaniesOverviewList", () => {
+  it("sorts by the largest emissions unless a sort is chosen", async () => {
+    getPageCompaniesOverview.mockResolvedValue(listPage("All Co"));
+
+    renderWithClient(() => usePageCompaniesOverviewList(), {});
+
+    await waitFor(() => {
+      expect(getPageCompaniesOverview).toHaveBeenCalledWith(
+        expect.objectContaining({ sortBy: "emissions", sortDir: "desc" }),
+      );
+    });
+  });
+
   it("drops the previous sector's rows while the next sector is in flight", async () => {
     const next = deferred<PageListResponse<PageCompanyOverviewItem>>();
     getPageCompaniesOverview.mockImplementation(

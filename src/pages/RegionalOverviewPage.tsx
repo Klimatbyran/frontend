@@ -20,7 +20,10 @@ import { DataChipSelector } from "@/components/ranked/DataChipSelector";
 import { OverviewPageSkeleton } from "@/components/ranked/OverviewPageSkeleton";
 import { TerritoryAnswerCard } from "@/components/ranked/TerritoryAnswerCard";
 import { TerritoryOverviewLayout } from "@/components/ranked/TerritoryOverviewLayout";
-import { TerritoryOverviewTable } from "@/components/ranked/TerritoryOverviewTable";
+import {
+  TerritoryOverviewTable,
+  territoryOverviewSortsByLargest,
+} from "@/components/ranked/TerritoryOverviewTable";
 import type { TerritoryTableRow } from "@/components/ranked/TerritoryOverviewTable";
 import { createEntityClickHandler, getEntityDetailPath } from "@/utils/routing";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -178,6 +181,7 @@ export function RegionalOverviewPage() {
           booleanLabels={displayKPI.booleanLabels}
           nullLabel={displayKPI.nullValues}
           showParis={!isMeetsParisKpiKey(displayKPI.key)}
+          sortLargestFirst={territoryOverviewSortsByLargest(displayKPI.key)}
         />
       }
     />

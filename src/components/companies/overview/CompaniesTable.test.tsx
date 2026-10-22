@@ -129,6 +129,11 @@ describe("CompaniesTable", () => {
 
   it("keeps companies with no Paris status at the bottom in both directions", () => {
     renderTable();
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /companiesOverviewPage\.paris\.colOnTrack/,
+      }),
+    );
     expect(rowNames()).toEqual(["Bravo", "Alpha", "Charlie"]);
 
     fireEvent.click(
@@ -139,13 +144,18 @@ describe("CompaniesTable", () => {
     expect(rowNames()).toEqual(["Alpha", "Bravo", "Charlie"]);
   });
 
-  it("passes sector and default paris sort to the pages list hook", () => {
+  it("sorts by the largest emissions when that column is shown", () => {
     renderTable("35");
     expect(capturedListOptions.at(-1)).toMatchObject({
       sector: "35",
-      sortBy: "paris",
+      sortBy: "emissions",
       sortDir: "desc",
     });
+    expect(
+      screen.getByRole("columnheader", {
+        name: /companiesOverviewPage\.paris\.colEmissions/,
+      }),
+    ).toHaveAttribute("aria-sort", "descending");
   });
 
   it("maps industry sort to API sector sort", () => {
@@ -179,7 +189,8 @@ describe("CompaniesTable", () => {
     const header = (name: RegExp) =>
       screen.getByRole("button", { name }).closest("th")!;
 
-    expect(header(/colOnTrack/)).toHaveClass("table-cell");
+    expect(header(/colEmissions/)).toHaveClass("table-cell");
+    expect(header(/colOnTrack/)).toHaveClass("hidden", "md:table-cell");
     expect(header(/colIndustry/)).toHaveClass("hidden", "md:table-cell");
   });
 
