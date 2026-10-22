@@ -167,7 +167,7 @@ export const CompaniesSection = () => {
           </div>
 
           <LocalizedLink
-            to="/explore/companies"
+            to="/companies"
             className="landing-laptop:hidden lg:hidden order-3 self-start w-fit shrink-0"
           >
             <Button
