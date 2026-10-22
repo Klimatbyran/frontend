@@ -10,7 +10,9 @@ import { OverviewPageError } from "@/components/pageStates/Error";
 import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
 import { PageHeader } from "@/components/layout/PageHeader";
 import {
-  CompaniesOverviewSkeleton,
+  ChipFilterSkeleton,
+  CompaniesTableSkeleton,
+  IndustryPieSkeleton,
   ParisAnswerCardSkeleton,
   ReportingCoverageSkeleton,
   VerdictListsSkeleton,
@@ -25,9 +27,16 @@ import { ReportingCoverage } from "@/components/companies/overview/ReportingCove
 import { useSectorTitles } from "@/hooks/companies/useCompanySectors";
 import { OverviewScrollProgress } from "@/components/layout/OverviewScrollProgress";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
-import type { SectorCode } from "@/lib/constants/sectors";
+import { SECTOR_ORDER, type SectorCode } from "@/lib/constants/sectors";
 import type { PageOverviewVerdictCompany } from "@/types/pages";
 import { useCompaniesOverviewUrlState } from "./companiesOverviewPageUtils";
+
+function knownSectorCode(sectorParam: string | null): SectorCode | null {
+  if (sectorParam && SECTOR_ORDER.includes(sectorParam as SectorCode)) {
+    return sectorParam as SectorCode;
+  }
+  return null;
+}
 
 function ParisSummaryPending() {
   const { t } = useTranslation();
@@ -111,11 +120,22 @@ export function CompaniesOverviewPage() {
     () => new URLSearchParams(location.search).get("sector"),
     [location.search],
   );
-  /** Avoid fetching "all" before chrome validates a sector from the URL. */
-  const sectorResolutionPending = Boolean(sectorParam && chrome.loading);
+  const knownUrlSector = useMemo(
+    () => knownSectorCode(sectorParam),
+    [sectorParam],
+  );
+  /**
+   * A known sector code can start its list and summary alongside the
+   * unfiltered chrome request. An unknown code still waits, so the page
+   * does not load every company and then discard that result.
+   */
+  const sectorResolutionPending =
+    Boolean(sectorParam) && knownUrlSector === null && chrome.loading;
 
   const urlState = useCompaniesOverviewUrlState(availableSectors);
-  const selectedSector = urlState.getSectorFromURL() as SectorCode | null;
+  const selectedSector = (
+    chrome.summary ? urlState.getSectorFromURL() : knownUrlSector
+  ) as SectorCode | null;
   const overviewDataEnabled = !sectorResolutionPending;
 
   const { summary, error: summaryError } = usePageCompaniesOverviewSummary({
@@ -125,11 +145,7 @@ export function CompaniesOverviewPage() {
 
   const error = chrome.error || summaryError;
 
-  if (!chrome.summary && !error) {
-    return <CompaniesOverviewSkeleton />;
-  }
-
-  if (error || !chrome.summary) {
+  if (error) {
     return (
       <OverviewPageError
         titleKey="companiesOverviewPage.errorTitle"
@@ -138,9 +154,9 @@ export function CompaniesOverviewPage() {
     );
   }
 
-  const industryRows = chrome.summary.industryFilters.filter((row) =>
-    sectorBaseColor(row.code),
-  );
+  const industryRows = chrome.summary
+    ? chrome.summary.industryFilters.filter((row) => sectorBaseColor(row.code))
+    : null;
 
   return (
     <OverviewPageRoot leadIn={<OverviewScrollProgress />}>
@@ -157,15 +173,19 @@ export function CompaniesOverviewPage() {
           <ParisExplainer />
         </div>
 
-        <IndustryChipFilter
-          options={industryRows.map((row) => ({
-            code: row.code as SectorCode,
-            companyCount: row.companyCount,
-          }))}
-          selected={selectedSector}
-          totalCount={chrome.summary.companyCount}
-          onSelect={(code) => urlState.setSectorInURL(code)}
-        />
+        {chrome.summary && industryRows ? (
+          <IndustryChipFilter
+            options={industryRows.map((row) => ({
+              code: row.code as SectorCode,
+              companyCount: row.companyCount,
+            }))}
+            selected={selectedSector}
+            totalCount={chrome.summary.companyCount}
+            onSelect={(code) => urlState.setSectorInURL(code)}
+          />
+        ) : (
+          <ChipFilterSkeleton />
+        )}
 
         {summary ? (
           <ParisAnswerCard
@@ -188,7 +208,11 @@ export function CompaniesOverviewPage() {
         <VerdictListsSkeleton />
       )}
 
-      <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
+      {industryRows ? (
+        <IndustryEmissionsPie rows={industryRows} selected={selectedSector} />
+      ) : (
+        <IndustryPieSkeleton />
+      )}
 
       {summary ? (
         <ReportingCoverage reporting={summary.reporting} />
@@ -197,7 +221,11 @@ export function CompaniesOverviewPage() {
       )}
 
       <ScrollReveal>
-        <CompaniesTable sector={selectedSector} enabled={overviewDataEnabled} />
+        {overviewDataEnabled ? (
+          <CompaniesTable sector={selectedSector} />
+        ) : (
+          <CompaniesTableSkeleton />
+        )}
       </ScrollReveal>
     </OverviewPageRoot>
   );

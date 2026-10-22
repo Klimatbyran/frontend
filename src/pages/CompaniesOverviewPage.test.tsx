@@ -11,6 +11,7 @@ const {
   mockCompanies,
   buildSummary,
   summaryState,
+  chromeState,
   capturedLists,
   capturedPieSectors,
   capturedPieSelected,
@@ -100,10 +101,16 @@ const {
     error: null as Error | null,
   };
 
+  const chromeState = {
+    loading: false,
+    error: null as Error | null,
+  };
+
   return {
     mockCompanies: companies,
     buildSummary: summaryFor,
     summaryState,
+    chromeState,
     capturedLists: [] as string[][],
     capturedPieSectors: [] as string[][],
     capturedPieSelected: [] as Array<string | null>,
@@ -120,9 +127,10 @@ vi.mock("@/hooks/pages/usePageCompaniesOverview", () => ({
     error: summaryState.error,
   }),
   usePageCompaniesOverviewChrome: () => ({
-    summary: buildSummary(null),
-    loading: false,
-    error: null,
+    summary:
+      chromeState.loading || chromeState.error ? undefined : buildSummary(null),
+    loading: chromeState.loading,
+    error: chromeState.error,
   }),
 }));
 
@@ -149,14 +157,26 @@ vi.mock("@/components/ranked/InsightsList", () => ({
 }));
 
 vi.mock("@/components/companies/overview/CompaniesTable", () => ({
-  CompaniesTable: ({ sector }: { sector: string | null }) => {
+  CompaniesTable: ({
+    sector,
+    enabled = true,
+  }: {
+    sector: string | null;
+    enabled?: boolean;
+  }) => {
     const names = (
       sector
         ? mockCompanies.filter((company) => company.sectorCode === sector)
         : mockCompanies
     ).map((company) => company.name);
     capturedLists.push(names);
-    return <div data-testid="companies-table" data-sector={sector ?? "all"} />;
+    return (
+      <div
+        data-testid="companies-table"
+        data-sector={sector ?? "all"}
+        data-enabled={String(enabled)}
+      />
+    );
   },
 }));
 
@@ -206,6 +226,8 @@ describe("CompaniesOverviewPage", () => {
     capturedPieSelected.length = 0;
     summaryState.loading = false;
     summaryState.error = null;
+    chromeState.loading = false;
+    chromeState.error = null;
   });
 
   it("loads page companies into the table and full industry pie", async () => {
@@ -265,5 +287,57 @@ describe("CompaniesOverviewPage", () => {
       MATERIALS_SECTOR,
     );
     expect(capturedPieSelected.at(-1)).toBe(MATERIALS_SECTOR);
+  });
+
+  it("shows the explainer and starts the company list while the summary is loading", () => {
+    chromeState.loading = true;
+    summaryState.loading = true;
+    renderPage();
+
+    expect(
+      screen.getByText("companiesOverviewPage.paris.explainerTitle"),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(
+      screen.queryByText("companiesOverviewPage.paris.allIndustries"),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId("industry-pie")).not.toBeInTheDocument();
+    expect(screen.getByTestId("companies-table")).toHaveAttribute(
+      "data-sector",
+      "all",
+    );
+    expect(screen.getByTestId("companies-table")).toHaveAttribute(
+      "data-enabled",
+      "true",
+    );
+  });
+
+  it("starts a known sector's list before industry counts arrive", () => {
+    chromeState.loading = true;
+    summaryState.loading = true;
+    renderPage(`/companies?sector=${MATERIALS_SECTOR}`);
+
+    expect(screen.getByTestId("companies-table")).toHaveAttribute(
+      "data-sector",
+      MATERIALS_SECTOR,
+    );
+    expect(screen.getByTestId("companies-table")).toHaveAttribute(
+      "data-enabled",
+      "true",
+    );
+    expect(
+      screen.queryByText("companiesOverviewPage.paris.kicker"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("holds the list when the sector in the URL is not a known code", () => {
+    chromeState.loading = true;
+    summaryState.loading = true;
+    renderPage("/companies?sector=nope");
+
+    expect(screen.queryByTestId("companies-table")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("companiesOverviewPage.paris.allIndustries"),
+    ).not.toBeInTheDocument();
   });
 });

@@ -1,33 +1,12 @@
-import { useTranslation } from "react-i18next";
-import { OverviewPageRoot } from "@/components/layout/OverviewPageRoot";
-
 const SHIMMER = "animate-pulse rounded bg-white/10";
 
 function Block({ className = "" }: { className?: string }) {
   return <div className={`${SHIMMER} ${className}`} />;
 }
 
-function HeaderSkeleton() {
+export function ChipFilterSkeleton() {
   return (
-    <div className="space-y-5">
-      <div className="space-y-3">
-        <Block className="h-9 w-3/4 max-w-[520px] md:h-11" />
-        <Block className="h-4 w-full max-w-[600px]" />
-        <Block className="h-4 w-2/3 max-w-[420px]" />
-      </div>
-
-      {/* The explainer loads collapsed, so only its trigger row is reserved. */}
-      <div className="flex max-w-[640px] items-center justify-between gap-4 rounded-2xl bg-black-2 px-5 py-4">
-        <Block className="h-4 w-52" />
-        <Block className="size-4 shrink-0" />
-      </div>
-    </div>
-  );
-}
-
-function ChipFilterSkeleton() {
-  return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2" aria-hidden="true">
       <Block className="mr-1 h-2.5 w-14" />
       <Block className="h-7 w-32 rounded-full" />
       <Block className="h-6 w-24 rounded-full" />
@@ -138,9 +117,12 @@ export function ReportingCoverageSkeleton() {
   );
 }
 
-function IndustryPieSkeleton() {
+export function IndustryPieSkeleton() {
   return (
-    <section className="rounded-level-2 bg-black-2 p-6 md:p-7">
+    <section
+      className="rounded-level-2 bg-black-2 p-6 md:p-7"
+      aria-hidden="true"
+    >
       <Block className="h-6 w-64 md:h-7" />
       <div className="mt-2 space-y-2">
         <Block className="h-4 w-full" />
@@ -173,9 +155,12 @@ function IndustryPieSkeleton() {
   );
 }
 
-function CompaniesTableSkeleton() {
+export function CompaniesTableSkeleton() {
   return (
-    <section className="min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7">
+    <section
+      className="min-w-0 rounded-level-2 bg-black-2 p-5 md:p-7"
+      aria-hidden="true"
+    >
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="space-y-2">
           <Block className="h-6 w-56 md:h-7" />
@@ -218,36 +203,5 @@ function CompaniesTableSkeleton() {
         </div>
       </div>
     </section>
-  );
-}
-
-/** Mirrors the Paris overview layout so the page does not jump once data lands. */
-export function CompaniesOverviewSkeleton() {
-  const { t } = useTranslation();
-
-  return (
-    <div role="status" aria-busy="true">
-      <span className="sr-only">
-        {t("companiesOverviewPage.paris.loading")}
-      </span>
-
-      <div aria-hidden="true">
-        <OverviewPageRoot>
-          <div className="space-y-5 md:space-y-7">
-            <HeaderSkeleton />
-            <ChipFilterSkeleton />
-            <ParisAnswerCardSkeleton />
-          </div>
-
-          <VerdictListsSkeleton />
-
-          <IndustryPieSkeleton />
-
-          <ReportingCoverageSkeleton />
-
-          <CompaniesTableSkeleton />
-        </OverviewPageRoot>
-      </div>
-    </div>
   );
 }
