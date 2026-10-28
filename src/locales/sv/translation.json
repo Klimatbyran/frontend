@@ -1740,34 +1740,35 @@
         "body": "För {{companyName}} år {{year}} är det rapporterade totalet {{total}}. Ungefär {{ownShare}} % kommer från egna verksamheter (scope 1 och 2) och {{valueChainShare}} % från värdekedjan (scope 3). Den uppdelningen förklarar varför ett stålbolag och ett modeföretag kan se så olika ut — det ena bränner ofta bränsle på plats, det andra sitter mest i leverantörer och produktanvändning.",
         "bulletOwn": "Egna verksamheter — scope 1 och 2: utsläpp från det företaget styr på plats och från energin det köper.",
         "bulletValueChain": "Värdekedjan — scope 3: leverantörer, transporter, produktanvändning, investeringar och resten av avtrycket utanför företagets väggar.",
-        "bulletScopes": "Scope 1, 2 och 3 är GHG-protokollets etiketter i den historien — använd flikarna för att se varje del för det här företaget."
+        "bulletScopes": "Scope 1, 2 och 3 är GHG-protokollets etiketter i den historien — använd flikarna för att se varje del för det här företaget.",
+        "bodyOwnOnly": "För {{companyName}} år {{year}} är det rapporterade totalet {{total}}. Egna verksamheter (scope 1 och 2) summerar till {{ownValue}}. Scope 3 (värdekedjan) är inte rapporterat för året, så vi kan inte visa den fulla uppdelningen mellan egna verksamheter och värdekedjan.",
+        "bodyValueChainOnly": "För {{companyName}} år {{year}} är det rapporterade totalet {{total}}. Värdekedjan (scope 3) är {{valueChainValue}}. Egna verksamheter (scope 1 och 2) är inte rapporterade för året, så vi kan inte visa den fulla uppdelningen mellan egna verksamheter och värdekedjan."
       },
       "scope1": {
         "headline": "Direkta utsläpp som företaget skapar",
         "body": "Scope 1 är klimatpåverkan från källor som {{companyName}} äger eller kontrollerar — kärnan i egna verksamheter. År {{year}} är den siffran {{value}}.",
-        "examples": "Typiska exempel är bränsle i företagsfordon, pannor eller ugnar på företagets anläggningar och tillverkningsprocesser som släpper ut växthusgaser på plats."
+        "examples": "Typiska exempel är bränsle i företagsfordon, pannor eller ugnar på företagets anläggningar och tillverkningsprocesser som släpper ut växthusgaser på plats.",
+        "bodyNotReported": "{{companyName}} rapporterade inte scope 1 för {{year}}."
       },
       "scope2": {
         "headline": "Utsläpp från köpt energi",
         "body": "Scope 2 hör fortfarande till egna verksamheter: utsläppen som uppstår när energin som {{companyName}} köper och använder produceras. År {{year}} är den siffran {{value}}.",
-        "examples": "Tänk el till kontor, butiker eller fabriker, plus köpt värme eller kyla — även när utsläppen sker i ett kraftverk i stället för på plats."
+        "examples": "Tänk el till kontor, butiker eller fabriker, plus köpt värme eller kyla — även när utsläppen sker i ett kraftverk i stället för på plats.",
+        "bodyNotReported": "{{companyName}} rapporterade inte scope 2 för {{year}}."
       },
       "scope3": {
         "headline": "Den bredare värdekedjan",
         "body": "Scope 3 är värdekedjans del av avtrycket: utsläpp kopplade till leverantörer, logistik, produktanvändning, investeringar med mera. För {{companyName}} år {{year}} är det rapporterade Scope 3-totalet {{value}}.",
         "driversTitle": "Största rapporterade Scope 3-drivkrafter",
         "driversHint": "Det här är de största kategorierna företaget rapporterat — längre ner på sidan finns den fulla interaktiva uppdelningen.",
-        "noCategories": "Det här företaget har inte publicerat någon Scope 3-kategoriuppdelning för året, så vi kan bara visa Scope 3-totalen."
+        "noCategories": "Det här företaget har inte publicerat någon Scope 3-kategoriuppdelning för året, så vi kan bara visa Scope 3-totalen.",
+        "bodyNotReported": "{{companyName}} rapporterade inte scope 3 för {{year}}."
       },
       "groups": {
         "own": "Egna verksamheter",
         "valueChain": "Värdekedjan"
       },
-      "short": {
-        "scope1": "Scope 1",
-        "scope2": "Scope 2",
-        "scope3": "Scope 3"
-      }
+      "reported": "Rapporterat"
     }
   },
   "nation": {

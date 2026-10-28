@@ -8,7 +8,11 @@ import type {
   ScopeKey,
   UnderstandingEmissionsModel,
 } from "./buildUnderstandingEmissionsModel";
-import { SCOPE_COLORS } from "./buildUnderstandingEmissionsModel";
+import {
+  SCOPE_COLORS,
+  formatSharePercentLabel,
+  widthsWithMinimum,
+} from "./buildUnderstandingEmissionsModel";
 
 type OwnVsValueChainVisualProps = {
   model: UnderstandingEmissionsModel;
@@ -19,9 +23,10 @@ type OwnVsValueChainVisualProps = {
 };
 
 const MIN_SHARE = 0.08;
+const MIN_NESTED_PERCENT = 12;
 
-function displayShare(share: number | null, fallback = 0): number {
-  if (share == null || share <= 0) return fallback;
+function displayShare(share: number | null): number {
+  if (share == null || share <= 0) return MIN_SHARE;
   return Math.max(share, MIN_SHARE);
 }
 
@@ -46,21 +51,22 @@ export function OwnVsValueChainVisual({
   const { currentLanguage } = useLanguage();
   const unit = t("emissionsUnit");
 
-  const ownShare = model.shares.own;
-  const valueChainShare = model.shares.valueChain;
-  const hasOwn = ownShare != null && ownShare > 0;
-  const hasValueChain = valueChainShare != null && valueChainShare > 0;
-
-  if (!hasOwn && !hasValueChain) {
+  const { hasOwnData, hasValueChainData } = model;
+  if (!hasOwnData && !hasValueChainData) {
     return null;
   }
 
-  const ownWidth = hasOwn
-    ? displayShare(ownShare, hasValueChain ? MIN_SHARE : 1)
-    : 0;
-  const valueChainWidth = hasValueChain
-    ? displayShare(valueChainShare, hasOwn ? MIN_SHARE : 1)
-    : 0;
+  // Missing side keeps a visible stub so "not reported" is not framed as 0%/100%.
+  const ownWidth = hasOwnData
+    ? hasValueChainData
+      ? displayShare(model.shares.own)
+      : 1 - MIN_SHARE
+    : MIN_SHARE;
+  const valueChainWidth = hasValueChainData
+    ? hasOwnData
+      ? displayShare(model.shares.valueChain)
+      : 1 - MIN_SHARE
+    : MIN_SHARE;
   const widthSum = ownWidth + valueChainWidth;
 
   const formatValue = (value: number | null) => {
@@ -68,99 +74,108 @@ export function OwnVsValueChainVisual({
     return `${formatEmissionsAbsolute(value, currentLanguage)} ${unit}`;
   };
 
-  const formatPct = (share: number | null) => {
-    if (share == null) return null;
-    const pct = share * 100;
-    if (pct > 0 && pct < 1) return "<1%";
-    if (pct > 99 && pct < 100) return ">99%";
-    return `${Math.round(pct)}%`;
-  };
-
-  const scope1Internal = model.ownInternalShares.scope1;
-  const scope2Internal = model.ownInternalShares.scope2;
-  const showOwnSplit =
-    (scope1Internal != null && scope1Internal > 0) ||
-    (scope2Internal != null && scope2Internal > 0);
+  const [scope1Width, scope2Width] = widthsWithMinimum(
+    [model.ownInternalShares.scope1, model.ownInternalShares.scope2],
+    MIN_NESTED_PERCENT,
+  );
+  const showOwnSplit = scope1Width > 0 || scope2Width > 0;
 
   return (
     <div className={cn("space-y-4", className)}>
       <div
         className="flex min-h-[148px] overflow-hidden rounded-level-2 bg-black-1 md:min-h-[168px]"
-        role="img"
+        role="group"
         aria-label={t("companies.understandingEmissions.breakdownAria")}
       >
-        {hasOwn && (
-          <div
-            className={cn(
-              "relative flex flex-col justify-between gap-3 border-r border-black-2 p-4 transition-opacity duration-200 md:p-5",
-              isGroupActive(activeTab, "own") ? "opacity-100" : "opacity-35",
-            )}
-            style={{ flexGrow: ownWidth / widthSum, flexBasis: 0 }}
-          >
-            <button
-              type="button"
-              onClick={() => onSelectGroup("own")}
-              className="space-y-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
+        <div
+          className={cn(
+            "relative flex flex-col justify-between gap-3 border-r border-black-2 p-4 transition-opacity duration-200 md:p-5",
+            hasOwnData && isGroupActive(activeTab, "own")
+              ? "opacity-100"
+              : hasOwnData
+                ? "opacity-35"
+                : "opacity-70",
+          )}
+          style={{ flexGrow: ownWidth / widthSum, flexBasis: 0 }}
+        >
+          {hasOwnData ? (
+            <>
+              <button
+                type="button"
+                onClick={() => onSelectGroup("own")}
+                className="space-y-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                <p className="text-xs uppercase tracking-wide text-grey">
+                  {t("companies.understandingEmissions.groups.own")}
+                </p>
+                <p className="text-2xl font-medium text-white md:text-3xl">
+                  {model.isPartialSplit
+                    ? t("companies.understandingEmissions.reported")
+                    : formatSharePercentLabel(model.shares.own)}
+                </p>
+                <p className="text-sm text-grey">{formatValue(model.own)}</p>
+              </button>
+
+              {showOwnSplit && (
+                <div className="flex h-10 overflow-hidden rounded-md bg-black-2/60">
+                  {scope1Width > 0 && (
+                    <button
+                      type="button"
+                      title={t("companies.understandingEmissions.tabs.scope1")}
+                      onClick={() => onSelectScope("scope1")}
+                      className={cn(
+                        "flex items-center justify-center px-2 text-xs font-medium text-black transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                        isScopeActive(activeTab, "scope1")
+                          ? "opacity-100"
+                          : "opacity-45",
+                      )}
+                      style={{
+                        width: `${scope1Width}%`,
+                        backgroundColor: SCOPE_COLORS.scope1,
+                      }}
+                    >
+                      <span className="truncate">
+                        {t("companies.understandingEmissions.tabs.scope1")}
+                      </span>
+                    </button>
+                  )}
+                  {scope2Width > 0 && (
+                    <button
+                      type="button"
+                      title={t("companies.understandingEmissions.tabs.scope2")}
+                      onClick={() => onSelectScope("scope2")}
+                      className={cn(
+                        "flex items-center justify-center px-2 text-xs font-medium text-black transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                        isScopeActive(activeTab, "scope2")
+                          ? "opacity-100"
+                          : "opacity-45",
+                      )}
+                      style={{
+                        width: `${scope2Width}%`,
+                        backgroundColor: SCOPE_COLORS.scope2,
+                      }}
+                    >
+                      <span className="truncate">
+                        {t("companies.understandingEmissions.tabs.scope2")}
+                      </span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="space-y-1">
               <p className="text-xs uppercase tracking-wide text-grey">
                 {t("companies.understandingEmissions.groups.own")}
               </p>
-              <p className="text-2xl font-medium text-white md:text-3xl">
-                {formatPct(ownShare)}
+              <p className="text-2xl font-medium text-grey md:text-3xl">
+                {t("companies.understandingEmissions.notReported")}
               </p>
-              <p className="text-sm text-grey">{formatValue(model.own)}</p>
-            </button>
+            </div>
+          )}
+        </div>
 
-            {showOwnSplit && (
-              <div className="flex h-10 overflow-hidden rounded-md bg-black-2/60">
-                {scope1Internal != null && scope1Internal > 0 && (
-                  <button
-                    type="button"
-                    title={t("companies.understandingEmissions.tabs.scope1")}
-                    onClick={() => onSelectScope("scope1")}
-                    className={cn(
-                      "flex items-center justify-center px-2 text-xs font-medium text-black transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
-                      isScopeActive(activeTab, "scope1")
-                        ? "opacity-100"
-                        : "opacity-45",
-                    )}
-                    style={{
-                      width: `${Math.max(scope1Internal * 100, 12)}%`,
-                      backgroundColor: SCOPE_COLORS.scope1,
-                    }}
-                  >
-                    <span className="truncate">
-                      {t("companies.understandingEmissions.short.scope1")}
-                    </span>
-                  </button>
-                )}
-                {scope2Internal != null && scope2Internal > 0 && (
-                  <button
-                    type="button"
-                    title={t("companies.understandingEmissions.tabs.scope2")}
-                    onClick={() => onSelectScope("scope2")}
-                    className={cn(
-                      "flex items-center justify-center px-2 text-xs font-medium text-black transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
-                      isScopeActive(activeTab, "scope2")
-                        ? "opacity-100"
-                        : "opacity-45",
-                    )}
-                    style={{
-                      width: `${Math.max(scope2Internal * 100, 12)}%`,
-                      backgroundColor: SCOPE_COLORS.scope2,
-                    }}
-                  >
-                    <span className="truncate">
-                      {t("companies.understandingEmissions.short.scope2")}
-                    </span>
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
-        {hasValueChain && (
+        {hasValueChainData ? (
           <button
             type="button"
             onClick={() => onSelectGroup("valueChain")}
@@ -177,7 +192,9 @@ export function OwnVsValueChainVisual({
                 {t("companies.understandingEmissions.groups.valueChain")}
               </p>
               <p className="text-2xl font-medium text-white md:text-3xl">
-                {formatPct(valueChainShare)}
+                {model.isPartialSplit
+                  ? t("companies.understandingEmissions.reported")
+                  : formatSharePercentLabel(model.shares.valueChain)}
               </p>
               <p className="text-sm text-grey">
                 {formatValue(model.valueChain)}
@@ -193,9 +210,23 @@ export function OwnVsValueChainVisual({
               )}
               style={{ backgroundColor: SCOPE_COLORS.scope3 }}
             >
-              {t("companies.understandingEmissions.short.scope3")}
+              {t("companies.understandingEmissions.tabs.scope3")}
             </div>
           </button>
+        ) : (
+          <div
+            className="relative flex flex-col justify-between gap-3 p-4 opacity-70 md:p-5"
+            style={{ flexGrow: valueChainWidth / widthSum, flexBasis: 0 }}
+          >
+            <div className="space-y-1">
+              <p className="text-xs uppercase tracking-wide text-grey">
+                {t("companies.understandingEmissions.groups.valueChain")}
+              </p>
+              <p className="text-2xl font-medium text-grey md:text-3xl">
+                {t("companies.understandingEmissions.notReported")}
+              </p>
+            </div>
+          </div>
         )}
       </div>
 
@@ -223,11 +254,7 @@ export function OwnVsValueChainVisual({
               <span>
                 {t(`companies.understandingEmissions.tabs.${scope}`)}
                 {" · "}
-                {share > 0 && share * 100 < 1
-                  ? "<1%"
-                  : share * 100 > 99 && share * 100 < 100
-                    ? ">99%"
-                    : `${Math.round(share * 100)}%`}
+                {formatSharePercentLabel(share)}
               </span>
             </button>
           );

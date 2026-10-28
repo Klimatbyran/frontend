@@ -26,6 +26,10 @@ export type UnderstandingEmissionsModel = {
   own: number | null;
   valueChain: number | null;
   knownScopeSum: number;
+  hasOwnData: boolean;
+  hasValueChainData: boolean;
+  /** True when only one of own / value-chain is reported. */
+  isPartialSplit: boolean;
   shares: {
     scope1: number | null;
     scope2: number | null;
@@ -55,6 +59,41 @@ function shareOf(part: number | null, whole: number): number | null {
 function sumNullable(a: number | null, b: number | null): number | null {
   if (a == null && b == null) return null;
   return (a ?? 0) + (b ?? 0);
+}
+
+/** Display share as `<1%` / `>99%` / rounded percent. */
+export function formatSharePercentLabel(
+  share: number | null,
+  options?: { includePercentSign?: boolean },
+): string | null {
+  if (share == null) return null;
+  const includePercentSign = options?.includePercentSign ?? true;
+  const pct = share * 100;
+  let label: string;
+  if (pct > 0 && pct < 1) label = "<1";
+  else if (pct > 99 && pct < 100) label = ">99";
+  else label = String(Math.round(pct));
+  return includePercentSign ? `${label}%` : label;
+}
+
+/**
+ * Apply a minimum percentage to each positive share, then renormalize so
+ * widths still sum to 100.
+ */
+export function widthsWithMinimum(
+  shares: Array<number | null | undefined>,
+  minPercent: number,
+): number[] {
+  const positives = shares.map((share) =>
+    share != null && share > 0 ? share : 0,
+  );
+  const raw = positives.map((share) =>
+    share > 0 ? Math.max(share * 100, minPercent) : 0,
+  );
+  const sum = raw.reduce((total, value) => total + value, 0);
+  if (sum <= 0) return raw;
+  if (sum <= 100) return raw;
+  return raw.map((value) => (value / sum) * 100);
 }
 
 export function buildTopScope3Categories(
@@ -87,6 +126,8 @@ export function buildUnderstandingEmissionsModel(
   const knownScopeSum = (scope1 ?? 0) + (scope2 ?? 0) + (scope3 ?? 0);
   const shareBase = total && total > 0 ? total : knownScopeSum;
   const ownTotal = own ?? 0;
+  const hasOwnData = scope1 != null || scope2 != null;
+  const hasValueChainData = scope3 != null;
 
   return {
     year: input.year,
@@ -97,6 +138,9 @@ export function buildUnderstandingEmissionsModel(
     own,
     valueChain,
     knownScopeSum,
+    hasOwnData,
+    hasValueChainData,
+    isPartialSplit: hasOwnData !== hasValueChainData,
     shares: {
       scope1: shareOf(scope1, shareBase),
       scope2: shareOf(scope2, shareBase),
@@ -112,7 +156,7 @@ export function buildUnderstandingEmissionsModel(
       input.scope3Categories,
       scope3,
     ),
-    hasAnyScopeData: scope1 != null || scope2 != null || scope3 != null,
+    hasAnyScopeData: hasOwnData || hasValueChainData,
   };
 }
 
@@ -121,9 +165,4 @@ export const SCOPE_COLORS: Record<ScopeKey, string> = {
   scope1: "var(--pink-3)",
   scope2: "var(--orange-2)",
   scope3: "var(--blue-2)",
-};
-
-export const GROUP_COLORS: Record<EmissionsGroupKey, string> = {
-  own: "var(--pink-3)",
-  valueChain: "var(--blue-2)",
 };

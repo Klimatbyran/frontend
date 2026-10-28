@@ -16,6 +16,7 @@ import type {
 import { OwnVsValueChainVisual } from "./OwnVsValueChainVisual";
 import {
   buildUnderstandingEmissionsModel,
+  formatSharePercentLabel,
   type EmissionsGroupKey,
   type GuideTab,
   type ScopeKey,
@@ -48,6 +49,14 @@ function periodForYear(
   return history?.periods.find((period) => period.year === year);
 }
 
+function scope3ForYear(
+  scope3: PageCompanyScope3 | undefined,
+  year: number,
+): PageCompanyScope3 | undefined {
+  if (!scope3 || scope3.year !== year) return undefined;
+  return scope3;
+}
+
 export function UnderstandingEmissions({
   companyName,
   year,
@@ -62,21 +71,25 @@ export function UnderstandingEmissions({
 
   const yearLabel = String(year);
   const period = periodForYear(emissionsHistory, year);
+  const matchingScope3 = scope3ForYear(scope3, year);
 
   const model = useMemo(() => {
     const scope1 = period?.scope1?.value ?? null;
     const scope2 = period?.scope2?.value ?? null;
     const scope3Total =
-      period?.scope3?.value ?? scope3?.calculatedTotalEmissions ?? null;
+      period?.scope3?.value ?? matchingScope3?.calculatedTotalEmissions ?? null;
+
+    const pageCategories = matchingScope3?.categories ?? [];
     const categories =
-      scope3?.categories?.map((category) => ({
-        category: category.category,
-        total: category.total,
-      })) ??
-      period?.scope3Categories?.map((category) => ({
-        category: category.category,
-        total: category.value,
-      }));
+      pageCategories.length > 0
+        ? pageCategories.map((category) => ({
+            category: category.category,
+            total: category.total,
+          }))
+        : period?.scope3Categories?.map((category) => ({
+            category: category.category,
+            total: category.value,
+          }));
 
     return buildUnderstandingEmissionsModel({
       year: yearLabel,
@@ -86,7 +99,7 @@ export function UnderstandingEmissions({
       scope3: scope3Total,
       scope3Categories: categories,
     });
-  }, [period, scope3, totalEmissions, yearLabel]);
+  }, [period, matchingScope3, totalEmissions, yearLabel]);
 
   if (!model.hasAnyScopeData) {
     return null;
@@ -131,15 +144,58 @@ export function UnderstandingEmissions({
     setActiveTab("overview");
   };
 
-  const formatShareLabel = (share: number | null) => {
-    if (share == null) return null;
-    const pct = share * 100;
-    if (pct > 0 && pct < 1) return "<1";
-    if (pct > 99 && pct < 100) return ">99";
-    return String(Math.round(pct));
+  const ownShareLabel = formatSharePercentLabel(model.shares.own, {
+    includePercentSign: false,
+  });
+  const valueChainShareLabel = formatSharePercentLabel(
+    model.shares.valueChain,
+    { includePercentSign: false },
+  );
+
+  const overviewBody = (() => {
+    if (model.hasOwnData && model.hasValueChainData) {
+      return t("companies.understandingEmissions.overview.body", {
+        companyName,
+        year: yearLabel,
+        total: valueByTab.overview,
+        ownShare: ownShareLabel ?? "0",
+        valueChainShare: valueChainShareLabel ?? "0",
+      });
+    }
+    if (model.hasOwnData) {
+      return t("companies.understandingEmissions.overview.bodyOwnOnly", {
+        companyName,
+        year: yearLabel,
+        total: valueByTab.overview,
+        ownValue: formatScopeValue(
+          model.own,
+          currentLanguage,
+          notReported,
+          unit,
+        ),
+      });
+    }
+    return t("companies.understandingEmissions.overview.bodyValueChainOnly", {
+      companyName,
+      year: yearLabel,
+      total: valueByTab.overview,
+      valueChainValue: valueByTab.scope3,
+    });
+  })();
+
+  const scopeBody = (scope: ScopeKey) => {
+    if (model[scope] == null) {
+      return t(`companies.understandingEmissions.${scope}.bodyNotReported`, {
+        companyName,
+        year: yearLabel,
+      });
+    }
+    return t(`companies.understandingEmissions.${scope}.body`, {
+      companyName,
+      value: valueByTab[scope],
+      year: yearLabel,
+    });
   };
-  const ownShareLabel = formatShareLabel(model.shares.own);
-  const valueChainShareLabel = formatShareLabel(model.shares.valueChain);
 
   return (
     <SectionWithHelp
@@ -183,15 +239,7 @@ export function UnderstandingEmissions({
               <Text className="text-xl md:text-2xl">
                 {t("companies.understandingEmissions.overview.headline")}
               </Text>
-              <Text className="text-grey md:text-lg">
-                {t("companies.understandingEmissions.overview.body", {
-                  companyName,
-                  year: yearLabel,
-                  total: valueByTab.overview,
-                  ownShare: ownShareLabel ?? "—",
-                  valueChainShare: valueChainShareLabel ?? "—",
-                })}
-              </Text>
+              <Text className="text-grey md:text-lg">{overviewBody}</Text>
               <ul className="space-y-3 text-grey md:text-lg">
                 <li>
                   {t("companies.understandingEmissions.overview.bulletOwn")}
@@ -212,11 +260,7 @@ export function UnderstandingEmissions({
                 {t("companies.understandingEmissions.scope1.headline")}
               </Text>
               <Text className="text-grey md:text-lg">
-                {t("companies.understandingEmissions.scope1.body", {
-                  companyName,
-                  value: valueByTab.scope1,
-                  year: yearLabel,
-                })}
+                {scopeBody("scope1")}
               </Text>
               <Text className="text-grey md:text-lg">
                 {t("companies.understandingEmissions.scope1.examples")}
@@ -228,11 +272,7 @@ export function UnderstandingEmissions({
                 {t("companies.understandingEmissions.scope2.headline")}
               </Text>
               <Text className="text-grey md:text-lg">
-                {t("companies.understandingEmissions.scope2.body", {
-                  companyName,
-                  value: valueByTab.scope2,
-                  year: yearLabel,
-                })}
+                {scopeBody("scope2")}
               </Text>
               <Text className="text-grey md:text-lg">
                 {t("companies.understandingEmissions.scope2.examples")}
@@ -244,11 +284,7 @@ export function UnderstandingEmissions({
                 {t("companies.understandingEmissions.scope3.headline")}
               </Text>
               <Text className="text-grey md:text-lg">
-                {t("companies.understandingEmissions.scope3.body", {
-                  companyName,
-                  value: valueByTab.scope3,
-                  year: yearLabel,
-                })}
+                {scopeBody("scope3")}
               </Text>
 
               {model.topScope3Categories.length > 0 ? (
