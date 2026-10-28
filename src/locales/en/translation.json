@@ -1647,7 +1647,8 @@
       "visualisation": "Visualisation",
       "data": "Data",
       "historicalDevelopment": "Historical Development",
-      "ofTotal": "of total"
+      "ofTotal": "of total",
+      "followOnDescription": "Explore the full Scope 3 category breakdown below — a deeper look at where value-chain emissions come from."
     },
     "scopeReportingList": {
       "category": "Category"
@@ -1676,6 +1677,51 @@
         "dark": "Dark"
       },
       "generate": "Generate"
+    },
+    "understandingEmissions": {
+      "title": "Understanding emissions",
+      "subtitle": "See how {{companyName}}'s reported climate footprint for {{year}} splits between own operations and the value chain — and what each scope means.",
+      "notReported": "Not reported",
+      "breakdownAria": "Share of reported emissions: own operations versus value chain",
+      "tabs": {
+        "overview": "The big picture",
+        "scope1": "Scope 1",
+        "scope2": "Scope 2",
+        "scope3": "Scope 3"
+      },
+      "overview": {
+        "headline": "Own operations vs the value chain",
+        "body": "For {{companyName}} in {{year}}, the reported total is {{total}}. About {{ownShare}}% comes from own operations (Scopes 1 and 2) and {{valueChainShare}}% from the value chain (Scope 3). That split is why a steelmaker and a fashion brand can look so different — one often burns fuel on site, the other mostly sits in suppliers and product use.",
+        "bulletOwn": "Own operations — Scopes 1 and 2: emissions from what the company controls on site and from the energy it buys.",
+        "bulletValueChain": "Value chain — Scope 3: suppliers, transport, product use, investments, and the rest of the footprint outside the company's walls.",
+        "bulletScopes": "Scopes 1, 2, and 3 are the GHG Protocol labels inside that story — use the tabs to see each one for this company."
+      },
+      "scope1": {
+        "headline": "Direct emissions the company creates",
+        "body": "Scope 1 is the climate impact from sources {{companyName}} owns or controls — the core of own operations. In {{year}}, that figure is {{value}}.",
+        "examples": "Typical examples include fuel burned in company vehicles, boilers or furnaces on company sites, and manufacturing processes that release greenhouse gases on the spot."
+      },
+      "scope2": {
+        "headline": "Emissions from purchased energy",
+        "body": "Scope 2 is still part of own operations: pollution created when producing the energy {{companyName}} buys and uses. In {{year}}, that figure is {{value}}.",
+        "examples": "Think of electricity for offices, stores, or factories, plus purchased heating or cooling — even when the emissions happen at a power plant rather than on site."
+      },
+      "scope3": {
+        "headline": "The wider value chain",
+        "body": "Scope 3 is the value-chain share of the footprint: emissions linked to suppliers, logistics, product use, investments, and more. For {{companyName}} in {{year}}, the reported Scope 3 total is {{value}}.",
+        "driversTitle": "Largest reported Scope 3 drivers",
+        "driversHint": "These are the biggest category totals this company reported — scroll further down the page for the full interactive breakdown.",
+        "noCategories": "This company has not published a Scope 3 category breakdown for this year, so we can only show the Scope 3 total."
+      },
+      "groups": {
+        "own": "Own operations",
+        "valueChain": "Value chain"
+      },
+      "short": {
+        "scope1": "Scope 1",
+        "scope2": "Scope 2",
+        "scope3": "Scope 3"
+      }
     }
   },
   "nation": {

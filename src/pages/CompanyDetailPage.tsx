@@ -15,6 +15,7 @@ import { EmissionsHistory } from "@/components/companies/detail/history/Emission
 import { TurnoverEmissionsHistory } from "@/components/companies/detail/history/TurnoverEmissionsHistory";
 import { Seo } from "@/components/SEO/Seo";
 import { CompanyScope3 } from "@/components/companies/detail/CompanyScope3";
+import { UnderstandingEmissions } from "@/components/companies/detail/understanding-emissions/UnderstandingEmissions";
 import { useLanguage } from "@/components/LanguageProvider";
 import RelatableNumbers from "@/components/relatableNumbers";
 import { PageLoading } from "@/components/pageStates/Loading";
@@ -46,6 +47,9 @@ function SectionLoadError({ titleKey }: { titleKey: string }) {
 }
 
 function CompanyDetailCharts({
+  companyName,
+  year,
+  totalEmissions,
   emissionsHistory,
   turnoverHistory,
   emissionsError,
@@ -54,6 +58,9 @@ function CompanyDetailCharts({
   scope3Error,
   onYearSelect,
 }: {
+  companyName: string;
+  year: number | null;
+  totalEmissions: number | null;
   emissionsHistory: PageCompanyEmissionsHistory | undefined;
   turnoverHistory: PageCompanyTurnoverHistory | undefined;
   emissionsError: unknown;
@@ -64,6 +71,15 @@ function CompanyDetailCharts({
 }) {
   return (
     <>
+      {year != null && (
+        <UnderstandingEmissions
+          companyName={companyName}
+          year={year}
+          totalEmissions={totalEmissions}
+          emissionsHistory={emissionsHistory}
+          scope3={scope3}
+        />
+      )}
       {emissionsHistory ? (
         <EmissionsHistory
           history={emissionsHistory}
@@ -237,6 +253,9 @@ export function CompanyDetailPage() {
         <div className="mx-auto max-w-[1400px] space-y-8 md:space-y-16">
           <CompanyOverviewNoData header={header} headerChip={comparisonChip} />
           <CompanyDetailCharts
+            companyName={header.name}
+            year={null}
+            totalEmissions={null}
             emissionsHistory={emissionsHistory}
             turnoverHistory={turnoverHistory}
             emissionsError={emissionsError}
@@ -273,6 +292,9 @@ export function CompanyDetailPage() {
             />
           )}
         <CompanyDetailCharts
+          companyName={header.name}
+          year={overview.year}
+          totalEmissions={overview.totalEmissions}
           emissionsHistory={emissionsHistory}
           turnoverHistory={turnoverHistory}
           emissionsError={emissionsError}
