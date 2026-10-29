@@ -107,18 +107,19 @@ describe("TerritoryOverviewTable", () => {
     expect(rankFor("Beta")).toBe("2");
   });
 
-  it("keeps the measure rank when the list is searched or sorted by name", () => {
+  it("updates ranking based on the sorted column and keeps the ranking when the list is searched", () => {
     renderTable();
 
-    expect(rankFor("Beta")).toBe("2");
+    expect(rankFor("Gamma")).toBe("–");
 
     fireEvent.click(screen.getByRole("button", { name: "Municipality" }));
-    expect(rankFor("Beta")).toBe("2");
+
+    expect(rankFor("Gamma")).toBe("3");
 
     fireEvent.change(screen.getByRole("searchbox"), {
-      target: { value: "beta" },
+      target: { value: "gamma" },
     });
-    expect(rankFor("Beta")).toBe("2");
+    expect(rankFor("Gamma")).toBe("3");
     expect(
       screen.queryByRole("row", { name: /Alpha/ }),
     ).not.toBeInTheDocument();
