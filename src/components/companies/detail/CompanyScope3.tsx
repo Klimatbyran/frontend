@@ -10,7 +10,10 @@ interface CompanyScope3Props {
 export function CompanyScope3({ scope3 }: CompanyScope3Props) {
   const { t } = useTranslation();
 
-  if (!scope3?.categories.length) {
+  if (
+    !scope3?.categories.length ||
+    scope3.categories.every((c) => c.total == null || c.total == 0)
+  ) {
     return null;
   }
 
