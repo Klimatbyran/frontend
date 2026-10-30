@@ -1737,32 +1737,35 @@
       },
       "overview": {
         "headline": "Egna verksamheter kontra värdekedjan",
-        "body": "För {{companyName}} år {{year}} är det rapporterade totalet {{total}}. Ungefär {{ownShare}} % kommer från egna verksamheter (scope 1 och 2) och {{valueChainShare}} % från värdekedjan (scope 3). Den uppdelningen förklarar varför ett stålbolag och ett modeföretag kan se så olika ut — det ena bränner ofta bränsle på plats, det andra sitter mest i leverantörer och produktanvändning.",
-        "bulletOwn": "Egna verksamheter — scope 1 och 2: utsläpp från det företaget styr på plats och från energin det köper.",
-        "bulletValueChain": "Värdekedjan — scope 3: leverantörer, transporter, produktanvändning, investeringar och resten av avtrycket utanför företagets väggar.",
-        "bulletScopes": "Scope 1, 2 och 3 är GHG-protokollets etiketter i den historien — använd flikarna för att se varje del för det här företaget.",
-        "bodyOwnOnly": "För {{companyName}} år {{year}} är det rapporterade totalet {{total}}. Egna verksamheter (scope 1 och 2) summerar till {{ownValue}}. Scope 3 (värdekedjan) är inte rapporterat för året, så vi kan inte visa den fulla uppdelningen mellan egna verksamheter och värdekedjan.",
-        "bodyValueChainOnly": "För {{companyName}} år {{year}} är det rapporterade totalet {{total}}. Värdekedjan (scope 3) är {{valueChainValue}}. Egna verksamheter (scope 1 och 2) är inte rapporterade för året, så vi kan inte visa den fulla uppdelningen mellan egna verksamheter och värdekedjan."
+        "body": "År {{year}} rapporterade {{companyName}} totala växthusgasutsläpp på {{total}}. Ungefär {{ownShare}} % kom från egna verksamheter (scope 1 och 2), medan {{valueChainShare}} % kom från värdekedjan (scope 3).",
+        "bulletOwn": "Egna verksamheter — scope 1 och 2: Direkta utsläpp från källor som företaget äger eller kontrollerar, till exempel anläggningar och företagsfordon (scope 1), samt indirekta utsläpp från köpt el, värme, kyla och ånga (scope 2).",
+        "bulletValueChain": "Värdekedjan — scope 3: Övriga indirekta utsläpp kopplade till företagets verksamhet, inklusive inköpta varor och tjänster, transporter, affärsresor, anställdas pendling, investeringar och andra aktiviteter uppströms och nedströms.",
+        "bulletScopes": "Scope 1, 2 och 3 definieras av GHG-protokollet, det internationellt erkända ramverket för att mäta och rapportera växthusgasutsläpp. Utforska flikarna för att se hur varje scope bidrar till {{companyName}}s klimatavtryck.",
+        "bodyOwnOnly": "År {{year}} rapporterade {{companyName}} totala växthusgasutsläpp på {{total}}. Egna verksamheter (scope 1 och 2) summerar till {{ownValue}}. Scope 3 (värdekedjan) är inte rapporterat för året, så vi kan inte visa den fulla uppdelningen mellan egna verksamheter och värdekedjan.",
+        "bodyValueChainOnly": "År {{year}} rapporterade {{companyName}} totala växthusgasutsläpp på {{total}}. Värdekedjan (scope 3) är {{valueChainValue}}. Egna verksamheter (scope 1 och 2) är inte rapporterade för året, så vi kan inte visa den fulla uppdelningen mellan egna verksamheter och värdekedjan.",
+        "industryNote": "Den skillnaden hjälper till att förklara varför utsläppsprofiler kan skilja sig kraftigt mellan branscher. Stålbolag genererar till exempel ofta stora direkta utsläpp från produktionen, medan modeföretag typiskt har en större andel utsläpp kopplade till leverantörer och produktanvändning.",
+        "scope2MethodNote": "Obs om scope 2: siffrorna baseras i första hand på marknadsbaserad metod (som speglar köpt förnybar el och liknande instrument). Om marknadsbaserad data saknas använder vi platsbaserad metod i stället. Valet kan förändra scope 2 — och därmed egna verksamheter — kraftigt."
       },
       "scope1": {
         "headline": "Direkta utsläpp som företaget skapar",
-        "body": "Scope 1 är klimatpåverkan från källor som {{companyName}} äger eller kontrollerar — kärnan i egna verksamheter. År {{year}} är den siffran {{value}}.",
+        "body": "Scope 1 täcker direkta växthusgasutsläpp från källor som {{companyName}} äger eller kontrollerar — till exempel anläggningar och företagsfordon. År {{year}} är den siffran {{value}}.",
         "examples": "Typiska exempel är bränsle i företagsfordon, pannor eller ugnar på företagets anläggningar och tillverkningsprocesser som släpper ut växthusgaser på plats.",
         "bodyNotReported": "{{companyName}} rapporterade inte scope 1 för {{year}}."
       },
       "scope2": {
         "headline": "Utsläpp från köpt energi",
-        "body": "Scope 2 hör fortfarande till egna verksamheter: utsläppen som uppstår när energin som {{companyName}} köper och använder produceras. År {{year}} är den siffran {{value}}.",
-        "examples": "Tänk el till kontor, butiker eller fabriker, plus köpt värme eller kyla — även när utsläppen sker i ett kraftverk i stället för på plats.",
+        "body": "Scope 2 täcker indirekta utsläpp från köpt el, värme, kyla och ånga som {{companyName}} använder. År {{year}} är den siffran {{value}}.",
+        "examples": "Utsläppen sker hos kraftverket eller energileverantören i stället för på plats, men räknas ändå som egna verksamheter. Klimatkollen använder i första hand marknadsbaserad scope 2 (som speglar köp av förnybar el och liknande instrument); om den saknas faller vi tillbaka på platsbaserad scope 2. Vilken metod som finns tillgänglig kan förändra den här siffran kraftigt.",
         "bodyNotReported": "{{companyName}} rapporterade inte scope 2 för {{year}}."
       },
       "scope3": {
         "headline": "Den bredare värdekedjan",
-        "body": "Scope 3 är värdekedjans del av avtrycket: utsläpp kopplade till leverantörer, logistik, produktanvändning, investeringar med mera. För {{companyName}} år {{year}} är det rapporterade Scope 3-totalet {{value}}.",
+        "body": "Scope 3 täcker övriga indirekta utsläpp kopplade till {{companyName}}s verksamhet i värdekedjan. År {{year}} är det rapporterade Scope 3-totalet {{value}}.",
         "driversTitle": "Största rapporterade Scope 3-drivkrafter",
         "driversHint": "Det här är de största kategorierna företaget rapporterat — längre ner på sidan finns den fulla interaktiva uppdelningen.",
         "noCategories": "Det här företaget har inte publicerat någon Scope 3-kategoriuppdelning för året, så vi kan bara visa Scope 3-totalen.",
-        "bodyNotReported": "{{companyName}} rapporterade inte scope 3 för {{year}}."
+        "bodyNotReported": "{{companyName}} rapporterade inte scope 3 för {{year}}.",
+        "examples": "Det inkluderar inköpta varor och tjänster, transporter, affärsresor, anställdas pendling, investeringar och andra aktiviteter uppströms och nedströms."
       },
       "groups": {
         "own": "Egna verksamheter",
