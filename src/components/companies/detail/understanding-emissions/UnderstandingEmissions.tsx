@@ -240,6 +240,11 @@ export function UnderstandingEmissions({
                 {t("companies.understandingEmissions.overview.headline")}
               </Text>
               <Text className="text-grey md:text-lg">{overviewBody}</Text>
+              {(model.hasOwnData || model.hasValueChainData) && (
+                <Text className="text-grey md:text-lg">
+                  {t("companies.understandingEmissions.overview.industryNote")}
+                </Text>
+              )}
               <ul className="space-y-3 text-grey md:text-lg">
                 <li>
                   {t("companies.understandingEmissions.overview.bulletOwn")}
@@ -250,9 +255,16 @@ export function UnderstandingEmissions({
                   )}
                 </li>
                 <li>
-                  {t("companies.understandingEmissions.overview.bulletScopes")}
+                  {t("companies.understandingEmissions.overview.bulletScopes", {
+                    companyName,
+                  })}
                 </li>
               </ul>
+              <Text className="text-sm text-grey md:text-base">
+                {t(
+                  "companies.understandingEmissions.overview.scope2MethodNote",
+                )}
+              </Text>
             </TabsContent>
 
             <TabsContent value="scope1" className="mt-0 space-y-4">
@@ -285,6 +297,9 @@ export function UnderstandingEmissions({
               </Text>
               <Text className="text-grey md:text-lg">
                 {scopeBody("scope3")}
+              </Text>
+              <Text className="text-grey md:text-lg">
+                {t("companies.understandingEmissions.scope3.examples")}
               </Text>
 
               {model.topScope3Categories.length > 0 ? (

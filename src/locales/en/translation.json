@@ -1691,32 +1691,35 @@
       },
       "overview": {
         "headline": "Own operations vs the value chain",
-        "body": "For {{companyName}} in {{year}}, the reported total is {{total}}. About {{ownShare}}% comes from own operations (Scopes 1 and 2) and {{valueChainShare}}% from the value chain (Scope 3). That split is why a steelmaker and a fashion brand can look so different — one often burns fuel on site, the other mostly sits in suppliers and product use.",
-        "bulletOwn": "Own operations — Scopes 1 and 2: emissions from what the company controls on site and from the energy it buys.",
-        "bulletValueChain": "Value chain — Scope 3: suppliers, transport, product use, investments, and the rest of the footprint outside the company's walls.",
-        "bulletScopes": "Scopes 1, 2, and 3 are the GHG Protocol labels inside that story — use the tabs to see each one for this company.",
-        "bodyOwnOnly": "For {{companyName}} in {{year}}, the reported total is {{total}}. Own operations (Scopes 1 and 2) add up to {{ownValue}}. Scope 3 (value chain) is not reported for this year, so we cannot show the full own vs value-chain split.",
-        "bodyValueChainOnly": "For {{companyName}} in {{year}}, the reported total is {{total}}. The value chain (Scope 3) is {{valueChainValue}}. Own operations (Scopes 1 and 2) are not reported for this year, so we cannot show the full own vs value-chain split."
+        "body": "In {{year}}, {{companyName}} reported total greenhouse gas emissions of {{total}}. Approximately {{ownShare}}% came from its own operations (Scopes 1 and 2), while {{valueChainShare}}% came from its value chain (Scope 3).",
+        "bulletOwn": "Own operations — Scopes 1 and 2: Direct emissions from sources the company owns or controls, such as facilities and company vehicles (Scope 1), and indirect emissions from purchased electricity, heating, cooling, and steam (Scope 2).",
+        "bulletValueChain": "Value chain — Scope 3: Other indirect emissions associated with the company's activities, including purchased goods and services, transportation, business travel, employee commuting, investments, and other upstream and downstream activities.",
+        "bulletScopes": "Scopes 1, 2, and 3 are defined by the GHG Protocol, the internationally recognized framework for measuring and reporting greenhouse gas emissions. Explore the tabs to see how each scope contributes to {{companyName}}'s carbon footprint.",
+        "bodyOwnOnly": "In {{year}}, {{companyName}} reported total greenhouse gas emissions of {{total}}. Own operations (Scopes 1 and 2) add up to {{ownValue}}. Scope 3 (value chain) is not reported for this year, so we cannot show the full own vs value-chain split.",
+        "bodyValueChainOnly": "In {{year}}, {{companyName}} reported total greenhouse gas emissions of {{total}}. The value chain (Scope 3) is {{valueChainValue}}. Own operations (Scopes 1 and 2) are not reported for this year, so we cannot show the full own vs value-chain split.",
+        "industryNote": "This distinction helps explain why emissions profiles can differ significantly across industries. For example, steel manufacturers often generate substantial direct emissions from production, while fashion brands typically have a larger share of emissions associated with suppliers and product use.",
+        "scope2MethodNote": "Note on Scope 2: figures are primarily based on the market-based method (which reflects purchased renewable electricity and similar instruments). If market-based data is missing, we use the location-based method instead. The choice can change Scope 2 — and therefore own-operations — totals substantially."
       },
       "scope1": {
         "headline": "Direct emissions the company creates",
-        "body": "Scope 1 is the climate impact from sources {{companyName}} owns or controls — the core of own operations. In {{year}}, that figure is {{value}}.",
+        "body": "Scope 1 covers direct greenhouse gas emissions from sources {{companyName}} owns or controls — such as facilities and company vehicles. In {{year}}, that figure is {{value}}.",
         "examples": "Typical examples include fuel burned in company vehicles, boilers or furnaces on company sites, and manufacturing processes that release greenhouse gases on the spot.",
         "bodyNotReported": "{{companyName}} did not report Scope 1 for {{year}}."
       },
       "scope2": {
         "headline": "Emissions from purchased energy",
-        "body": "Scope 2 is still part of own operations: pollution created when producing the energy {{companyName}} buys and uses. In {{year}}, that figure is {{value}}.",
-        "examples": "Think of electricity for offices, stores, or factories, plus purchased heating or cooling — even when the emissions happen at a power plant rather than on site.",
+        "body": "Scope 2 covers indirect emissions from purchased electricity, heating, cooling, and steam used by {{companyName}}. In {{year}}, that figure is {{value}}.",
+        "examples": "These emissions happen at the power plant or energy provider rather than on site, but they still count as own operations. Klimatkollen primarily uses market-based Scope 2 (reflecting renewable electricity purchases and similar instruments); if that is missing, we fall back to location-based Scope 2. Which method is available can change this number a lot.",
         "bodyNotReported": "{{companyName}} did not report Scope 2 for {{year}}."
       },
       "scope3": {
         "headline": "The wider value chain",
-        "body": "Scope 3 is the value-chain share of the footprint: emissions linked to suppliers, logistics, product use, investments, and more. For {{companyName}} in {{year}}, the reported Scope 3 total is {{value}}.",
+        "body": "Scope 3 covers other indirect emissions associated with {{companyName}}'s activities across the value chain. In {{year}}, the reported Scope 3 total is {{value}}.",
         "driversTitle": "Largest reported Scope 3 drivers",
         "driversHint": "These are the biggest category totals this company reported — scroll further down the page for the full interactive breakdown.",
         "noCategories": "This company has not published a Scope 3 category breakdown for this year, so we can only show the Scope 3 total.",
-        "bodyNotReported": "{{companyName}} did not report Scope 3 for {{year}}."
+        "bodyNotReported": "{{companyName}} did not report Scope 3 for {{year}}.",
+        "examples": "This includes purchased goods and services, transportation, business travel, employee commuting, investments, and other upstream and downstream activities."
       },
       "groups": {
         "own": "Own operations",
