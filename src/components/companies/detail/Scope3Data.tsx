@@ -40,7 +40,7 @@ export function Scope3Data({ emissions, className }: Scope3DataProps) {
     return null;
   }
 
-  const categories = emissions.scope3.categories;
+  const categories = emissions.scope3.categories.filter((cat) => cat.total);
   const scope3Total = emissions.scope3.total ?? 0;
 
   return (
