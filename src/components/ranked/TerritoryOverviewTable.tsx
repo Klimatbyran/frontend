@@ -17,7 +17,6 @@ import {
   DEFAULT_STATISTICAL_GRADIENT_COLORS,
 } from "@/utils/ui/colorGradients";
 import { cn } from "@/lib/utils";
-import { compareParisTrack } from "@/utils/data/parisTrackSort";
 import {
   OverviewMobileColumnSelect,
   OverviewShowMoreFooter,
@@ -96,15 +95,17 @@ function numericValue(value: number | boolean | null): number | null {
   return null;
 }
 
-function compareNullableNumber(
-  a: number | null,
-  b: number | null,
-  factor: number,
-): number {
-  if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
-  return factor * (a - b);
+function getSortValue(row: TerritoryTableRow, sortKey: string) {
+  switch (sortKey) {
+    case "name":
+      return row.name;
+    case "county":
+      return row.county;
+    case "value":
+      return numericValue(row.kpiValue);
+    case "paris":
+      return row.paris;
+  }
 }
 
 function formatKpi(
@@ -151,63 +152,60 @@ export function TerritoryOverviewTable({
   const [mobileColumn, setMobileColumn] = useState<MetricColumn>("value");
 
   const { sorted, rankById } = useMemo(() => {
+    const compare =
+      (factor: number) => (a: TerritoryTableRow, b: TerritoryTableRow) => {
+        const aValue = getSortValue(a, sortKey);
+        const bValue = getSortValue(b, sortKey);
+
+        if (aValue == null && bValue == null) {
+          return 0;
+        } else if (aValue == null) {
+          return 1;
+        } else if (bValue == null) {
+          return -1;
+        } else if (typeof aValue === "string" && typeof bValue === "string") {
+          return factor * aValue.localeCompare(bValue, currentLanguage);
+        } else {
+          return factor * (Number(aValue) - Number(bValue));
+        }
+      };
+
+    const factor = direction === "asc" ? 1 : -1;
+    const sortedRows = [...rows].sort(compare(factor));
+
     const patterns = getSearchTerms(query).map((term) =>
       buildSearchRegex(term, currentLanguage, true),
     );
-    const filtered = patterns.length
-      ? rows.filter((row) =>
+
+    const filteredRows = patterns.length
+      ? sortedRows.filter((row) =>
           patterns.some(
             (pattern) =>
               pattern.test(row.name) ||
               (row.county ? pattern.test(row.county) : false),
           ),
         )
-      : rows;
+      : sortedRows;
 
-    const compare =
-      (factor: number) => (a: TerritoryTableRow, b: TerritoryTableRow) => {
-        switch (sortKey) {
-          case "name":
-            return factor * a.name.localeCompare(b.name, currentLanguage);
-          case "county": {
-            const aCounty = a.county ?? "";
-            const bCounty = b.county ?? "";
-            if (!aCounty && !bCounty) return 0;
-            if (!aCounty) return 1;
-            if (!bCounty) return -1;
-            return factor * aCounty.localeCompare(bCounty, currentLanguage);
-          }
-          case "value":
-            return compareNullableNumber(
-              numericValue(a.kpiValue),
-              numericValue(b.kpiValue),
-              factor,
-            );
-          case "paris":
-            return compareParisTrack(a.paris, b.paris, direction);
-        }
-      };
+    const rankLowToHigh =
+      sortKey === "value" ? higherIsBetter : sortKey === "paris";
 
-    const factor = direction === "asc" ? 1 : -1;
-    const sortedRows = [...filtered].sort(compare(factor));
-    // Rank is the place among every territory on this measure, so search and
-    // column sorts keep the number. Missing values stay unranked.
-    const rankRows = [...rows].sort((a, b) =>
-      compareNullableNumber(
-        numericValue(a.kpiValue),
-        numericValue(b.kpiValue),
-        higherIsBetter ? -1 : 1,
-      ),
+    const nrOfNullValues = sortedRows.filter(
+      (row) => getSortValue(row, sortKey) != null,
+    ).length;
+
+    const rankById = new Map(
+      sortedRows
+        .filter((row) => getSortValue(row, sortKey) != null)
+        .map((row, index) => [
+          row.id,
+          (direction === "desc") === rankLowToHigh
+            ? index + 1
+            : nrOfNullValues - index,
+        ]),
     );
-    const rankById = new Map<string, number>();
-    let place = 1;
-    for (const row of rankRows) {
-      if (numericValue(row.kpiValue) == null) continue;
-      rankById.set(row.id, place);
-      place += 1;
-    }
 
-    return { sorted: sortedRows, rankById };
+    return { sorted: filteredRows, rankById };
   }, [rows, query, sortKey, direction, currentLanguage, higherIsBetter]);
 
   const shown = sorted.slice(0, limit);
