@@ -71,15 +71,6 @@ function CompanyDetailCharts({
 }) {
   return (
     <>
-      {year != null && (
-        <UnderstandingEmissions
-          companyName={companyName}
-          year={year}
-          totalEmissions={totalEmissions}
-          emissionsHistory={emissionsHistory}
-          scope3={scope3}
-        />
-      )}
       {emissionsHistory ? (
         <EmissionsHistory
           history={emissionsHistory}
@@ -99,6 +90,15 @@ function CompanyDetailCharts({
         turnoverError && (
           <SectionLoadError titleKey="companyDetailPage.turnoverHistoryErrorTitle" />
         )
+      )}
+      {year != null && (
+        <UnderstandingEmissions
+          companyName={companyName}
+          year={year}
+          totalEmissions={totalEmissions}
+          emissionsHistory={emissionsHistory}
+          scope3={scope3}
+        />
       )}
       {scope3 ? (
         <CompanyScope3 scope3={scope3} />
