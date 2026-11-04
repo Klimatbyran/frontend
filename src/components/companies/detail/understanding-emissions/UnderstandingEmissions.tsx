@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SectionWithHelp } from "@/data-guide/SectionWithHelp";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useCategoryMetadata } from "@/hooks/companies/useCategories";
 import {
@@ -205,9 +204,7 @@ export function UnderstandingEmissions({
   };
 
   return (
-    <SectionWithHelp
-      helpItems={["totalEmissions", "scope1", "scope2", "scope3"]}
-    >
+    <div className="rounded-level-3 bg-black-2 px-4 py-4 md:rounded-level-1 md:px-8 md:py-8">
       <div className="space-y-6 md:space-y-8">
         <div className="max-w-3xl space-y-3">
           <Text variant="h3">
@@ -402,6 +399,6 @@ export function UnderstandingEmissions({
           </div>
         </Tabs>
       </div>
-    </SectionWithHelp>
+    </div>
   );
 }
