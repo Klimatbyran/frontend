@@ -11,7 +11,10 @@ vi.mock("@/lib/api", () => ({
   getMunicipalitiesKPIs: vi.fn(() => new Promise(() => {})),
   getRegionsKPIs: vi.fn(() => new Promise(() => {})),
   getAdditionalNationData: vi.fn(() => new Promise(() => {})),
-  getCompaniesBySearchTerm: vi.fn(() => new Promise(() => {})),
+}));
+
+vi.mock("@/lib/pagesApi", () => ({
+  getPageCompaniesSearch: vi.fn(() => new Promise(() => {})),
 }));
 
 afterEach(() => {

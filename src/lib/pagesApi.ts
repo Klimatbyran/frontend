@@ -1,4 +1,5 @@
 import { apiUrl } from "./api";
+import type { CompanyListItem } from "@/types/company";
 import type {
   PageCompaniesOverviewQuery,
   PageCompaniesOverviewSummary,
@@ -12,6 +13,9 @@ import type {
   PageListResponse,
   PageSitemap,
 } from "@/types/pages";
+
+/** Landing chart typeahead — same company list shape as Partner search. */
+export type PageCompanySearchResult = CompanyListItem[];
 
 const SERVER_FETCH_TIMEOUT_MS = 10_000;
 
@@ -94,6 +98,21 @@ export async function getPageExploreCompanies(): Promise<
   PageListResponse<PageExploreCompany>
 > {
   return fetchPageJson("/pages/explore/companies");
+}
+
+/**
+ * Sweden-only company typeahead for Klimatkollen (landing chart).
+ * Uses `GET /pages/companies/search` — not Partner `/companies/search`.
+ */
+export async function getPageCompaniesSearch(
+  q: string,
+): Promise<PageCompanySearchResult> {
+  try {
+    return await fetchPageJson(`/pages/companies/search${toQuery({ q })}`);
+  } catch (error) {
+    console.error("Error searching companies:", error);
+    return [];
+  }
 }
 
 export async function getPageSitemap(): Promise<PageSitemap> {
