@@ -1764,7 +1764,7 @@
         "driversTitle": "Största rapporterade Scope 3-drivkrafter",
         "driversHint": "Det här är de största kategorierna företaget rapporterat — längre ner på sidan finns den fulla interaktiva uppdelningen.",
         "noCategories": "Det här företaget har inte publicerat någon Scope 3-kategoriuppdelning för året, så vi kan bara visa Scope 3-totalen.",
-        "bodyNotReported": "{{companyName}} rapporterade inte scope 3 för {{year}}.",
+        "bodyNotReported": "{{companyName}} rapporterade inte Scope 3 för {{year}}.",
         "examples": "Det inkluderar inköpta varor och tjänster, transporter, affärsresor, anställdas pendling, investeringar och andra aktiviteter uppströms och nedströms."
       },
       "groups": {

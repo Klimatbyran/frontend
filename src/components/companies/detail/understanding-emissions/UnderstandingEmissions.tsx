@@ -21,6 +21,14 @@ import {
   type GuideTab,
   type ScopeKey,
 } from "./buildUnderstandingEmissionsModel";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type UnderstandingEmissionsProps = {
   companyName: string;
@@ -66,6 +74,7 @@ export function UnderstandingEmissions({
 }: UnderstandingEmissionsProps) {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
+  const { isMobile } = useScreenSize();
   const { getCategoryName } = useCategoryMetadata();
   const [activeTab, setActiveTab] = useState<GuideTab>("overview");
 
@@ -131,17 +140,15 @@ export function UnderstandingEmissions({
   const handleSelectGroup = (group: EmissionsGroupKey) => {
     if (group === "valueChain") {
       setActiveTab("scope3");
-      return;
+    } else if (group === "own") {
+      if (model.scope1 != null && activeTab != "scope1") {
+        setActiveTab("scope1");
+      } else if (model.scope2 != null) {
+        setActiveTab("scope2");
+      }
+    } else {
+      setActiveTab("overview");
     }
-    if (model.scope1 != null) {
-      setActiveTab("scope1");
-      return;
-    }
-    if (model.scope2 != null) {
-      setActiveTab("scope2");
-      return;
-    }
-    setActiveTab("overview");
   };
 
   const ownShareLabel = formatSharePercentLabel(model.shares.own, {
@@ -221,21 +228,50 @@ export function UnderstandingEmissions({
           onSelectGroup={handleSelectGroup}
         />
 
+        {isMobile && (
+          <Select
+            value={activeTab}
+            onValueChange={(value) => setActiveTab(value as GuideTab)}
+          >
+            <SelectTrigger
+              id="understanding-emissions-tab-selector"
+              className="w-full bg-black-1 text-white border border-gray-600 px-3 py-2 rounded-md"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-black-1 text-white">
+              {TABS.map((tab) => (
+                <SelectItem key={tab} value={tab}>
+                  {t(`companies.understandingEmissions.tabs.${tab}`)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
         <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 bg-black-1 p-1">
-            {TABS.map((tab) => (
-              <TabsTrigger
-                key={tab}
-                value={tab}
-                className="flex-1 data-[state=active]:bg-black-2 data-[state=active]:text-white"
-              >
-                {t(`companies.understandingEmissions.tabs.${tab}`)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          {!isMobile && (
+            <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 bg-black-1 p-1">
+              {TABS.map((tab) => (
+                <TabsTrigger
+                  key={tab}
+                  value={tab}
+                  className="flex-1 data-[state=active]:bg-black-2 data-[state=active]:text-white"
+                >
+                  {t(`companies.understandingEmissions.tabs.${tab}`)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          )}
 
           <div className="mt-6 space-y-4">
-            <TabsContent value="overview" className="mt-0 space-y-4">
+            <TabsContent
+              value="overview"
+              className="mt-0 space-y-4"
+              {...(isMobile
+                ? { "aria-labelledby": "understanding-emissions-tab-selector" }
+                : {})}
+            >
               <Text className="text-xl md:text-2xl">
                 {t("companies.understandingEmissions.overview.headline")}
               </Text>
@@ -267,7 +303,13 @@ export function UnderstandingEmissions({
               </Text>
             </TabsContent>
 
-            <TabsContent value="scope1" className="mt-0 space-y-4">
+            <TabsContent
+              value="scope1"
+              className="mt-0 space-y-4"
+              {...(isMobile
+                ? { "aria-labelledby": "understanding-emissions-tab-selector" }
+                : {})}
+            >
               <Text className="text-xl md:text-2xl">
                 {t("companies.understandingEmissions.scope1.headline")}
               </Text>
@@ -279,7 +321,13 @@ export function UnderstandingEmissions({
               </Text>
             </TabsContent>
 
-            <TabsContent value="scope2" className="mt-0 space-y-4">
+            <TabsContent
+              value="scope2"
+              className="mt-0 space-y-4"
+              {...(isMobile
+                ? { "aria-labelledby": "understanding-emissions-tab-selector" }
+                : {})}
+            >
               <Text className="text-xl md:text-2xl">
                 {t("companies.understandingEmissions.scope2.headline")}
               </Text>
@@ -291,7 +339,13 @@ export function UnderstandingEmissions({
               </Text>
             </TabsContent>
 
-            <TabsContent value="scope3" className="mt-0 space-y-4">
+            <TabsContent
+              value="scope3"
+              className="mt-0 space-y-4"
+              {...(isMobile
+                ? { "aria-labelledby": "understanding-emissions-tab-selector" }
+                : {})}
+            >
               <Text className="text-xl md:text-2xl">
                 {t("companies.understandingEmissions.scope3.headline")}
               </Text>
@@ -338,9 +392,11 @@ export function UnderstandingEmissions({
                   </Text>
                 </div>
               ) : (
-                <Text className="text-grey md:text-lg">
-                  {t("companies.understandingEmissions.scope3.noCategories")}
-                </Text>
+                model.scope3 && (
+                  <Text className="text-grey md:text-lg">
+                    {t("companies.understandingEmissions.scope3.noCategories")}
+                  </Text>
+                )
               )}
             </TabsContent>
           </div>
