@@ -29,6 +29,7 @@ import {
 } from "@/utils/data/industryGrouping";
 import { getSeoForRoute } from "@/seo/routes";
 import { getCompanyUrlSegment } from "@/utils/companyRouting";
+import { stagingFeatureFlagEnabled } from "@/utils/ui/featureFlags";
 import type {
   PageCompanyEmissionsHistory,
   PageCompanyScope3,
@@ -91,7 +92,7 @@ function CompanyDetailCharts({
           <SectionLoadError titleKey="companyDetailPage.turnoverHistoryErrorTitle" />
         )
       )}
-      {year != null && (
+      {year != null && stagingFeatureFlagEnabled() && (
         <UnderstandingEmissions
           companyName={companyName}
           year={year}
