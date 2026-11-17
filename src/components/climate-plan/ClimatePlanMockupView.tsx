@@ -62,6 +62,12 @@ function StepHeading({ step }: { step: WizardStep }) {
       {step.intro && (
         <p className="mt-3 max-w-2xl text-sm text-grey">{step.intro}</p>
       )}
+      {step.tip && (
+        <p className="mt-4 max-w-2xl border-l border-white/20 pl-3 text-sm text-grey">
+          <span className="text-white">Tips. </span>
+          {step.tip}
+        </p>
+      )}
     </div>
   );
 }

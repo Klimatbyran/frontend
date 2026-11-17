@@ -16,6 +16,8 @@ export type MockField = {
   id: string;
   label: string;
   hint?: string;
+  /** Shown when this answer is scored on how specific it is. */
+  tip?: string;
   kind: "input" | "textarea" | "checkbox";
   value?: string;
   unit?: string;
@@ -43,6 +45,14 @@ export type MockPart = {
   intro: string;
   sections: MockSection[];
 };
+
+export const SPECIFICITY_TIP =
+  "Nämn vem som ansvarar, till när det ska vara gjort, vad som ska göras och genom vilken mekanism. Ju fler av de fyra, desto bättre.";
+
+const withSpecificityTip = (field: MockField): MockField => ({
+  ...field,
+  tip: SPECIFICITY_TIP,
+});
 
 export const EXAMPLE_MUNICIPALITY = "Uppsala";
 
@@ -134,10 +144,12 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
         intro:
           "Ett offentligt åtagande i linje med Parisavtalet, och en bild av den klimatneutrala kommunen.",
         fields: [
-          textArea(
-            "pledge",
-            "Offentligt åtagande",
-            "Löfte från kommunens ledning om brådskande och rättvisa klimatåtgärder mot 1,5-gradersmålet.",
+          withSpecificityTip(
+            textArea(
+              "pledge",
+              "Offentligt åtagande",
+              "Löfte från kommunens ledning om brådskande och rättvisa klimatåtgärder mot 1,5-gradersmålet.",
+            ),
           ),
           textArea(
             "vision",
@@ -179,10 +191,12 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
             ...emptyInput("net-zero-year", "År för nettonoll"),
             placeholder: "till exempel 2030",
           },
-          textArea(
-            "milestones",
-            "Etappmål",
-            "Mätbara delmål på vägen mot nettonoll.",
+          withSpecificityTip(
+            textArea(
+              "milestones",
+              "Etappmål",
+              "Delmål på vägen mot nettonoll.",
+            ),
           ),
           textArea(
             "adaptation-goals",
@@ -208,25 +222,33 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
         title: "Åtgärdspaket och sektorstrategier",
         intro: "Konkreta insatser där utsläppen är störst.",
         fields: [
-          textArea(
-            "transport-actions",
-            "Transporter och mobilitet",
-            "Cykel- och gångvägar, kollektivtrafik och laddinfrastruktur.",
+          withSpecificityTip(
+            textArea(
+              "transport-actions",
+              "Transporter och mobilitet",
+              "Cykel- och gångvägar, kollektivtrafik och laddinfrastruktur.",
+            ),
           ),
-          textArea(
-            "energy-actions",
-            "Energi och bebyggelse",
-            "Kommunens egna lokaler, lokal förnybar energi och klimatkrav vid nybyggnation.",
+          withSpecificityTip(
+            textArea(
+              "energy-actions",
+              "Energi och bebyggelse",
+              "Kommunens egna lokaler, lokal förnybar energi och klimatkrav vid nybyggnation.",
+            ),
           ),
-          textArea(
-            "food-actions",
-            "Mat och konsumtion",
-            "Matsvinn, klimatsmart mat i skola och omsorg, återbruk och delning.",
+          withSpecificityTip(
+            textArea(
+              "food-actions",
+              "Mat och konsumtion",
+              "Matsvinn, klimatsmart mat i skola och omsorg, återbruk och delning.",
+            ),
           ),
-          textArea(
-            "nature-actions",
-            "Natur och kolsänkor",
-            "Träd, grönområden och biokol som binder koldioxid och tar hand om vatten.",
+          withSpecificityTip(
+            textArea(
+              "nature-actions",
+              "Natur och kolsänkor",
+              "Träd, grönområden och biokol som binder koldioxid och tar hand om vatten.",
+            ),
           ),
         ],
       },
@@ -459,6 +481,7 @@ export type WizardStep = {
   kicker: string;
   title: string;
   intro?: string;
+  tip?: string;
   kind: WizardStepKind;
   fields: MockField[];
   /** A single text area grows to fill the step. */
@@ -508,6 +531,7 @@ function pushFieldSteps(
       kicker,
       title: field.label,
       intro: field.hint,
+      tip: field.tip,
       kind: "fields",
       fields: [field],
       grow: true,
