@@ -40,7 +40,6 @@ import {
 import { AuthCallback } from "./pages/AuthCallback";
 import { LandingPage } from "./pages/LandingPage";
 import { ComparisonRouteLayout } from "./components/compare/ComparisonRouteLayout";
-import StagingProtectedRoute from "./components/StagingProtectedRoute";
 
 function ComparisonRoutes({ basePath }: { basePath: string }) {
   return (
@@ -156,12 +155,7 @@ function ContentRoutes({ basePath }: { basePath: string }) {
   return (
     <>
       <Route path={`${basePath}/about`} element={<AboutPage />} />
-      <Route element={<StagingProtectedRoute />}>
-        <Route
-          path={`${basePath}/climate-plan`}
-          element={<ClimatePlanPage />}
-        />
-      </Route>
+      <Route path={`${basePath}/climate-plan`} element={<ClimatePlanPage />} />
       <Route path={`${basePath}/methodology`} element={<MethodsPage />} />
       <Route path={`${basePath}/support`} element={<SupportPage />} />
       <Route path={`${basePath}/articles`} element={<InsightsPage />} />

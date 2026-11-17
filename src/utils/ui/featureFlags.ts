@@ -5,9 +5,16 @@ export const dataGuideFeatureFlagEnabled = () => {
 /** Public path for Sweden's emissions story. */
 export const nationPublicPath = () => "/nation";
 
-export const stagingFeatureFlagEnabled = (hostname?: string) => {
-  const host =
-    hostname ?? (typeof window !== "undefined" ? window.location.hostname : "");
+export const stagingFeatureFlagEnabled = () => {
+  // Check if we're running on localhost or stage
+  if (
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname.includes("stage"))
+  ) {
+    return true;
+  }
 
-  return host === "localhost" || host === "127.0.0.1" || host.includes("stage");
+  // For production, return false
+  return false;
 };
