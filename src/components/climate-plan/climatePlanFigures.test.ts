@@ -6,6 +6,10 @@ import {
   climatePlanDocumentLines,
 } from "./climatePlanDocument";
 import {
+  CLIMATE_PLAN_STEPS,
+  resolveClimatePlanAnswers,
+} from "./climatePlanContent";
+import {
   buildClimatePlanFigures,
   type ClimatePlanMunicipality,
 } from "./climatePlanFigures";
@@ -35,7 +39,7 @@ describe("buildClimatePlanFigures", () => {
       },
     });
 
-    expect(figures.year).toBe(2023);
+    expect(figures.stats[0]?.caption).toBe("2023, inom kommungränsen");
     expect(figures.answers["kpi-total"]).toBe(
       formatEmissionsAbsolute(480000, "sv"),
     );
@@ -68,6 +72,56 @@ describe("buildClimatePlanFigures", () => {
     expect(figures.answers["kpi-charge-points"]).toBe("Saknar laddpunkter");
     expect(figures.answers["kpi-procurement"]).toBe("Nej");
     expect(figures.sectors).toEqual([]);
+  });
+
+  it("ignores an emissions year that is not a number", () => {
+    const figures = buildClimatePlanFigures(
+      {
+        ...municipality,
+        emissions: [{ year: "okänt", value: 10 }],
+      },
+      undefined,
+    );
+
+    expect(figures.stats[0]?.caption).toBe("Inom kommungränsen");
+    expect(figures.stats[0]?.value).not.toContain("NaN");
+  });
+});
+
+describe("resolveClimatePlanAnswers", () => {
+  it("keeps a typed value when Klimatkollen has no number, and drops it when no municipality is chosen", () => {
+    const kept = resolveClimatePlanAnswers(
+      { "kpi-total": "12", pledge: "Ett löfte" },
+      { "kpi-total": "" },
+    );
+    expect(kept["kpi-total"]).toBe("12");
+    expect(kept.pledge).toBe("Ett löfte");
+
+    const cleared = resolveClimatePlanAnswers(
+      { "kpi-total": "12", pledge: "Ett löfte" },
+      null,
+    );
+    expect(cleared["kpi-total"]).toBe("");
+    expect(cleared.pledge).toBe("Ett löfte");
+  });
+
+  it("uses the Klimatkollen value when one exists", () => {
+    const resolved = resolveClimatePlanAnswers(
+      { "kpi-total": "12" },
+      { "kpi-total": "480" },
+    );
+    expect(resolved["kpi-total"]).toBe("480");
+  });
+});
+
+describe("climate plan steps", () => {
+  it("gives every step and field its own id", () => {
+    const stepIds = CLIMATE_PLAN_STEPS.map((step) => step.id);
+    const fieldIds = CLIMATE_PLAN_STEPS.flatMap((step) =>
+      step.fields.map((field) => field.id),
+    );
+    expect(new Set(stepIds).size).toBe(stepIds.length);
+    expect(new Set(fieldIds).size).toBe(fieldIds.length);
   });
 });
 

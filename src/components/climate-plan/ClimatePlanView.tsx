@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import { Download, Search } from "lucide-react";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import {
@@ -98,6 +98,7 @@ function TextQuestion({
   hideHint?: boolean;
 }) {
   const locked = Boolean(field.fromKlimatkollen && value.trim());
+  const labelledByHeading = Boolean(grow || hideHint);
   const shared = {
     id: field.id,
     value,
@@ -105,12 +106,16 @@ function TextQuestion({
     onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       onChange(event.target.value),
     placeholder: value ? undefined : field.placeholder,
+    "aria-label": labelledByHeading ? field.label : undefined,
     className: cn(controlClassName, locked && "text-white/80"),
   };
 
   return (
     <div className={cn(grow && "flex min-h-0 flex-1 flex-col")}>
-      {!grow && <FieldLabel field={field} />}
+      {!labelledByHeading && <FieldLabel field={field} />}
+      {labelledByHeading && field.fromKlimatkollen && (
+        <p className="mb-2 text-xs text-grey">Klimatkollen</p>
+      )}
       {field.kind === "textarea" ? (
         <textarea
           {...shared}
@@ -168,6 +173,28 @@ function MunicipalityStep({
 }: {
   wizard: ReturnType<typeof useClimatePlanWizard>;
 }) {
+  const closeTimer = useRef<number | null>(null);
+
+  useEffect(
+    () => () => {
+      if (closeTimer.current != null) window.clearTimeout(closeTimer.current);
+    },
+    [],
+  );
+
+  function openList() {
+    if (closeTimer.current != null) window.clearTimeout(closeTimer.current);
+    wizard.setListOpen(true);
+  }
+
+  function scheduleClose() {
+    if (closeTimer.current != null) window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(
+      () => wizard.setListOpen(false),
+      150,
+    );
+  }
+
   return (
     <div className="mx-auto w-full max-w-xl">
       <label htmlFor="municipality" className="mb-2 block text-sm">
@@ -182,11 +209,13 @@ function MunicipalityStep({
           id="municipality"
           value={wizard.query}
           onChange={(event) => wizard.changeQuery(event.target.value)}
-          onFocus={() => wizard.setListOpen(true)}
-          onBlur={() => {
-            window.setTimeout(() => wizard.setListOpen(false), 150);
-          }}
+          onFocus={openList}
+          onBlur={scheduleClose}
           onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              wizard.setListOpen(false);
+              return;
+            }
             if (event.key === "Enter" && wizard.matches[0]) {
               event.preventDefault();
               wizard.selectMunicipality(wizard.matches[0]);
@@ -240,9 +269,11 @@ function MunicipalityStep({
 function EmissionsStep({
   figures,
   sectorsLoading,
+  sectorsFailed,
 }: {
   figures: ClimatePlanFigures | null;
   sectorsLoading: boolean;
+  sectorsFailed: boolean;
 }) {
   if (!figures) {
     return (
@@ -273,14 +304,16 @@ function EmissionsStep({
         <p className="mb-3 text-sm text-grey">Fördelning per sektor</p>
         {sectorsLoading ? (
           <p className="text-sm text-grey">Hämtar sektorer…</p>
+        ) : sectorsFailed ? (
+          <p className="text-sm text-grey">Kunde inte hämta sektorerna.</p>
         ) : figures.sectors.length === 0 ? (
           <p className="text-sm text-grey">Ingen sektorfördelning finns.</p>
         ) : (
           <>
             <div className="flex h-3 overflow-hidden rounded-full">
-              {figures.sectors.map((sector) => (
+              {figures.sectors.map((sector, index) => (
                 <div
-                  key={sector.label}
+                  key={`${sector.label}-${index}`}
                   style={{
                     width: `${sector.share}%`,
                     background: sector.color,
@@ -289,9 +322,9 @@ function EmissionsStep({
               ))}
             </div>
             <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
-              {figures.sectors.map((sector) => (
+              {figures.sectors.map((sector, index) => (
                 <li
-                  key={sector.label}
+                  key={`${sector.label}-${index}`}
                   className="flex items-start gap-2 text-sm"
                 >
                   <span
@@ -413,6 +446,7 @@ export function ClimatePlanView() {
               <EmissionsStep
                 figures={wizard.figures}
                 sectorsLoading={wizard.sectorsLoading}
+                sectorsFailed={wizard.sectorsFailed}
               />
             )}
             {step.kind === "fields" && (
@@ -430,12 +464,20 @@ export function ClimatePlanView() {
                   type="button"
                   variant="outline"
                   size="lg"
-                  disabled={!wizard.selectedName || wizard.downloading}
+                  disabled={
+                    !wizard.selectedName ||
+                    wizard.downloading ||
+                    wizard.sectorsLoading
+                  }
                   className="w-fit gap-2 border border-white/15 disabled:opacity-50"
                   onClick={() => void wizard.download()}
                 >
                   <Download className="h-4 w-4" aria-hidden />
-                  {wizard.downloading ? "Skapar fil…" : "Ladda ner Word"}
+                  {wizard.downloading
+                    ? "Skapar fil…"
+                    : wizard.sectorsLoading
+                      ? "Hämtar siffror…"
+                      : "Ladda ner Word"}
                 </Button>
                 {wizard.downloadError && (
                   <p className="mt-3 text-sm text-pink-3">

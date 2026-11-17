@@ -111,4 +111,39 @@ describe("ClimatePlanView", () => {
       }),
     );
   });
+
+  it("shows a one-field question once, and clears the figures when the municipality is removed", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        json: async () => ({ sectors: {} }),
+      })),
+    );
+
+    renderWizard();
+    fireEvent.focus(screen.getByRole("combobox"));
+    fireEvent.click(await screen.findByRole("button", { name: "Uppsala" }));
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      "8",
+    );
+
+    const yearStep = CLIMATE_PLAN_STEPS.findIndex(
+      (step) => step.id === "net-zero-year",
+    );
+    for (let index = 0; index < yearStep; index += 1) {
+      fireEvent.click(screen.getByRole("button", { name: "Nästa" }));
+    }
+    expect(screen.getAllByText("År för nettonoll")).toHaveLength(1);
+
+    for (let index = 0; index < yearStep; index += 1) {
+      fireEvent.click(screen.getByRole("button", { name: "Tillbaka" }));
+    }
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "" } });
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      "0",
+    );
+    expect(screen.getByRole("button", { name: "Nästa" })).toBeDisabled();
+  });
 });

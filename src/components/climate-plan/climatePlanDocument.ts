@@ -1,8 +1,5 @@
 import { Document, HeadingLevel, Packer, Paragraph, TextRun } from "docx";
-import {
-  CLIMATE_PLAN_STEPS,
-  type WizardStep,
-} from "./climatePlanContent";
+import { CLIMATE_PLAN_STEPS, type WizardStep } from "./climatePlanContent";
 import type { ClimatePlanFigures } from "./climatePlanFigures";
 
 export type ClimatePlanDocumentInput = {
@@ -103,7 +100,7 @@ export function buildClimatePlanDocument(input: ClimatePlanDocumentInput) {
   });
 }
 
-export function climatePlanFileName(municipalityName: string): string {
+function climatePlanFileName(municipalityName: string): string {
   const safe = municipalityName
     .trim()
     .replace(/[^\p{L}\p{N}]+/gu, "-")
@@ -119,6 +116,8 @@ export async function downloadClimatePlanDocx(
   const link = document.createElement("a");
   link.href = url;
   link.download = climatePlanFileName(input.municipalityName);
+  document.body.appendChild(link);
   link.click();
-  URL.revokeObjectURL(url);
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

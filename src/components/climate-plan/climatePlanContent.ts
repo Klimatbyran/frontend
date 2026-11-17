@@ -5,33 +5,29 @@ export type ClimatePlanField = {
   /** Shown when this answer is scored on how specific it is. */
   tip?: string;
   kind: "input" | "textarea" | "checkbox";
-  value?: string;
   unit?: string;
   placeholder?: string;
   fromKlimatkollen?: boolean;
 };
 
-export type FieldGroup = {
+type FieldGroup = {
   title: string;
   fields: ClimatePlanField[];
 };
 
-export type ClimatePlanSection = {
-  number: string;
+type ClimatePlanSection = {
   title: string;
   intro?: string;
   fields?: ClimatePlanField[];
   groups?: FieldGroup[];
 };
 
-export type ClimatePlanPart = {
+type ClimatePlanPart = {
   kicker: string;
-  title: string;
-  intro: string;
   sections: ClimatePlanSection[];
 };
 
-export const SPECIFICITY_TIP =
+const SPECIFICITY_TIP =
   "Nämn vem som ansvarar, till när det ska vara gjort, vad som ska göras och genom vilken mekanism. Ju fler av de fyra, desto bättre.";
 
 const withSpecificityTip = (field: ClimatePlanField): ClimatePlanField => ({
@@ -66,7 +62,11 @@ const emptyInput = (
   placeholder: "Fylls i av kommunen",
 });
 
-const textArea = (id: string, label: string, hint: string): ClimatePlanField => ({
+const textArea = (
+  id: string,
+  label: string,
+  hint: string,
+): ClimatePlanField => ({
   id,
   label,
   kind: "textarea",
@@ -81,14 +81,11 @@ const check = (id: string, label: string, hint: string): ClimatePlanField => ({
   hint,
 });
 
-export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
+const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
   {
     kicker: "Del 1",
-    title: "Grunden och inriktningen",
-    intro: "Vart kommunen ska, och varför.",
     sections: [
       {
-        number: "1",
         title: "Politiskt löfte och vision",
         intro:
           "Ett offentligt åtagande i linje med Parisavtalet, och en bild av den klimatneutrala kommunen.",
@@ -108,7 +105,6 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
         ],
       },
       {
-        number: "2",
         title: "Nuläget: klimatpåverkan och utsatthet",
         intro:
           "Utsläppen inom kommungränsen kommer från Klimatkollen. Konsumtion och klimatrisker beskrivs här.",
@@ -132,7 +128,6 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
         ],
       },
       {
-        number: "3",
         title: "Målsättningar",
         fields: [
           {
@@ -162,11 +157,8 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
   },
   {
     kicker: "Del 2",
-    title: "Genomförandet",
-    intro: "Hur målen ska nås.",
     sections: [
       {
-        number: "4",
         title: "Åtgärdspaket och sektorstrategier",
         intro: "Konkreta insatser där utsläppen är störst.",
         fields: [
@@ -201,7 +193,6 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
         ],
       },
       {
-        number: "5",
         title: "Finansiering och investeringar",
         fields: [
           textArea(
@@ -217,7 +208,6 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
         ],
       },
       {
-        number: "6",
         title: "Styrning, organisation och samverkan",
         fields: [
           textArea(
@@ -236,11 +226,8 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
   },
   {
     kicker: "Del 3",
-    title: "Uppföljning och utvärdering",
-    intro: "Ett årligt system för att mäta, redovisa och lära.",
     sections: [
       {
-        number: "7",
         title: "Process för uppföljning",
         fields: [
           textArea(
@@ -256,7 +243,6 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
         ],
       },
       {
-        number: "8",
         title: "Kvantitativa klimatnyckeltal",
         intro:
           "Fält märkta Klimatkollen är redan ifyllda. Övriga fylls i av kommunen.",
@@ -352,7 +338,6 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
         ],
       },
       {
-        number: "9",
         title: "Kvalitativa åtgärdsnyckeltal",
         intro:
           "Om kommunen har processerna på plats för att driva omställningen.",
@@ -383,11 +368,8 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
   },
   {
     kicker: "Del 4",
-    title: "Kommunikation och lärande",
-    intro: "Hur resultatet berättas, och hur planen justeras.",
     sections: [
       {
-        number: "10",
         title: "Öppen kommunikation",
         fields: [
           textArea(
@@ -411,11 +393,7 @@ export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
   },
 ];
 
-export type WizardStepKind =
-  | "municipality"
-  | "emissions"
-  | "fields"
-  | "download";
+type WizardStepKind = "municipality" | "emissions" | "fields" | "download";
 
 export type WizardStep = {
   id: string;
@@ -431,7 +409,10 @@ export type WizardStep = {
 
 const INPUTS_PER_STEP = 4;
 
-function chunkFields(fields: ClimatePlanField[], size: number): ClimatePlanField[][] {
+function chunkFields(
+  fields: ClimatePlanField[],
+  size: number,
+): ClimatePlanField[][] {
   const chunks: ClimatePlanField[][] = [];
   for (let index = 0; index < fields.length; index += size) {
     chunks.push(fields.slice(index, index + size));
@@ -491,7 +472,7 @@ function pushFieldSteps(
   }
 }
 
-export function buildWizardSteps(): WizardStep[] {
+function buildWizardSteps(): WizardStep[] {
   const steps: WizardStep[] = [
     {
       id: "municipality",
@@ -579,8 +560,25 @@ export function initialAnswers(): Record<string, string> {
   const answers: Record<string, string> = {};
   for (const step of CLIMATE_PLAN_STEPS) {
     for (const field of step.fields) {
-      if (field.kind !== "checkbox") answers[field.id] = field.value ?? "";
+      if (field.kind !== "checkbox") answers[field.id] = "";
     }
   }
   return answers;
+}
+
+/** Klimatkollen values win when present. A missing value can still be typed. */
+export function resolveClimatePlanAnswers(
+  userAnswers: Record<string, string>,
+  prefill: Record<string, string> | null,
+): Record<string, string> {
+  const resolved = { ...userAnswers };
+  for (const step of CLIMATE_PLAN_STEPS) {
+    for (const field of step.fields) {
+      if (!field.fromKlimatkollen) continue;
+      const filled = prefill?.[field.id]?.trim() ?? "";
+      resolved[field.id] =
+        filled || (prefill ? (userAnswers[field.id] ?? "") : "");
+    }
+  }
+  return resolved;
 }

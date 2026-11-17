@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMunicipalities } from "@/lib/api";
 import { useSectorEmissions } from "@/hooks/territories/useSectorEmissions";
@@ -7,7 +7,10 @@ import {
   buildClimatePlanFigures,
   type ClimatePlanFigures,
 } from "./climatePlanFigures";
-import { initialAnswers } from "./climatePlanContent";
+import {
+  initialAnswers,
+  resolveClimatePlanAnswers,
+} from "./climatePlanContent";
 
 export function useClimatePlanWizard() {
   const { data: municipalities = [], isLoading: municipalitiesLoading } =
@@ -20,7 +23,7 @@ export function useClimatePlanWizard() {
   const [query, setQuery] = useState("");
   const [listOpen, setListOpen] = useState(false);
   const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [answers, setAnswers] = useState(initialAnswers);
+  const [userAnswers, setUserAnswers] = useState(initialAnswers);
   const [checks, setChecks] = useState<Record<string, boolean>>({});
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
@@ -29,20 +32,28 @@ export function useClimatePlanWizard() {
     municipalities.find((municipality) => municipality.name === selectedName) ??
     null;
 
-  const { sectorEmissions, loading: sectorsLoading } = useSectorEmissions(
-    "municipalities",
-    selectedName ?? undefined,
-  );
+  const {
+    sectorEmissions,
+    loading: sectorsLoading,
+    error: sectorsError,
+  } = useSectorEmissions("municipalities", selectedName ?? undefined);
+
+  const sectorData =
+    sectorEmissions &&
+    typeof sectorEmissions === "object" &&
+    "sectors" in sectorEmissions
+      ? sectorEmissions.sectors
+      : undefined;
 
   const figures = useMemo<ClimatePlanFigures | null>(() => {
     if (!selected) return null;
-    return buildClimatePlanFigures(selected, sectorEmissions?.sectors);
-  }, [selected, sectorEmissions]);
+    return buildClimatePlanFigures(selected, sectorData);
+  }, [selected, sectorData]);
 
-  useEffect(() => {
-    if (!figures) return;
-    setAnswers((current) => ({ ...current, ...figures.answers }));
-  }, [figures]);
+  const answers = useMemo(
+    () => resolveClimatePlanAnswers(userAnswers, figures?.answers ?? null),
+    [userAnswers, figures],
+  );
 
   const matches = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase("sv");
@@ -101,7 +112,13 @@ export function useClimatePlanWizard() {
     sectorsLoading,
     answers,
     setAnswer: (id: string, value: string) =>
-      setAnswers((current) => ({ ...current, [id]: value })),
+      setUserAnswers((current) => ({ ...current, [id]: value })),
+    sectorsFailed:
+      sectorsError != null ||
+      (selected != null &&
+        !sectorsLoading &&
+        sectorEmissions != null &&
+        sectorData == null),
     checks,
     setCheck: (id: string, checked: boolean) =>
       setChecks((current) => ({ ...current, [id]: checked })),

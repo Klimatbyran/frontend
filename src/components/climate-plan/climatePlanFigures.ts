@@ -32,7 +32,6 @@ export type ClimatePlanSectorShare = {
 };
 
 export type ClimatePlanFigures = {
-  year: number | null;
   stats: ClimatePlanStat[];
   sectors: ClimatePlanSectorShare[];
   answers: Record<string, string>;
@@ -130,7 +129,8 @@ export function buildClimatePlanFigures(
   sectorsByYear: SectorEmissionsByYear | undefined,
 ): ClimatePlanFigures {
   const latest = latestEmission(municipality.emissions);
-  const year = latest ? Number(latest.year) : null;
+  const parsedYear = latest ? Number(latest.year) : NaN;
+  const year = Number.isFinite(parsedYear) ? parsedYear : null;
   const increased = municipality.historicalEmissionChangePercent > 0;
 
   const stats: ClimatePlanStat[] = [
@@ -173,7 +173,6 @@ export function buildClimatePlanFigures(
   };
 
   return {
-    year,
     stats,
     sectors: sectorShares(sectorsByYear),
     answers,
