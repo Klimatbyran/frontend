@@ -7,6 +7,7 @@ import {
   AboutPage,
   AddCompanyPage,
   BlogDetailPage,
+  ClimatePlanPage,
   CompaniesOverviewPage,
   CompanyDetailPage,
   DataDownloadPage,
@@ -154,6 +155,7 @@ function ContentRoutes({ basePath }: { basePath: string }) {
   return (
     <>
       <Route path={`${basePath}/about`} element={<AboutPage />} />
+      <Route path={`${basePath}/climate-plan`} element={<ClimatePlanPage />} />
       <Route path={`${basePath}/methodology`} element={<MethodsPage />} />
       <Route path={`${basePath}/support`} element={<SupportPage />} />
       <Route path={`${basePath}/articles`} element={<InsightsPage />} />

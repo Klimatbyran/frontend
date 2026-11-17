@@ -6,6 +6,11 @@ export const AboutPage = lazy(() =>
 export const BlogDetailPage = lazy(() =>
   import("./pages/BlogDetailPage").then((m) => ({ default: m.BlogDetailPage })),
 );
+export const ClimatePlanPage = lazy(() =>
+  import("./pages/ClimatePlanPage").then((m) => ({
+    default: m.ClimatePlanPage,
+  })),
+);
 export const CompanyDetailPage = lazy(() =>
   import("./pages/CompanyDetailPage").then((m) => ({
     default: m.CompanyDetailPage,

@@ -167,6 +167,7 @@ const NOINDEX_PATTERNS = new Set([
   "/error/:code",
   "/403",
   "/auth/callback",
+  "/climate-plan",
 ]);
 
 type SeoHandler = (context: SeoContext) => SeoMeta;
