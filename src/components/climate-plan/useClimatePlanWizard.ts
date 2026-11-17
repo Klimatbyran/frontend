@@ -7,7 +7,7 @@ import {
   buildClimatePlanFigures,
   type ClimatePlanFigures,
 } from "./climatePlanFigures";
-import { initialAnswers } from "./climatePlanMockupContent";
+import { initialAnswers } from "./climatePlanContent";
 
 export function useClimatePlanWizard() {
   const { data: municipalities = [], isLoading: municipalitiesLoading } =

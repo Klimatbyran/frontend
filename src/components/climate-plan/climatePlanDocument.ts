@@ -2,7 +2,7 @@ import { Document, HeadingLevel, Packer, Paragraph, TextRun } from "docx";
 import {
   CLIMATE_PLAN_STEPS,
   type WizardStep,
-} from "./climatePlanMockupContent";
+} from "./climatePlanContent";
 import type { ClimatePlanFigures } from "./climatePlanFigures";
 
 export type ClimatePlanDocumentInput = {

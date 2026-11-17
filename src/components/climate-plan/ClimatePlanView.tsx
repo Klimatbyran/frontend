@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 import {
   CLIMATE_PLAN_STEPS,
   countFilledAnswers,
-  type MockField,
+  type ClimatePlanField,
   type WizardStep,
-} from "./climatePlanMockupContent";
+} from "./climatePlanContent";
 import type { ClimatePlanFigures } from "./climatePlanFigures";
 import { useClimatePlanWizard } from "./useClimatePlanWizard";
 
@@ -69,7 +69,7 @@ function StepHeading({ step }: { step: WizardStep }) {
   );
 }
 
-function FieldLabel({ field }: { field: MockField }) {
+function FieldLabel({ field }: { field: ClimatePlanField }) {
   return (
     <div className="mb-2 flex items-start justify-between gap-3">
       <label htmlFor={field.id} className="text-sm text-white">
@@ -91,7 +91,7 @@ function TextQuestion({
   grow,
   hideHint,
 }: {
-  field: MockField;
+  field: ClimatePlanField;
   value: string;
   onChange: (value: string) => void;
   grow?: boolean;
@@ -141,7 +141,7 @@ function CheckQuestion({
   checked,
   onChange,
 }: {
-  field: MockField;
+  field: ClimatePlanField;
   checked: boolean;
   onChange: (checked: boolean) => void;
 }) {
@@ -373,7 +373,7 @@ function FieldsStep({
   );
 }
 
-export function ClimatePlanMockupView() {
+export function ClimatePlanView() {
   const wizard = useClimatePlanWizard();
   const [stepIndex, setStepIndex] = useState(0);
   const step = CLIMATE_PLAN_STEPS[stepIndex];

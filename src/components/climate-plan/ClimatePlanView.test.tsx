@@ -2,9 +2,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
-import { ClimatePlanMockupView } from "./ClimatePlanMockupView";
+import { ClimatePlanView } from "./ClimatePlanView";
 import { downloadClimatePlanDocx } from "./climatePlanDocument";
-import { CLIMATE_PLAN_STEPS } from "./climatePlanMockupContent";
+import { CLIMATE_PLAN_STEPS } from "./climatePlanContent";
 
 const uppsala = {
   name: "Uppsala",
@@ -53,12 +53,12 @@ function renderWizard() {
   });
   return render(
     <QueryClientProvider client={client}>
-      <ClimatePlanMockupView />
+      <ClimatePlanView />
     </QueryClientProvider>,
   );
 }
 
-describe("ClimatePlanMockupView", () => {
+describe("ClimatePlanView", () => {
   it("loads a municipality, shows its emissions, and downloads the answers", async () => {
     vi.stubGlobal(
       "fetch",

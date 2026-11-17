@@ -1,4 +1,4 @@
-export type MockField = {
+export type ClimatePlanField = {
   id: string;
   label: string;
   hint?: string;
@@ -13,29 +13,28 @@ export type MockField = {
 
 export type FieldGroup = {
   title: string;
-  fields: MockField[];
+  fields: ClimatePlanField[];
 };
 
-export type MockSection = {
+export type ClimatePlanSection = {
   number: string;
   title: string;
   intro?: string;
-  showEmissionsRecap?: boolean;
-  fields?: MockField[];
+  fields?: ClimatePlanField[];
   groups?: FieldGroup[];
 };
 
-export type MockPart = {
+export type ClimatePlanPart = {
   kicker: string;
   title: string;
   intro: string;
-  sections: MockSection[];
+  sections: ClimatePlanSection[];
 };
 
 export const SPECIFICITY_TIP =
   "Nämn vem som ansvarar, till när det ska vara gjort, vad som ska göras och genom vilken mekanism. Ju fler av de fyra, desto bättre.";
 
-const withSpecificityTip = (field: MockField): MockField => ({
+const withSpecificityTip = (field: ClimatePlanField): ClimatePlanField => ({
   ...field,
   tip: SPECIFICITY_TIP,
 });
@@ -44,7 +43,7 @@ const fromKlimatkollen = (
   id: string,
   label: string,
   unit?: string,
-): MockField => ({
+): ClimatePlanField => ({
   id,
   label,
   kind: "input",
@@ -58,7 +57,7 @@ const emptyInput = (
   label: string,
   unit?: string,
   hint?: string,
-): MockField => ({
+): ClimatePlanField => ({
   id,
   label,
   kind: "input",
@@ -67,7 +66,7 @@ const emptyInput = (
   placeholder: "Fylls i av kommunen",
 });
 
-const textArea = (id: string, label: string, hint: string): MockField => ({
+const textArea = (id: string, label: string, hint: string): ClimatePlanField => ({
   id,
   label,
   kind: "textarea",
@@ -75,14 +74,14 @@ const textArea = (id: string, label: string, hint: string): MockField => ({
   placeholder: "Fylls i av kommunen",
 });
 
-const check = (id: string, label: string, hint: string): MockField => ({
+const check = (id: string, label: string, hint: string): ClimatePlanField => ({
   id,
   label,
   kind: "checkbox",
   hint,
 });
 
-export const CLIMATE_PLAN_PARTS: MockPart[] = [
+export const CLIMATE_PLAN_PARTS: ClimatePlanPart[] = [
   {
     kicker: "Del 1",
     title: "Grunden och inriktningen",
@@ -113,7 +112,6 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
         title: "Nuläget: klimatpåverkan och utsatthet",
         intro:
           "Utsläppen inom kommungränsen kommer från Klimatkollen. Konsumtion och klimatrisker beskrivs här.",
-        showEmissionsRecap: true,
         fields: [
           emptyInput(
             "consumption-total",
@@ -426,15 +424,15 @@ export type WizardStep = {
   intro?: string;
   tip?: string;
   kind: WizardStepKind;
-  fields: MockField[];
+  fields: ClimatePlanField[];
   /** A single text area grows to fill the step. */
   grow?: boolean;
 };
 
 const INPUTS_PER_STEP = 4;
 
-function chunkFields(fields: MockField[], size: number): MockField[][] {
-  const chunks: MockField[][] = [];
+function chunkFields(fields: ClimatePlanField[], size: number): ClimatePlanField[][] {
+  const chunks: ClimatePlanField[][] = [];
   for (let index = 0; index < fields.length; index += size) {
     chunks.push(fields.slice(index, index + size));
   }
@@ -446,7 +444,7 @@ function pushFieldSteps(
   kicker: string,
   title: string,
   intro: string | undefined,
-  fields: MockField[],
+  fields: ClimatePlanField[],
 ) {
   const textAreas = fields.filter((field) => field.kind === "textarea");
   const inputs = fields.filter((field) => field.kind === "input");
