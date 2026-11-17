@@ -123,26 +123,41 @@ describe("ClimatePlanView", () => {
     renderWizard();
     fireEvent.focus(screen.getByRole("combobox"));
     fireEvent.click(await screen.findByRole("button", { name: "Uppsala" }));
+    expect(screen.getByText(/8 av \d+ ifyllda/)).toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toHaveAttribute(
       "aria-valuenow",
-      "8",
+      "1",
     );
+
+    fireEvent.click(screen.getByRole("button", { name: "Nästa" }));
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      "2",
+    );
+    expect(screen.getByRole("progressbar").firstElementChild).toHaveStyle({
+      transform: `scaleX(${2 / CLIMATE_PLAN_STEPS.length})`,
+    });
 
     const yearStep = CLIMATE_PLAN_STEPS.findIndex(
       (step) => step.id === "net-zero-year",
     );
-    for (let index = 0; index < yearStep; index += 1) {
+    for (let index = 1; index < yearStep; index += 1) {
       fireEvent.click(screen.getByRole("button", { name: "Nästa" }));
     }
     expect(screen.getAllByText("År för nettonoll")).toHaveLength(1);
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      String(yearStep + 1),
+    );
 
     for (let index = 0; index < yearStep; index += 1) {
       fireEvent.click(screen.getByRole("button", { name: "Tillbaka" }));
     }
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "" } });
+    expect(screen.getByText(/0 av \d+ ifyllda/)).toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toHaveAttribute(
       "aria-valuenow",
-      "0",
+      "1",
     );
     expect(screen.getByRole("button", { name: "Nästa" })).toBeDisabled();
   });

@@ -21,28 +21,41 @@ import { useClimatePlanWizard } from "./useClimatePlanWizard";
 const controlClassName =
   "w-full rounded-md border border-white/10 bg-black-1 px-3 py-2 text-sm font-light text-white placeholder:text-grey focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40";
 
-function FillProgress({ filled, total }: { filled: number; total: number }) {
-  const percent = total === 0 ? 0 : Math.round((filled / total) * 100);
+function FillProgress({
+  step,
+  steps,
+  filled,
+  total,
+}: {
+  step: number;
+  steps: number;
+  filled: number;
+  total: number;
+}) {
+  const current = step + 1;
+  const scale = steps === 0 ? 0 : current / steps;
 
   return (
     <div>
       <div className="mb-3 flex items-baseline justify-between gap-4">
         <h1 className="text-sm font-light text-grey">Klimatplan</h1>
         <p className="text-sm text-grey">
+          Steg {current} av {steps}
+          <span className="text-white/30"> · </span>
           {filled} av {total} ifyllda
         </p>
       </div>
       <div
-        className="h-1.5 overflow-hidden rounded-full bg-white/10"
+        className="h-1.5 w-full overflow-hidden rounded-full bg-white/10"
         role="progressbar"
-        aria-valuenow={filled}
-        aria-valuemin={0}
-        aria-valuemax={total}
-        aria-label="Ifyllda frågor"
+        aria-valuenow={current}
+        aria-valuemin={1}
+        aria-valuemax={steps}
+        aria-label="Steg i klimatplanen"
       >
         <div
-          className="h-full rounded-full bg-orange-2 transition-[width] duration-300"
-          style={{ width: `${percent}%` }}
+          className="h-full w-full origin-left rounded-full bg-orange-2 transition-transform duration-300 motion-reduce:transition-none"
+          style={{ transform: `scaleX(${scale})` }}
         />
       </div>
     </div>
@@ -426,7 +439,12 @@ export function ClimatePlanView() {
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-9rem)] min-h-[32rem] w-full max-w-[960px] flex-col">
-      <FillProgress filled={filled} total={total} />
+      <FillProgress
+        step={stepIndex}
+        steps={CLIMATE_PLAN_STEPS.length}
+        filled={filled}
+        total={total}
+      />
 
       <div
         className={cn(
