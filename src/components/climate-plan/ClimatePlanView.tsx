@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { Download, Search } from "lucide-react";
 import { OverviewStat } from "@/components/companies/detail/overview/OverviewStat";
 import {
@@ -11,7 +11,6 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import {
   CLIMATE_PLAN_STEPS,
-  countFilledAnswers,
   type ClimatePlanField,
   type WizardStep,
 } from "./climatePlanContent";
@@ -21,17 +20,7 @@ import { useClimatePlanWizard } from "./useClimatePlanWizard";
 const controlClassName =
   "w-full rounded-md border border-white/10 bg-black-1 px-3 py-2 text-sm font-light text-white placeholder:text-grey focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40";
 
-function FillProgress({
-  step,
-  steps,
-  filled,
-  total,
-}: {
-  step: number;
-  steps: number;
-  filled: number;
-  total: number;
-}) {
+function FillProgress({ step, steps }: { step: number; steps: number }) {
   const current = step + 1;
   const scale = steps === 0 ? 0 : current / steps;
 
@@ -41,8 +30,6 @@ function FillProgress({
         <h1 className="text-sm font-light text-grey">Klimatplan</h1>
         <p className="text-sm text-grey">
           Steg {current} av {steps}
-          <span className="text-white/30"> · </span>
-          {filled} av {total} ifyllda
         </p>
       </div>
       <div
@@ -423,15 +410,6 @@ export function ClimatePlanView() {
   const wizard = useClimatePlanWizard();
   const [stepIndex, setStepIndex] = useState(0);
   const step = CLIMATE_PLAN_STEPS[stepIndex];
-  const { filled, total } = useMemo(
-    () =>
-      countFilledAnswers(
-        wizard.answers,
-        wizard.checks,
-        wizard.selectedName != null,
-      ),
-    [wizard.answers, wizard.checks, wizard.selectedName],
-  );
   const isFirst = stepIndex === 0;
   const isLast = stepIndex === CLIMATE_PLAN_STEPS.length - 1;
   const centerStep = step.kind === "municipality" || step.kind === "download";
@@ -439,12 +417,7 @@ export function ClimatePlanView() {
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-9rem)] min-h-[32rem] w-full max-w-[960px] flex-col">
-      <FillProgress
-        step={stepIndex}
-        steps={CLIMATE_PLAN_STEPS.length}
-        filled={filled}
-        total={total}
-      />
+      <FillProgress step={stepIndex} steps={CLIMATE_PLAN_STEPS.length} />
 
       <div
         className={cn(

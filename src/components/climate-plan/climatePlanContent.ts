@@ -533,29 +533,6 @@ function buildWizardSteps(): WizardStep[] {
 
 export const CLIMATE_PLAN_STEPS = buildWizardSteps();
 
-/** Municipality choice counts even though it is not a field in the template. */
-export function countFilledAnswers(
-  answers: Record<string, string>,
-  checks: Record<string, boolean>,
-  municipalityChosen: boolean,
-): { filled: number; total: number } {
-  let filled = municipalityChosen ? 1 : 0;
-  let total = 1;
-
-  for (const step of CLIMATE_PLAN_STEPS) {
-    for (const field of step.fields) {
-      total += 1;
-      if (field.kind === "checkbox") {
-        if (checks[field.id]) filled += 1;
-      } else if ((answers[field.id] ?? "").trim()) {
-        filled += 1;
-      }
-    }
-  }
-
-  return { filled, total };
-}
-
 export function initialAnswers(): Record<string, string> {
   const answers: Record<string, string> = {};
   for (const step of CLIMATE_PLAN_STEPS) {
