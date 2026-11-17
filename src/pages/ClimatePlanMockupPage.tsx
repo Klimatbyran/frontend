@@ -1,10 +1,9 @@
-import { PageHeader } from "@/components/layout/PageHeader";
 import { PageSEO } from "@/components/SEO/PageSEO";
 import { ClimatePlanMockupView } from "@/components/climate-plan/ClimatePlanMockupView";
 
 const PAGE_TITLE = "Klimatplan";
 const PAGE_DESCRIPTION =
-  "En lokal klimatplan är kommunens styrdokument för att minska utsläppen, klimatanpassa samhället och säkra ett gott liv för invånarna. Här fylls inriktning, genomförande, uppföljning och kommunikation i. Siffror som Klimatkollen redan har visas färdiga.";
+  "En lokal klimatplan är kommunens styrdokument för att minska utsläppen, klimatanpassa samhället och säkra ett gott liv för invånarna. Frågorna fylls i ett steg i taget. Siffror som Klimatkollen redan har visas färdiga.";
 
 export function ClimatePlanMockupPage() {
   return (
@@ -15,14 +14,7 @@ export function ClimatePlanMockupPage() {
         canonicalUrl="https://klimatkollen.se/climate-plan"
         noindex
       />
-      <div className="mx-auto max-w-[1200px] text-white">
-        <PageHeader
-          className="mx-0 mb-8 max-w-none p-0 md:mb-12"
-          title={PAGE_TITLE}
-          description={PAGE_DESCRIPTION}
-        />
-        <ClimatePlanMockupView />
-      </div>
+      <ClimatePlanMockupView />
     </>
   );
 }
