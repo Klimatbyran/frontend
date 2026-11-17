@@ -26,12 +26,7 @@ function FillProgress({ step, steps }: { step: number; steps: number }) {
 
   return (
     <div>
-      <div className="mb-3 flex items-baseline justify-between gap-4">
-        <h1 className="text-sm font-light text-grey">Klimatplan</h1>
-        <p className="text-sm text-grey">
-          Steg {current} av {steps}
-        </p>
-      </div>
+      <h1 className="mb-3 text-sm font-light text-grey">Klimatplan</h1>
       <div
         className="h-1.5 w-full overflow-hidden rounded-full bg-white/10"
         role="progressbar"

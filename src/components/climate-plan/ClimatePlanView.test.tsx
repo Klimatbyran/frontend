@@ -124,9 +124,7 @@ describe("ClimatePlanView", () => {
     fireEvent.focus(screen.getByRole("combobox"));
     fireEvent.click(await screen.findByRole("button", { name: "Uppsala" }));
     expect(screen.queryByText(/av \d+ ifyllda/)).not.toBeInTheDocument();
-    expect(
-      screen.getByText(`Steg 1 av ${CLIMATE_PLAN_STEPS.length}`),
-    ).toBeInTheDocument();
+    expect(screen.queryByText(/^Steg \d+ av \d+$/)).not.toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toHaveAttribute(
       "aria-valuenow",
       "1",
