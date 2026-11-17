@@ -11,15 +11,12 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import {
   CLIMATE_PLAN_STEPS,
-  EXAMPLE_MUNICIPALITY,
-  EXAMPLE_NOTE,
-  EXAMPLE_SECTORS,
-  EXAMPLE_STATS,
   countFilledAnswers,
-  initialAnswers,
   type MockField,
   type WizardStep,
 } from "./climatePlanMockupContent";
+import type { ClimatePlanFigures } from "./climatePlanFigures";
+import { useClimatePlanWizard } from "./useClimatePlanWizard";
 
 const controlClassName =
   "w-full rounded-md border border-white/10 bg-black-1 px-3 py-2 text-sm font-light text-white placeholder:text-grey focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40";
@@ -100,7 +97,7 @@ function TextQuestion({
   grow?: boolean;
   hideHint?: boolean;
 }) {
-  const locked = field.fromKlimatkollen;
+  const locked = Boolean(field.fromKlimatkollen && value.trim());
   const shared = {
     id: field.id,
     value,
@@ -166,7 +163,11 @@ function CheckQuestion({
   );
 }
 
-function MunicipalityStep() {
+function MunicipalityStep({
+  wizard,
+}: {
+  wizard: ReturnType<typeof useClimatePlanWizard>;
+}) {
   return (
     <div className="mx-auto w-full max-w-xl">
       <label htmlFor="municipality" className="mb-2 block text-sm">
@@ -179,23 +180,82 @@ function MunicipalityStep() {
         />
         <input
           id="municipality"
-          readOnly
-          value={EXAMPLE_MUNICIPALITY}
+          value={wizard.query}
+          onChange={(event) => wizard.changeQuery(event.target.value)}
+          onFocus={() => wizard.setListOpen(true)}
+          onBlur={() => {
+            window.setTimeout(() => wizard.setListOpen(false), 150);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && wizard.matches[0]) {
+              event.preventDefault();
+              wizard.selectMunicipality(wizard.matches[0]);
+            }
+          }}
+          placeholder="Sök eller välj i listan"
           className={cn(controlClassName, "h-11 pl-9")}
+          role="combobox"
+          aria-expanded={wizard.listOpen}
+          aria-controls="municipality-list"
+          autoComplete="off"
         />
+        {wizard.listOpen && (
+          <div
+            id="municipality-list"
+            className="absolute left-0 top-full z-30 mt-2 max-h-56 w-full overflow-y-auto rounded-md bg-black-2 shadow-lg"
+          >
+            {wizard.municipalitiesLoading ? (
+              <p className="px-3 py-2 text-sm text-grey">Hämtar kommuner…</p>
+            ) : wizard.matches.length === 0 ? (
+              <p className="px-3 py-2 text-sm text-grey">
+                {wizard.municipalitiesMissing
+                  ? "Kunde inte hämta kommuner."
+                  : "Ingen kommun matchar."}
+              </p>
+            ) : (
+              wizard.matches.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  className="block w-full px-3 py-2 text-left text-sm hover:bg-white/10"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => wizard.selectMunicipality(name)}
+                >
+                  {name}
+                </button>
+              ))
+            )}
+          </div>
+        )}
       </div>
       <p className="mt-3 text-sm text-grey">
-        {EXAMPLE_MUNICIPALITY} är vald i det här exemplet. {EXAMPLE_NOTE}
+        {wizard.selectedName
+          ? `${wizard.selectedName} är vald. Siffrorna i nästa steg hämtas från Klimatkollen.`
+          : "Välj en kommun för att hämta utsläppen och gå vidare."}
       </p>
     </div>
   );
 }
 
-function EmissionsStep() {
+function EmissionsStep({
+  figures,
+  sectorsLoading,
+}: {
+  figures: ClimatePlanFigures | null;
+  sectorsLoading: boolean;
+}) {
+  if (!figures) {
+    return (
+      <p className="text-sm text-grey">
+        Välj en kommun i första steget. Då visas utsläppen här.
+      </p>
+    );
+  }
+
   return (
     <div>
       <div className={cn("mt-8", detailStatsRowClassName)}>
-        {EXAMPLE_STATS.map((stat) => (
+        {figures.stats.map((stat) => (
           <div key={stat.label} className={detailStatItemClassName}>
             <OverviewStat
               variant="detail"
@@ -211,28 +271,42 @@ function EmissionsStep() {
       </div>
       <div className="mt-8">
         <p className="mb-3 text-sm text-grey">Fördelning per sektor</p>
-        <div className="flex h-3 overflow-hidden rounded-full">
-          {EXAMPLE_SECTORS.map((sector) => (
-            <div
-              key={sector.label}
-              style={{ width: `${sector.share}%`, background: sector.color }}
-            />
-          ))}
-        </div>
-        <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3 md:grid-cols-5">
-          {EXAMPLE_SECTORS.map((sector) => (
-            <li key={sector.label} className="flex items-start gap-2 text-sm">
-              <span
-                className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full"
-                style={{ background: sector.color }}
-              />
-              <span>
-                <span className="block">{sector.label}</span>
-                <span className="text-grey">{sector.share} %</span>
-              </span>
-            </li>
-          ))}
-        </ul>
+        {sectorsLoading ? (
+          <p className="text-sm text-grey">Hämtar sektorer…</p>
+        ) : figures.sectors.length === 0 ? (
+          <p className="text-sm text-grey">Ingen sektorfördelning finns.</p>
+        ) : (
+          <>
+            <div className="flex h-3 overflow-hidden rounded-full">
+              {figures.sectors.map((sector) => (
+                <div
+                  key={sector.label}
+                  style={{
+                    width: `${sector.share}%`,
+                    background: sector.color,
+                  }}
+                />
+              ))}
+            </div>
+            <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
+              {figures.sectors.map((sector) => (
+                <li
+                  key={sector.label}
+                  className="flex items-start gap-2 text-sm"
+                >
+                  <span
+                    className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full"
+                    style={{ background: sector.color }}
+                  />
+                  <span>
+                    <span className="block">{sector.label}</span>
+                    <span className="text-grey">{sector.share} %</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </div>
   );
@@ -300,17 +374,22 @@ function FieldsStep({
 }
 
 export function ClimatePlanMockupView() {
+  const wizard = useClimatePlanWizard();
   const [stepIndex, setStepIndex] = useState(0);
-  const [answers, setAnswers] = useState(initialAnswers);
-  const [checks, setChecks] = useState<Record<string, boolean>>({});
   const step = CLIMATE_PLAN_STEPS[stepIndex];
   const { filled, total } = useMemo(
-    () => countFilledAnswers(answers, checks),
-    [answers, checks],
+    () =>
+      countFilledAnswers(
+        wizard.answers,
+        wizard.checks,
+        wizard.selectedName != null,
+      ),
+    [wizard.answers, wizard.checks, wizard.selectedName],
   );
   const isFirst = stepIndex === 0;
   const isLast = stepIndex === CLIMATE_PLAN_STEPS.length - 1;
   const centerStep = step.kind === "municipality" || step.kind === "download";
+  const canContinue = !isFirst || wizard.selectedName != null;
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-9rem)] min-h-[32rem] w-full max-w-[960px] flex-col">
@@ -327,32 +406,43 @@ export function ClimatePlanMockupView() {
           <div
             className={cn("mt-6", step.grow && "flex min-h-0 flex-1 flex-col")}
           >
-            {step.kind === "municipality" && <MunicipalityStep />}
-            {step.kind === "emissions" && <EmissionsStep />}
+            {step.kind === "municipality" && (
+              <MunicipalityStep wizard={wizard} />
+            )}
+            {step.kind === "emissions" && (
+              <EmissionsStep
+                figures={wizard.figures}
+                sectorsLoading={wizard.sectorsLoading}
+              />
+            )}
             {step.kind === "fields" && (
               <FieldsStep
                 step={step}
-                answers={answers}
-                checks={checks}
-                onAnswer={(id, value) =>
-                  setAnswers((current) => ({ ...current, [id]: value }))
-                }
-                onCheck={(id, checked) =>
-                  setChecks((current) => ({ ...current, [id]: checked }))
-                }
+                answers={wizard.answers}
+                checks={wizard.checks}
+                onAnswer={wizard.setAnswer}
+                onCheck={wizard.setCheck}
               />
             )}
             {step.kind === "download" && (
-              <Button
-                type="button"
-                variant="outline"
-                size="lg"
-                disabled
-                className="pointer-events-none w-fit gap-2 border border-white/15 disabled:opacity-100"
-              >
-                <Download className="h-4 w-4" aria-hidden />
-                Ladda ner Word
-              </Button>
+              <div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="lg"
+                  disabled={!wizard.selectedName || wizard.downloading}
+                  className="w-fit gap-2 border border-white/15 disabled:opacity-50"
+                  onClick={() => void wizard.download()}
+                >
+                  <Download className="h-4 w-4" aria-hidden />
+                  {wizard.downloading ? "Skapar fil…" : "Ladda ner Word"}
+                </Button>
+                {wizard.downloadError && (
+                  <p className="mt-3 text-sm text-pink-3">
+                    {wizard.downloadError}
+                  </p>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -375,6 +465,7 @@ export function ClimatePlanMockupView() {
             variant="outline"
             size="lg"
             className="border border-white/15"
+            disabled={!canContinue}
             onClick={() => setStepIndex((current) => current + 1)}
           >
             Nästa

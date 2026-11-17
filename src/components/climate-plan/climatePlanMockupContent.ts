@@ -1,17 +1,3 @@
-export type ExampleStat = {
-  label: string;
-  value: string;
-  unit: string;
-  caption?: string;
-  valueClassName?: string;
-};
-
-export type ExampleSector = {
-  label: string;
-  share: number;
-  color: string;
-};
-
 export type MockField = {
   id: string;
   label: string;
@@ -54,53 +40,17 @@ const withSpecificityTip = (field: MockField): MockField => ({
   tip: SPECIFICITY_TIP,
 });
 
-export const EXAMPLE_MUNICIPALITY = "Uppsala";
-
-export const EXAMPLE_NOTE =
-  "Siffrorna är avrundade exempel för mockupen. I verktyget hämtas de från Klimatkollen för den kommun som valts.";
-
-export const EXAMPLE_STATS: ExampleStat[] = [
-  {
-    label: "Totala utsläpp",
-    value: "480 000",
-    unit: "ton CO₂e",
-    caption: "2023, inom kommungränsen",
-  },
-  {
-    label: "Per invånare",
-    value: "2,1",
-    unit: "ton CO₂e",
-    caption: "2023",
-  },
-  {
-    label: "Förändring",
-    value: "−18",
-    unit: "%",
-    caption: "sedan 2015",
-    valueClassName: "text-orange-2",
-  },
-];
-
-export const EXAMPLE_SECTORS: ExampleSector[] = [
-  { label: "Transporter", share: 42, color: "var(--orange-3)" },
-  { label: "El och fjärrvärme", share: 18, color: "var(--blue-2)" },
-  { label: "Industri", share: 16, color: "var(--orange-2)" },
-  { label: "Jordbruk", share: 12, color: "var(--green-4)" },
-  { label: "Övrigt", share: 12, color: "var(--grey)" },
-];
-
-const filled = (
+const fromKlimatkollen = (
   id: string,
   label: string,
-  value: string,
   unit?: string,
 ): MockField => ({
   id,
   label,
   kind: "input",
-  value,
   unit,
   fromKlimatkollen: true,
+  placeholder: "Hämtas från Klimatkollen",
 });
 
 const emptyInput = (
@@ -168,13 +118,13 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
           emptyInput(
             "consumption-total",
             "Konsumtionsbaserade utsläpp",
-            "ton CO₂e",
+            "tCO₂e",
             "Utsläpp från mat, varor och tjänster som köps.",
           ),
-          emptyInput(
+          fromKlimatkollen(
             "consumption-per-capita",
             "Konsumtionsbaserade utsläpp per invånare",
-            "ton CO₂e",
+            "tCO₂e",
           ),
           textArea(
             "climate-risk",
@@ -316,13 +266,8 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
           {
             title: "Övergripande utsläpp",
             fields: [
-              filled("kpi-total", "Totala utsläpp", "480 000", "ton CO₂e"),
-              filled(
-                "kpi-per-capita",
-                "Utsläpp per invånare",
-                "2,1",
-                "ton CO₂e",
-              ),
+              fromKlimatkollen("kpi-total", "Totala utsläpp", "tCO₂e"),
+              emptyInput("kpi-per-capita", "Utsläpp per invånare", "tCO₂e"),
             ],
           },
           {
@@ -345,11 +290,10 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
           {
             title: "Transporter",
             fields: [
-              filled(
+              emptyInput(
                 "kpi-transport",
                 "Transportsektorns utsläpp per invånare",
-                "0,9",
-                "ton CO₂e",
+                "tCO₂e",
               ),
               emptyInput(
                 "modal-split",
@@ -368,12 +312,11 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
                 undefined,
                 "Andel miljöbilar och tjänsteresor.",
               ),
-              filled("kpi-ev-change", "Ökning av andel elbilar", "+24", "%"),
-              filled("kpi-charge-points", "Elbilar per laddpunkt", "8"),
-              filled(
+              fromKlimatkollen("kpi-ev-change", "Ökning av andel elbilar", "%"),
+              fromKlimatkollen("kpi-charge-points", "Elbilar per laddpunkt"),
+              fromKlimatkollen(
                 "kpi-bike-paths",
                 "Cykelvägsmeter per invånare",
-                "3,4",
                 "m",
               ),
             ],
@@ -404,8 +347,8 @@ export const CLIMATE_PLAN_PARTS: MockPart[] = [
           {
             title: "Redan kartlagt i Klimatkollen",
             fields: [
-              filled("kpi-climate-plan", "Klimatplan", "Antagen 2022"),
-              filled("kpi-procurement", "Klimatkrav i upphandlingar", "Ja"),
+              fromKlimatkollen("kpi-climate-plan", "Klimatplan"),
+              fromKlimatkollen("kpi-procurement", "Klimatkrav i upphandlingar"),
             ],
           },
         ],
@@ -615,8 +558,9 @@ export const CLIMATE_PLAN_STEPS = buildWizardSteps();
 export function countFilledAnswers(
   answers: Record<string, string>,
   checks: Record<string, boolean>,
+  municipalityChosen: boolean,
 ): { filled: number; total: number } {
-  let filled = 1;
+  let filled = municipalityChosen ? 1 : 0;
   let total = 1;
 
   for (const step of CLIMATE_PLAN_STEPS) {
