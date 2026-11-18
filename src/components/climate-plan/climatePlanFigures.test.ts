@@ -141,11 +141,22 @@ describe("climatePlanDocumentLines", () => {
     });
 
     expect(lines[0]).toBe("Klimatplan för Uppsala");
-    expect(lines).toContain(
-      "Offentligt åtagande: Kommunstyrelsen, 2030, halvera resorna med bil, via klimatkontrakt",
-    );
+    const pledge =
+      "Kommunstyrelsen, 2030, halvera resorna med bil, via klimatkontrakt";
+    expect(lines).toContain("Offentligt åtagande");
+    expect(lines).toContain(pledge);
+    expect(lines).not.toContain(`Offentligt åtagande: ${pledge}`);
+    expect(
+      lines.filter((line) => line.includes("Offentligt åtagande")),
+    ).toEqual(["Offentligt åtagande"]);
+    expect(lines).toContain("Visionen");
+    expect(lines).toContain("Ej ifyllt");
+    expect(lines).not.toContain("Visionen: Ej ifyllt");
     expect(lines).toContain("Bolagsstyrning: Ja");
-    expect(lines).toContain("Visionen: Ej ifyllt");
+    const situation = "Nuläget: klimatpåverkan och utsatthet";
+    expect(lines.filter((line) => line.includes(situation))).toEqual([
+      `Del 1 · ${situation}`,
+    ]);
     expect(lines.some((line) => line.startsWith("Totala utsläpp:"))).toBe(true);
   });
 
