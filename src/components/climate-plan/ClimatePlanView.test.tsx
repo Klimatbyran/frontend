@@ -123,7 +123,8 @@ describe("ClimatePlanView", () => {
     renderWizard();
     fireEvent.focus(screen.getByRole("combobox"));
     fireEvent.click(await screen.findByRole("button", { name: "Uppsala" }));
-    expect(screen.getByText(/8 av \d+ ifyllda/)).toBeInTheDocument();
+    expect(screen.queryByText(/av \d+ ifyllda/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^Steg \d+ av \d+$/)).not.toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toHaveAttribute(
       "aria-valuenow",
       "1",
@@ -154,7 +155,7 @@ describe("ClimatePlanView", () => {
       fireEvent.click(screen.getByRole("button", { name: "Tillbaka" }));
     }
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "" } });
-    expect(screen.getByText(/0 av \d+ ifyllda/)).toBeInTheDocument();
+    expect(screen.queryByText(/av \d+ ifyllda/)).not.toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toHaveAttribute(
       "aria-valuenow",
       "1",
