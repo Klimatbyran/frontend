@@ -297,21 +297,6 @@ export async function getNationSectorEmissions() {
   if (error) throw error;
   return data;
 }
-// Company Search API
-export type CompanySearchApiResponse =
-  paths["/companies/search"]["get"]["responses"][200]["content"]["application/json"];
-
-export async function getCompaniesBySearchTerm(
-  q: string,
-): Promise<CompanySearchApiResponse> {
-  try {
-    const { data, error } = await GET("/companies/search", {
-      params: { query: { q } },
-    });
-    if (error) throw error;
-    return (data as CompanySearchApiResponse) || [];
-  } catch (error) {
-    console.error("Error searching companies:", error);
-    return [];
-  }
-}
+// Company Search API — Klimatkollen landing typeahead lives on pagesApi
+// (`getPageCompaniesSearch` → GET /pages/companies/search). Partner clients
+// keep using GET /companies/search via the Partner OpenAPI surface.
