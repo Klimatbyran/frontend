@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { X } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
+import { ChartTooltipContainer } from "@/components/charts/ChartTooltipContainer";
+import { ChartTooltipHeader } from "@/components/charts/ChartTooltipHeader";
 import {
   formatEmissionsAbsolute,
   formatPercent,
@@ -58,18 +59,13 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
   showPercentage = true,
   percentageLabel,
 }) => {
-  const [closed, setClosed] = useState(false);
   const { isMobile } = useScreenSize();
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
 
   const name = payload?.[0]?.name;
-  // Reset closed state when tooltip is re-activated or payload changes
-  useEffect(() => {
-    if (active) setClosed(false);
-  }, [active, name]);
 
-  if (!active || !payload || !payload.length || closed) {
+  if (!active || !payload || !payload.length) {
     return null;
   }
 
@@ -82,22 +78,9 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
     getActionHint(customActionLabel, isMobile, t);
 
   return (
-    <div className="bg-black-2 rounded-lg shadow-xl p-4 text-white pointer-events-none z-50 relative">
-      <div className="flex justify-end items-center relative z-30">
-        {isMobile && (
-          <button
-            type="button"
-            title="Close"
-            className="flex pointer-events-auto"
-            onClick={() => setClosed(true)}
-          >
-            <X className="w-3 h-3" />
-          </button>
-        )}
-      </div>
-
-      <p className="text-sm font-medium mb-1">{name}</p>
-      <div className="text-sm text-grey">
+    <ChartTooltipContainer className="pointer-events-none">
+      <ChartTooltipHeader>{name}</ChartTooltipHeader>
+      <div className="">
         <div>
           {formatEmissionsAbsolute(Math.round(safeValue), currentLanguage)}{" "}
           {t("emissionsUnit")}
@@ -111,7 +94,7 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
           <p className="text-xs italic text-blue-2 mt-2">{actionHint}</p>
         )}
       </div>
-    </div>
+    </ChartTooltipContainer>
   );
 };
 
