@@ -85,7 +85,7 @@ interface ChartTooltipListProps {
   entries: ChartTooltipListEntry[];
   formatName?: (entry: ChartTooltipListEntry) => string;
   formatValue?: (entry: ChartTooltipListEntry) => string;
-  showAIIndicators: boolean;
+  showAIIndicators?: boolean;
   currentLanguage: SupportedLanguage;
   label?: string;
   unit?: string;
@@ -97,7 +97,7 @@ export function ChartTooltipList({
   entries,
   formatName,
   formatValue,
-  showAIIndicators,
+  showAIIndicators = false,
   currentLanguage,
   label,
   unit,
@@ -106,14 +106,16 @@ export function ChartTooltipList({
 }: ChartTooltipListProps) {
   return (
     <div className="grid grid-cols-[1fr_auto]">
-      <ChartTooltipHeader className="grid grid-cols-subgrid col-span-2">
-        <span>{label}</span>
-        {showUnit && (
-          <span className="flex justify-end mr-1">
-            {unit || t("emissionsUnit")}
-          </span>
-        )}
-      </ChartTooltipHeader>
+      {(label || (showUnit && unit)) && (
+        <ChartTooltipHeader className="grid grid-cols-subgrid col-span-2">
+          <span className={!showUnit ? "col-span-2" : undefined}>{label}</span>
+          {showUnit && (
+            <span className="flex justify-end mr-1">
+              {unit || t("emissionsUnit")}
+            </span>
+          )}
+        </ChartTooltipHeader>
+      )}
       {entries.map((entry) => (
         <ChartTooltipDataRow
           key={entry.dataKey}
