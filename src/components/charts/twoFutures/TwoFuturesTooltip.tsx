@@ -30,13 +30,11 @@ export function TwoFuturesTooltip({
   active,
   payload,
   label,
-  unit,
   labels,
 }: {
   active?: boolean;
   payload?: TooltipRow[];
   label?: string | number;
-  unit: string;
   labels: TwoFuturesTooltipLabels;
 }) {
   const { currentLanguage } = useLanguage();
@@ -64,12 +62,10 @@ export function TwoFuturesTooltip({
       <ChartTooltipList
         label={String(label)}
         entries={entries}
-        showUnit={false}
         showAIIndicators={true}
         showSwatch={true}
-        currentLanguage={currentLanguage}
         formatValue={(entry) =>
-          `${formatEmissionsAbsolute(entry.value!, currentLanguage)} ${unit}`
+          formatEmissionsAbsolute(entry.value!, currentLanguage)
         }
       />
     </ChartTooltipContainer>

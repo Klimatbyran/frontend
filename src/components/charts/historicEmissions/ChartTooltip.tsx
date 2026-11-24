@@ -2,13 +2,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
-import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
 import { ChartTooltipContainer } from "@/components/charts/ChartTooltipContainer";
 import { ChartTooltipList } from "@/components/charts/ChartTooltipList";
 import { cn } from "@/lib/utils";
 import type { Scope3Category } from "@/types/company";
 
-interface PayloadEntry {
+export interface ChartTooltipEntry {
   dataKey?: string;
   value?: number | null;
   name?: string;
@@ -28,7 +27,7 @@ interface PayloadEntry {
 
 interface ChartTooltipProps {
   active?: boolean;
-  payload?: PayloadEntry[];
+  payload?: ChartTooltipEntry[];
   label?: string;
   unit?: string;
   showUnit?: boolean;
@@ -41,8 +40,8 @@ interface ChartTooltipProps {
   };
   dataView?: "overview" | "sectors";
   hiddenSectors?: Set<string>;
-  customFormatter?: (value: number) => string;
-  customNameFormatter?: (name: string) => string;
+  customValueFormatter?: (entry: ChartTooltipEntry) => string;
+  customNameFormatter?: (entry: ChartTooltipEntry) => string;
   showAIIndicators?: boolean;
 }
 
@@ -53,7 +52,7 @@ function hasAIGeneratedScope3(
 }
 
 function isAIGeneratedEntry(
-  entry: PayloadEntry,
+  entry: ChartTooltipEntry,
   showAIIndicators: boolean,
 ): boolean {
   if (!showAIIndicators) return false;
@@ -69,7 +68,9 @@ function isAIGeneratedEntry(
   return hasAIGeneratedScope3(payload.scope3Categories);
 }
 
-function filterOverviewPayload(payload: PayloadEntry[]): PayloadEntry[] {
+function filterOverviewPayload(
+  payload: ChartTooltipEntry[],
+): ChartTooltipEntry[] {
   const hasActual = payload.some(
     (entry) => entry.dataKey === "total" && entry.value != null,
   );
@@ -87,13 +88,13 @@ function filterOverviewPayload(payload: PayloadEntry[]): PayloadEntry[] {
 }
 
 function filterTooltipPayload(
-  payload: PayloadEntry[],
+  payload: ChartTooltipEntry[],
   options: {
     filterDuplicateValues: boolean;
     dataView?: "overview" | "sectors";
     hiddenSectors: Set<string>;
   },
-): { filteredPayload: PayloadEntry[]; showUnit: boolean } {
+): { filteredPayload: ChartTooltipEntry[]; showUnit: boolean } {
   let showUnit = true;
   let filteredPayload = payload.filter((entry) => {
     if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
@@ -132,7 +133,7 @@ function TrendInfo({
   t,
 }: {
   trendData: NonNullable<ChartTooltipProps["trendData"]>;
-  payload: PayloadEntry[];
+  payload: ChartTooltipEntry[];
   t: ReturnType<typeof useTranslation>["t"];
 }) {
   const hasApproximated = payload.some(
@@ -167,7 +168,7 @@ function ApproximatedValueInfo({
   t,
 }: {
   dataView?: "overview" | "sectors";
-  filteredPayload: PayloadEntry[];
+  filteredPayload: ChartTooltipEntry[];
   t: ReturnType<typeof useTranslation>["t"];
 }) {
   const hasApproximated = filteredPayload.some(
@@ -218,35 +219,8 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = (props) => {
     },
   );
 
-  const formatter = (entry: PayloadEntry) =>
-    entry.dataKey === "turnover"
-      ? formatTurnoverValue(
-          entry.value as number,
-          currentLanguage,
-          t,
-          entry.payload?.turnoverCurrency,
-        )
-      : props.customFormatter
-        ? props.customFormatter(entry.value as number)
-        : formatEmissionsAbsolute(
-            Math.round(entry.value ?? 0),
-            currentLanguage,
-          );
-
-  const defaultNameFormatter = (entry: PayloadEntry) => {
-    const name = String(entry.name || entry.dataKey || "");
-
-    if (entry.dataKey === "turnover") {
-      return t("companies.overview.turnover");
-    }
-
-    if (entry.dataKey?.startsWith("cat")) {
-      const categoryId = parseInt(entry.dataKey.replace("cat", ""));
-      return `${categoryId.toLocaleString()}. ${name}`;
-    }
-
-    return name;
-  };
+  const defaultValueFormatter = (entry: ChartTooltipEntry) =>
+    formatEmissionsAbsolute(Math.round(entry.value ?? 0), currentLanguage);
 
   const entries = filteredPayload
     .filter((entry) => entry.dataKey !== "gap" && entry.dataKey !== "parisBase")
@@ -259,15 +233,9 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = (props) => {
     <ChartTooltipContainer>
       <ChartTooltipList
         entries={entries}
-        formatName={
-          props.customNameFormatter
-            ? (entry: PayloadEntry) =>
-                props.customNameFormatter!(entry.name || entry.dataKey || "")
-            : defaultNameFormatter
-        }
-        formatValue={formatter}
-        showAIIndicators={true}
-        currentLanguage={currentLanguage}
+        formatName={props.customNameFormatter}
+        formatValue={props.customValueFormatter ?? defaultValueFormatter}
+        showAIIndicators={props.showAIIndicators ?? true}
         label={`${props.label} ${isBaseYear ? "*" : ""}`}
         unit={props.unit}
         showUnit={(props.showUnit ?? true) && filteredShowUnit}

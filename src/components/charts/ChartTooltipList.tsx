@@ -1,7 +1,5 @@
 import { cn } from "@/lib/utils";
 import { AiIcon } from "../ui/ai-icon";
-import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
-import { SupportedLanguage } from "@/lib/languageDetection";
 import { ChartTooltipHeader } from "./ChartTooltipHeader";
 import { t } from "i18next";
 
@@ -21,7 +19,6 @@ function ChartTooltipDataRow({
   showAIIndicators,
   showSwatch,
   showRowBackground,
-  currentLanguage,
 }: {
   entry: ChartTooltipListEntry;
   formatName?: (entry: ChartTooltipListEntry) => string;
@@ -29,15 +26,12 @@ function ChartTooltipDataRow({
   showAIIndicators: boolean;
   showSwatch: boolean;
   showRowBackground: boolean;
-  currentLanguage: SupportedLanguage;
 }) {
   const name = formatName
     ? formatName(entry)
     : String(entry.name || entry.dataKey || "");
 
-  const value = formatValue
-    ? formatValue(entry)
-    : formatEmissionsAbsolute(Math.round(entry.value ?? 0), currentLanguage);
+  const value = formatValue ? formatValue(entry) : Math.round(entry.value ?? 0);
 
   return (
     <div
@@ -86,7 +80,6 @@ interface ChartTooltipListProps {
   formatName?: (entry: ChartTooltipListEntry) => string;
   formatValue?: (entry: ChartTooltipListEntry) => string;
   showAIIndicators?: boolean;
-  currentLanguage: SupportedLanguage;
   label?: string;
   unit?: string;
   showUnit?: boolean;
@@ -98,7 +91,6 @@ export function ChartTooltipList({
   formatName,
   formatValue,
   showAIIndicators = false,
-  currentLanguage,
   label,
   unit,
   showUnit,
@@ -120,7 +112,6 @@ export function ChartTooltipList({
         <ChartTooltipDataRow
           key={entry.dataKey}
           entry={entry}
-          currentLanguage={currentLanguage}
           showAIIndicators={showAIIndicators}
           showSwatch={showSwatch ?? false}
           showRowBackground={entries.length > 2}
@@ -128,6 +119,9 @@ export function ChartTooltipList({
           formatValue={formatValue}
         />
       ))}
+      {entries.length === 0 && (
+        <span className="col-span-2">{t("charts.tooltip.noData")}</span>
+      )}
     </div>
   );
 }

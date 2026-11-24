@@ -29,10 +29,15 @@ import {
   createCustomTickRenderer,
   ChartTooltip,
 } from "@/components/charts";
-import { formatTurnoverAxisValue } from "@/utils/formatting/turnoverFormatting";
+import {
+  formatTurnoverAxisValue,
+  formatTurnoverValue,
+} from "@/utils/formatting/turnoverFormatting";
 import { useLanguage } from "@/components/LanguageProvider";
 import { LegendItem } from "@/types/charts";
 import { getBaseYearChartSettings } from "@/utils/data/turnoverChartData";
+import { ChartTooltipEntry } from "@/components/charts/historicEmissions/ChartTooltip";
+import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 
 interface TurnoverEmissionsChartProps {
   displayData: ChartData[];
@@ -122,7 +127,20 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
               content={
                 <ChartTooltip
                   companyBaseYear={baseYear}
-                  unit={t("companies.tooltip.tonsCO2e")}
+                  showUnit={false}
+                  customValueFormatter={(entry: ChartTooltipEntry) =>
+                    entry.dataKey === "turnover"
+                      ? formatTurnoverValue(
+                          entry.value as number,
+                          currentLanguage,
+                          t,
+                          entry.payload?.turnoverCurrency,
+                        )
+                      : `${formatEmissionsAbsolute(
+                          Math.round(entry.value ?? 0),
+                          currentLanguage,
+                        )} ${t("companies.tooltip.tonsCO2e")}`
+                  }
                 />
               }
               wrapperStyle={{ outline: "none", zIndex: 60 }}

@@ -107,7 +107,6 @@ const PieTooltip: React.FC<PieTooltipProps> = ({
               ]
             : []),
         ]}
-        currentLanguage={currentLanguage}
         formatValue={(entry) =>
           entry.dataKey === "val"
             ? `${formatEmissionsAbsolute(Math.round(safeValue), currentLanguage)} ${t("emissionsUnit")}`

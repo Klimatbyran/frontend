@@ -33,6 +33,7 @@ import {
   StoryChartYAxisUnit,
 } from "@/components/nation/story/storyChartAxis";
 import type { TooltipProps } from "recharts";
+import { ChartTooltipEntry } from "@/components/charts/historicEmissions/ChartTooltip";
 
 function NationStoryChartTooltip({
   active,
@@ -51,7 +52,9 @@ function NationStoryChartTooltip({
       payload={reversedPayload}
       label={label}
       unit={unit}
-      customFormatter={customFormatter}
+      customValueFormatter={(entry: ChartTooltipEntry) =>
+        customFormatter(entry.value ?? 0)
+      }
     />
   );
 }
