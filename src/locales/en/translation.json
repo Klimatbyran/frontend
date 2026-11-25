@@ -1207,6 +1207,7 @@
     "climatePlan": "Climate plan",
     "noPlan": "No plan",
     "noClimatePlan": "No climate plan",
+    "climatePlanNoYear": "Plan without adopted year",
     "adopted": "Adopted {{year}}",
     "procurementRequirements": "Climate requirements in procurements",
     "sustainableTransport": "Sustainable transport",

@@ -62,6 +62,7 @@ describe("buildClimatePlanFigures", () => {
       {
         ...municipality,
         climatePlanYear: null,
+        climatePlanLink: null,
         electricVehiclePerChargePoints: null,
         procurementScore: 0,
       },
@@ -72,6 +73,19 @@ describe("buildClimatePlanFigures", () => {
     expect(figures.answers["kpi-charge-points"]).toBe("Saknar laddpunkter");
     expect(figures.answers["kpi-procurement"]).toBe("Nej");
     expect(figures.sectors).toEqual([]);
+  });
+
+  it("says plan without year when a link exists but year is missing", () => {
+    const figures = buildClimatePlanFigures(
+      {
+        ...municipality,
+        climatePlanYear: null,
+        climatePlanLink: "https://example.test/plan.pdf",
+      },
+      undefined,
+    );
+
+    expect(figures.answers["kpi-climate-plan"]).toBe("Plan utan angivet år");
   });
 
   it("ignores an emissions year that is not a number", () => {

@@ -1,4 +1,5 @@
 import type { SectorEmissionsByYear } from "@/types/emissions";
+import { climatePlanStatusLabel } from "@/lib/climatePlanStatus";
 import {
   formatEmissionsAbsolute,
   formatPercentChange,
@@ -10,6 +11,8 @@ export type ClimatePlanMunicipality = {
   historicalEmissionChangePercent: number;
   electricCarChangePercent: number;
   climatePlanYear: number | null;
+  /** When set without a year, KPI text is “plan without year”, not missing. */
+  climatePlanLink?: string | null;
   bicycleMetrePerCapita: number;
   totalConsumptionEmission: number;
   electricVehiclePerChargePoints: number | null;
@@ -166,9 +169,13 @@ export function buildClimatePlanFigures(
         ? "Saknar laddpunkter"
         : oneDecimal(municipality.electricVehiclePerChargePoints),
     "kpi-bike-paths": oneDecimal(municipality.bicycleMetrePerCapita),
-    "kpi-climate-plan": municipality.climatePlanYear
-      ? `Antagen ${municipality.climatePlanYear}`
-      : "Saknar klimatplan",
+    "kpi-climate-plan": climatePlanStatusLabel({
+      year: municipality.climatePlanYear,
+      link: municipality.climatePlanLink,
+      adopted: (year) => `Antagen ${year}`,
+      noYear: "Plan utan angivet år",
+      missing: "Saknar klimatplan",
+    }),
     "kpi-procurement": procurementLabel(municipality.procurementScore),
   };
 
