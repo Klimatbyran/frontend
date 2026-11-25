@@ -1265,21 +1265,21 @@
   "sector": {
     "energy": {
       "name": "Energi",
-      "title": "Energi­sektorn",
+      "title": "Energi\u00ADsektorn",
       "industryGroups": {
         "energy": "Energi"
       }
     },
     "materials": {
       "name": "Material",
-      "title": "Material­sektorn",
+      "title": "Material\u00ADsektorn",
       "industryGroups": {
         "materials": "Material"
       }
     },
     "industrials": {
       "name": "Industri",
-      "title": "Industri­sektorn",
+      "title": "Industri\u00ADsektorn",
       "industryGroups": {
         "capitalGoods": "Kapitalvaror",
         "commercialProfessionalServices": "Kommersiella och professionella tjänster",
@@ -1288,7 +1288,7 @@
     },
     "consumerDiscretionary": {
       "name": "Sällanköpsvaror",
-      "title": "Sällanköpsvaru­sektorn",
+      "title": "Sällanköpsvaru\u00ADsektorn",
       "industryGroups": {
         "automobilesComponents": "Bilar och komponenter",
         "consumerDurablesApparel": "Konsumentvaror och kläder",
@@ -1298,7 +1298,7 @@
     },
     "consumerStaples": {
       "name": "Dagligvaror",
-      "title": "Dagligvaru­sektorn",
+      "title": "Dagligvaru\u00ADsektorn",
       "industryGroups": {
         "consumerStaplesDistributionRetail": "Distribution och detaljhandel för dagligvaror",
         "foodBeverageTobacco": "Livsmedel, drycker och tobak",
@@ -1307,7 +1307,7 @@
     },
     "healthCare": {
       "name": "Hälsovård",
-      "title": "Hälsovårds­sektorn",
+      "title": "Hälsovårds\u00ADsektorn",
       "industryGroups": {
         "healthCareEquipmentServices": "Medicinteknisk utrustning och vårdtjänster",
         "pharmaceuticalsBiotechnologyLifeSciences": "Läkemedel, bioteknik och life sciences"
@@ -1315,7 +1315,7 @@
     },
     "financials": {
       "name": "Finans",
-      "title": "Finans­sektorn",
+      "title": "Finans\u00ADsektorn",
       "industryGroups": {
         "banks": "Banker",
         "financialServices": "Finansiella tjänster",
@@ -1333,7 +1333,7 @@
     },
     "communicationServices": {
       "name": "Kommunikation",
-      "title": "Kommunikations­sektorn",
+      "title": "Kommunikations\u00ADsektorn",
       "industryGroups": {
         "telecommunicationServices": "Telekommunikationstjänster",
         "mediaEntertainment": "Media och underhållning"
@@ -1341,14 +1341,14 @@
     },
     "utilities": {
       "name": "Kraftförsörjning",
-      "title": "Kraftförsörjnings­sektorn",
+      "title": "Kraftförsörjnings\u00ADsektorn",
       "industryGroups": {
         "utilities": "Kraftförsörjning"
       }
     },
     "realEstate": {
       "name": "Fastigheter",
-      "title": "Fastighets­sektorn",
+      "title": "Fastighets\u00ADsektorn",
       "industryGroups": {
         "equityRealEstateInvestmentTrustsReits": "Equity Real Estate Investment Trusts (REITs)",
         "realEstateManagementDevelopment": "Fastighetsförvaltning och fastighetsutveckling"
