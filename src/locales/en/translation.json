@@ -964,7 +964,7 @@
           "klimatplaner": {
             "title": "Climate Plans",
             "text": "Collected by members of Klimatklubben and the Swedish Society for Nature Conservation",
-            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
+            "link": "https://validate.klimatkollen.se/municipality-sources"
           },
           "upphandlingsmyndigheten": {
             "title": "Procurement Authority",
@@ -2018,7 +2018,7 @@
           "label": "Climate Plans",
           "description": "Has an ongoing climate action plan",
           "detailedDescription": "Which municipalities have a climate action plan?",
-          "source": "Klimatkollen’s open compilation of climate plans, with help from members of Klimatklubben and the Swedish Society for Nature Conservation (Naturskyddsföreningen).",
+          "source": "Klimatkollen's municipal climate-plan registry (edited in Validate → Municipalities)",
           "booleanLabels": {
             "true": "Has Climate Plan",
             "false": "No Climate Plan"

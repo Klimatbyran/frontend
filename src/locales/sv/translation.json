@@ -1011,7 +1011,7 @@
           "klimatplaner": {
             "title": "Klimatplaner",
             "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen",
-            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
+            "link": "https://validate.klimatkollen.se/municipality-sources"
           },
           "upphandlingsmyndigheten": {
             "title": "Upphandlingsmyndigheten",
@@ -2064,7 +2064,7 @@
           "label": "Klimatplanerna",
           "description": "Har en aktuell klimatplan",
           "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
-          "source": "Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar i Klimatklubben och Naturskyddsföreningen",
+          "source": "Klimatkollens register över kommunala klimatplaner (redigeras i Validate → Kommuner)",
           "booleanLabels": {
             "true": "Har klimatplan",
             "false": "Saknar klimatplan"

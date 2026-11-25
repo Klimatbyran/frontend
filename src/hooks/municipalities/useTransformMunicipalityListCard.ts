@@ -34,12 +34,11 @@ const useTransformMunicipalityListCard = ({
         ? formatPercentChange(emissionsChangeExists, currentLanguage)
         : t("municipalities.card.noData");
 
-      const hasClimatePlan =
+      const hasClimatePlan = Boolean(
         municipality.climatePlan ??
-        Boolean(
-          municipality.climatePlanLink &&
-            municipality.climatePlanLink !== "Saknar plan",
-        );
+          (municipality.climatePlanLink &&
+            municipality.climatePlanLink !== "Saknar plan"),
+      );
 
       return {
         name: municipality.name,

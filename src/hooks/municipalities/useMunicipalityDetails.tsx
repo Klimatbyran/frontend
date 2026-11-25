@@ -29,7 +29,10 @@ export function useMunicipalityDetails(id: string) {
           ...municipality,
           meetsParisGoal:
             municipality.totalTrend <= municipality.totalCarbonLaw,
-          climatePlan: municipality.climatePlanYear !== null,
+          climatePlan: Boolean(
+            municipality.climatePlanLink &&
+              municipality.climatePlanLink !== "Saknar plan",
+          ),
         } as Municipality)
       : null,
     loading: isLoading,
