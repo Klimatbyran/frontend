@@ -29,8 +29,6 @@ interface ChartTooltipProps {
   active?: boolean;
   payload?: ChartTooltipEntry[];
   label?: string;
-  unit?: string;
-  showUnit?: boolean;
   companyBaseYear?: number;
   filterDuplicateValues?: boolean;
   trendData?: {
@@ -94,13 +92,12 @@ function filterTooltipPayload(
     dataView?: "overview" | "sectors";
     hiddenSectors: Set<string>;
   },
-): { filteredPayload: ChartTooltipEntry[]; showUnit: boolean } {
-  let showUnit = true;
+): ChartTooltipEntry[] {
   let filteredPayload = payload.filter((entry) => {
     if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
       return entry.value != null;
     }
-    showUnit = false;
+
     return entry.value != null && entry.value > 0;
   });
 
@@ -124,7 +121,7 @@ function filterTooltipPayload(
     filteredPayload = filterOverviewPayload(filteredPayload);
   }
 
-  return { filteredPayload, showUnit };
+  return filteredPayload;
 }
 
 function TrendInfo({
@@ -210,14 +207,11 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = (props) => {
   }
 
   const isBaseYear = props.companyBaseYear === props.payload[0]?.payload?.year;
-  const { filteredPayload, showUnit: filteredShowUnit } = filterTooltipPayload(
-    props.payload,
-    {
-      filterDuplicateValues: props.filterDuplicateValues ?? false,
-      dataView: props.dataView,
-      hiddenSectors: props.hiddenSectors ?? new Set(),
-    },
-  );
+  const filteredPayload = filterTooltipPayload(props.payload, {
+    filterDuplicateValues: props.filterDuplicateValues ?? false,
+    dataView: props.dataView,
+    hiddenSectors: props.hiddenSectors ?? new Set(),
+  });
 
   const defaultValueFormatter = (entry: ChartTooltipEntry) =>
     formatEmissionsAbsolute(Math.round(entry.value ?? 0), currentLanguage);
@@ -237,8 +231,6 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = (props) => {
         formatValue={props.customValueFormatter ?? defaultValueFormatter}
         showAIIndicators={props.showAIIndicators ?? true}
         label={`${props.label} ${isBaseYear ? "*" : ""}`}
-        unit={props.unit}
-        showUnit={(props.showUnit ?? true) && filteredShowUnit}
       />
       <BaseYearFootnote isBaseYear={isBaseYear} t={t} />
       {props.trendData && (

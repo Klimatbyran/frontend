@@ -39,10 +39,8 @@ function NationStoryChartTooltip({
   active,
   payload,
   label,
-  unit,
   customFormatter,
 }: TooltipProps<number, string> & {
-  unit: string;
   customFormatter: (value: number) => string;
 }) {
   const reversedPayload = payload ? [...payload].reverse() : undefined;
@@ -51,7 +49,6 @@ function NationStoryChartTooltip({
       active={active}
       payload={reversedPayload}
       label={label}
-      unit={unit}
       customValueFormatter={(entry: ChartTooltipEntry) =>
         customFormatter(entry.value ?? 0)
       }
@@ -306,7 +303,6 @@ export const NationStackedChart: FC<NationStackedChartProps> = ({
                   () => null
                 ) : (
                   <NationStoryChartTooltip
-                    unit={t("nation.story.unit.mton")}
                     customFormatter={(value) =>
                       formatMton(value, currentLanguage, 1)
                     }

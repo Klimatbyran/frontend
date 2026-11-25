@@ -127,7 +127,6 @@ export const TurnoverEmissionsChart: FC<TurnoverEmissionsChartProps> = ({
               content={
                 <ChartTooltip
                   companyBaseYear={baseYear}
-                  showUnit={false}
                   customValueFormatter={(entry: ChartTooltipEntry) =>
                     entry.dataKey === "turnover"
                       ? formatTurnoverValue(
