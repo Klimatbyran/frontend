@@ -22,6 +22,10 @@ import { PageNoData } from "@/components/pageStates/NoData";
 import { useSectorYearSelection } from "@/hooks/territories/useSectorYearSelection";
 import { getProcurementRequirementsText } from "@/utils/municipality/procurement";
 import { LinkCard } from "@/components/detail/DetailLinkCard";
+import {
+  climatePlanStatusLabel,
+  climatePlanStatusTone,
+} from "@/lib/climatePlanStatus";
 import { DetailHeader } from "@/components/detail/DetailHeader";
 import { ComparisonDetailChip } from "@/components/compare/ComparisonDetailChip";
 import { buildComparisonLinkTo } from "@/utils/compare/comparisonUtils";
@@ -47,24 +51,32 @@ function MunicipalityLinkCards({
   requirementsInProcurement: string;
   t: TFunction;
 }) {
+  const planTone = climatePlanStatusTone(
+    municipality.climatePlanYear,
+    municipality.climatePlanLink,
+  );
   return (
     <DetailLinkCardGrid>
       <LinkCard
         title={t("municipalityDetailPage.climatePlan")}
-        description={
-          municipality.climatePlanYear
-            ? t("municipalityDetailPage.adopted", {
-                year: municipality.climatePlanYear,
-              })
-            : t("municipalityDetailPage.noClimatePlan")
-        }
+        description={climatePlanStatusLabel({
+          year: municipality.climatePlanYear,
+          link: municipality.climatePlanLink,
+          adopted: (year) => t("municipalityDetailPage.adopted", { year }),
+          noYear: t("municipalityDetailPage.climatePlanNoYear"),
+          missing: t("municipalityDetailPage.noClimatePlan"),
+        })}
         link={
           municipality.climatePlanLink
             ? municipality.climatePlanLink
             : undefined
         }
         descriptionClassName={
-          municipality.climatePlanYear ? "text-blue-3" : "text-pink-3"
+          planTone === "adopted"
+            ? "text-blue-3"
+            : planTone === "noYear"
+              ? "text-orange-2"
+              : "text-pink-3"
         }
       />
       <LinkCard
