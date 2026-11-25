@@ -60,9 +60,7 @@ export function buildMunicipalityKpiDefinitions(
       key: "climatePlan",
       unit: "",
       source: "municipalities.list.kpis.climatePlan.source",
-      sourceUrls: [
-        "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit#gid=0",
-      ],
+      sourceUrls: ["https://validate.klimatkollen.se/municipality-sources"],
       description: t("municipalities.list.kpis.climatePlan.description"),
       detailedDescription: t(
         "municipalities.list.kpis.climatePlan.detailedDescription",

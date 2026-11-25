@@ -39,7 +39,10 @@ export function useMunicipalities(options?: {
           trend: mapEmissionArray(municipality.trend),
           meetsParisGoal:
             municipality.totalTrend <= municipality.totalCarbonLaw,
-          climatePlan: municipality.climatePlanYear !== null,
+          climatePlan: Boolean(
+            municipality.climatePlanLink &&
+              municipality.climatePlanLink !== "Saknar plan",
+          ),
         }),
       );
     },

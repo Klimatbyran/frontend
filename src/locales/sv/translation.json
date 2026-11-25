@@ -1011,7 +1011,7 @@
           "klimatplaner": {
             "title": "Klimatplaner",
             "text": "Insamlade av medlemmar i Klimatklubben och Naturskyddsföreningen",
-            "link": "https://docs.google.com/spreadsheets/d/13CMqmfdd6QUD6agKFyVhwZUol4PKzvy253_EwtsFyvw/edit?fbclid=IwAR0v0cq0_xhFVlhhVn5fP-TNkOPVRXbOTKzTVWI_PMr_yU2rXOLjcN6jSps#gid=0"
+            "link": "https://validate.klimatkollen.se/municipality-sources"
           },
           "upphandlingsmyndigheten": {
             "title": "Upphandlingsmyndigheten",
@@ -1265,21 +1265,21 @@
   "sector": {
     "energy": {
       "name": "Energi",
-      "title": "Energi\u00ADsektorn",
+      "title": "Energi­sektorn",
       "industryGroups": {
         "energy": "Energi"
       }
     },
     "materials": {
       "name": "Material",
-      "title": "Material\u00ADsektorn",
+      "title": "Material­sektorn",
       "industryGroups": {
         "materials": "Material"
       }
     },
     "industrials": {
       "name": "Industri",
-      "title": "Industri\u00ADsektorn",
+      "title": "Industri­sektorn",
       "industryGroups": {
         "capitalGoods": "Kapitalvaror",
         "commercialProfessionalServices": "Kommersiella och professionella tjänster",
@@ -1288,7 +1288,7 @@
     },
     "consumerDiscretionary": {
       "name": "Sällanköpsvaror",
-      "title": "Sällanköpsvaru\u00ADsektorn",
+      "title": "Sällanköpsvaru­sektorn",
       "industryGroups": {
         "automobilesComponents": "Bilar och komponenter",
         "consumerDurablesApparel": "Konsumentvaror och kläder",
@@ -1298,7 +1298,7 @@
     },
     "consumerStaples": {
       "name": "Dagligvaror",
-      "title": "Dagligvaru\u00ADsektorn",
+      "title": "Dagligvaru­sektorn",
       "industryGroups": {
         "consumerStaplesDistributionRetail": "Distribution och detaljhandel för dagligvaror",
         "foodBeverageTobacco": "Livsmedel, drycker och tobak",
@@ -1307,7 +1307,7 @@
     },
     "healthCare": {
       "name": "Hälsovård",
-      "title": "Hälsovårds\u00ADsektorn",
+      "title": "Hälsovårds­sektorn",
       "industryGroups": {
         "healthCareEquipmentServices": "Medicinteknisk utrustning och vårdtjänster",
         "pharmaceuticalsBiotechnologyLifeSciences": "Läkemedel, bioteknik och life sciences"
@@ -1315,7 +1315,7 @@
     },
     "financials": {
       "name": "Finans",
-      "title": "Finans\u00ADsektorn",
+      "title": "Finans­sektorn",
       "industryGroups": {
         "banks": "Banker",
         "financialServices": "Finansiella tjänster",
@@ -1333,7 +1333,7 @@
     },
     "communicationServices": {
       "name": "Kommunikation",
-      "title": "Kommunikations\u00ADsektorn",
+      "title": "Kommunikations­sektorn",
       "industryGroups": {
         "telecommunicationServices": "Telekommunikationstjänster",
         "mediaEntertainment": "Media och underhållning"
@@ -1341,14 +1341,14 @@
     },
     "utilities": {
       "name": "Kraftförsörjning",
-      "title": "Kraftförsörjnings\u00ADsektorn",
+      "title": "Kraftförsörjnings­sektorn",
       "industryGroups": {
         "utilities": "Kraftförsörjning"
       }
     },
     "realEstate": {
       "name": "Fastigheter",
-      "title": "Fastighets\u00ADsektorn",
+      "title": "Fastighets­sektorn",
       "industryGroups": {
         "equityRealEstateInvestmentTrustsReits": "Equity Real Estate Investment Trusts (REITs)",
         "realEstateManagementDevelopment": "Fastighetsförvaltning och fastighetsutveckling"
@@ -2064,7 +2064,7 @@
           "label": "Klimatplanerna",
           "description": "Har en aktuell klimatplan",
           "detailedDescription": "Vilka kommuner har en aktuell klimatplan?",
-          "source": "Klimatkollens öppna sammanställning av klimatplaner med hjälp från medlemmar i Klimatklubben och Naturskyddsföreningen",
+          "source": "Klimatkollens register över kommunala klimatplaner (redigeras i Validate → Kommuner)",
           "booleanLabels": {
             "true": "Har klimatplan",
             "false": "Saknar klimatplan"
