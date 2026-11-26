@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
-import { getCompaniesBySearchTerm } from "@/lib/api";
+import { getPageCompaniesSearch } from "@/lib/pagesApi";
 import { HERO_SEARCH_DEBOUNCE_MS } from "@/lib/constants/landingPage";
 
 export function useCompanySearch(searchQuery: string) {
@@ -25,10 +25,10 @@ export function useCompanySearch(searchQuery: string) {
   }, [trimmedQuery, debouncedQuery]);
 
   const { data: searchResults = [], isFetching: isSearching } = useQuery({
-    queryKey: ["companySearch", debouncedQuery],
+    queryKey: ["pageCompanySearch", debouncedQuery],
     queryFn: () =>
       debouncedQuery
-        ? getCompaniesBySearchTerm(debouncedQuery)
+        ? getPageCompaniesSearch(debouncedQuery)
         : Promise.resolve([]),
     enabled: !!debouncedQuery,
     staleTime: 60 * 1000,
