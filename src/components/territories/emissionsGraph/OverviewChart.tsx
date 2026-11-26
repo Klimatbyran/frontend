@@ -87,8 +87,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
     [t],
   );
 
-  const unit = t("emissionsUnit");
-
   return (
     <ChartWrapper className="h-auto">
       <ChartArea className="h-[300px] min-h-0 flex-none sm:h-[380px]">
@@ -109,7 +107,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({ projectedData }) => {
             <YAxis {...getTwoFuturesYAxisProps(currentLanguage, isMobile)} />
 
             <Tooltip
-              content={<TwoFuturesTooltip unit={unit} labels={tooltipLabels} />}
+              content={<TwoFuturesTooltip labels={tooltipLabels} />}
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 

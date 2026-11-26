@@ -2,13 +2,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
-import { formatTurnoverValue } from "@/utils/formatting/turnoverFormatting";
-import { useScreenSize } from "@/hooks/useScreenSize";
+import { ChartTooltipContainer } from "@/components/charts/ChartTooltipContainer";
+import { ChartTooltipList } from "@/components/charts/ChartTooltipList";
 import { cn } from "@/lib/utils";
-import { AiIcon } from "@/components/ui/ai-icon";
 import type { Scope3Category } from "@/types/company";
 
-interface PayloadEntry {
+export interface ChartTooltipEntry {
   dataKey?: string;
   value?: number | null;
   name?: string;
@@ -28,10 +27,8 @@ interface PayloadEntry {
 
 interface ChartTooltipProps {
   active?: boolean;
-  payload?: PayloadEntry[];
+  payload?: ChartTooltipEntry[];
   label?: string;
-  unit?: string;
-  showUnit?: boolean;
   companyBaseYear?: number;
   filterDuplicateValues?: boolean;
   trendData?: {
@@ -41,12 +38,8 @@ interface ChartTooltipProps {
   };
   dataView?: "overview" | "sectors";
   hiddenSectors?: Set<string>;
-  customFormatter?: (
-    value: number,
-    name: string,
-    entry: PayloadEntry,
-  ) => string;
-  customNameFormatter?: (name: string, entry: PayloadEntry) => string;
+  customValueFormatter?: (entry: ChartTooltipEntry) => string;
+  customNameFormatter?: (entry: ChartTooltipEntry) => string;
   showAIIndicators?: boolean;
 }
 
@@ -57,7 +50,7 @@ function hasAIGeneratedScope3(
 }
 
 function isAIGeneratedEntry(
-  entry: PayloadEntry,
+  entry: ChartTooltipEntry,
   showAIIndicators: boolean,
 ): boolean {
   if (!showAIIndicators) return false;
@@ -73,7 +66,9 @@ function isAIGeneratedEntry(
   return hasAIGeneratedScope3(payload.scope3Categories);
 }
 
-function filterOverviewPayload(payload: PayloadEntry[]): PayloadEntry[] {
+function filterOverviewPayload(
+  payload: ChartTooltipEntry[],
+): ChartTooltipEntry[] {
   const hasActual = payload.some(
     (entry) => entry.dataKey === "total" && entry.value != null,
   );
@@ -91,19 +86,18 @@ function filterOverviewPayload(payload: PayloadEntry[]): PayloadEntry[] {
 }
 
 function filterTooltipPayload(
-  payload: PayloadEntry[],
+  payload: ChartTooltipEntry[],
   options: {
     filterDuplicateValues: boolean;
     dataView?: "overview" | "sectors";
     hiddenSectors: Set<string>;
   },
-): { filteredPayload: PayloadEntry[]; showUnit: boolean } {
-  let showUnit = true;
+): ChartTooltipEntry[] {
   let filteredPayload = payload.filter((entry) => {
     if (entry.dataKey === "approximated" || entry.dataKey === "carbonLaw") {
       return entry.value != null;
     }
-    showUnit = false;
+
     return entry.value != null && entry.value > 0;
   });
 
@@ -127,65 +121,7 @@ function filterTooltipPayload(
     filteredPayload = filterOverviewPayload(filteredPayload);
   }
 
-  return { filteredPayload, showUnit };
-}
-
-function TooltipDataRow({
-  entry,
-  formatName,
-  formatValue,
-  showAIIndicators,
-  currentLanguage,
-  t,
-}: {
-  entry: PayloadEntry;
-  formatName: (name: string, entry: PayloadEntry) => string;
-  formatValue: (value: number, name: string, entry: PayloadEntry) => string;
-  showAIIndicators: boolean;
-  currentLanguage: string;
-  t: ReturnType<typeof useTranslation>["t"];
-}) {
-  if (entry.dataKey === "gap" || entry.dataKey === "parisBase") return null;
-
-  const name = formatName(String(entry.name || entry.dataKey || ""), entry);
-  const isTurnoverEntry = entry.dataKey === "turnover";
-  const value = isTurnoverEntry
-    ? formatTurnoverValue(
-        entry.value as number,
-        currentLanguage,
-        t,
-        entry.payload?.turnoverCurrency,
-      )
-    : formatValue(
-        entry.value as number,
-        String(entry.name || entry.dataKey || ""),
-        entry,
-      );
-  const isDataAI = isAIGeneratedEntry(entry, showAIIndicators);
-
-  return (
-    <div
-      key={entry.dataKey}
-      className={cn(
-        `${entry.dataKey === "total" ? "my-2 font-medium" : "my-0"}`,
-        "grid grid-cols-subgrid col-span-2 w-full",
-        "even:bg-black-1 odd:bg-black-2/20 py-0.5",
-      )}
-    >
-      <div className="text-grey mr-2">{name}</div>
-      <div
-        className="flex pl-2 gap-1 justify-end"
-        style={{ color: entry.color }}
-      >
-        {value}
-        {isDataAI && (
-          <span className="ml-2">
-            <AiIcon size="sm" />
-          </span>
-        )}
-      </div>
-    </div>
-  );
+  return filteredPayload;
 }
 
 function TrendInfo({
@@ -194,7 +130,7 @@ function TrendInfo({
   t,
 }: {
   trendData: NonNullable<ChartTooltipProps["trendData"]>;
-  payload: PayloadEntry[];
+  payload: ChartTooltipEntry[];
   t: ReturnType<typeof useTranslation>["t"];
 }) {
   const hasApproximated = payload.some(
@@ -229,7 +165,7 @@ function ApproximatedValueInfo({
   t,
 }: {
   dataView?: "overview" | "sectors";
-  filteredPayload: PayloadEntry[];
+  filteredPayload: ChartTooltipEntry[];
   t: ReturnType<typeof useTranslation>["t"];
 }) {
   const hasApproximated = filteredPayload.some(
@@ -243,34 +179,6 @@ function ApproximatedValueInfo({
   return (
     <div className="text-xs text-blue-2 mt-2">
       {t("municipalities.graph.estimatedValue")}
-    </div>
-  );
-}
-
-function TooltipHeader({
-  label,
-  isBaseYear,
-  showUnit,
-  unit,
-  t,
-}: {
-  label?: string;
-  isBaseYear: boolean;
-  showUnit: boolean;
-  unit?: string;
-  t: ReturnType<typeof useTranslation>["t"];
-}) {
-  return (
-    <div className="text-sm font-medium mb-2 grid grid-cols-subgrid col-span-2">
-      <span>
-        {label}
-        {isBaseYear ? "*" : ""}
-      </span>
-      {showUnit && (
-        <span className="flex justify-end mr-1">
-          {unit || t("emissionsUnit")}
-        </span>
-      )}
     </div>
   );
 }
@@ -290,130 +198,49 @@ function BaseYearFootnote({
   );
 }
 
-function ChartTooltipBody({
-  label,
-  unit,
-  showUnit,
-  isBaseYear,
-  filteredPayload,
-  payload,
-  trendData,
-  dataView,
-  formatName,
-  formatValue,
-  showAIIndicators,
-  isMobile,
-  currentLanguage,
-  t,
-}: {
-  label?: string;
-  unit?: string;
-  showUnit: boolean;
-  isBaseYear: boolean;
-  filteredPayload: PayloadEntry[];
-  payload: PayloadEntry[];
-  trendData?: ChartTooltipProps["trendData"];
-  dataView?: "overview" | "sectors";
-  formatName: (name: string, entry: PayloadEntry) => string;
-  formatValue: (value: number, name: string, entry: PayloadEntry) => string;
-  showAIIndicators: boolean;
-  isMobile: boolean;
-  currentLanguage: string;
-  t: ReturnType<typeof useTranslation>["t"];
-}) {
-  const dataRows = filteredPayload.map((entry) => (
-    <TooltipDataRow
-      key={entry.dataKey}
-      entry={entry}
-      formatName={formatName}
-      formatValue={formatValue}
-      showAIIndicators={showAIIndicators}
-      currentLanguage={currentLanguage}
-      t={t}
-    />
-  ));
-
-  return (
-    <div
-      className={cn(
-        isMobile ? "max-w-[280px]" : "max-w-[400px]",
-        "bg-black-1 px-4 py-3 rounded-level-2",
-        "grid grid-cols-[1fr_auto] text-xs",
-        "z-[60] relative",
-      )}
-    >
-      <TooltipHeader
-        label={label}
-        isBaseYear={isBaseYear}
-        showUnit={showUnit}
-        unit={unit}
-        t={t}
-      />
-      {dataRows.length === 0 && (
-        <div className="text-grey mr-2 text-xs col-span-2">
-          {t("charts.tooltip.noData")}
-        </div>
-      )}
-      {dataRows}
-      <BaseYearFootnote isBaseYear={isBaseYear} t={t} />
-      {trendData && <TrendInfo trendData={trendData} payload={payload} t={t} />}
-      <ApproximatedValueInfo
-        dataView={dataView}
-        filteredPayload={filteredPayload}
-        t={t}
-      />
-    </div>
-  );
-}
-
 export const ChartTooltip: React.FC<ChartTooltipProps> = (props) => {
   const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
-  const { isMobile } = useScreenSize();
 
   if (!props.active || !props.payload || props.payload.length === 0) {
     return null;
   }
 
   const isBaseYear = props.companyBaseYear === props.payload[0]?.payload?.year;
-  const { filteredPayload, showUnit: filteredShowUnit } = filterTooltipPayload(
-    props.payload,
-    {
-      filterDuplicateValues: props.filterDuplicateValues ?? false,
-      dataView: props.dataView,
-      hiddenSectors: props.hiddenSectors ?? new Set(),
-    },
-  );
+  const filteredPayload = filterTooltipPayload(props.payload, {
+    filterDuplicateValues: props.filterDuplicateValues ?? false,
+    dataView: props.dataView,
+    hiddenSectors: props.hiddenSectors ?? new Set(),
+  });
 
-  const defaultFormatter = (value: number) =>
-    formatEmissionsAbsolute(Math.round(value ?? 0), currentLanguage);
-  const defaultNameFormatter = (name: string, entry: PayloadEntry) => {
-    if (entry.dataKey === "turnover") {
-      return t("companies.overview.turnover");
-    }
-    if (entry.dataKey?.startsWith("cat")) {
-      const categoryId = parseInt(entry.dataKey.replace("cat", ""));
-      return `${categoryId.toLocaleString()}. ${name}`;
-    }
-    return name;
-  };
+  const defaultValueFormatter = (entry: ChartTooltipEntry) =>
+    formatEmissionsAbsolute(Math.round(entry.value ?? 0), currentLanguage);
+
+  const entries = filteredPayload
+    .filter((entry) => entry.dataKey !== "gap" && entry.dataKey !== "parisBase")
+    .map((entry) => ({
+      ...entry,
+      isAIGenerated: isAIGeneratedEntry(entry, true),
+    }));
 
   return (
-    <ChartTooltipBody
-      label={props.label}
-      unit={props.unit}
-      showUnit={(props.showUnit ?? true) && filteredShowUnit}
-      isBaseYear={isBaseYear}
-      filteredPayload={filteredPayload}
-      payload={props.payload}
-      trendData={props.trendData}
-      dataView={props.dataView}
-      formatName={props.customNameFormatter || defaultNameFormatter}
-      formatValue={props.customFormatter || defaultFormatter}
-      showAIIndicators={props.showAIIndicators ?? true}
-      isMobile={isMobile}
-      currentLanguage={currentLanguage}
-      t={t}
-    />
+    <ChartTooltipContainer>
+      <ChartTooltipList
+        entries={entries}
+        formatName={props.customNameFormatter}
+        formatValue={props.customValueFormatter ?? defaultValueFormatter}
+        showAIIndicators={props.showAIIndicators ?? true}
+        label={`${props.label} ${isBaseYear ? "*" : ""}`}
+      />
+      <BaseYearFootnote isBaseYear={isBaseYear} t={t} />
+      {props.trendData && (
+        <TrendInfo trendData={props.trendData} payload={props.payload} t={t} />
+      )}
+      <ApproximatedValueInfo
+        dataView={props.dataView}
+        filteredPayload={filteredPayload}
+        t={t}
+      />
+    </ChartTooltipContainer>
   );
 };

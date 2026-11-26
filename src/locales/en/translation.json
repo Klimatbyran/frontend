@@ -1648,7 +1648,7 @@
       "visualisation": "Visualisation",
       "data": "Data",
       "historicalDevelopment": "Historical Development",
-      "ofTotal": "of total",
+      "ofTotal": "Share of total",
       "followOnDescription": "Explore the full Scope 3 category breakdown below — a deeper look at where value-chain emissions come from."
     },
     "scopeReportingList": {
@@ -2454,7 +2454,9 @@
     "pieChart": {
       "clickToFilter": "Click to filter",
       "doubleClickToFilter": "Double-click to filter",
-      "ofTotal": "of total"
+      "ofTotal": "Share of total",
+      "emissions": "Emissions",
+      "close": "Close"
     }
   },
   "language": {

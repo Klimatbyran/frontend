@@ -8,7 +8,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { SectorEmissions } from "@/types/emissions";
@@ -41,7 +40,6 @@ export const SectorsChart: FC<SectorsChartProps> = ({
   hiddenSectors = new Set(),
   setHiddenSectors = () => {},
 }) => {
-  const { t } = useTranslation();
   const { currentLanguage } = useLanguage();
   const { isMobile } = useScreenSize();
   const { getSectorInfo } = useSectors();
@@ -153,7 +151,6 @@ export const SectorsChart: FC<SectorsChartProps> = ({
                 <ChartTooltip
                   dataView="sectors"
                   hiddenSectors={hiddenSectors}
-                  unit={t("emissionsUnit")}
                 />
               }
               wrapperStyle={{ outline: "none", zIndex: 60 }}

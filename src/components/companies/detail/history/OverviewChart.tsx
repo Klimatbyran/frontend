@@ -159,7 +159,6 @@ export const OverviewChart: FC<OverviewChartProps> = ({
   );
 
   const handleClick = createChartClickHandler(onYearSelect);
-  const unit = t("companies.tooltip.tonsCO2e");
 
   return (
     <ChartWrapper className="relative">
@@ -205,7 +204,7 @@ export const OverviewChart: FC<OverviewChartProps> = ({
             )}
 
             <Tooltip
-              content={<TwoFuturesTooltip unit={unit} labels={tooltipLabels} />}
+              content={<TwoFuturesTooltip labels={tooltipLabels} />}
               wrapperStyle={{ outline: "none", zIndex: 60 }}
             />
 

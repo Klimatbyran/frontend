@@ -1,7 +1,8 @@
 import { useLanguage } from "@/components/LanguageProvider";
-import { AiIcon } from "@/components/ui/ai-icon";
+import { ChartTooltipContainer } from "@/components/charts/ChartTooltipContainer";
 import { formatEmissionsAbsolute } from "@/utils/formatting/localization";
 import type { TwoFuturesRow } from "@/components/territories/emissionsGraph/twoFuturesChartData";
+import { ChartTooltipList } from "../ChartTooltipList";
 
 export const FUTURE_LINE_DASH = "4 4";
 
@@ -29,64 +30,44 @@ export function TwoFuturesTooltip({
   active,
   payload,
   label,
-  unit,
   labels,
 }: {
   active?: boolean;
   payload?: TooltipRow[];
   label?: string | number;
-  unit: string;
   labels: TwoFuturesTooltipLabels;
 }) {
   const { currentLanguage } = useLanguage();
   if (!active || !payload?.length) return null;
 
-  const rows = payload.filter(
-    (entry) =>
-      entry.value != null &&
-      entry.dataKey !== "parisBase" &&
-      entry.dataKey !== "gap" &&
-      !isAnchorEstimate(entry, payload),
-  );
+  const entries = payload
+    .filter(
+      (entry) =>
+        entry.value != null &&
+        entry.dataKey !== "parisBase" &&
+        entry.dataKey !== "gap" &&
+        !isAnchorEstimate(entry, payload),
+    )
+    .map((entry) => ({
+      ...entry,
+      name:
+        labels[entry.dataKey as keyof TwoFuturesTooltipLabels] ?? entry.name,
+      isAIGenerated:
+        entry.dataKey === "history" && entry.payload?.historyIsAIGenerated,
+      isSwatchSolid: entry.dataKey === "history",
+    }));
 
   return (
-    <div className="rounded-md border border-white/10 bg-black-2 px-3 py-2 text-sm shadow-lg">
-      <p className="mb-2 font-medium text-white">{label}</p>
-      <ul className="space-y-1">
-        {rows.map((entry) => {
-          const key = entry.dataKey as keyof TwoFuturesTooltipLabels;
-          const name = labels[key] ?? entry.name;
-          const showAi =
-            entry.dataKey === "history" && entry.payload?.historyIsAIGenerated;
-          const swatchIsSolid = entry.dataKey === "history";
-          return (
-            <li
-              key={entry.dataKey}
-              className="flex items-center justify-between gap-4 tabular-nums"
-            >
-              <span className="flex items-center gap-2 text-grey">
-                <span
-                  className="h-0.5 w-4"
-                  style={
-                    swatchIsSolid
-                      ? { background: entry.color }
-                      : {
-                          background: "transparent",
-                          borderTop: `2px dashed ${entry.color}`,
-                        }
-                  }
-                  aria-hidden
-                />
-                {name}
-              </span>
-              <span className="flex items-center gap-1 text-white">
-                {formatEmissionsAbsolute(entry.value!, currentLanguage)} {unit}
-                {showAi && <AiIcon size="sm" />}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <ChartTooltipContainer>
+      <ChartTooltipList
+        label={String(label)}
+        entries={entries}
+        showAIIndicators={true}
+        showSwatch={true}
+        formatValue={(entry) =>
+          formatEmissionsAbsolute(entry.value!, currentLanguage)
+        }
+      />
+    </ChartTooltipContainer>
   );
 }

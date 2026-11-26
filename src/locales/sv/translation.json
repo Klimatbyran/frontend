@@ -1694,7 +1694,7 @@
       "visualisation": "Visualisering",
       "data": "Data",
       "historicalDevelopment": "Historisk utveckling",
-      "ofTotal": "av total",
+      "ofTotal": "Andel av total",
       "followOnDescription": "Utforska den fulla Scope 3-kategoriuppdelningen nedan — en djupare bild av var utsläppen i värdekedjan kommer ifrån."
     },
     "scopeReportingList": {
@@ -2500,7 +2500,9 @@
     "pieChart": {
       "clickToFilter": "Klicka för att filtrera",
       "doubleClickToFilter": "Dubbelklicka för att filtrera",
-      "ofTotal": "av total"
+      "ofTotal": "Andel av total",
+      "emissions": "Utsläpp",
+      "close": "Stäng"
     }
   },
   "language": {
